@@ -13,6 +13,7 @@
 		C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020426870099007A5B2F /* Preview Assets.xcassets */; };
 		C65A02102687009A007A5B2F /* GCMiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A020F2687009A007A5B2F /* GCMiTests.swift */; };
 		C65A021B2687009A007A5B2F /* GCMiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A021A2687009A007A5B2F /* GCMiUITests.swift */; };
+		C65A023026897BBE007A5B2F /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = C65A022F26897BBE007A5B2F /* fonts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		C65A02162687009A007A5B2F /* GCMiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GCMiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A021A2687009A007A5B2F /* GCMiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCMiUITests.swift; sourceTree = "<group>"; };
 		C65A021C2687009A007A5B2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C65A022F26897BBE007A5B2F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				C65A01FF26870098007A5B2F /* ContentView.swift */,
 				C65A020126870099007A5B2F /* Assets.xcassets */,
 				C65A020626870099007A5B2F /* Info.plist */,
+				C65A022F26897BBE007A5B2F /* fonts */,
 				C65A020326870099007A5B2F /* Preview Content */,
 			);
 			path = GCMi;
@@ -233,6 +236,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C65A023026897BBE007A5B2F /* fonts in Resources */,
 				C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */,
 				C65A020226870099007A5B2F /* Assets.xcassets in Resources */,
 			);

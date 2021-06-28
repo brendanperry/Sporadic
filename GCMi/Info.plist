@@ -46,5 +46,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Gilroy-ExtraBold.otf</string>
+		<string>Gilroy-Medium.ttf</string>
+	</array>
 </dict>
 </plist>
