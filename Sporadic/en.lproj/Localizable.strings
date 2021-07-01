@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  Sporadic
+
+  Created by Brendan Perry on 6/30/21.
+  
+*/
+
+"WelcomeBack" = "Welcome back!";
+"YourGoal" = "Here's your sporatic goal for today.";
+"CurrentRhythm" = "Current Rhythm";
+"Activities" = "Activities";
+"RandomNotificationDelivery" = "Random Notification Delivery";
