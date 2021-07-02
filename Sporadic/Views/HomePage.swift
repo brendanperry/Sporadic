@@ -6,8 +6,54 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct HomePage: View {
+    @StateObject var viewModel = ActivityViewModel()
+    @State private var selected = 0;
+
+    var body: some View {
+        ZStack {
+            TabView {
+                MainView()
+                    .tabItem {
+                        Image(systemName: "house")
+                    }
+                Settings()
+                    .tabItem {
+                        Image(systemName: "gear")
+                    }
+            }
+        }
+        .environmentObject(viewModel)
+    }
+}
+
+struct Settings: View {
+    var body: some View {
+        ZStack {
+            Image("BackgroundImage")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                Text("Settings")
+                Button(action: {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                        if success {
+                            print("All set!")
+                        } else if let error = error {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }, label: {
+                    Text("Request Notification Access")
+                })
+            }
+        }
+    }
+}
+
+struct MainView: View {
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -23,6 +69,7 @@ struct HomePage: View {
                     Spacer()
                 }
             })
+            .padding(.top)
         }
     }
 }
@@ -49,6 +96,7 @@ struct Welcome: View {
 }
 
 struct ChallengeButton: View {
+    //var viewModel: ActivityViewModel
     @State private var activityCompleted = false
     
     var body: some View {
@@ -64,7 +112,7 @@ struct ChallengeButton: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 325)
                     HStack {
-                        Checkmark(size: 30, isOn: activityCompleted)
+//                        Checkmark(size: 30, isOn: activityCompleted, activity: <#Activity#>, viewModel: viewModel)
                         Text("Run 3 miles")
                             .font(.title)
                             .bold()
@@ -101,7 +149,7 @@ struct Streak: View {
 }
 
 struct Activities: View {
-    @ObservedObject var viewModel = ActivityViewModel()
+    @EnvironmentObject var viewModel: ActivityViewModel
     
     var body: some View {
         VStack {
@@ -164,6 +212,7 @@ struct DeliveryTime: View {
 
 struct ActivityWidget: View {
     var activity: Activity
+    @EnvironmentObject var viewModel: ActivityViewModel
     
     var body: some View {
         ZStack {
@@ -181,7 +230,7 @@ struct ActivityWidget: View {
                     .bold()
                     .foregroundColor(Color("ActivityRangeColor"))
                     .padding(.top, 5)
-                Checkmark(size: 25, isOn: activity.isEnabled)
+                Checkmark(size: 25, isOn: activity.isEnabled, activity: activity)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 25)
@@ -198,29 +247,39 @@ struct ActivityWidget: View {
 struct Checkmark: View {
     var size: CGFloat
     var isOn: Bool
+    var activity: Activity
+    @EnvironmentObject var viewModel: ActivityViewModel
     
     var body: some View {
         if isOn {
-            ZStack {
-                Circle()
-                    .stroke(lineWidth: 5)
-                    .frame(width: size, height: size)
-                    .foregroundColor(Color("CheckGreen"))
-                Circle()
-                    .frame(width: size, height: size)
-                    .foregroundColor(Color("CheckGreen"))
-                CustomSVG(name: "Checkmark", tintColor: UIColor.white)
-                    .frame(width: size + 20, height: size + 20)
-            }
+            Button(action: {
+                viewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
+            }, label: {
+                ZStack {
+                    Circle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: size, height: size)
+                        .foregroundColor(Color("CheckGreen"))
+                    Circle()
+                        .frame(width: size, height: size)
+                        .foregroundColor(Color("CheckGreen"))
+                    CustomSVG(name: "Checkmark", tintColor: UIColor.white)
+                        .frame(width: size + 20, height: size + 20)
+                }
+            })
         } else {
-            ZStack {
-                Circle()
-                    .stroke(lineWidth: 5)
-                    .frame(width: size, height: size)
-                    .foregroundColor(Color("CheckGreen"))
-                CustomSVG(name: "Checkmark", tintColor: UIColor.white.withAlphaComponent(0))
-                    .frame(width: size + 20, height: size + 20)
-            }
+            Button(action: {
+                viewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
+            }, label: {
+                ZStack {
+                    Circle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: size, height: size)
+                        .foregroundColor(Color("CheckGreen"))
+                    CustomSVG(name: "Checkmark", tintColor: UIColor.white.withAlphaComponent(0))
+                        .frame(width: size + 20, height: size + 20)
+                }
+            })
         }
     }
 }

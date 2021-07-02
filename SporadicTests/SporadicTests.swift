@@ -46,9 +46,9 @@ class SporadicTests: XCTestCase {
          override func getInitializeActivities() -> [Activity] {
              var initializedActivityList = [Activity]()
              
-             let run = Activity(unit: Unit.MilesOrKilometers, name: "Test1", minValue: 0.1, maxValue: 26.2, total: 0, isEnabled: true)
+            let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: "Test1", minValue: 0.1, maxValue: 26.2, total: 0, isEnabled: true)
              
-             let bike = Activity(unit: Unit.Minutes, name: "Test2", minValue: 0.1, maxValue: 50, total: 0, isEnabled: false)
+            let bike = Activity(id: 1, unit: Unit.Minutes, name: "Test2", minValue: 0.1, maxValue: 50, total: 0, isEnabled: false)
              
              initializedActivityList.append(run)
              initializedActivityList.append(bike)

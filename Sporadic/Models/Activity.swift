@@ -8,7 +8,7 @@
 import Foundation
 
 struct Activity: Identifiable, Codable, Equatable {
-    var id = UUID()
+    var id: Int
     
     var unit: Unit
     

@@ -14,7 +14,9 @@ class ActivityViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         vm.resetDefaults()
     }
-
+    
+    // we may want to put these tests in local data helper tests because it was pulled out
+    
     func testActivitiesAreAtDefaultValuesWhenNothingIsStoredOnDevice() throws {
         let initializedActivities = vm.getInitializeActivities()
         let loadedActivities = vm.getLoadedActivities(activities: initializedActivities)
@@ -22,29 +24,29 @@ class ActivityViewModelTests: XCTestCase {
         XCTAssertEqual(initializedActivities, loadedActivities)
      }
     
-    func testSavingAndLoadingDataFromDevice() throws {
-        let id = UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e") ?? UUID()
-         
-        let saveTest = Activity(id: id, unit: Unit.MilesOrKilometers, name: "SaveTest", minValue: 0.1, maxValue: 26.2, total: 0, isEnabled: true)
+    func testWrittenDataIsLoadedFromDevice() throws {
+        let initializedActivities = vm.getInitializeActivities()
+        let currentActivities = vm.getLoadedActivities(activities: initializedActivities)
         
-        let saveOverride = Activity(id: id, unit: Unit.MilesOrKilometers, name: "SaveTest", minValue: 10, maxValue: 10, total: 10, isEnabled: false)
+        let newRun = Activity(id: 3, unit: Unit.MilesOrKilometers, name: "Test1", minValue: 14, maxValue: 26.2, total: 0, isEnabled: true)
+        let newBike = Activity(id: 3, unit: Unit.MilesOrKilometers, name: "Test2", minValue: 13, maxValue: 10, total: 10, isEnabled: true)
         
-        vm.saveDataToDevice(activity: saveTest)
+        let newActivities = [newRun, newBike]
         
-        let loadedActivity = vm.getDataFromDevice(activity: saveOverride)
+        vm.saveActivities(activities: newActivities)
         
-        XCTAssertEqual(saveTest, loadedActivity)
+        let loadedActivities = vm.getLoadedActivities(activities: currentActivities)
+        
+        XCTAssertEqual(newActivities, loadedActivities)
     }
      
      class TestActivityViewModel: ActivityViewModel {
          override func getInitializeActivities() -> [Activity] {
             var initializedActivityList = [Activity]()
-            
-            let id = UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e") ?? UUID()
              
-            let run = Activity(id: id, unit: Unit.MilesOrKilometers, name: "Test1", minValue: 0.1, maxValue: 26.2, total: 0, isEnabled: true)
+            let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: "Test1", minValue: 0.1, maxValue: 26.2, total: 0, isEnabled: true)
              
-            let bike = Activity(id: id, unit: Unit.Minutes, name: "Test2", minValue: 0.1, maxValue: 50, total: 0, isEnabled: false)
+            let bike = Activity(id: 1, unit: Unit.Minutes, name: "Test2", minValue: 0.1, maxValue: 50, total: 0, isEnabled: false)
              
             initializedActivityList.append(run)
             initializedActivityList.append(bike)
