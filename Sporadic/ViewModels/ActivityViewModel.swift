@@ -13,16 +13,15 @@ class ActivityViewModel: ObservableObject {
     var localDataHelper = LocalDataHelper()
     
     init() {
-        activities = getInitializeActivities()
-        activities = getLoadedActivities(activities: activities)
+        activities = self.getInitializeActivities()
+        activities = self.getLoadedActivities(activities: activities)
     }
     
     func getInitializeActivities() -> [Activity] {
         var initializedActivityList = [Activity]()
         
-        let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: "Run", minValue: 0.1, maxValue: 26.2, total: 24, isEnabled: true)
-        
-        let bike = Activity(id: 1, unit: Unit.MilesOrKilometers, name: "Bike", minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
+        let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: Localize.getString("Run"), minValue: 0.1, maxValue: 26.2, total: 24, isEnabled: true)
+        let bike = Activity(id: 1, unit: Unit.MilesOrKilometers, name: Localize.getString("Bike"), minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
         
         initializedActivityList.append(run)
         initializedActivityList.append(bike)
@@ -34,7 +33,7 @@ class ActivityViewModel: ObservableObject {
         var loadedActivities = [Activity]()
         
         for activity in activities {
-            let loadedActivity = localDataHelper.get(data: activity, key: activity.name)
+            let loadedActivity = localDataHelper.get(defaultValue: activity, key: "\(activity.id)")
             
             loadedActivities.append(loadedActivity)
         }
@@ -44,7 +43,7 @@ class ActivityViewModel: ObservableObject {
     
     func saveActivities(activities: [Activity]) {
         for activity in activities {
-            localDataHelper.save(data: activity, key: activity.name)
+            let _ = localDataHelper.save(data: activity, key: "\(activity.id)")
         }
     }
     
@@ -52,5 +51,11 @@ class ActivityViewModel: ObservableObject {
         activities[id].isEnabled = isOn
         
         self.saveActivities(activities: activities)
+        
+        notificationHelper.scheduleAllNotifications(activities: activities)
+    }
+    
+    func scheduleNotifs() {
+        notificationHelper.scheduleAllNotifications(activities: activities)
     }
 }

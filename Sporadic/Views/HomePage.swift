@@ -8,52 +8,7 @@
 import SwiftUI
 import UserNotifications
 
-struct HomePage: View {
-    @StateObject var viewModel = ActivityViewModel()
-    @State private var selected = 0;
-
-    var body: some View {
-        ZStack {
-            TabView {
-                MainView()
-                    .tabItem {
-                        Image(systemName: "house")
-                    }
-                Settings()
-                    .tabItem {
-                        Image(systemName: "gear")
-                    }
-            }
-        }
-        .environmentObject(viewModel)
-    }
-}
-
-struct Settings: View {
-    var body: some View {
-        ZStack {
-            Image("BackgroundImage")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                Text("Settings")
-                Button(action: {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                        if success {
-                            print("All set!")
-                        } else if let error = error {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }, label: {
-                    Text("Request Notification Access")
-                })
-            }
-        }
-    }
-}
-
-struct MainView: View {
+struct HomePage: View {    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -149,7 +104,7 @@ struct Streak: View {
 }
 
 struct Activities: View {
-    @EnvironmentObject var viewModel: ActivityViewModel
+    @EnvironmentObject var activityViewModel: ActivityViewModel
     
     var body: some View {
         VStack {
@@ -163,7 +118,7 @@ struct Activities: View {
                 .padding(.top)
             ScrollView(.horizontal, showsIndicators: false, content: {
                 HStack {
-                    ForEach(viewModel.activities) { activity in
+                    ForEach(activityViewModel.activities) { activity in
                         ActivityWidget(activity: activity)
                     }
                 }
@@ -212,7 +167,7 @@ struct DeliveryTime: View {
 
 struct ActivityWidget: View {
     var activity: Activity
-    @EnvironmentObject var viewModel: ActivityViewModel
+    @EnvironmentObject var activityViewModel: ActivityViewModel
     
     var body: some View {
         ZStack {
@@ -245,15 +200,20 @@ struct ActivityWidget: View {
 }
 
 struct Checkmark: View {
+    @EnvironmentObject var activityViewModel: ActivityViewModel
+    
     var size: CGFloat
     var isOn: Bool
+    //var activityId: String
     var activity: Activity
-    @EnvironmentObject var viewModel: ActivityViewModel
+    
+    @AppStorage("Jello")
+    var a: Data = Data()
     
     var body: some View {
         if isOn {
             Button(action: {
-                viewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
+                activityViewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
             }, label: {
                 ZStack {
                     Circle()
@@ -269,7 +229,7 @@ struct Checkmark: View {
             })
         } else {
             Button(action: {
-                viewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
+                activityViewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
             }, label: {
                 ZStack {
                     Circle()

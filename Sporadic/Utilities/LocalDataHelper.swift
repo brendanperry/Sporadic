@@ -10,8 +10,13 @@ import Foundation
 class LocalDataHelper {
     let defaults = UserDefaults.standard
     
-    public func get<T: Codable>(data: T, key: String) -> T {
+    public func get<T: Codable>(defaultValue: T, key: String) -> T {
         do {
+            if (T.self == Date.self) {
+                var data = defaults.object(forKey: key) as! String
+                var dd = Date(rawValue: data)
+            }
+            
             if let savedData = defaults.object(forKey: key) as? Data {
                 let decoder = JSONDecoder()
                 
@@ -23,10 +28,10 @@ class LocalDataHelper {
             print("Could not load activity from device.")
         }
         
-        return data
+        return defaultValue
     }
     
-    public func save<T: Codable>(data: T, key: String) {
+    public func save<T: Codable>(data: T, key: String) -> T {
         do {
             let encoder = JSONEncoder()
             
@@ -36,5 +41,19 @@ class LocalDataHelper {
         } catch {
             print("Could not save to device.")
         }
+        
+        return data
+    }
+    
+    func getDate(key: String) -> Date {
+        let data = defaults.object(forKey: key) as? String
+        
+        if let stringDate = data {
+            if let date = Date(rawValue: stringDate) {
+                return date
+            }
+        }
+        
+        return Date()
     }
 }
