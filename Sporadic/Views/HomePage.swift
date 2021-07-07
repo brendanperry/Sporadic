@@ -35,14 +35,11 @@ struct Welcome: View {
             Text(Localize.getString("WelcomeBack"))
                 .foregroundColor(Color("SubHeadingColor"))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Font.custom("Gilroy-Medium", size: 18))
+                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
             Text(Localize.getString("YourGoal"))
-                .font(.title)
-                .fontWeight(.bold)
-                .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-                .font(Font.custom("Gilroy", size: 18))
+                .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
         }
         .padding(.horizontal)
         .padding(.top, 50)
@@ -69,8 +66,7 @@ struct ChallengeButton: View {
                     HStack {
 //                        Checkmark(size: 30, isOn: activityCompleted, activity: <#Activity#>, viewModel: viewModel)
                         Text("Run 3 miles")
-                            .font(.title)
-                            .bold()
+                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title))
                     }
                     .offset(y: -7)
                 }
@@ -89,15 +85,12 @@ struct Streak: View {
     var body: some View {
         VStack {
             Text(Localize.getString("CurrentRhythm"))
-                .font(.footnote)
-                .bold()
                 .foregroundColor(Color("SubHeadingColor"))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Font.custom("Gilroy-Medium", size: 18))
+                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
             Text("16 days!")
-                .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.title)
+                .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
         }
         .padding()
     }
@@ -109,10 +102,8 @@ struct Activities: View {
     var body: some View {
         VStack {
             Text(Localize.getString("Activities"))
-                .font(.footnote)
-                .bold()
                 .foregroundColor(Color("SubHeadingColor"))
-                .font(Font.custom("Gilroy-Medium", size: 18))
+                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading)
                 .padding(.top)
@@ -131,34 +122,33 @@ struct DeliveryTime: View {
     var body: some View {
         VStack {
             Text(Localize.getString("RandomNotificationDelivery"))
-                .bold()
+                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
                 .foregroundColor(Color("SubHeadingColor"))
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text("3 days a week,\ndelivered at 6:00am.")
-                .font(.title)
-                .bold()
+                .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-            Button(action: {
-                print("edit")
-            }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(Color("ActivityBackgroundColor"))
-                        .frame(width: 100, height: 35)
-                        .offset(x: 5, y: 5)
-                    Text("Edit")
-                        .foregroundColor(Color("BlackWhiteColor"))
-                        .bold()
-                        .frame(width: 100, height: 35)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                            .stroke(lineWidth: 3)
-                            .foregroundColor(.blue)
-                        )
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
+//            Button(action: {
+//                print("edit")
+//            }) {
+//                ZStack {
+//                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+//                        .fill(Color("ActivityBackgroundColor"))
+//                        .frame(width: 100, height: 35)
+//                        .offset(x: 5, y: 5)
+//                    Text("Edit")
+//                        .foregroundColor(Color("BlackWhiteColor"))
+//                        .bold()
+//                        .frame(width: 100, height: 35)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 15)
+//                            .stroke(lineWidth: 3)
+//                            .foregroundColor(.blue)
+//                        )
+//                }
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//            }
             
         }
         .padding()
@@ -171,30 +161,49 @@ struct ActivityWidget: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 15, style: .continuous)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color("ActivityBackgroundColor"))
-                .frame(width: 120, height: 180)
-                .offset(x: 10, y: 10)
+                .frame(width: 170, height: 210)
+                .offset(x: 15, y: 15)
+            Button(action: {
+                
+            }, label: {
+                Image("Bike")
+            })
+            .offset(x: 50, y: -70)
             VStack {
-                CustomSVG(name: activity.name, tintColor: UIColor(hexaRGB: "#4776EB")!)
+                CustomSVG(name: activity.name, size: 50, tintColor: UIColor(hexaRGB: "#4146E3")!)
                     .frame(width: 50, height: 50)
                 Text(activity.name)
-                    .bold()
-                Text("\(activity.minValue, specifier: "%.1f")-\(activity.maxValue, specifier: "%.1f")mi")
-                    .font(.footnote)
-                    .bold()
-                    .foregroundColor(Color("ActivityRangeColor"))
-                    .padding(.top, 5)
-                Checkmark(size: 25, isOn: activity.isEnabled, activity: activity)
+                    .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
+                    .padding(.top, -1)
+                HStack (spacing: 0) {
+                    Text("\(activity.minValue, specifier: "%.1f")-\(activity.maxValue, specifier: "%.1f")")
+                        .foregroundColor(Color("ActivityRangeColor"))
+                        .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
+                    Text("mi")
+                        .foregroundColor(Color("ActivityRangeColor"))
+                        .font(Font.custom("Gilroy", size: 13, relativeTo: .body))
+                        .frame(height: 19,alignment: .bottom)
+                }.padding(1)
+
+                
+                Text("You've run a total")
+                    .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("CheckGreen"))
+                Text("of 29 miles!")
+                    .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("CheckGreen"))
+                    .padding(.bottom, 12)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 25)
             .overlay(
-                RoundedRectangle(cornerRadius: 15)
-                .stroke(lineWidth: 5)
+                RoundedRectangle(cornerRadius: 20)
+                .stroke(lineWidth: 6)
                 .foregroundColor(Color("ActivityBorderColor"))
             )
-            .padding()
+            .padding(20)
         }
     }
 }
@@ -223,7 +232,7 @@ struct Checkmark: View {
                     Circle()
                         .frame(width: size, height: size)
                         .foregroundColor(Color("CheckGreen"))
-                    CustomSVG(name: "Checkmark", tintColor: UIColor.white)
+                    CustomSVG(name: "Checkmark", size: 50, tintColor: UIColor.white)
                         .frame(width: size + 20, height: size + 20)
                 }
             })
@@ -236,7 +245,7 @@ struct Checkmark: View {
                         .stroke(lineWidth: 5)
                         .frame(width: size, height: size)
                         .foregroundColor(Color("CheckGreen"))
-                    CustomSVG(name: "Checkmark", tintColor: UIColor.white.withAlphaComponent(0))
+                    CustomSVG(name: "Checkmark", size: 50, tintColor: UIColor.white.withAlphaComponent(0))
                         .frame(width: size + 20, height: size + 20)
                 }
             })
@@ -245,24 +254,36 @@ struct Checkmark: View {
 }
 
 struct CustomSVG: UIViewRepresentable {
-  var name: String
-  var contentMode: UIView.ContentMode = .scaleAspectFit
-  var tintColor: UIColor = .black
+    var name: String
+    var size: Int
+    var contentMode: UIView.ContentMode = .scaleAspectFit
+    var tintColor: UIColor = .black
 
-  func makeUIView(context: Context) -> UIImageView {
-    let imageView = UIImageView()
-    imageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
-    return imageView
-  }
-
-  func updateUIView(_ uiView: UIImageView, context: Context) {
-    uiView.contentMode = contentMode
-    uiView.tintColor = tintColor
-    if let image = UIImage(named: name) {
-      uiView.image = image
+    func makeUIView(context: Context) -> UIImageView {
+        let imageView = UIImageView()
+        imageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
+        return imageView
     }
-  }
+
+    func updateUIView(_ uiView: UIImageView, context: Context) {
+        uiView.contentMode = contentMode
+        uiView.tintColor = tintColor
+        if var image = UIImage(named: name) {
+            image = image.withTintColor(tintColor)
+            image = image.resized(to: CGSize(width: size, height: size))
+            uiView.image = image
+        }
+    }
 }
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+}
+
 
 extension UIColor {
     convenience init?(hexaRGB: String, alpha: CGFloat = 1) {
@@ -308,7 +329,9 @@ extension UIColor {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let activityViewModel = ActivityViewModel()
+    
     static var previews: some View {
-        HomePage().preferredColorScheme(.light)
+        HomePage().preferredColorScheme(.light).environmentObject(activityViewModel)
     }
 }

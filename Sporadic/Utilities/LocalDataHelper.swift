@@ -12,11 +12,6 @@ class LocalDataHelper {
     
     public func get<T: Codable>(defaultValue: T, key: String) -> T {
         do {
-            if (T.self == Date.self) {
-                var data = defaults.object(forKey: key) as! String
-                var dd = Date(rawValue: data)
-            }
-            
             if let savedData = defaults.object(forKey: key) as? Data {
                 let decoder = JSONDecoder()
                 

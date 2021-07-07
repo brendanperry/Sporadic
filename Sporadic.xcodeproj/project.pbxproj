@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613CFCC269559C70061DC49 /* EmailHelper.swift */; };
+		C613CFE126955EBF0061DC49 /* Icon-3-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */; };
+		C613CFE226955EBF0061DC49 /* Icon-1-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */; };
+		C613CFE326955EBF0061DC49 /* Icon-2-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */; };
+		C613CFE426955EBF0061DC49 /* Icon-2-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */; };
+		C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */; };
+		C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */; };
 		C630BDD3268C19290066D8C3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDD2268C19290066D8C3 /* Activity.swift */; };
 		C630BDD8268C224D0066D8C3 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDD7268C224D0066D8C3 /* Unit.swift */; };
 		C630BDF2268C2A4A0066D8C3 /* UnitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDF1268C2A4A0066D8C3 /* UnitHelper.swift */; };
@@ -24,8 +31,8 @@
 		C6667CE5268F8B7E00991913 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE4268F8B7E00991913 /* MainView.swift */; };
 		C6667CE7268FC35700991913 /* NotificationHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE6268FC35600991913 /* NotificationHelperTests.swift */; };
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
-		C6B18F43268D46AC003A5BAF /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6B18F41268D46AC003A5BAF /* Gilroy-Medium.ttf */; };
-		C6B18F44268D46AC003A5BAF /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6B18F42268D46AC003A5BAF /* Gilroy-ExtraBold.otf */; };
+		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
+		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +46,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C613CFCC269559C70061DC49 /* EmailHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailHelper.swift; sourceTree = "<group>"; };
+		C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@3x.png"; sourceTree = "<group>"; };
+		C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@3x.png"; sourceTree = "<group>"; };
+		C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2-@2x.png"; sourceTree = "<group>"; };
+		C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2-@3x.png"; sourceTree = "<group>"; };
+		C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@2x.png"; sourceTree = "<group>"; };
+		C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@2x.png"; sourceTree = "<group>"; };
 		C630BDD2268C19290066D8C3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C630BDD7268C224D0066D8C3 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		C630BDF1268C2A4A0066D8C3 /* UnitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitHelper.swift; sourceTree = "<group>"; };
@@ -61,8 +75,8 @@
 		C6667CE4268F8B7E00991913 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C6667CE6268FC35600991913 /* NotificationHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelperTests.swift; sourceTree = "<group>"; };
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
-		C6B18F41268D46AC003A5BAF /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
-		C6B18F42268D46AC003A5BAF /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
+		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +97,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C613CFCE26955C3D0061DC49 /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppIcons;
+			sourceTree = "<group>";
+		};
 		C630BDD9268C226A0066D8C3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +113,7 @@
 				C6667CD8268EAAF500991913 /* NotificationHelper.swift */,
 				C6667CDA268EB2D000991913 /* LocalDataHelper.swift */,
 				C6667D2D2690FB5D00991913 /* UserPrefs.swift */,
+				C613CFCC269559C70061DC49 /* EmailHelper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -153,6 +175,13 @@
 		C65A01FC26870098007A5B2F /* Sporadic */ = {
 			isa = PBXGroup;
 			children = (
+				C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */,
+				C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */,
+				C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */,
+				C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */,
+				C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */,
+				C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */,
+				C613CFCE26955C3D0061DC49 /* AppIcons */,
 				C6B18F40268D4698003A5BAF /* Fonts */,
 				C630BDDC268C228B0066D8C3 /* Views */,
 				C630BDDB268C22840066D8C3 /* ViewModels */,
@@ -178,8 +207,8 @@
 		C6B18F40268D4698003A5BAF /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				C6B18F42268D46AC003A5BAF /* Gilroy-ExtraBold.otf */,
-				C6B18F41268D46AC003A5BAF /* Gilroy-Medium.ttf */,
+				C6667D302691321100991913 /* Gilroy-ExtraBold.otf */,
+				C6667D2F2691321100991913 /* Gilroy-Medium.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -272,11 +301,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613CFE326955EBF0061DC49 /* Icon-2-@2x.png in Resources */,
 				C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */,
-				C6B18F43268D46AC003A5BAF /* Gilroy-Medium.ttf in Resources */,
-				C6B18F44268D46AC003A5BAF /* Gilroy-ExtraBold.otf in Resources */,
+				C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */,
+				C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */,
+				C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */,
 				C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */,
+				C613CFE426955EBF0061DC49 /* Icon-2-@3x.png in Resources */,
+				C613CFE126955EBF0061DC49 /* Icon-3-@3x.png in Resources */,
+				C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */,
 				C65A020226870099007A5B2F /* Assets.xcassets in Resources */,
+				C613CFE226955EBF0061DC49 /* Icon-1-@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +335,7 @@
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
 				C630BDD3268C19290066D8C3 /* Activity.swift in Sources */,
 				C630BDF2268C2A4A0066D8C3 /* UnitHelper.swift in Sources */,
+				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C630BDFC268D00BC0066D8C3 /* ActivityViewModel.swift in Sources */,

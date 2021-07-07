@@ -11,7 +11,7 @@ enum UserPrefs: String, Codable {
     case DaysPerWeek
     case DeliveryDate
     case Appearance
-    case UseMetricUnits
+    case Measurement
 }
 
 extension Date: RawRepresentable {

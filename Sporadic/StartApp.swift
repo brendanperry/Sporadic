@@ -11,7 +11,17 @@ import UserNotifications
 @main
 struct StartApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-        
+    
+    init() {
+        let fontFamilyNames = UIFont.familyNames
+
+        for familyName in fontFamilyNames {
+            print("Font Family Name = [\(familyName)]")
+            let names = UIFont.fontNames(forFamilyName: familyName)
+            print("Font Names = [\(names)]")
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             MainView()
