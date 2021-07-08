@@ -19,7 +19,7 @@ class NotificationHelper {
         
         center.removeAllPendingNotificationRequests()
         
-        let deliveryDate = localData.getDate(key: UserPrefs.DeliveryDate.rawValue)
+        let deliveryDate = localData.getDate(key: UserPrefs.DeliveryTime.rawValue)
         let deliveryDateComponents = getComponentsFromDate(deliveryDate)
         
         let todayComponents = getCurrentDate(hour: deliveryDateComponents.hour!, minutes: deliveryDateComponents.minute!)

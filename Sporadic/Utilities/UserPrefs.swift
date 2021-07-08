@@ -9,7 +9,7 @@ import Foundation
 
 enum UserPrefs: String, Codable {
     case DaysPerWeek
-    case DeliveryDate
+    case DeliveryTime
     case Appearance
     case Measurement
 }

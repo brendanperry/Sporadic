@@ -6,197 +6,162 @@
 //
 
 import SwiftUI
-import MessageUI
 
 struct SettingsPage: View {
-    @State var a = "a"
-    @State var expand = false
-    
     @AppStorage(UserPrefs.Measurement.rawValue)
     var measurement = "Imperial"
     
     @AppStorage(UserPrefs.Appearance.rawValue)
     var appTheme = "System"
     
-    @State private var isSyncDataPresented = false
+    @AppStorage(UserPrefs.DaysPerWeek.rawValue)
+    var days = 3
     
-    //let emailHelper = EmailHelper()
+    @AppStorage(UserPrefs.DeliveryTime.rawValue)
+    var time = Date()
     
+    let measurementOptions = ["Imperial", "Metric"]
+    let appThemeOptions = ["System", "Light", "Dark"]
+            
     var body: some View {
         ZStack {
             Image("BackgroundImage")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             ScrollView(.vertical, showsIndicators: false, content: {
-                VStack {
+                VStack(spacing: 20) {
                     Text("Settings")
                         .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
                         .foregroundColor(Color("LooksLikeBlack"))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding([.leading, .top])
-                        .padding(.bottom, 10)
-                    DaysAndTime()
-                    VStack (spacing: 25) {
-                        HStack {
-                            Image("Measurement")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .padding(.horizontal, 5)
-                            Text("Measurement")
-                                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                                .foregroundColor(Color("LooksLikeBlack"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(5)
-                            OptionPicker(title: "Measurement System", options: ["Imperial", "Metric"], selection: $measurement)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
-                        .background(Color("ActivityBackgroundColor"))
-                        .cornerRadius(15)
-                        HStack {
-                            Image("AppTheme")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .padding(.horizontal, 5)
-                            Text("App Theme")
-                                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                                .foregroundColor(Color("LooksLikeBlack"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(5)
-                            OptionPicker(title: "Sync Data", options: ["System", "Light", "Dark"], selection: $appTheme)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
-                        .background(Color("ActivityBackgroundColor"))
-                        .cornerRadius(15)
-                        HStack {
-                            Image("Syncing")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .padding(.horizontal, 5)
-                            Text("Sync Data")
-                                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                                .foregroundColor(Color("LooksLikeBlack"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(5)
-                            Button(action: {
-                                isSyncDataPresented.toggle()
-                            }, label: {
-                                Text("Sync")
-                                    .frame(width: 60)
-                                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                                    .foregroundColor(Color("SettingButtonTextColor"))
-                                    .padding(12)
-                                    .background(Color("NiceGray"))
-                                    .cornerRadius(10)
-                            })
-                            .fullScreenCover(isPresented: $isSyncDataPresented, content: FullScreenSyncData.init)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
-                        .background(Color("ActivityBackgroundColor"))
-                        .cornerRadius(15)
-                        AppIcons()
-                        HStack {
-                            Image("Support")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .padding(.horizontal, 5)
-                            Text("Contact Us")
-                                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                                .foregroundColor(Color("LooksLikeBlack"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(5)
-                            Button("Contact") {
-                                let email = "brendan@brendanperry.me"
-                                if let url = URL(string: "mailto:\(email)") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }
-                            .frame(width: 60)
-                            .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                            .foregroundColor(Color("SettingButtonTextColor"))
-                            .padding(12)
-                            .background(Color("NiceGray"))
-                            .cornerRadius(10)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
-                        .background(Color("ActivityBackgroundColor"))
-                        .cornerRadius(15)
-                    }
-                    .padding()
-                    Button(action: {
-                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                            if success {
-                                print("All set!")
-                            } else if let error = error {
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }, label: {
-                        Text("Request Notification Access")
-                    })
+                    DaysAndTime(days: $days, time: $time)
+                    RectangleWidget(image: "Measurement", text: "Measurement", actionText: measurement, ActionView: AnyView(OptionPicker(title: "Measurement", options: measurementOptions, selection: $measurement)))
+                    RectangleWidget(image: "AppTheme", text: "App Theme", actionText: appTheme, ActionView: AnyView(OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
+                    RectangleWidget(image: "Syncing", text: "Sync Data", actionText: "Sync", ActionView: AnyView(SyncButton()))
+                    AppIcons()
+                    RectangleWidget(image: "Support", text: "Contact Us", actionText: "Contact", ActionView: AnyView(ContactButton()))
+                    NotificationButton()
                 }
+                .padding()
             })
-            .padding()
+            .padding(.top)
         }
     }
 }
 
-struct DaysAndTime: View {
-    @AppStorage(UserPrefs.DaysPerWeek.rawValue)
-    var daysPerWeek = 3
+struct NotificationButton: View {
+    var body: some View {
+        Button(action: {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                if success {
+                    print("All set!")
+                } else if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
+        }, label: {
+            Text("Request Notification Access")
+        })
+    }
+}
+
+struct ContactButton: View {
+    var body: some View {
+        Button("Contact") {
+            let email = "contact@brendanperry.me"
+            if let url = URL(string: "mailto:\(email)") {
+                UIApplication.shared.open(url)
+            }
+        }
+        .withSettingsButtonStyle()
+    }
+}
+
+struct SyncButton: View {
+    @State private var isSyncDataPresented = false
+
+    var body: some View {
+        Button("Sync") {
+            isSyncDataPresented.toggle()
+        }
+        .withSettingsButtonStyle()
+        .fullScreenCover(isPresented: $isSyncDataPresented, content: FullScreenSyncData.init)
+    }
+}
+
+struct RectangleWidget: View {
+    let image: String
+    let text: String
+    let actionText: String
+    let ActionView: AnyView
     
-    @AppStorage(UserPrefs.DeliveryDate.rawValue)
-    var deliveryDate = Date()
+    var body: some View {
+        HStack {
+            Image(image)
+                .resizable()
+                .frame(width: 30, height: 30)
+                .padding(.horizontal, 5)
+            Text(text)
+                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
+                .foregroundColor(Color("LooksLikeBlack"))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(5)
+            ActionView
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding()
+        .background(Color("ActivityBackgroundColor"))
+        .cornerRadius(15)
+    }
+}
+
+struct DaysAndTime: View {
+    @Binding var days: Int
+    @Binding var time: Date
     
     @State var isPresented = false
     
     var body: some View {
         HStack (spacing: 25) {
-            VStack {
-                Text("Weekly")
-                    .font(Font.custom("Gilroy", size: 18, relativeTo: .title2))
-                    .foregroundColor(Color("NiceFullGray"))
-                Text("Notifications")
-                    .font(Font.custom("Gilroy", size: 18, relativeTo: .title2))
-                    .foregroundColor(Color("NiceFullGray"))
-                Text("\(daysPerWeek)x")
-                    .font(Font.custom("Gilroy", size: 34, relativeTo: .title))
-                    .foregroundColor(Color("LooksLikeBlack"))
-                    .onTapGesture {
+            Group {
+                VStack {
+                    Text("Weekly\nNotifications")
+                        .frame(height: 50)
+                        .multilineTextAlignment(.center)
+                        .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
+                        .foregroundColor(Color("SettingButtonTextColor"))
+                    Button("\(days)x") {
                         isPresented.toggle()
                     }
-                    .fullScreenCover(isPresented: $isPresented, content: FullScreenDaysPicker.init)
-            }
-            .frame(height: 75, alignment: .center)
-            .frame(maxWidth: .infinity)
-            .padding(15)
-            .background(Color("ActivityBackgroundColor"))
-            .cornerRadius(15)
-            VStack {
-                Text("Delivery Time")
-                    .font(Font.custom("Gilroy", size: 18, relativeTo: .title))
-                    .foregroundColor(Color("NiceFullGray"))
-                    .zIndex(1.0)
-                ZStack {
-                    DatePicker("", selection: $deliveryDate, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                        .scaleEffect(1.6)
-                    Group {
-                        Text(getTime(date: deliveryDate))
-                            .font(Font.custom("Gilroy", size: 34, relativeTo: .title)) +
-                        Text(" ") +
-                        Text(getAmPm(date: deliveryDate))
-                            .font(Font.custom("Gilroy", size: 22, relativeTo: .title))
-                    }
-                    .frame(width: 200, height: 200, alignment: .center)
-                    .background(Color("ActivityBackgroundColor"))
-                    .userInteractionDisabled()
+                    .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
+                    .foregroundColor(Color("LooksLikeBlack"))
+                    .fullScreenCover(isPresented: $isPresented, content: {
+                        FullScreenDaysPicker(days: $days)
+                    })
                 }
-                .background(Color("ActivityBackgroundColor"))
-                .padding(.top, 1)
+                VStack {
+                    Text("Delivery Time")
+                        .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
+                        .foregroundColor(Color("SettingButtonTextColor"))
+                        .zIndex(1.0)
+                    ZStack {
+                        DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
+                            .scaleEffect(1.6)
+                        Group {
+                            Text(getTime(date: time))
+                                .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
+                            Text(" ") +
+                            Text(getAmPm(date: time))
+                                .font(Font.custom("Gilroy", size: 22, relativeTo: .title2))
+                        }
+                        .frame(width: 200, height: 200, alignment: .center)
+                        .background(Color("ActivityBackgroundColor"))
+                        .userInteractionDisabled()
+                    }
+                    .background(Color("ActivityBackgroundColor"))
+                    .padding(.top, 1)
+                }
             }
             .frame(height: 75, alignment: .center)
             .frame(maxWidth: .infinity)
@@ -204,7 +169,6 @@ struct DaysAndTime: View {
             .background(Color("ActivityBackgroundColor"))
             .cornerRadius(15)
         }
-        .padding([.leading, .trailing])
     }
 }
 
@@ -222,27 +186,9 @@ struct AppIcons: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             HStack (spacing: 50) {
-                Image("Icon1")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .cornerRadius(15)
-                    .onTapGesture {
-                        UIApplication.shared.setAlternateIconName("AppIcon-1")
-                    }
-                Image("Icon2")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .cornerRadius(15)
-                    .onTapGesture {
-                        UIApplication.shared.setAlternateIconName("AppIcon-2")
-                    }
-                Image("Icon3")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .cornerRadius(15)
-                    .onTapGesture {
-                        UIApplication.shared.setAlternateIconName("AppIcon-3")
-                    }
+                AppIcon(name: "AppIcon-1")
+                AppIcon(name: "AppIcon-2")
+                AppIcon(name: "AppIcon-3")
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -250,19 +196,30 @@ struct AppIcons: View {
         .background(Color("ActivityBackgroundColor"))
         .cornerRadius(15)
     }
+    
+    struct AppIcon: View {
+        let name: String
+        
+        var body: some View {
+            Image(name)
+                .resizable()
+                .frame(width: 60, height: 60)
+                .cornerRadius(15)
+                .onTapGesture {
+                    UIApplication.shared.setAlternateIconName(name)
+                }
+        }
+    }
 }
 
 struct FullScreenSyncData: View {
-    @Environment(\.presentationMode) var presentationMode
-    
-    let steps = "*1.* Go to the Settings app on your phone.\n**2.** Select your profile at the top.\n**3.** Select iCloud.\n**4.** Turn on the toggle for Sporadic."
-
     var body: some View {
         ZStack {
             Image("BackgroundImage")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             VStack {
+                Spacer()
                 Text("It's a great idea to sync your data! This will keep your settings and stats safe even if you lose your phone.")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .body))
@@ -277,32 +234,13 @@ struct FullScreenSyncData: View {
                 ListItem(number: "2. ", text: "Select your profile at the top.")
                 ListItem(number: "3. ", text: "Select iCloud.")
                 ListItem(number: "4. ", text: "Turn on the toggle for Sporadic.")
-                
                 Text("That's it! Now you can get back to your challenge with peace of mind.")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .body))
                     .foregroundColor(Color("LooksLikeBlack"))
                     .padding()
                 Spacer()
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color("ActivityBackgroundColor"))
-                            .frame(width: 100, height: 35)
-                            .offset(x: 5, y: 5)
-                        Text("Done")
-                            .foregroundColor(Color("BlackWhiteColor"))
-                            .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                            .frame(width: 100, height: 35)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                .stroke(lineWidth: 3)
-                                .foregroundColor(.blue)
-                            )
-                    }
-                }
+                DoneButton()
             }
             .padding()
         }
@@ -328,11 +266,8 @@ struct FullScreenSyncData: View {
 }
 
 struct FullScreenDaysPicker: View {
-    @Environment(\.presentationMode) var presentationMode
-
-    @AppStorage(UserPrefs.DaysPerWeek.rawValue)
-    var days = 3
-
+    @Binding var days: Int
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -340,41 +275,47 @@ struct FullScreenDaysPicker: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Picker(selection: $days, label: EmptyView()) {
-                    Text("1").tag(1)
-                    Text("2").tag(2)
-                    Text("3").tag(3)
-                    Text("4").tag(4)
-                    Text("5").tag(5)
-                    Text("6").tag(6)
-                    Text("7").tag(7)
+                    ForEach(1...7, id:\.self){ i in
+                        Text(String(i))
+                    }
                 }
                 .labelsHidden()
                 .onChange(of: days) { _ in
                     // schedule notifs
+                    print(days)
                 }
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color("ActivityBackgroundColor"))
-                            .frame(width: 100, height: 35)
-                            .offset(x: 5, y: 5)
-                        Text("Close")
-                            .foregroundColor(Color("BlackWhiteColor"))
-                            .bold()
-                            .frame(width: 100, height: 35)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                .stroke(lineWidth: 3)
-                                .foregroundColor(.blue)
-                            )
-                    }
-                }
+                DoneButton()
             }
         }
     }
 }
+
+struct DoneButton: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(Color("ActivityBackgroundColor"))
+                    .frame(width: 100, height: 35)
+                    .offset(x: 5, y: 5)
+                Text("Done")
+                    .foregroundColor(Color("BlackWhiteColor"))
+                    .bold()
+                    .frame(width: 100, height: 35)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                        .stroke(lineWidth: 3)
+                        .foregroundColor(.blue)
+                    )
+            }
+        }
+    }
+}
+    
 
 struct OptionPicker: View {
     var title: String
@@ -388,12 +329,7 @@ struct OptionPicker: View {
             Button(selection) {
                 showingOptions = true
             }
-            .frame(width: 60)
-            .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-            .foregroundColor(Color("SettingButtonTextColor"))
-            .padding(12)
-            .background(Color("NiceGray"))
-            .cornerRadius(10)
+            .withSettingsButtonStyle()
             .actionSheet(isPresented: $showingOptions) {
                 ActionSheet(
                     title: Text(title),
@@ -405,6 +341,17 @@ struct OptionPicker: View {
                 )
             }
         }
+    }
+}
+
+extension Button {
+    func withSettingsButtonStyle() -> some View {
+        self.frame(width: 60)
+        .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
+        .foregroundColor(Color("SettingButtonTextColor"))
+        .padding(12)
+        .background(Color("SettingsButtonBackgroundColor"))
+        .cornerRadius(10)
     }
 }
 
