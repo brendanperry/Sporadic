@@ -10,6 +10,8 @@ import Foundation
 class LocalDataHelper {
     let defaults = UserDefaults.standard
     
+    // this doesn't seem to work for different types - defaults.integer
+    
     public func get<T: Codable>(defaultValue: T, key: String) -> T {
         do {
             if let savedData = defaults.object(forKey: key) as? Data {

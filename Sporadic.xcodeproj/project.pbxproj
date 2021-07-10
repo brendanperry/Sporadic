@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613CFCC269559C70061DC49 /* EmailHelper.swift */; };
-		C613CFE126955EBF0061DC49 /* Icon-3-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */; };
-		C613CFE226955EBF0061DC49 /* Icon-1-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */; };
+		C613CFE126955EBF0061DC49 /* Icon-3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDB26955EBF0061DC49 /* Icon-3@3x.png */; };
+		C613CFE226955EBF0061DC49 /* Icon-1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDC26955EBF0061DC49 /* Icon-1@3x.png */; };
 		C613CFE326955EBF0061DC49 /* Icon-2-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */; };
-		C613CFE426955EBF0061DC49 /* Icon-2-@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */; };
+		C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */; };
 		C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */; };
 		C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */; };
 		C630BDD3268C19290066D8C3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDD2268C19290066D8C3 /* Activity.swift */; };
@@ -47,10 +47,10 @@
 
 /* Begin PBXFileReference section */
 		C613CFCC269559C70061DC49 /* EmailHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailHelper.swift; sourceTree = "<group>"; };
-		C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@3x.png"; sourceTree = "<group>"; };
-		C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@3x.png"; sourceTree = "<group>"; };
+		C613CFDB26955EBF0061DC49 /* Icon-3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3@3x.png"; sourceTree = "<group>"; };
+		C613CFDC26955EBF0061DC49 /* Icon-1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1@3x.png"; sourceTree = "<group>"; };
 		C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2-@2x.png"; sourceTree = "<group>"; };
-		C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2-@3x.png"; sourceTree = "<group>"; };
+		C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2@3x.png"; sourceTree = "<group>"; };
 		C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@2x.png"; sourceTree = "<group>"; };
 		C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@2x.png"; sourceTree = "<group>"; };
 		C630BDD2268C19290066D8C3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
@@ -97,17 +97,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C613CFCE26955C3D0061DC49 /* AppIcons */ = {
+		C613CFCE26955C3D0061DC49 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
 				C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */,
-				C613CFDC26955EBF0061DC49 /* Icon-1-@3x.png */,
+				C613CFDC26955EBF0061DC49 /* Icon-1@3x.png */,
 				C613CFDD26955EBF0061DC49 /* Icon-2-@2x.png */,
-				C613CFDE26955EBF0061DC49 /* Icon-2-@3x.png */,
+				C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */,
 				C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */,
-				C613CFDB26955EBF0061DC49 /* Icon-3-@3x.png */,
+				C613CFDB26955EBF0061DC49 /* Icon-3@3x.png */,
 			);
-			path = AppIcons;
+			path = Icons;
 			sourceTree = "<group>";
 		};
 		C630BDD9268C226A0066D8C3 /* Utilities */ = {
@@ -181,7 +181,7 @@
 		C65A01FC26870098007A5B2F /* Sporadic */ = {
 			isa = PBXGroup;
 			children = (
-				C613CFCE26955C3D0061DC49 /* AppIcons */,
+				C613CFCE26955C3D0061DC49 /* Icons */,
 				C6B18F40268D4698003A5BAF /* Fonts */,
 				C630BDDC268C228B0066D8C3 /* Views */,
 				C630BDDB268C22840066D8C3 /* ViewModels */,
@@ -307,11 +307,11 @@
 				C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */,
 				C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */,
 				C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */,
-				C613CFE426955EBF0061DC49 /* Icon-2-@3x.png in Resources */,
-				C613CFE126955EBF0061DC49 /* Icon-3-@3x.png in Resources */,
+				C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */,
+				C613CFE126955EBF0061DC49 /* Icon-3@3x.png in Resources */,
 				C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */,
 				C65A020226870099007A5B2F /* Assets.xcassets in Resources */,
-				C613CFE226955EBF0061DC49 /* Icon-1-@3x.png in Resources */,
+				C613CFE226955EBF0061DC49 /* Icon-1@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +534,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -557,7 +557,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;

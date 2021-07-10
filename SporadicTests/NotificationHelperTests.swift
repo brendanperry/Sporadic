@@ -66,9 +66,12 @@ class NotificationHelperTests: XCTestCase {
     func testScheduleAllNotifications() {
         let activity = Activity(id: 0, unit: Unit.MilesOrKilometers, name: "Run", minValue: 0, maxValue: 10, total: 10, isEnabled: true)
         let activities = [activity]
-        let userPreferences = UserPreferences(daysAWeek: 3, deliveryHour: 9, deliveryMinute: 30, appearance: 0, useMetricUnits: false)
         
-        notificationHelper.scheduleAllNotifications(activities: activities, userPreferences)
+        let defaults = UserDefaults()
+        
+        defaults.setValue(3, forKey: "DaysPerWeek")
+        
+        notificationHelper.scheduleAllNotifications(activities: activities)
         
         XCTAssertEqual(3, notificationHelper.numberOfNotificationsScheduled)
     }
@@ -76,7 +79,7 @@ class NotificationHelperTests: XCTestCase {
     class TestNotificationHelper: NotificationHelper {
         var numberOfNotificationsScheduled = 0
         
-        override func scheduleNotification(title: String, subtitle: String, dateTime: DateComponents) {
+        override func scheduleNotification(title: String, body: String, dateTime: DateComponents) {
             numberOfNotificationsScheduled += 1
         }
         

@@ -25,11 +25,15 @@ class NotificationHelper {
         let todayComponents = getCurrentDate(hour: deliveryDateComponents.hour!, minutes: deliveryDateComponents.minute!)
         let today = NSCalendar.current.date(from: todayComponents)!
         
-        // REAL VALUE - var availableDays = [0, 1, 2, 3, 4, 5, 6]
-        var availableDays = [0]
+        var availableDays = [0, 1, 2, 3, 4, 5, 6]
         
-        let daysPerWeek = Int(localData.get(defaultValue: 3.0, key: UserPrefs.DaysPerWeek.rawValue))
+        let defaults = UserDefaults()
+        
+        let daysPerWeek = defaults.integer(forKey: UserPrefs.DaysPerWeek.rawValue)
+        //let daysPerWeek = localData.get(defaultValue: 3, key: UserPrefs.DaysPerWeek.rawValue)
 
+        // we will need to schedule weeks in advance and figure out when to add new ones
+        
         for _ in 0..<daysPerWeek {
             let daysToAdd = availableDays.randomElement()
             
@@ -38,7 +42,11 @@ class NotificationHelper {
                             
                 let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
                 
-                scheduleNotification(title: "Boom Baby!", body: "You have \(activities.filter{ a in a.isEnabled}.count) active activities", dateTime: getComponentsFromDate(scheduledDate))
+                let loadedActivity = localData.get(defaultValue: Activity(), key: "0")
+                
+                let randomNum = round(Float.random(in: loadedActivity.minValue...loadedActivity.maxValue) * 100) / 100.0
+                
+                scheduleNotification(title: "Your Challenge For Today", body: "\(loadedActivity.name) for \(randomNum) miles.", dateTime: getComponentsFromDate(scheduledDate))
             }
         }
     }

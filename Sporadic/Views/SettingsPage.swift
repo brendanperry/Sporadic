@@ -116,6 +116,8 @@ struct RectangleWidget: View {
 }
 
 struct DaysAndTime: View {
+    @EnvironmentObject var activityViewModel: ActivityViewModel
+
     @Binding var days: Int
     @Binding var time: Date
     
@@ -148,6 +150,9 @@ struct DaysAndTime: View {
                         DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                             .labelsHidden()
                             .scaleEffect(1.6)
+                            .onChange(of: time) { _ in
+                                activityViewModel.scheduleNotifs()
+                            }
                         Group {
                             Text(getTime(date: time))
                                 .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
@@ -173,10 +178,16 @@ struct DaysAndTime: View {
 }
 
 struct AppIcons: View {
+    init() {
+        for s in getAlternateIconNames() {
+            print(s)
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack {
-                Image("AppIcon")
+                Image("AppLogo")
                     .resizable()
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
@@ -206,7 +217,11 @@ struct AppIcons: View {
                 .frame(width: 60, height: 60)
                 .cornerRadius(15)
                 .onTapGesture {
-                    UIApplication.shared.setAlternateIconName(name)
+                    if name == "AppIcon-1" {
+                        UIApplication.shared.setAlternateIconName(nil)
+                    } else {
+                        UIApplication.shared.setAlternateIconName(name)
+                    }
                 }
         }
     }
@@ -266,6 +281,8 @@ struct FullScreenSyncData: View {
 }
 
 struct FullScreenDaysPicker: View {
+    @EnvironmentObject var activityViewModel: ActivityViewModel
+
     @Binding var days: Int
     
     var body: some View {
@@ -281,8 +298,7 @@ struct FullScreenDaysPicker: View {
                 }
                 .labelsHidden()
                 .onChange(of: days) { _ in
-                    // schedule notifs
-                    print(days)
+                    activityViewModel.scheduleNotifs()
                 }
                 DoneButton()
             }
@@ -353,6 +369,28 @@ extension Button {
         .background(Color("SettingsButtonBackgroundColor"))
         .cornerRadius(10)
     }
+}
+
+func getAlternateIconNames() -> [String] {
+    var iconNames = ["hi"]
+    
+        if let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
+            let alternateIcons = icons["CFBundleAlternateIcons"] as? [String: Any]
+        {
+                 
+             for (_, value) in alternateIcons{
+
+                 guard let iconList = value as? Dictionary<String,Any> else{ return [""]}
+                 guard let iconFiles = iconList["CFBundleIconFiles"] as? [String]
+                     else{ return [""]}
+                     
+                 guard let icon = iconFiles.first else{ return [""]}
+                 iconNames.append(icon)
+    
+             }
+        }
+    
+    return iconNames
 }
 
 func getFormattedDate(date: Date) -> String {
