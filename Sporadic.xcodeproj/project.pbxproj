@@ -33,6 +33,7 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
 		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
+		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				C6667CDA268EB2D000991913 /* LocalDataHelper.swift */,
 				C6667D2D2690FB5D00991913 /* UserPrefs.swift */,
 				C613CFCC269559C70061DC49 /* EmailHelper.swift */,
+				C69395B026ADC267005BAD98 /* ViewRouter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6667CDB268EB2D000991913 /* LocalDataHelper.swift in Sources */,
+				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
 				C630BDD3268C19290066D8C3 /* Activity.swift in Sources */,
 				C630BDF2268C2A4A0066D8C3 /* UnitHelper.swift in Sources */,

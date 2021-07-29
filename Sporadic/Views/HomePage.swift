@@ -22,6 +22,9 @@ struct HomePage: View {
                     Activities()
                     DeliveryTime()
                     Spacer()
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 100, height: 100, alignment: .bottom)
                 }
             })
             .padding(.top)
