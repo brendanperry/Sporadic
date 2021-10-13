@@ -8,7 +8,7 @@
 import SwiftUI
 import UserNotifications
 
-struct HomePage: View {    
+struct HomePage: View {
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -29,6 +29,7 @@ struct HomePage: View {
             })
             .padding(.top)
         }
+        .transition(.scale)
     }
 }
 
@@ -85,17 +86,24 @@ struct ChallengeButton: View {
 }
 
 struct Streak: View {
+    @AppStorage(UserPrefs.Streak.rawValue)
+    var streak = 0
+    
     var body: some View {
         VStack {
             Text(Localize.getString("CurrentRhythm"))
                 .foregroundColor(Color("SubHeadingColor"))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
-            Text("16 days!")
+            Text(self.getStreakText())
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
         }
         .padding()
+    }
+    
+    func getStreakText() -> String {
+        return streak == 1 ? "1 day" : "\(streak) days"
     }
 }
 
@@ -122,140 +130,198 @@ struct Activities: View {
 }
 
 struct DeliveryTime: View {
+    let dateHelper = DateHelper()
+    
+    @AppStorage(UserPrefs.DaysPerWeek.rawValue)
+    var days = 3
+    
+    @AppStorage(UserPrefs.DeliveryTime.rawValue)
+    var time = Date()
+    
     var body: some View {
         VStack {
             Text(Localize.getString("RandomNotificationDelivery"))
                 .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
                 .foregroundColor(Color("SubHeadingColor"))
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("3 days a week,\ndelivered at 6:00am.")
+            Text(self.getDeliveryText())
                 .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-//            Button(action: {
-//                print("edit")
-//            }) {
-//                ZStack {
-//                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-//                        .fill(Color("ActivityBackgroundColor"))
-//                        .frame(width: 100, height: 35)
-//                        .offset(x: 5, y: 5)
-//                    Text("Edit")
-//                        .foregroundColor(Color("BlackWhiteColor"))
-//                        .bold()
-//                        .frame(width: 100, height: 35)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 15)
-//                            .stroke(lineWidth: 3)
-//                            .foregroundColor(.blue)
-//                        )
-//                }
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//            }
             
         }
         .padding()
+    }
+    
+    func getDeliveryText() -> String {
+        let time = dateHelper.getTime(date: time)
+        
+        var text = "\(days)"
+        
+        if (days == 1) {
+            text += " day"
+        } else {
+            text += " days"
+        }
+        
+        text += " a week,\ndelivered at \(time)"
+        
+        return text
     }
 }
 
 struct ActivityWidget: View {
     var activity: Activity
+    
     @EnvironmentObject var activityViewModel: ActivityViewModel
     
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color("ActivityBackgroundColor"))
-                .frame(width: 170, height: 210)
-                .offset(x: 15, y: 15)
-            Button(action: {
-                
-            }, label: {
-                Image("Bike")
-            })
-            .offset(x: 50, y: -70)
-            VStack {
-                CustomSVG(name: activity.name, size: 50, tintColor: UIColor(hexaRGB: "#4146E3")!)
-                    .frame(width: 50, height: 50)
-                Text(activity.name)
-                    .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
-                    .padding(.top, -1)
-                HStack (spacing: 0) {
-                    Text("\(activity.minValue, specifier: "%.1f")-\(activity.maxValue, specifier: "%.1f")")
-                        .foregroundColor(Color("ActivityRangeColor"))
-                        .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
-                    Text("mi")
-                        .foregroundColor(Color("ActivityRangeColor"))
-                        .font(Font.custom("Gilroy", size: 13, relativeTo: .body))
-                        .frame(height: 19,alignment: .bottom)
-                }.padding(1)
+    @State var isEditing = false
+    
+    @State var selection = "1"
+    
+    @State var minValue = 0.0
+    
+    @State var maxValue = 0.0
 
-                
-                Text("You've run a total")
-                    .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("CheckGreen"))
-                Text("of 29 miles!")
-                    .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("CheckGreen"))
-                    .padding(.bottom, 12)
+    @State var isEnabled = true
+    
+    var body: some View {
+        let verticalPadding = CGFloat(!isEditing ? 15 : 35)
+        let horizontalPadding = CGFloat(!isEditing ? 25 : 50)
+        
+        let backgroundWidth = CGFloat(!isEditing ? 170 : 195)
+        let backgroundHeight = CGFloat(!isEditing ? 210 : 230)
+        let backgroundOffsetX = CGFloat(!isEditing ? 15 : 0)
+        let backgroundOffsetY = CGFloat(!isEditing ? 15 : 0)
+        
+        let buttonOffsetX = CGFloat(!isEditing ? 55 : 70)
+        let buttonOffsetY = CGFloat(!isEditing ? -65 : -90)
+        let buttonImage = !isEditing ? "pencil.circle.fill" : "xmark.circle.fill"
+        
+        ZStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color("ActivityBackgroundColor"))
+                    .frame(width: backgroundWidth, height: backgroundHeight)
+                    .offset(x: backgroundOffsetX, y: backgroundOffsetY)
+                    .transition(.scale)
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 25)
+            Button(action: {
+                withAnimation {
+                    isEditing.toggle()
+                }
+            }, label: {
+                Image(systemName: buttonImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(Color("ActivityBorderColor"))
+            })
+            .offset(x: buttonOffsetX, y: buttonOffsetY)
+            VStack {
+                header
+                if isEditing {
+                    editableMilesRange
+                } else {
+                    milesRange
+                }
+                if isEditing {
+                    isEnabledToggle
+                } else {
+                    totalMiles
+                }
+            }
+            .padding(.vertical, verticalPadding)
+            .padding(.horizontal, horizontalPadding)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                 .stroke(lineWidth: 6)
                 .foregroundColor(Color("ActivityBorderColor"))
             )
             .padding(20)
+            .transition(.scale)
         }
+    }
+    
+    private var header : some View {
+        VStack {
+            CustomSVG(name: activity.name, size: 50, tintColor: UIColor(hexaRGB: "#4146E3")!)
+                .frame(width: 50, height: 50)
+            Text(activity.name)
+                .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
+                .padding(.top, -1)
+        }
+    }
+    
+    private var totalMiles : some View {
+        VStack {
+            Text("You've run a total")
+                .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
+                .foregroundColor(Color("CheckGreen"))
+            Text("of 29 miles!")
+                .font(Font.custom("Gilroy", size: 14, relativeTo: .body))
+                .foregroundColor(Color("CheckGreen"))
+                .padding(.bottom, 5)
+        }
+        .transition(.opacity)
+
+    }
+    
+    private var isEnabledToggle : some View {
+        Toggle("", isOn: $isEnabled)
+            .labelsHidden()
+            .toggleStyle(SwitchToggleStyle(tint: Color("CheckGreen")))
+            .transition(.opacity)
+    }
+    
+    private var editableMilesRange : some View {
+        HStack (spacing: 1) {
+            Button("\(activity.minValue)") {
+                print("open fullscreen")
+            }
+            .frame(width: 50, height: 30, alignment: .center)
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color("FieldTextColor"))
+            .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
+            .background(Color("FieldBackgroundColor"))
+            .cornerRadius(10)
+            Text("-")
+                .foregroundColor(Color("ActivityRangeColor"))
+                .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
+            Button("\(activity.maxValue)") {
+                print("open fullscreen")
+            }
+            .frame(width: 50, height: 30, alignment: .center)
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color("FieldTextColor"))
+            .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
+            .background(Color("FieldBackgroundColor"))
+            .cornerRadius(10)
+            Text("mi")
+                .foregroundColor(Color("ActivityRangeColor"))
+                .font(Font.custom("Gilroy", size: 13, relativeTo: .body))
+                .frame(height: 19,alignment: .bottom)
+        }
+        .frame(maxWidth: .infinity)
+        .transition(.opacity)
+    }
+    
+    private var milesRange : some View {
+        HStack (spacing: 0) {
+            Text("\(activity.minValue, specifier: "%.1f")-\(activity.maxValue, specifier: "%.1f")")
+                .foregroundColor(Color("ActivityRangeColor"))
+                .font(Font.custom("Gilroy", size: 19, relativeTo: .body))
+            Text("mi")
+                .foregroundColor(Color("ActivityRangeColor"))
+                .font(Font.custom("Gilroy", size: 13, relativeTo: .body))
+                .frame(height: 19,alignment: .bottom)
+        }
+        .padding(1)
+        .transition(.opacity)
     }
 }
 
-struct Checkmark: View {
-    @EnvironmentObject var activityViewModel: ActivityViewModel
-    
-    var size: CGFloat
-    var isOn: Bool
-    //var activityId: String
-    var activity: Activity
-    
-    @AppStorage("Jello")
-    var a: Data = Data()
-    
-    var body: some View {
-        if isOn {
-            Button(action: {
-                activityViewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
-            }, label: {
-                ZStack {
-                    Circle()
-                        .stroke(lineWidth: 5)
-                        .frame(width: size, height: size)
-                        .foregroundColor(Color("CheckGreen"))
-                    Circle()
-                        .frame(width: size, height: size)
-                        .foregroundColor(Color("CheckGreen"))
-                    CustomSVG(name: "Checkmark", size: 50, tintColor: UIColor.white)
-                        .frame(width: size + 20, height: size + 20)
-                }
-            })
-        } else {
-            Button(action: {
-                activityViewModel.activityCheckmarkClicked(id: activity.id, isOn: !isOn)
-            }, label: {
-                ZStack {
-                    Circle()
-                        .stroke(lineWidth: 5)
-                        .frame(width: size, height: size)
-                        .foregroundColor(Color("CheckGreen"))
-                    CustomSVG(name: "Checkmark", size: 50, tintColor: UIColor.white.withAlphaComponent(0))
-                        .frame(width: size + 20, height: size + 20)
-                }
-            })
-        }
-    }
-}
-
+// TODO : REMOVE
 struct CustomSVG: UIViewRepresentable {
     var name: String
     var size: Int

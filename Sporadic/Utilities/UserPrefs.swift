@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum UserPrefs: String, Codable {
     case DaysPerWeek
     case DeliveryTime
     case Appearance
     case Measurement
+    case Streak
 }
 
 extension Date: RawRepresentable {

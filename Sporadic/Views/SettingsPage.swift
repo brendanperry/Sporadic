@@ -19,7 +19,7 @@ struct SettingsPage: View {
     
     @AppStorage(UserPrefs.DeliveryTime.rawValue)
     var time = Date()
-    
+        
     let measurementOptions = ["Imperial", "Metric"]
     let appThemeOptions = ["System", "Light", "Dark"]
             
@@ -41,6 +41,9 @@ struct SettingsPage: View {
                     AppIcons()
                     RectangleWidget(image: "Support", text: "Contact Us", actionText: "Contact", ActionView: AnyView(ContactButton()))
                     NotificationButton()
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 100, height: 100, alignment: .bottom)
                 }
                 .padding()
             })
@@ -116,6 +119,8 @@ struct RectangleWidget: View {
 }
 
 struct DaysAndTime: View {
+    let dateHelper = DateHelper()
+    
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
     @Binding var days: Int
@@ -132,14 +137,22 @@ struct DaysAndTime: View {
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                         .foregroundColor(Color("SettingButtonTextColor"))
-                    Button("\(days)x") {
-                        isPresented.toggle()
+                    ZStack {
+                        Picker(selection: $days, label: EmptyView()) {
+                            ForEach(1...7, id:\.self){ i in
+                                Text(String(i))
+                            }
+                        }
+                        .labelsHidden()
+                        .onChange(of: days) { _ in
+                            activityViewModel.scheduleNotifs()
+                        }
+                        Text("\(days)")
+                            .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
+                            .frame(width: 200, height: 50, alignment: .center)
+                            .background(Color("ActivityBackgroundColor"))
+                            .userInteractionDisabled()
                     }
-                    .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
-                    .foregroundColor(Color("LooksLikeBlack"))
-                    .fullScreenCover(isPresented: $isPresented, content: {
-                        FullScreenDaysPicker(days: $days)
-                    })
                 }
                 VStack {
                     Text("Delivery Time")
@@ -154,10 +167,10 @@ struct DaysAndTime: View {
                                 activityViewModel.scheduleNotifs()
                             }
                         Group {
-                            Text(getTime(date: time))
+                            Text(dateHelper.getHoursAndMinutes(date: time))
                                 .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
                             Text(" ") +
-                            Text(getAmPm(date: time))
+                            Text(dateHelper.getAmPm(date: time))
                                 .font(Font.custom("Gilroy", size: 22, relativeTo: .title2))
                         }
                         .frame(width: 200, height: 200, alignment: .center)
@@ -178,12 +191,6 @@ struct DaysAndTime: View {
 }
 
 struct AppIcons: View {
-    init() {
-        for s in getAlternateIconNames() {
-            print(s)
-        }
-    }
-    
     var body: some View {
         VStack {
             HStack {
@@ -280,32 +287,6 @@ struct FullScreenSyncData: View {
     }
 }
 
-struct FullScreenDaysPicker: View {
-    @EnvironmentObject var activityViewModel: ActivityViewModel
-
-    @Binding var days: Int
-    
-    var body: some View {
-        ZStack {
-            Image("BackgroundImage")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                Picker(selection: $days, label: EmptyView()) {
-                    ForEach(1...7, id:\.self){ i in
-                        Text(String(i))
-                    }
-                }
-                .labelsHidden()
-                .onChange(of: days) { _ in
-                    activityViewModel.scheduleNotifs()
-                }
-                DoneButton()
-            }
-        }
-    }
-}
-
 struct DoneButton: View {
     @Environment(\.presentationMode) var presentationMode
     
@@ -391,24 +372,6 @@ func getAlternateIconNames() -> [String] {
         }
     
     return iconNames
-}
-
-func getFormattedDate(date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "h:mm a"
-    return dateFormatter.string(from: date)
-}
-
-func getTime(date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "h:mm"
-    return dateFormatter.string(from: date)
-}
-
-func getAmPm(date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "a"
-    return dateFormatter.string(from: date)
 }
 
 struct NoHitTesting: ViewModifier {

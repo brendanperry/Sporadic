@@ -11,7 +11,7 @@ class ActivityViewModel: ObservableObject {
     @Published var activities = [Activity]()
     var notificationHelper = NotificationHelper()
     var localDataHelper = LocalDataHelper()
-    
+        
     init() {
         activities = self.getInitializeActivities()
         activities = self.getLoadedActivities(activities: activities)
@@ -20,11 +20,17 @@ class ActivityViewModel: ObservableObject {
     func getInitializeActivities() -> [Activity] {
         var initializedActivityList = [Activity]()
         
-        let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: Localize.getString("Run"), minValue: 0.1, maxValue: 26.2, total: 24, isEnabled: true)
+        let run = Activity(id: 0, unit: Unit.MilesOrKilometers, name: Localize.getString("Run"), minValue: 0.25, maxValue: 10, total: 24, isEnabled: true)
         let bike = Activity(id: 1, unit: Unit.MilesOrKilometers, name: Localize.getString("Bike"), minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
+        let yoga = Activity(id: 2, unit: Unit.MilesOrKilometers, name: Localize.getString("Bike"), minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
+        let meditate = Activity(id: 3, unit: Unit.MilesOrKilometers, name: Localize.getString("Bike"), minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
+        let hike = Activity(id: 4, unit: Unit.MilesOrKilometers, name: Localize.getString("Bike"), minValue: 0.1, maxValue: 50, total: 57, isEnabled: false)
         
         initializedActivityList.append(run)
         initializedActivityList.append(bike)
+        initializedActivityList.append(yoga)
+        initializedActivityList.append(meditate)
+        initializedActivityList.append(hike)
         
         return initializedActivityList
     }

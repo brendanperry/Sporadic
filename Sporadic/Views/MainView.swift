@@ -12,6 +12,9 @@ struct MainView: View {
     @StateObject var viewRouter = ViewRouter()
     @State var selectedTab = 0
     
+    @AppStorage(UserPrefs.Appearance.rawValue)
+    var appTheme = "System"
+    
     var body: some View {
         ZStack {
             Spacer()
@@ -42,34 +45,44 @@ struct MainView: View {
             .background(Color("ActivityBackgroundColor"))
             .cornerRadius(20, corners: [.topLeft, .topRight])
             .frame(maxHeight: .infinity, alignment: .bottom)
-
+            
+            if (hasSafeAreaAtBottom()) {
+                GeometryReader { geometry in
+                    VStack {
+                        Spacer()
+                        Color("ActivityBackgroundColor")
+                            .frame(
+                                width: geometry.size.width,
+                                height: geometry.safeAreaInsets.top,
+                                alignment: .center)
+                            .aspectRatio(contentMode: ContentMode.fit)
+                    }
+                }
+                .edgesIgnoringSafeArea(.bottom)
+            }
         }
         .environmentObject(activityViewModel)
-//        ZStack {
-//            TabView(selection: $selectedTab) {
-//                HomePage()
-//                    .onTapGesture {
-//                        selectedTab = 0
-//                    }
-//                    .tabItem {
-//                        Image(systemName: "house")
-//                    }
-//                    .tag(0)
-//                SettingsPage()
-//                    .onTapGesture {
-//                        selectedTab = 1
-//                    }
-//                    .tabItem {
-//                        Image(systemName: "gear")
-//                    }
-//                    .tag(1)
-//            }
-//            .onChange(of: selectedTab) { newValue in
-//                let impact = UIImpactFeedbackGenerator(style: .light)
-//                impact.impactOccurred()
-//            }
-//            .environmentObject(activityViewModel)
-//        }
+        .preferredColorScheme(self.getColorSceme())
+    }
+    
+    func hasSafeAreaAtBottom() -> Bool {
+        if #available(iOS 13.0, *), UIApplication.shared.windows[0].safeAreaInsets.bottom > 0 {
+            return true
+        }
+        
+        return false
+    }
+    
+    func getColorSceme() -> ColorScheme? {
+        if (appTheme == "Light") {
+            return .light
+        }
+        
+        if (appTheme == "Dark") {
+            return .dark
+        }
+        
+        return nil
     }
 }
 
@@ -83,7 +96,10 @@ struct TabBarIcon: View {
             .resizable()
             .frame(width: 45, height: 45, alignment: .center)
             .onTapGesture {
-                 viewRouter.currentPage = assignedPage
+                viewRouter.currentPage = assignedPage
+                
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
              }
      }
  }
