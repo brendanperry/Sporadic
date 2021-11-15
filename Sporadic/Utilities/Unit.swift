@@ -8,6 +8,6 @@
 import Foundation
 
 enum Unit: Int, Codable {
-    case MilesOrKilometers
-    case Minutes
+    case milesOrKilometers
+    case minutes
 }

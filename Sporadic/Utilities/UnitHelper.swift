@@ -10,8 +10,8 @@ import Foundation
 class UnitHelper {
     static func getUnitLongText(unit: Unit) {
     }
-    
+
     static func getUnitShortText(unit: Unit) {
-        
+
     }
 }

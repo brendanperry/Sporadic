@@ -9,7 +9,6 @@ import Foundation
 
 struct Activity: Identifiable, Codable, Equatable {
     var id: Int = 0
-    var unit: Unit = Unit.MilesOrKilometers
     var name: String = "Run"
     var minValue: Float = 1
     var maxValue: Float = 5

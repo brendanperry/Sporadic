@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,7 @@
 		C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDF9268C313B0066D8C3 /* Localize.swift */; };
 		C630BDFC268D00BC0066D8C3 /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDFB268D00BC0066D8C3 /* ActivityViewModel.swift */; };
 		C630BE0E268D2E3B0066D8C3 /* ActivityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BE0D268D2E3B0066D8C3 /* ActivityViewModelTests.swift */; };
+		C641F2F0271FAACA00D55291 /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C641F2EF271FAACA00D55291 /* Activities.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		C630BE03268D2D230066D8C3 /* SporadicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SporadicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C630BE07268D2D230066D8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C630BE0D268D2E3B0066D8C3 /* ActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModelTests.swift; sourceTree = "<group>"; };
+		C641F2EF271FAACA00D55291 /* Activities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
 		C65A01FF26870098007A5B2F /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
@@ -121,7 +123,6 @@
 				DDA86CBE80B165B2D5A06D99 /* Pods-SporadicTests.debug.xcconfig */,
 				1DAF86BFC305F0A673E58808 /* Pods-SporadicTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -177,6 +178,7 @@
 				C6667CDE268F77D600991913 /* SettingsPage.swift */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */,
+				C641F2EF271FAACA00D55291 /* Activities.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -285,6 +287,7 @@
 				C65A01F626870098007A5B2F /* Sources */,
 				C65A01F726870098007A5B2F /* Frameworks */,
 				C65A01F826870098007A5B2F /* Resources */,
+				54287299CEA4322379575568 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -362,6 +365,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		54287299CEA4322379575568 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sporadic/Pods-Sporadic-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sporadic/Pods-Sporadic-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sporadic/Pods-Sporadic-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ADD6D8003E666C56E8D5CE3E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -422,6 +442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C641F2F0271FAACA00D55291 /* Activities.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C6667CDB268EB2D000991913 /* LocalDataHelper.swift in Sources */,
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
@@ -558,7 +579,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -614,7 +635,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -636,7 +657,7 @@
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -660,7 +681,7 @@
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

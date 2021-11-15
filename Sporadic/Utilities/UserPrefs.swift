@@ -9,20 +9,20 @@ import Foundation
 import SwiftUI
 
 enum UserPrefs: String, Codable {
-    case DaysPerWeek
-    case DeliveryTime
-    case Appearance
-    case Measurement
-    case Streak
+    case daysPerWeek
+    case deliveryTime
+    case appearance
+    case measurement
+    case streak
 }
 
 extension Date: RawRepresentable {
     private static let formatter = ISO8601DateFormatter()
-    
+
     public var rawValue: String {
         Date.formatter.string(from: self)
     }
-    
+
     public init?(rawValue: String) {
         self = Date.formatter.date(from: rawValue) ?? Date()
     }

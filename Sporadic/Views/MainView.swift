@@ -11,78 +11,96 @@ struct MainView: View {
     @StateObject var activityViewModel = ActivityViewModel()
     @StateObject var viewRouter = ViewRouter()
     @State var selectedTab = 0
-    
-    @AppStorage(UserPrefs.Appearance.rawValue)
+    @State var addButtonSize = 0.0
+    @State var open = false
+
+    @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
     
+    var screenWidth = UIScreen.main.bounds.width
+    var screenHeight = UIScreen.main.bounds.height
+
     var body: some View {
-        ZStack {
-            Spacer()
-            
-            switch viewRouter.currentPage {
-            case .home:
-                HomePage()
-            case .settings:
-                SettingsPage()
-            case .tutorial:
-                Text("Tutorial")
-            }
-            
-            HStack {
-                Spacer()
-                if viewRouter.currentPage == .home {
-                    TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOn")
-                    Spacer()
-                    TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOff")
-                } else {
-                    TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOff")
-                    Spacer()
-                    TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOn")
+        GeometryReader { geometry in
+            ZStack(alignment: .trailing) {
+                switch viewRouter.currentPage {
+                case .home:
+                    HomePage()
+                case .settings:
+                    SettingsPage()
+                case .tutorial:
+                    Text("Tutorial")
                 }
-                Spacer()
-            }
-            .padding()
-            .background(Color("ActivityBackgroundColor"))
-            .cornerRadius(20, corners: [.topLeft, .topRight])
-            .frame(maxHeight: .infinity, alignment: .bottom)
-            
-            if (hasSafeAreaAtBottom()) {
-                GeometryReader { geometry in
-                    VStack {
+                
+                VStack {
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .frame(width: self.screenWidth, height: open ? self.screenHeight - geometry.safeAreaInsets.top : 0, alignment: .bottom)
+                        .animation(Animation.easeInOut(duration: 0.25), value: self.open)
+                }
+                .frame(maxHeight: .infinity, alignment: .bottom)
+
+                HStack {
+                    Spacer()
+                    if viewRouter.currentPage == .home {
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOn")
                         Spacer()
-                        Color("ActivityBackgroundColor")
-                            .frame(
-                                width: geometry.size.width,
-                                height: geometry.safeAreaInsets.top,
-                                alignment: .center)
-                            .aspectRatio(contentMode: ContentMode.fit)
+                        AddButton(open: self.$open)
+                        Spacer()
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOff")
+                    } else {
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOff")
+                        Spacer()
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOn")
                     }
+                    Spacer()
                 }
-                .edgesIgnoringSafeArea(.bottom)
+                .padding()
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .cornerRadius(20, corners: [.topLeft, .topRight])
             }
+            .environmentObject(activityViewModel)
+            .preferredColorScheme(self.getColorSceme())
         }
-        .environmentObject(activityViewModel)
-        .preferredColorScheme(self.getColorSceme())
     }
-    
-    func hasSafeAreaAtBottom() -> Bool {
-        if #available(iOS 13.0, *), UIApplication.shared.windows[0].safeAreaInsets.bottom > 0 {
-            return true
-        }
-        
-        return false
-    }
-    
+
     func getColorSceme() -> ColorScheme? {
-        if (appTheme == "Light") {
+        if appTheme == "Light" {
             return .light
         }
-        
-        if (appTheme == "Dark") {
+
+        if appTheme == "Dark" {
             return .dark
         }
-        
+
         return nil
+    }
+}
+
+struct ButtonPressAnimationStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+    }
+}
+
+struct AddButton: View {
+    @Binding var open: Bool
+    
+    var body: some View {
+        Button(action: {
+            withAnimation {
+                self.open.toggle()
+            }
+        }){
+            Image(systemName: "plus.circle.fill")
+            .resizable()
+            .frame(width: 45, height: 45, alignment: .center)
+            .foregroundColor(.blue)
+            .rotationEffect(Angle(degrees: self.open ? 45.0 : 0.0))
+        }
+        .buttonStyle(ButtonPressAnimationStyle())
+        .animation(Animation.spring(response: 0.2, dampingFraction: 0.4, blendDuration: 0.0), value: open)
     }
 }
 
@@ -90,14 +108,14 @@ struct TabBarIcon: View {
     @StateObject var viewRouter: ViewRouter
     let assignedPage: Page
     let icon: String
-     
+
      var body: some View {
         Image(icon)
             .resizable()
             .frame(width: 45, height: 45, alignment: .center)
             .onTapGesture {
                 viewRouter.currentPage = assignedPage
-                
+
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
              }
@@ -109,7 +127,11 @@ struct RoundedCorner: Shape {
     var corners: UIRectCorner = .allCorners
 
     func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius))
+
         return Path(path.cgPath)
     }
 }

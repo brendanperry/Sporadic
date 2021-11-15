@@ -8,6 +8,7 @@ target 'Sporadic' do
   # Pods for Sporadic
 
   pod 'SwiftLint'
+  pod 'Introspect'
 
   target 'SporadicTests' do
     inherit! :search_paths

@@ -9,13 +9,13 @@ import MessageUI
 import UIKit
 
 class SendEmailViewController: UIViewController, MFMailComposeViewControllerDelegate {
-    
+
     @IBAction func sendEmail(_ sender: UIButton) {
         // Modify following variables with your text / recipient
         let recipientEmail = "contact@brendanperry.me"
         let subject = "Sporadic Support Request"
         let body = "Let us know how we can help!"
-        
+
         // Show default mail composer
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
@@ -23,25 +23,30 @@ class SendEmailViewController: UIViewController, MFMailComposeViewControllerDele
             mail.setToRecipients([recipientEmail])
             mail.setSubject(subject)
             mail.setMessageBody(body, isHTML: false)
-            
+
             present(mail, animated: true)
-        
+
         // Show third party email composer if default Mail app is not present
-        } else if let emailUrl = createEmailUrl(to: recipientEmail, subject: subject, body: body) {
+        } else if let emailUrl = createEmailUrl(address: recipientEmail, subject: subject, body: body) {
             UIApplication.shared.open(emailUrl)
         }
     }
-    
-    private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
+
+    private func createEmailUrl(address: String, subject: String, body: String) -> URL? {
         let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        
-        let gmailUrl = URL(string: "googlegmail://co?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
-        let outlookUrl = URL(string: "ms-outlook://compose?to=\(to)&subject=\(subjectEncoded)")
-        let yahooMail = URL(string: "ymail://mail/compose?to=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
-        let sparkUrl = URL(string: "readdle-spark://compose?recipient=\(to)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
-        let defaultUrl = URL(string: "mailto:\(to)?subject=\(subjectEncoded)&body=\(bodyEncoded)")
-        
+
+        let gmailUrl = URL(
+            string: "googlegmail://co?to=\(address)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let outlookUrl = URL(
+            string: "ms-outlook://compose?to=\(address)&subject=\(subjectEncoded)")
+        let yahooMail = URL(
+            string: "ymail://mail/compose?to=\(address)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let sparkUrl = URL(
+            string: "readdle-spark://compose?recipient=\(address)&subject=\(subjectEncoded)&body=\(bodyEncoded)")
+        let defaultUrl = URL(
+            string: "mailto:\(address)?subject=\(subjectEncoded)&body=\(bodyEncoded)")
+
         if let gmailUrl = gmailUrl, UIApplication.shared.canOpenURL(gmailUrl) {
             return gmailUrl
         } else if let outlookUrl = outlookUrl, UIApplication.shared.canOpenURL(outlookUrl) {
@@ -51,11 +56,14 @@ class SendEmailViewController: UIViewController, MFMailComposeViewControllerDele
         } else if let sparkUrl = sparkUrl, UIApplication.shared.canOpenURL(sparkUrl) {
             return sparkUrl
         }
-        
+
         return defaultUrl
     }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+
+    func mailComposeController(
+        _ controller: MFMailComposeViewController,
+        didFinishWith result: MFMailComposeResult,
+        error: Error?) {
         controller.dismiss(animated: true)
     }
 }

@@ -15,27 +15,43 @@
 			dependencies = (
 			);
 			name = SwiftLint;
+			productName = SwiftLint;
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		158B363E084E7642280A26BCB06B1FBA /* Pods-SporadicTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 297CAD0AA34ECBE3C78A22CFF934D5F7 /* Pods-SporadicTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3C18F264C7EB96F2FE443F17F5DFE4B7 /* Pods-Sporadic-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 31CC3F3958611E8DA620CDCB362FE3FC /* Pods-Sporadic-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		536CABFCABA02DB6B92A324DADF28B24 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		9ACFBD8306AF0AA5E713D842DE988773 /* Pods-Sporadic-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9704F61B59B3CB2BFCC53A249A37F6 /* Pods-Sporadic-dummy.m */; };
-		DF753470A48BB565AC4442A8E35F2472 /* Pods-SporadicTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E82546B75B94FA2EA18922A15CC64D76 /* Pods-SporadicTests-dummy.m */; };
+		158B363E084E7642280A26BCB06B1FBA /* Pods-SporadicTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 324B471AF45E389BEE18025A8499F7CD /* Pods-SporadicTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		548387A15133D9C63B42DC43FB5E6E1D /* UIKitIntrospectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3BDBC71D68335054C295C1430AAA9DB /* UIKitIntrospectionView.swift */; };
+		570CC90B331AF79D04F17BEC10D4B403 /* Introspect-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 65417D1EA2EFA2192D3C9A26D7246747 /* Introspect-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5DFDDF6BC35A9F212CCEEA7D3597819C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		6A10452C7C1949F05ECA4C7AC8B4936E /* UIKitIntrospectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9485E796BE8826CF5321AC609F7CF5FB /* UIKitIntrospectionViewController.swift */; };
+		76B3648900CCBD35599E0D6C131E8FED /* Introspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AF4D04FF6EDD534DC28260D02A35F4 /* Introspect.swift */; };
+		7EBB7B8790D97A7F1D036A0058E4F56A /* Introspect-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 90535C4B983E7F701F491F9426DA6CA9 /* Introspect-dummy.m */; };
+		864F9DEB1F1B8C92F62917A3B1884561 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B462FD2923FAF99096EDEC2DCAAC26C3 /* ViewExtensions.swift */; };
+		B9ECB179CBEC9349C6E8604342733348 /* Pods-Sporadic-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BF33F433629958E24DFF5F52C3541961 /* Pods-Sporadic-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D220635B44CFB3BCB438590773C6401C /* Pods-Sporadic-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 956F8250B8D717BBBA1ED6271257838B /* Pods-Sporadic-dummy.m */; };
+		D56E79B314B13230C6F303C16668C965 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		DF753470A48BB565AC4442A8E35F2472 /* Pods-SporadicTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1039D6AB917A3F3B0F47757AC8D66A2E /* Pods-SporadicTests-dummy.m */; };
+		E7F4D02997FB23558D4EB355A9468399 /* AppKitIntrospectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5D6E93AF54CD2FC08F83F8D52A65BB /* AppKitIntrospectionView.swift */; };
 		E8115DB931E6A4F021041AED56E9BD07 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C6B3B5EF97BB8EED293A1FA865DBDEA1 /* PBXContainerItemProxy */ = {
+		32F2B94E18EB2ED00EE533F9FC12585C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 52B60EC2A583F24ACBB69C113F5488B9;
 			remoteInfo = SwiftLint;
 		};
-		D349E7D9EA3B66D72E4CCC9810C38E35 /* PBXContainerItemProxy */ = {
+		B60D2722E46D231D37704E2CA055EDC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97E3685499568DCCBA6C15905F707BDC;
+			remoteInfo = Introspect;
+		};
+		C53C4EB395C68FA77DE8AA0320988EE0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -45,36 +61,58 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01532E4F8EA4F79CED0B816D9F77F8B2 /* Pods-SporadicTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SporadicTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		297CAD0AA34ECBE3C78A22CFF934D5F7 /* Pods-SporadicTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SporadicTests-umbrella.h"; sourceTree = "<group>"; };
-		31CC3F3958611E8DA620CDCB362FE3FC /* Pods-Sporadic-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Sporadic-umbrella.h"; sourceTree = "<group>"; };
-		3EC0124719FE8EF5FDDD72C26F8A2F57 /* SwiftLint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftLint.debug.xcconfig; sourceTree = "<group>"; };
-		4057310DB582B5343C7BA388B06CCA44 /* Pods-SporadicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SporadicTests.release.xcconfig"; sourceTree = "<group>"; };
-		60E4E5654162DDF66499B17A611ABFBB /* Pods-Sporadic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sporadic.release.xcconfig"; sourceTree = "<group>"; };
+		079C76A514AAC3637D89AD6F005C2863 /* SwiftLint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftLint.release.xcconfig; sourceTree = "<group>"; };
+		093E0DEB4FF8DF704DA1596B53BCBF14 /* Introspect.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Introspect.release.xcconfig; sourceTree = "<group>"; };
+		1039D6AB917A3F3B0F47757AC8D66A2E /* Pods-SporadicTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SporadicTests-dummy.m"; sourceTree = "<group>"; };
+		1919F394ED16E7D0717EC84C6D0AA121 /* Pods-Sporadic-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Sporadic-Info.plist"; sourceTree = "<group>"; };
+		2E5DF6DA4E79208570C6A18E0ECEF9D4 /* Pods-SporadicTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SporadicTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		324B471AF45E389BEE18025A8499F7CD /* Pods-SporadicTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SporadicTests-umbrella.h"; sourceTree = "<group>"; };
+		330F9D7094FFF028F75DE1FD8ABF8009 /* Introspect-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Introspect-prefix.pch"; sourceTree = "<group>"; };
+		3483EFEEB6D0311CF86A53373F75FC9B /* Pods-SporadicTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SporadicTests-Info.plist"; sourceTree = "<group>"; };
+		3D15614DFD720F59362A0759B9C5F7CF /* Introspect-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Introspect-Info.plist"; sourceTree = "<group>"; };
+		4102A95C38D40929578F9DBCADB27C02 /* Pods-SporadicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SporadicTests.debug.xcconfig"; sourceTree = "<group>"; };
+		442D7C12C0DC2F32DCAF1631F147149A /* Pods-Sporadic-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Sporadic-acknowledgements.markdown"; sourceTree = "<group>"; };
+		449219E5F2A5F9E95D37428B34F985D0 /* Introspect.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Introspect.modulemap; sourceTree = "<group>"; };
+		4E4581250A271DDA6439182FE40BE408 /* Pods-Sporadic.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Sporadic.modulemap"; sourceTree = "<group>"; };
+		5EB0DA3F2F73864C9B0C1F3195311E61 /* Pods-Sporadic-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Sporadic-frameworks.sh"; sourceTree = "<group>"; };
+		6057AB2CEC33CBC3D77717121FF228EC /* Pods-Sporadic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sporadic.release.xcconfig"; sourceTree = "<group>"; };
+		65417D1EA2EFA2192D3C9A26D7246747 /* Introspect-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Introspect-umbrella.h"; sourceTree = "<group>"; };
+		69369E7246F8270EF58F013B38CC2D92 /* Pods-SporadicTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SporadicTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7EAB1DA481EDDC005A251D3A5E6BE4CD /* SwiftLint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftLint.release.xcconfig; sourceTree = "<group>"; };
-		9B085DFB16A08F526A7A9634E654611A /* Pods-SporadicTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SporadicTests-Info.plist"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A8577D69920FF27FDAA9EDE355165D05 /* Pods-SporadicTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SporadicTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		AF7C322D0A7CA8956C7586C314086BC7 /* Pods-Sporadic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sporadic.debug.xcconfig"; sourceTree = "<group>"; };
-		BA9A3B4AAD802B4AA19DED364AEBA357 /* Pods-Sporadic-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Sporadic-acknowledgements.markdown"; sourceTree = "<group>"; };
-		BAA7F8475AB330712ADD8CC9063517B8 /* Pods-Sporadic.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Sporadic.modulemap"; sourceTree = "<group>"; };
+		7511769714512D3F927DDF3F94873701 /* Pods-SporadicTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SporadicTests.modulemap"; sourceTree = "<group>"; };
+		8B5D6E93AF54CD2FC08F83F8D52A65BB /* AppKitIntrospectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppKitIntrospectionView.swift; path = Introspect/AppKitIntrospectionView.swift; sourceTree = "<group>"; };
+		90535C4B983E7F701F491F9426DA6CA9 /* Introspect-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Introspect-dummy.m"; sourceTree = "<group>"; };
+		9485E796BE8826CF5321AC609F7CF5FB /* UIKitIntrospectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIKitIntrospectionViewController.swift; path = Introspect/UIKitIntrospectionViewController.swift; sourceTree = "<group>"; };
+		956F8250B8D717BBBA1ED6271257838B /* Pods-Sporadic-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Sporadic-dummy.m"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A3BDBC71D68335054C295C1430AAA9DB /* UIKitIntrospectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIKitIntrospectionView.swift; path = Introspect/UIKitIntrospectionView.swift; sourceTree = "<group>"; };
+		B462FD2923FAF99096EDEC2DCAAC26C3 /* ViewExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewExtensions.swift; path = Introspect/ViewExtensions.swift; sourceTree = "<group>"; };
+		B4687D669A3A0F1BC9AA226D82F7D628 /* Pods-Sporadic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sporadic.debug.xcconfig"; sourceTree = "<group>"; };
+		BF33F433629958E24DFF5F52C3541961 /* Pods-Sporadic-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Sporadic-umbrella.h"; sourceTree = "<group>"; };
 		CA086DD2CF2B59658653CAD3BC785F43 /* Pods-SporadicTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-SporadicTests"; path = Pods_SporadicTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA5FDD454426863DB98CE4B562DCBE6C /* Pods-SporadicTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SporadicTests.modulemap"; sourceTree = "<group>"; };
-		D2707CA10E6F22643696C97BFFF828CC /* Pods-SporadicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SporadicTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D0A70003FD5E49B30CA83DAAFE03116B /* Introspect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Introspect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2C65C60416AC5FA1F5BF5A1C0090B7D /* Introspect.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Introspect.debug.xcconfig; sourceTree = "<group>"; };
+		D7AF4D04FF6EDD534DC28260D02A35F4 /* Introspect.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Introspect.swift; path = Introspect/Introspect.swift; sourceTree = "<group>"; };
+		DCC4F364E1C697BEEBA11B43F57716BD /* SwiftLint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftLint.debug.xcconfig; sourceTree = "<group>"; };
+		DCFEFB14FA96B750E12CD54BC7E2C360 /* Pods-SporadicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SporadicTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE2247F4FB872AAF136D6C22416F6AE5 /* Pods-Sporadic */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Sporadic"; path = Pods_Sporadic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E257DE4F5CC6EB3C0D2BAA883C9AEA05 /* Pods-Sporadic-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Sporadic-acknowledgements.plist"; sourceTree = "<group>"; };
-		E5404B076E0773A2CAFABF2298CB0A32 /* Pods-Sporadic-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Sporadic-Info.plist"; sourceTree = "<group>"; };
-		E82546B75B94FA2EA18922A15CC64D76 /* Pods-SporadicTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SporadicTests-dummy.m"; sourceTree = "<group>"; };
-		ED9704F61B59B3CB2BFCC53A249A37F6 /* Pods-Sporadic-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Sporadic-dummy.m"; sourceTree = "<group>"; };
+		EBB32C7A82A8F57AE97F1BD019356E09 /* Pods-Sporadic-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Sporadic-acknowledgements.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4F23CBE4AE4D49C29494490C836C7781 /* Frameworks */ = {
+		7E904345B4B0593AEDD2D272D441F53C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				536CABFCABA02DB6B92A324DADF28B24 /* Foundation.framework in Frameworks */,
+				5DFDDF6BC35A9F212CCEEA7D3597819C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFB858CFEF72F4C3885539C6B9FE25CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D56E79B314B13230C6F303C16668C965 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,29 +127,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2A9637395AB3C34AA99AC66C3046A20B /* Products */ = {
+		51DF510EE5DE3E10CF8A55E40B67F194 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DE2247F4FB872AAF136D6C22416F6AE5 /* Pods-Sporadic */,
-				CA086DD2CF2B59658653CAD3BC785F43 /* Pods-SporadicTests */,
+				CCFAD96910FE0E33D4D3F4D4A491289E /* Introspect */,
+				E1472B642A9445C877346DA1A8CDF692 /* SwiftLint */,
 			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		3A6A62E390A08C82C95DAAAC5FF3745F /* Pods-Sporadic */ = {
-			isa = PBXGroup;
-			children = (
-				BAA7F8475AB330712ADD8CC9063517B8 /* Pods-Sporadic.modulemap */,
-				BA9A3B4AAD802B4AA19DED364AEBA357 /* Pods-Sporadic-acknowledgements.markdown */,
-				E257DE4F5CC6EB3C0D2BAA883C9AEA05 /* Pods-Sporadic-acknowledgements.plist */,
-				ED9704F61B59B3CB2BFCC53A249A37F6 /* Pods-Sporadic-dummy.m */,
-				E5404B076E0773A2CAFABF2298CB0A32 /* Pods-Sporadic-Info.plist */,
-				31CC3F3958611E8DA620CDCB362FE3FC /* Pods-Sporadic-umbrella.h */,
-				AF7C322D0A7CA8956C7586C314086BC7 /* Pods-Sporadic.debug.xcconfig */,
-				60E4E5654162DDF66499B17A611ABFBB /* Pods-Sporadic.release.xcconfig */,
-			);
-			name = "Pods-Sporadic";
-			path = "Target Support Files/Pods-Sporadic";
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
@@ -122,47 +144,61 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		6D88428D4EC5435D194BD3871B84385C /* Targets Support Files */ = {
+		9702E5B559E4FC9C838684CB90D2D847 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				3A6A62E390A08C82C95DAAAC5FF3745F /* Pods-Sporadic */,
-				B0D420A385ECFBA8C4106A3A1CC19FDA /* Pods-SporadicTests */,
+				D942F76851667EF129CDE2BE1BD55AFC /* Pods-Sporadic */,
+				F4B48AFA4FA608E315BDBBFD622AEC33 /* Pods-SporadicTests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		7FDA596DBE0337ACDFE55A210D54EF26 /* Support Files */ = {
+		AE509D5575F6FAF35165480CF962E2B6 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				3EC0124719FE8EF5FDDD72C26F8A2F57 /* SwiftLint.debug.xcconfig */,
-				7EAB1DA481EDDC005A251D3A5E6BE4CD /* SwiftLint.release.xcconfig */,
+				DCC4F364E1C697BEEBA11B43F57716BD /* SwiftLint.debug.xcconfig */,
+				079C76A514AAC3637D89AD6F005C2863 /* SwiftLint.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/SwiftLint";
 			sourceTree = "<group>";
 		};
-		965877409E01FB3D85D85E90E6B30185 /* Pods */ = {
+		B7F7714BADFAB90FF25BA9FFC6943C8C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D96179D43A67C5D5323B0682D32C133C /* SwiftLint */,
+				D0A70003FD5E49B30CA83DAAFE03116B /* Introspect.framework */,
+				DE2247F4FB872AAF136D6C22416F6AE5 /* Pods-Sporadic */,
+				CA086DD2CF2B59658653CAD3BC785F43 /* Pods-SporadicTests */,
 			);
-			name = Pods;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		B0D420A385ECFBA8C4106A3A1CC19FDA /* Pods-SporadicTests */ = {
+		CCFAD96910FE0E33D4D3F4D4A491289E /* Introspect */ = {
 			isa = PBXGroup;
 			children = (
-				CA5FDD454426863DB98CE4B562DCBE6C /* Pods-SporadicTests.modulemap */,
-				01532E4F8EA4F79CED0B816D9F77F8B2 /* Pods-SporadicTests-acknowledgements.markdown */,
-				A8577D69920FF27FDAA9EDE355165D05 /* Pods-SporadicTests-acknowledgements.plist */,
-				E82546B75B94FA2EA18922A15CC64D76 /* Pods-SporadicTests-dummy.m */,
-				9B085DFB16A08F526A7A9634E654611A /* Pods-SporadicTests-Info.plist */,
-				297CAD0AA34ECBE3C78A22CFF934D5F7 /* Pods-SporadicTests-umbrella.h */,
-				D2707CA10E6F22643696C97BFFF828CC /* Pods-SporadicTests.debug.xcconfig */,
-				4057310DB582B5343C7BA388B06CCA44 /* Pods-SporadicTests.release.xcconfig */,
+				8B5D6E93AF54CD2FC08F83F8D52A65BB /* AppKitIntrospectionView.swift */,
+				D7AF4D04FF6EDD534DC28260D02A35F4 /* Introspect.swift */,
+				A3BDBC71D68335054C295C1430AAA9DB /* UIKitIntrospectionView.swift */,
+				9485E796BE8826CF5321AC609F7CF5FB /* UIKitIntrospectionViewController.swift */,
+				B462FD2923FAF99096EDEC2DCAAC26C3 /* ViewExtensions.swift */,
+				CD1C562A9F463A1A6F8A0A0E9C6B04FE /* Support Files */,
 			);
-			name = "Pods-SporadicTests";
-			path = "Target Support Files/Pods-SporadicTests";
+			path = Introspect;
+			sourceTree = "<group>";
+		};
+		CD1C562A9F463A1A6F8A0A0E9C6B04FE /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				449219E5F2A5F9E95D37428B34F985D0 /* Introspect.modulemap */,
+				90535C4B983E7F701F491F9426DA6CA9 /* Introspect-dummy.m */,
+				3D15614DFD720F59362A0759B9C5F7CF /* Introspect-Info.plist */,
+				330F9D7094FFF028F75DE1FD8ABF8009 /* Introspect-prefix.pch */,
+				65417D1EA2EFA2192D3C9A26D7246747 /* Introspect-umbrella.h */,
+				D2C65C60416AC5FA1F5BF5A1C0090B7D /* Introspect.debug.xcconfig */,
+				093E0DEB4FF8DF704DA1596B53BCBF14 /* Introspect.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Introspect";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -170,9 +206,9 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				965877409E01FB3D85D85E90E6B30185 /* Pods */,
-				2A9637395AB3C34AA99AC66C3046A20B /* Products */,
-				6D88428D4EC5435D194BD3871B84385C /* Targets Support Files */,
+				51DF510EE5DE3E10CF8A55E40B67F194 /* Pods */,
+				B7F7714BADFAB90FF25BA9FFC6943C8C /* Products */,
+				9702E5B559E4FC9C838684CB90D2D847 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -184,23 +220,63 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D96179D43A67C5D5323B0682D32C133C /* SwiftLint */ = {
+		D942F76851667EF129CDE2BE1BD55AFC /* Pods-Sporadic */ = {
 			isa = PBXGroup;
 			children = (
-				7FDA596DBE0337ACDFE55A210D54EF26 /* Support Files */,
+				4E4581250A271DDA6439182FE40BE408 /* Pods-Sporadic.modulemap */,
+				442D7C12C0DC2F32DCAF1631F147149A /* Pods-Sporadic-acknowledgements.markdown */,
+				EBB32C7A82A8F57AE97F1BD019356E09 /* Pods-Sporadic-acknowledgements.plist */,
+				956F8250B8D717BBBA1ED6271257838B /* Pods-Sporadic-dummy.m */,
+				5EB0DA3F2F73864C9B0C1F3195311E61 /* Pods-Sporadic-frameworks.sh */,
+				1919F394ED16E7D0717EC84C6D0AA121 /* Pods-Sporadic-Info.plist */,
+				BF33F433629958E24DFF5F52C3541961 /* Pods-Sporadic-umbrella.h */,
+				B4687D669A3A0F1BC9AA226D82F7D628 /* Pods-Sporadic.debug.xcconfig */,
+				6057AB2CEC33CBC3D77717121FF228EC /* Pods-Sporadic.release.xcconfig */,
 			);
-			name = SwiftLint;
+			name = "Pods-Sporadic";
+			path = "Target Support Files/Pods-Sporadic";
+			sourceTree = "<group>";
+		};
+		E1472B642A9445C877346DA1A8CDF692 /* SwiftLint */ = {
+			isa = PBXGroup;
+			children = (
+				AE509D5575F6FAF35165480CF962E2B6 /* Support Files */,
+			);
 			path = SwiftLint;
+			sourceTree = "<group>";
+		};
+		F4B48AFA4FA608E315BDBBFD622AEC33 /* Pods-SporadicTests */ = {
+			isa = PBXGroup;
+			children = (
+				7511769714512D3F927DDF3F94873701 /* Pods-SporadicTests.modulemap */,
+				69369E7246F8270EF58F013B38CC2D92 /* Pods-SporadicTests-acknowledgements.markdown */,
+				2E5DF6DA4E79208570C6A18E0ECEF9D4 /* Pods-SporadicTests-acknowledgements.plist */,
+				1039D6AB917A3F3B0F47757AC8D66A2E /* Pods-SporadicTests-dummy.m */,
+				3483EFEEB6D0311CF86A53373F75FC9B /* Pods-SporadicTests-Info.plist */,
+				324B471AF45E389BEE18025A8499F7CD /* Pods-SporadicTests-umbrella.h */,
+				4102A95C38D40929578F9DBCADB27C02 /* Pods-SporadicTests.debug.xcconfig */,
+				DCFEFB14FA96B750E12CD54BC7E2C360 /* Pods-SporadicTests.release.xcconfig */,
+			);
+			name = "Pods-SporadicTests";
+			path = "Target Support Files/Pods-SporadicTests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		5A5C5032D8673A9DC93D9756243AA9FD /* Headers */ = {
+		8A99009B38FD6BFFB70C8C52FC699B74 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C18F264C7EB96F2FE443F17F5DFE4B7 /* Pods-Sporadic-umbrella.h in Headers */,
+				B9ECB179CBEC9349C6E8604342733348 /* Pods-Sporadic-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAE798048E07C983DD95742428F9C4D5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				570CC90B331AF79D04F17BEC10D4B403 /* Introspect-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,26 +303,45 @@
 			buildRules = (
 			);
 			dependencies = (
-				D2906C5A6047CF2248ED58C2D64E9CF2 /* PBXTargetDependency */,
+				8448F117FE98981FBD0422F02C938838 /* PBXTargetDependency */,
 			);
 			name = "Pods-SporadicTests";
 			productName = Pods_SporadicTests;
 			productReference = CA086DD2CF2B59658653CAD3BC785F43 /* Pods-SporadicTests */;
 			productType = "com.apple.product-type.framework";
 		};
-		D64089E4A911F45ECA8C1E35B3F399B2 /* Pods-Sporadic */ = {
+		97E3685499568DCCBA6C15905F707BDC /* Introspect */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B02B57156D16E6A0BE2A9A7CF5235E25 /* Build configuration list for PBXNativeTarget "Pods-Sporadic" */;
+			buildConfigurationList = 1B4245D565E60AD5C4C309E57C32E817 /* Build configuration list for PBXNativeTarget "Introspect" */;
 			buildPhases = (
-				5A5C5032D8673A9DC93D9756243AA9FD /* Headers */,
-				71224E7E0980B41F4321A4711E90FD10 /* Sources */,
-				4F23CBE4AE4D49C29494490C836C7781 /* Frameworks */,
-				AC1CADA06E90A5898A55F3596D0FFF90 /* Resources */,
+				EAE798048E07C983DD95742428F9C4D5 /* Headers */,
+				F725BB609AF8A992324F803F361DC21C /* Sources */,
+				7E904345B4B0593AEDD2D272D441F53C /* Frameworks */,
+				C5A66D00CCBA1409A8491FC061A6BA0B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				1E32B2E8E04456D9B7BA9627A818E19E /* PBXTargetDependency */,
+			);
+			name = Introspect;
+			productName = Introspect;
+			productReference = D0A70003FD5E49B30CA83DAAFE03116B /* Introspect.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D64089E4A911F45ECA8C1E35B3F399B2 /* Pods-Sporadic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B074ABEDEB0F14115C71019AF73A022 /* Build configuration list for PBXNativeTarget "Pods-Sporadic" */;
+			buildPhases = (
+				8A99009B38FD6BFFB70C8C52FC699B74 /* Headers */,
+				1955CCF91D1DB4F8810192ED9C14975E /* Sources */,
+				BFB858CFEF72F4C3885539C6B9FE25CD /* Frameworks */,
+				EE29B5F350A3B2E77D39AF5DAB45504B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				85B982D142BF1503BCD470628AA0C2CF /* PBXTargetDependency */,
+				858E6E137F8CB57015E9E19062BB5B56 /* PBXTargetDependency */,
 			);
 			name = "Pods-Sporadic";
 			productName = Pods_Sporadic;
@@ -260,7 +355,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1300;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 9.3";
@@ -271,10 +366,11 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 2A9637395AB3C34AA99AC66C3046A20B /* Products */;
+			productRefGroup = B7F7714BADFAB90FF25BA9FFC6943C8C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				97E3685499568DCCBA6C15905F707BDC /* Introspect */,
 				D64089E4A911F45ECA8C1E35B3F399B2 /* Pods-Sporadic */,
 				96CA8DB4BEDCEEF095DEC716DE7AF34B /* Pods-SporadicTests */,
 				52B60EC2A583F24ACBB69C113F5488B9 /* SwiftLint */,
@@ -290,7 +386,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC1CADA06E90A5898A55F3596D0FFF90 /* Resources */ = {
+		C5A66D00CCBA1409A8491FC061A6BA0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE29B5F350A3B2E77D39AF5DAB45504B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -300,11 +403,11 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		71224E7E0980B41F4321A4711E90FD10 /* Sources */ = {
+		1955CCF91D1DB4F8810192ED9C14975E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ACFBD8306AF0AA5E713D842DE988773 /* Pods-Sporadic-dummy.m in Sources */,
+				D220635B44CFB3BCB438590773C6401C /* Pods-Sporadic-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,29 +419,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F725BB609AF8A992324F803F361DC21C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7F4D02997FB23558D4EB355A9468399 /* AppKitIntrospectionView.swift in Sources */,
+				76B3648900CCBD35599E0D6C131E8FED /* Introspect.swift in Sources */,
+				7EBB7B8790D97A7F1D036A0058E4F56A /* Introspect-dummy.m in Sources */,
+				548387A15133D9C63B42DC43FB5E6E1D /* UIKitIntrospectionView.swift in Sources */,
+				6A10452C7C1949F05ECA4C7AC8B4936E /* UIKitIntrospectionViewController.swift in Sources */,
+				864F9DEB1F1B8C92F62917A3B1884561 /* ViewExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1E32B2E8E04456D9B7BA9627A818E19E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SwiftLint;
-			target = 52B60EC2A583F24ACBB69C113F5488B9 /* SwiftLint */;
-			targetProxy = C6B3B5EF97BB8EED293A1FA865DBDEA1 /* PBXContainerItemProxy */;
-		};
-		D2906C5A6047CF2248ED58C2D64E9CF2 /* PBXTargetDependency */ = {
+		8448F117FE98981FBD0422F02C938838 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-Sporadic";
 			target = D64089E4A911F45ECA8C1E35B3F399B2 /* Pods-Sporadic */;
-			targetProxy = D349E7D9EA3B66D72E4CCC9810C38E35 /* PBXContainerItemProxy */;
+			targetProxy = C53C4EB395C68FA77DE8AA0320988EE0 /* PBXContainerItemProxy */;
+		};
+		858E6E137F8CB57015E9E19062BB5B56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftLint;
+			target = 52B60EC2A583F24ACBB69C113F5488B9 /* SwiftLint */;
+			targetProxy = 32F2B94E18EB2ED00EE533F9FC12585C /* PBXContainerItemProxy */;
+		};
+		85B982D142BF1503BCD470628AA0C2CF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Introspect;
+			target = 97E3685499568DCCBA6C15905F707BDC /* Introspect */;
+			targetProxy = B60D2722E46D231D37704E2CA055EDC1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		255ACE17F7C449D894BE0194B306BFE4 /* Debug */ = {
+		004EB582ADE887F0060D7D44E5FB1B8E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF7C322D0A7CA8956C7586C314086BC7 /* Pods-Sporadic.debug.xcconfig */;
+			baseConfigurationReference = 093E0DEB4FF8DF704DA1596B53BCBF14 /* Introspect.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -348,28 +469,28 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/Introspect/Introspect-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Introspect/Introspect-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				MODULEMAP_FILE = "Target Support Files/Introspect/Introspect.modulemap";
+				PRODUCT_MODULE_NAME = Introspect;
+				PRODUCT_NAME = Introspect;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		4BC7450F9457737EE3E637BA155B56F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -437,47 +558,9 @@
 			};
 			name = Debug;
 		};
-		65594240BC5C6E3C50F44CE0A53044B7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60E4E5654162DDF66499B17A611ABFBB /* Pods-Sporadic.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		7E9E25B279DED1CEF7A727226FDA7D7C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4057310DB582B5343C7BA388B06CCA44 /* Pods-SporadicTests.release.xcconfig */;
+			baseConfigurationReference = DCFEFB14FA96B750E12CD54BC7E2C360 /* Pods-SporadicTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -577,7 +660,7 @@
 		};
 		8DACEDC6D83BA86A73678C23F3C03DAF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2707CA10E6F22643696C97BFFF828CC /* Pods-SporadicTests.debug.xcconfig */;
+			baseConfigurationReference = 4102A95C38D40929578F9DBCADB27C02 /* Pods-SporadicTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -612,13 +695,86 @@
 			};
 			name = Debug;
 		};
+		A00449D9EDAF328EB5DEB78EA436AECB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6057AB2CEC33CBC3D77717121FF228EC /* Pods-Sporadic.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		ACB2C331B367FD90DC4853C6C6760CA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2C65C60416AC5FA1F5BF5A1C0090B7D /* Introspect.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Introspect/Introspect-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Introspect/Introspect-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Introspect/Introspect.modulemap";
+				PRODUCT_MODULE_NAME = Introspect;
+				PRODUCT_NAME = Introspect;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		AD81E62ACCB0B7A923FC8AA288F9921E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7EAB1DA481EDDC005A251D3A5E6BE4CD /* SwiftLint.release.xcconfig */;
+			baseConfigurationReference = 079C76A514AAC3637D89AD6F005C2863 /* SwiftLint.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -629,13 +785,50 @@
 			};
 			name = Release;
 		};
+		B7D7FAAF2EA052B861C6A216FE8697CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4687D669A3A0F1BC9AA226D82F7D628 /* Pods-Sporadic.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Sporadic/Pods-Sporadic.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		EADD1F50ABC8096A0D6CB18822BB4EE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3EC0124719FE8EF5FDDD72C26F8A2F57 /* SwiftLint.debug.xcconfig */;
+			baseConfigurationReference = DCC4F364E1C697BEEBA11B43F57716BD /* SwiftLint.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -648,6 +841,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1B4245D565E60AD5C4C309E57C32E817 /* Build configuration list for PBXNativeTarget "Introspect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB2C331B367FD90DC4853C6C6760CA1 /* Debug */,
+				004EB582ADE887F0060D7D44E5FB1B8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B074ABEDEB0F14115C71019AF73A022 /* Build configuration list for PBXNativeTarget "Pods-Sporadic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7D7FAAF2EA052B861C6A216FE8697CB /* Debug */,
+				A00449D9EDAF328EB5DEB78EA436AECB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -662,15 +873,6 @@
 			buildConfigurations = (
 				EADD1F50ABC8096A0D6CB18822BB4EE4 /* Debug */,
 				AD81E62ACCB0B7A923FC8AA288F9921E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B02B57156D16E6A0BE2A9A7CF5235E25 /* Build configuration list for PBXNativeTarget "Pods-Sporadic" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				255ACE17F7C449D894BE0194B306BFE4 /* Debug */,
-				65594240BC5C6E3C50F44CE0A53044B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -10,16 +10,30 @@ import SwiftUI
 struct RangeSliderPage: View {
     @AppStorage ("testLeft8")
     var left = -10.0
-    
+
     @AppStorage ("testRight8")
     var right = 10.0
-    
+
     var body: some View {
         VStack {
             Text("Left Value: \(self.left.removeZerosFromEnd())")
             Text("Right Value: \(self.right.removeZerosFromEnd())")
-            
-            RangeSlider(lineHeight: 3, lineWidth: 250, lineCornerRadius: 10, circleWidth: 15, circleShadowRadius: 1, roundToNearest: 0.5, minRange: 2, minValue: -10, maxValue: 10, lineColorInRange: .blue, lineColorOutOfRange: Color(UIColor.lightGray), circleColor: .white, leftValue: $left, rightValue: $right)
+
+            RangeSlider(
+                lineHeight: 3,
+                lineWidth: 250,
+                lineCornerRadius: 10,
+                circleWidth: 15,
+                circleShadowRadius: 1,
+                roundToNearest: 0.5,
+                minRange: 2,
+                minValue: -10,
+                maxValue: 10,
+                lineColorInRange: .blue,
+                lineColorOutOfRange: Color(UIColor.lightGray),
+                circleColor: .white,
+                leftValue: $left,
+                rightValue: $right)
         }
     }
 }
@@ -39,21 +53,21 @@ struct RangeSlider: View {
     let lineWidth: Double
     let lineCornerRadius: Double
     let circleWidth: Double
-    let circleShadowRadius : Double
+    let circleShadowRadius: Double
     let roundToNearest: Double
     let minRange: Double
     let minValue: Double
     let maxValue: Double
-    let lineColorInRange : Color
-    let lineColorOutOfRange : Color
-    let circleColor : Color
-    
-    @Binding var leftValue : Double
-    @Binding var rightValue : Double
-    
-    @State var leftSliderPosition : Double
-    @State var rightSliderPosition : Double
-    
+    let lineColorInRange: Color
+    let lineColorOutOfRange: Color
+    let circleColor: Color
+
+    @Binding var leftValue: Double
+    @Binding var rightValue: Double
+
+    @State var leftSliderPosition: Double
+    @State var rightSliderPosition: Double
+
     init(lineHeight: Double,
          lineWidth: Double,
          lineCornerRadius: Double,
@@ -82,11 +96,11 @@ struct RangeSlider: View {
         self.lineColorInRange = lineColorInRange
         self.lineColorOutOfRange = lineColorOutOfRange
         self.circleColor = circleColor
-        
+
         self.leftSliderPosition = (leftValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
         self.rightSliderPosition = (rightValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
     }
-    
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -94,8 +108,13 @@ struct RangeSlider: View {
                     .frame(width: self.lineWidth, height: self.lineHeight, alignment: .center)
                     .foregroundColor(self.lineColorOutOfRange)
                 RoundedRectangle(cornerSize: CGSize(width: self.lineCornerRadius, height: self.lineCornerRadius))
-                    .frame(width: self.rightSliderPosition - self.leftSliderPosition, height: self.lineHeight, alignment: .center)
-                    .position(x: (self.rightSliderPosition - self.leftSliderPosition) / 2 + leftSliderPosition, y: geo.frame(in: .local).midY)
+                    .frame(
+                        width: self.rightSliderPosition - self.leftSliderPosition,
+                        height: self.lineHeight,
+                        alignment: .center)
+                    .position(
+                        x: (self.rightSliderPosition - self.leftSliderPosition) / 2 + leftSliderPosition,
+                        y: geo.frame(in: .local).midY)
                     .foregroundColor(self.lineColorInRange)
                 Circle()
                     .frame(width: self.circleWidth, height: self.circleWidth, alignment: .center)
@@ -113,7 +132,7 @@ struct RangeSlider: View {
         }
         .frame(width: self.lineWidth, height: self.circleWidth, alignment: .center)
     }
-    
+
     var dragLeftSlider: some Gesture {
         DragGesture()
             .onChanged { value in
@@ -124,16 +143,16 @@ struct RangeSlider: View {
                 } else {
                     self.leftSliderPosition = self.rightSliderPosition - (minRange * (self.lineWidth / (self.maxValue - self.minValue)))
                 }
-                
+
                 let newValue = round((self.leftSliderPosition / self.lineWidth) * (self.maxValue - self.minValue) + self.minValue, toNearest: self.roundToNearest)
-                
-                if (newValue != self.leftValue) {
+
+                if newValue != self.leftValue {
                     self.leftValue = newValue
-                    self.GenerateHapticFeedback()
+                    self.generateHapticFeedback()
                 }
             }
     }
-    
+
     var dragRightSlider: some Gesture {
         DragGesture()
             .onChanged { value in
@@ -144,30 +163,24 @@ struct RangeSlider: View {
                 } else {
                     self.rightSliderPosition = self.leftSliderPosition + (minRange * (self.lineWidth / (self.maxValue - self.minValue)))
                 }
-                
+
                 let newValue = round((self.rightSliderPosition / self.lineWidth) * (self.maxValue - self.minValue) + self.minValue, toNearest: self.roundToNearest)
-                
-                if (newValue != self.rightValue) {
+
+                if newValue != self.rightValue {
                     self.rightValue = newValue
-                    self.GenerateHapticFeedback()
+                    self.generateHapticFeedback()
                 }
             }
     }
-    
-    func GenerateHapticFeedback() {
+
+    func generateHapticFeedback() {
         let impact = UIImpactFeedbackGenerator(style: .light)
         impact.impactOccurred()
     }
-    
+
     func round(_ value: Double, toNearest: Double) -> Double {
         let rounded = Darwin.round(value / toNearest) * toNearest
-        
-        return rounded == -0 ? 0 : rounded
-    }
-}
 
-struct RangeSlider_Previews: PreviewProvider {
-    static var previews: some View {
-        RangeSliderPage()
+        return rounded == -0 ? 0 : rounded
     }
 }

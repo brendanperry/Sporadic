@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct SettingsPage: View {
-    @AppStorage(UserPrefs.Measurement.rawValue)
+    @AppStorage(UserPrefs.measurement.rawValue)
     var measurement = "Imperial"
-    
-    @AppStorage(UserPrefs.Appearance.rawValue)
+
+    @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
-    
-    @AppStorage(UserPrefs.DaysPerWeek.rawValue)
+
+    @AppStorage(UserPrefs.daysPerWeek.rawValue)
     var days = 3
-    
-    @AppStorage(UserPrefs.DeliveryTime.rawValue)
+
+    @AppStorage(UserPrefs.deliveryTime.rawValue)
     var time = Date()
-        
+
     let measurementOptions = ["Imperial", "Metric"]
     let appThemeOptions = ["System", "Light", "Dark"]
-            
+
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -35,11 +35,29 @@ struct SettingsPage: View {
                         .foregroundColor(Color("LooksLikeBlack"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                     DaysAndTime(days: $days, time: $time)
-                    RectangleWidget(image: "Measurement", text: "Measurement", actionText: measurement, ActionView: AnyView(OptionPicker(title: "Measurement", options: measurementOptions, selection: $measurement)))
-                    RectangleWidget(image: "AppTheme", text: "App Theme", actionText: appTheme, ActionView: AnyView(OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
-                    RectangleWidget(image: "Syncing", text: "Sync Data", actionText: "Sync", ActionView: AnyView(SyncButton()))
+                    RectangleWidget(
+                        image: "Measurement",
+                        text: "Measurement",
+                        actionText: measurement,
+                        actionView: AnyView(
+                            OptionPicker(title: "Measurement", options: measurementOptions, selection: $measurement)))
+                    RectangleWidget(
+                        image: "AppTheme",
+                        text: "App Theme",
+                        actionText: appTheme,
+                        actionView: AnyView(
+                            OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
+                    RectangleWidget(
+                        image: "Syncing",
+                        text: "Sync Data",
+                        actionText: "Sync",
+                        actionView: AnyView(SyncButton()))
                     AppIcons()
-                    RectangleWidget(image: "Support", text: "Contact Us", actionText: "Contact", ActionView: AnyView(ContactButton()))
+                    RectangleWidget(
+                        image: "Support",
+                        text: "Contact Us",
+                        actionText: "Contact",
+                        actionView: AnyView(ContactButton()))
                     NotificationButton()
                     Rectangle()
                         .foregroundColor(.clear)
@@ -55,7 +73,9 @@ struct SettingsPage: View {
 struct NotificationButton: View {
     var body: some View {
         Button(action: {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            UNUserNotificationCenter
+                .current()
+                .requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                 if success {
                     print("All set!")
                 } else if let error = error {
@@ -96,8 +116,8 @@ struct RectangleWidget: View {
     let image: String
     let text: String
     let actionText: String
-    let ActionView: AnyView
-    
+    let actionView: AnyView
+
     var body: some View {
         HStack {
             Image(image)
@@ -109,7 +129,7 @@ struct RectangleWidget: View {
                 .foregroundColor(Color("LooksLikeBlack"))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(5)
-            ActionView
+            actionView
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding()
@@ -120,16 +140,16 @@ struct RectangleWidget: View {
 
 struct DaysAndTime: View {
     let dateHelper = DateHelper()
-    
+
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
     @Binding var days: Int
     @Binding var time: Date
-    
+
     @State var isPresented = false
-    
+
     var body: some View {
-        HStack (spacing: 25) {
+        HStack(spacing: 25) {
             Group {
                 VStack {
                     Text("Weekly\nNotifications")
@@ -139,8 +159,8 @@ struct DaysAndTime: View {
                         .foregroundColor(Color("SettingButtonTextColor"))
                     ZStack {
                         Picker(selection: $days, label: EmptyView()) {
-                            ForEach(1...7, id:\.self){ i in
-                                Text(String(i))
+                            ForEach(1...7, id: \.self) { number in
+                                Text(String(number))
                             }
                         }
                         .labelsHidden()
@@ -203,7 +223,7 @@ struct AppIcons: View {
                     .foregroundColor(Color("LooksLikeBlack"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            HStack (spacing: 50) {
+            HStack(spacing: 50) {
                 AppIcon(name: "AppIcon-1")
                 AppIcon(name: "AppIcon-2")
                 AppIcon(name: "AppIcon-3")
@@ -214,10 +234,10 @@ struct AppIcons: View {
         .background(Color("ActivityBackgroundColor"))
         .cornerRadius(15)
     }
-    
+
     struct AppIcon: View {
         let name: String
-        
+
         var body: some View {
             Image(name)
                 .resizable()
@@ -234,6 +254,7 @@ struct AppIcons: View {
     }
 }
 
+// TODO : Localize this text
 struct FullScreenSyncData: View {
     var body: some View {
         ZStack {
@@ -267,11 +288,11 @@ struct FullScreenSyncData: View {
             .padding()
         }
     }
-    
+
     struct ListItem: View {
         var number: String
         var text: String
-        
+
         var body: some View {
             Group {
                 Text(number)
@@ -289,7 +310,7 @@ struct FullScreenSyncData: View {
 
 struct DoneButton: View {
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
@@ -312,13 +333,12 @@ struct DoneButton: View {
         }
     }
 }
-    
 
 struct OptionPicker: View {
     var title: String
     var options: [String]
-    
-    @Binding var selection : String
+
+    @Binding var selection: String
     @State var showingOptions = false
 
     var body: some View {
@@ -352,28 +372,6 @@ extension Button {
     }
 }
 
-func getAlternateIconNames() -> [String] {
-    var iconNames = ["hi"]
-    
-        if let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
-            let alternateIcons = icons["CFBundleAlternateIcons"] as? [String: Any]
-        {
-                 
-             for (_, value) in alternateIcons{
-
-                 guard let iconList = value as? Dictionary<String,Any> else{ return [""]}
-                 guard let iconFiles = iconList["CFBundleIconFiles"] as? [String]
-                     else{ return [""]}
-                     
-                 guard let icon = iconFiles.first else{ return [""]}
-                 iconNames.append(icon)
-    
-             }
-        }
-    
-    return iconNames
-}
-
 struct NoHitTesting: ViewModifier {
     func body(content: Content) -> some View {
         SwiftUIWrapper { content }.allowsHitTesting(false)
@@ -396,7 +394,7 @@ struct SwiftUIWrapper<T: View>: UIViewControllerRepresentable {
 
 struct SettingsPage_Previews: PreviewProvider {
     static let activityViewModel = ActivityViewModel()
-    
+
     static var previews: some View {
         SettingsPage().preferredColorScheme(.dark).environmentObject(activityViewModel)
     }
