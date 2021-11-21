@@ -40,24 +40,33 @@ struct MainView: View {
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
 
-                HStack {
-                    Spacer()
-                    if viewRouter.currentPage == .home {
-                        TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOn")
+                ZStack {
+                    
+                    VStack {
+                        Spacer()
+                        Image("NavBar")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: self.screenWidth * 0.90, height: 65, alignment: .bottom)
+                            .padding()
+                    }
+                    .frame(maxHeight: .infinity)
+                    
+                    HStack {
+                        Spacer()
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: viewRouter.currentPage == .home ? "HomeOn" : "HomeOff")
+                            .offset(y: self.open ? 75 : 0)
                         Spacer()
                         AddButton(open: self.$open)
                         Spacer()
-                        TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOff")
-                    } else {
-                        TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: "HomeOff")
-                        Spacer()
-                        TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: "SettingsOn")
-                    }
+                        TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: viewRouter.currentPage == .home ? "SettingsOff" : "SettingsOn")
+                            .offset(y: self.open ? 75 : 0)
                     Spacer()
+                    }
+                    .padding()
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
                 }
-                .padding()
-                .frame(maxHeight: .infinity, alignment: .bottom)
-                .cornerRadius(20, corners: [.topLeft, .topRight])
             }
             .environmentObject(activityViewModel)
             .preferredColorScheme(self.getColorSceme())
@@ -93,11 +102,18 @@ struct AddButton: View {
                 self.open.toggle()
             }
         }){
-            Image(systemName: "plus.circle.fill")
-            .resizable()
-            .frame(width: 45, height: 45, alignment: .center)
-            .foregroundColor(.blue)
-            .rotationEffect(Angle(degrees: self.open ? 45.0 : 0.0))
+            ZStack {
+                Circle()
+                    .foregroundColor(.white)
+                    .frame(width: 40, height: 40, alignment: .center)
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .frame(width: 45, height: 45, alignment: .center)
+                    .foregroundColor(.blue)
+                    .rotationEffect(Angle(degrees: self.open ? 45.0 : 0.0))
+                    .scaleEffect(1.1)
+                }
+                .offset(y: -15)
         }
         .buttonStyle(ButtonPressAnimationStyle())
         .animation(Animation.spring(response: 0.2, dampingFraction: 0.4, blendDuration: 0.0), value: open)
@@ -119,6 +135,7 @@ struct TabBarIcon: View {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
              }
+            .padding(10)
      }
  }
 
