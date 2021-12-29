@@ -19,6 +19,8 @@ struct MainView: View {
     
     var screenWidth = UIScreen.main.bounds.width
     var screenHeight = UIScreen.main.bounds.height
+    
+    var textHelper = TextHelper()
 
     var body: some View {
         GeometryReader { geometry in
@@ -26,22 +28,34 @@ struct MainView: View {
                 switch viewRouter.currentPage {
                 case .home:
                     HomePage()
+                        .blur(radius: open ? 100 : 0)
                 case .settings:
                     SettingsPage()
+                        .blur(radius: open ? 100 : 0)
                 case .tutorial:
                     Text("Tutorial")
                 }
                 
                 VStack {
-                    Rectangle()
-                        .foregroundColor(.white)
-                        .frame(width: self.screenWidth, height: open ? self.screenHeight - geometry.safeAreaInsets.top : 0, alignment: .bottom)
-                        .animation(Animation.easeInOut(duration: 0.25), value: self.open)
+                    VStack {
+                        ScrollView(.vertical) {
+                            textHelper.GetTextByType(text: "Add a new activity", isCentered: false, type: .title)
+                                .padding()
+                            textHelper.GetTextByType(text: "Select a new activity to be challenged with.", isCentered: false, type: .medium)
+                                .padding()
+                            ActivitiesAdd()
+                        }
+                    }
+                    .background(
+                        Rectangle()
+                            .foregroundColor(.clear)
+                    )
+                    .frame(width: self.screenWidth, height: open ? self.screenHeight - geometry.safeAreaInsets.top : 0, alignment: .bottom)
+                    .animation(Animation.easeInOut(duration: 0.25), value: self.open)
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
 
                 ZStack {
-                    
                     VStack {
                         Spacer()
                         Image("NavBar")
@@ -49,19 +63,22 @@ struct MainView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: self.screenWidth * 0.90, height: 65, alignment: .bottom)
                             .padding()
+                            .offset(y: self.open ? 100 : 0)
                     }
                     .frame(maxHeight: .infinity)
                     
                     HStack {
                         Spacer()
                         TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: viewRouter.currentPage == .home ? "HomeOn" : "HomeOff")
-                            .offset(y: self.open ? 75 : 0)
+                            .offset(y: self.open ? 100 : 0)
+                            .disabled(open)
                         Spacer()
                         AddButton(open: self.$open)
                         Spacer()
                         TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: viewRouter.currentPage == .home ? "SettingsOff" : "SettingsOn")
-                            .offset(y: self.open ? 75 : 0)
-                    Spacer()
+                            .offset(y: self.open ? 100 : 0)
+                            .disabled(open)
+                        Spacer()
                     }
                     .padding()
                     .frame(maxHeight: .infinity, alignment: .bottom)
@@ -100,6 +117,9 @@ struct AddButton: View {
         Button(action: {
             withAnimation {
                 self.open.toggle()
+                
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
             }
         }){
             ZStack {
@@ -125,7 +145,7 @@ struct TabBarIcon: View {
     let assignedPage: Page
     let icon: String
 
-     var body: some View {
+    var body: some View {
         Image(icon)
             .resizable()
             .frame(width: 45, height: 45, alignment: .center)

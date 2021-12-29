@@ -22,6 +22,8 @@ struct SettingsPage: View {
 
     let measurementOptions = ["Imperial", "Metric"]
     let appThemeOptions = ["System", "Light", "Dark"]
+    
+    let textHelper = TextHelper()
 
     var body: some View {
         ZStack {
@@ -30,10 +32,7 @@ struct SettingsPage: View {
                 .edgesIgnoringSafeArea(.all)
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
-                    Text("Settings")
-                        .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
-                        .foregroundColor(Color("LooksLikeBlack"))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    textHelper.GetTextByType(text: "Settings", isCentered: false, type: TextType.largeTitle)
                     DaysAndTime(days: $days, time: $time)
                     RectangleWidget(
                         image: "Measurement",
@@ -117,6 +116,7 @@ struct RectangleWidget: View {
     let text: String
     let actionText: String
     let actionView: AnyView
+    let textHelper = TextHelper()
 
     var body: some View {
         HStack {
@@ -124,10 +124,7 @@ struct RectangleWidget: View {
                 .resizable()
                 .frame(width: 30, height: 30)
                 .padding(.horizontal, 5)
-            Text(text)
-                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                .foregroundColor(Color("LooksLikeBlack"))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            textHelper.GetTextByType(text: text, isCentered: false, type: TextType.body)
                 .padding(5)
             actionView
         }
@@ -211,6 +208,8 @@ struct DaysAndTime: View {
 }
 
 struct AppIcons: View {
+    var textHelper = TextHelper()
+    
     var body: some View {
         VStack {
             HStack {
@@ -218,9 +217,7 @@ struct AppIcons: View {
                     .resizable()
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
-                Text("App Icon")
-                    .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                    .foregroundColor(Color("LooksLikeBlack"))
+                textHelper.GetTextByType(text: "App Icon", isCentered: false, type: TextType.body)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: 50) {

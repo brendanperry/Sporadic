@@ -19,7 +19,7 @@ struct HomePage: View {
                     Welcome()
                     ChallengeButton()
                     Streak()
-                    Activities()
+                    ActivitiesHome()
                     Spacer()
                     Rectangle()
                         .foregroundColor(.clear)
@@ -32,16 +32,12 @@ struct HomePage: View {
 }
 
 struct Welcome: View {
+    let textHelper = TextHelper()
+    
     var body: some View {
         VStack {
-            Text(Localize.getString("WelcomeBack"))
-                .foregroundColor(Color("SubHeadingColor"))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
-            Text(Localize.getString("YourGoal"))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fixedSize(horizontal: false, vertical: true)
-                .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
+            textHelper.GetTextByType(text: Localize.getString("WelcomeBack"), isCentered: false, type: TextType.medium)
+            textHelper.GetTextByType(text: Localize.getString("YourGoal"), isCentered: false, type: TextType.largeTitle)
         }
         .padding(.horizontal)
         .padding(.top, 50)
@@ -86,16 +82,13 @@ struct ChallengeButton: View {
 struct Streak: View {
     @AppStorage(UserPrefs.streak.rawValue)
     var streak = 0
+    
+    var textHelper = TextHelper()
 
     var body: some View {
         VStack {
-            Text(Localize.getString("CurrentRhythm"))
-                .foregroundColor(Color("SubHeadingColor"))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .footnote))
-            Text(self.getStreakText())
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
+            textHelper.GetTextByType(text: Localize.getString("CurrentRhythm"), isCentered: false, type: .medium)
+            textHelper.GetTextByType(text: Localize.getString(self.getStreakText()), isCentered: false, type: .largeTitle)
         }
         .padding()
     }
