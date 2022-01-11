@@ -11,7 +11,8 @@ import SwiftUI
 struct ActivityWidgetAdd: View {
     var activity: Activity
 
-    @EnvironmentObject var activityViewModel: ActivityViewModel
+    @Binding var activityToEdit: Activity
+    @Binding var isEditing: Bool
     
     let textHelper = TextHelper()
 
@@ -42,7 +43,8 @@ struct ActivityWidgetAdd: View {
             .transition(.scale)
         }
         .onTapGesture {
-            print("GO")
+            self.activityToEdit = self.activity
+            self.isEditing = true
         }
         .padding()
     }

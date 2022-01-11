@@ -12,6 +12,9 @@ struct ActivityWidget: View {
 
     @EnvironmentObject var activityViewModel: ActivityViewModel
     
+    @Binding var activityToEdit: Activity
+    @Binding var isEditing: Bool
+    
     let textHelper = TextHelper()
 
     var body: some View {
@@ -22,7 +25,10 @@ struct ActivityWidget: View {
                 .offset(x: 10, y: 10)
             
             Button(action: {
-                print("clicked")
+                withAnimation {
+                    self.activityToEdit = self.activity
+                    self.isEditing = true
+                }
             }, label: {
                 Image(systemName: "pencil.circle.fill")
                     .resizable()

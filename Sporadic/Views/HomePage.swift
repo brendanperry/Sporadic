@@ -9,6 +9,9 @@ import SwiftUI
 import UserNotifications
 
 struct HomePage: View {
+    @Binding var activityToEdit: Activity
+    @Binding var isEditing: Bool
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -19,7 +22,7 @@ struct HomePage: View {
                     Welcome()
                     ChallengeButton()
                     Streak()
-                    ActivitiesHome()
+                    ActivitiesHome(activityToEdit: self.$activityToEdit, isEditing: self.$isEditing)
                     Spacer()
                     Rectangle()
                         .foregroundColor(.clear)

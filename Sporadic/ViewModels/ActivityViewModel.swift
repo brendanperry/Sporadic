@@ -13,7 +13,12 @@ class ActivityViewModel: ObservableObject {
     var localDataHelper = LocalDataHelper()
 
     init() {
-        activities = self.getInitializeActivities()
+        self.activities = self.getInitializeActivities()
+        
+        self.loadActivities()
+    }
+    
+    func loadActivities() {
         activities = self.getLoadedActivities(activities: activities)
     }
 
@@ -34,27 +39,13 @@ class ActivityViewModel: ObservableObject {
             isEnabled: false)
         let yoga = Activity(
             id: 2,
-            name: Localize.getString("Bike"),
-            minValue: 0.1,
-            maxValue: 50,
-            total: 57,
-            isEnabled: false)
-        let meditate = Activity(
-            id: 3,
-            name: Localize.getString("Bike"),
-            minValue: 0.1,
-            maxValue: 50,
-            total: 57,
-            isEnabled: false)
-        let hike = Activity(
-            id: 4,
-            name: Localize.getString("Bike"),
+            name: Localize.getString("Yoga"),
             minValue: 0.1,
             maxValue: 50,
             total: 57,
             isEnabled: false)
 
-        return [run, bike, yoga, meditate, hike]
+        return [run, bike, yoga]
     }
 
     func getLoadedActivities(activities: [Activity]) -> [Activity] {
@@ -73,6 +64,10 @@ class ActivityViewModel: ObservableObject {
         for activity in activities {
             _ = localDataHelper.save(data: activity, key: "\(activity.id)")
         }
+    }
+    
+    func saveActivity(activity: Activity) {
+        _ = localDataHelper.save(data: activity, key: "\(activity.id)")
     }
 
     func activityCheckmarkClicked(activityId: Int, isOn: Bool) {

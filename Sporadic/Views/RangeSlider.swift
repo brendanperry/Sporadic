@@ -18,22 +18,8 @@ struct RangeSliderPage: View {
         VStack {
             Text("Left Value: \(self.left.removeZerosFromEnd())")
             Text("Right Value: \(self.right.removeZerosFromEnd())")
-
-            RangeSlider(
-                lineHeight: 3,
-                lineWidth: 250,
-                lineCornerRadius: 10,
-                circleWidth: 15,
-                circleShadowRadius: 1,
-                roundToNearest: 0.5,
-                minRange: 2,
-                minValue: -10,
-                maxValue: 10,
-                lineColorInRange: .blue,
-                lineColorOutOfRange: Color(UIColor.lightGray),
-                circleColor: .white,
-                leftValue: $left,
-                rightValue: $right)
+            
+            RangeSlider(lineHeight: 3, lineWidth: 250, lineCornerRadius: 10, circleWidth: 15, circleShadowRadius: 1, roundToNearest: 0.5, minRange: 2, minValue: -10, maxValue: 10, circleBorder: 10, circleBorderColor: .blue, circleColor: .white, lineColorInRange: .blue, lineColorOutOfRange: Color(UIColor.lightGray), leftValue: $left, rightValue: $right)
         }
     }
 }
@@ -58,9 +44,11 @@ struct RangeSlider: View {
     let minRange: Double
     let minValue: Double
     let maxValue: Double
+    let circleBorder: Double
+    let circleBorderColor: Color
+    let circleColor: Color
     let lineColorInRange: Color
     let lineColorOutOfRange: Color
-    let circleColor: Color
 
     @Binding var leftValue: Double
     @Binding var rightValue: Double
@@ -77,9 +65,11 @@ struct RangeSlider: View {
          minRange: Double,
          minValue: Double,
          maxValue: Double,
+         circleBorder: Double,
+         circleBorderColor: Color,
+         circleColor: Color,
          lineColorInRange: Color,
          lineColorOutOfRange: Color,
-         circleColor: Color,
          leftValue: Binding<Double>,
          rightValue: Binding<Double>) {
         self.lineHeight = lineHeight
@@ -93,9 +83,11 @@ struct RangeSlider: View {
         self.maxValue = maxValue
         self._leftValue = leftValue
         self._rightValue = rightValue
+        self.circleBorder = circleBorder
+        self.circleBorderColor = circleBorderColor
+        self.circleColor = circleColor
         self.lineColorInRange = lineColorInRange
         self.lineColorOutOfRange = lineColorOutOfRange
-        self.circleColor = circleColor
 
         self.leftSliderPosition = (leftValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
         self.rightSliderPosition = (rightValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
@@ -117,16 +109,17 @@ struct RangeSlider: View {
                         y: geo.frame(in: .local).midY)
                     .foregroundColor(self.lineColorInRange)
                 Circle()
+                    .strokeBorder(self.circleBorderColor, lineWidth: self.circleBorder)
+                    .background(Circle().fill(self.circleColor).shadow(radius: self.circleShadowRadius))
                     .frame(width: self.circleWidth, height: self.circleWidth, alignment: .center)
                     .position(x: self.leftSliderPosition, y: geo.frame(in: .local).midY)
                     .foregroundColor(self.circleColor)
-                    .shadow(radius: self.circleShadowRadius)
                     .gesture(dragLeftSlider)
                 Circle()
+                    .strokeBorder(self.circleBorderColor, lineWidth: self.circleBorder)
+                    .background(Circle().fill(self.circleColor).shadow(radius: self.circleShadowRadius))
                     .frame(width: self.circleWidth, height: self.circleWidth, alignment: .center)
                     .position(x: self.rightSliderPosition, y: geo.frame(in: .local).midY)
-                    .foregroundColor(self.circleColor)
-                    .shadow(radius: self.circleShadowRadius)
                     .gesture(dragRightSlider)
             }
         }

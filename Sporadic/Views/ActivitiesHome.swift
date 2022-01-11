@@ -11,6 +11,9 @@ import Introspect
 struct ActivitiesHome: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
     
+    @Binding var activityToEdit: Activity
+    @Binding var isEditing: Bool
+    
     let textHelper = TextHelper()
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
@@ -23,7 +26,9 @@ struct ActivitiesHome: View {
             
             LazyVGrid(columns: items, alignment: .center) {
                 ForEach(Array(activityViewModel.activities.enumerated()), id: \.offset) { index, activity in
-                    ActivityWidget(activity: activity)
+                    if (activity.isEnabled) {
+                        ActivityWidget(activity: activity, activityToEdit: self.$activityToEdit, isEditing: self.$isEditing)
+                    }
                 }
             }
         }

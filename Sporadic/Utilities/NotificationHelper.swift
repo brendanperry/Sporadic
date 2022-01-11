@@ -47,7 +47,7 @@ class NotificationHelper {
 
                 let loadedActivity = localData.get(defaultValue: Activity(), key: "0")
 
-                let randomNum = round(Float.random(in: loadedActivity.minValue...loadedActivity.maxValue) * 100) / 100.0
+                let randomNum = round(Double.random(in: loadedActivity.minValue...loadedActivity.maxValue) * 100) / 100.0
 
                 scheduleNotification(
                     title: "Your Challenge For Today",

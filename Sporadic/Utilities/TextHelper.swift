@@ -9,23 +9,24 @@ import SwiftUI
 import Foundation
 
 class TextHelper {
-    func GetTextByType(text: String, isCentered: Bool, type: TextType) -> some View {
+    func GetTextByType(text: String, isCentered: Bool, type: TextType, color: Color? = nil) -> some View {
         switch(type) {
         case TextType.largeTitle:
             return AnyView(GetText(text, isCentered)
                 .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
-                .foregroundColor(Color("LooksLikeBlack")))
+                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
         case TextType.title:
             return AnyView(GetText(text, isCentered)
-                .font(Font.custom("Gilroy", size: 32, relativeTo: .title)))
+                .font(Font.custom("Gilroy", size: 32, relativeTo: .title))
+                .foregroundColor(color == nil ? Color.black : color))
         case TextType.medium:
             return AnyView(GetText(text, isCentered)
                 .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .subheadline))
-                .foregroundColor(Color("SubHeadingColor")))
+                .foregroundColor(color == nil ? Color("SubHeadingColor") : color))
         case .body:
             return AnyView(GetText(text, isCentered)
-                .font(Font.custom("Gilroy", size: 18, relativeTo: .body))
-                .foregroundColor(Color("LooksLikeBlack")))
+                .font(Font.custom("Gilroy-Medium", size: 16, relativeTo: .body))
+                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
         case .settingsEntryTitle:
             return AnyView(GetText(text, isCentered)
                 .font(Font.custom("Gilroy", size: 18, relativeTo: .title3)))

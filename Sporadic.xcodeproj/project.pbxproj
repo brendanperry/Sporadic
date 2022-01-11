@@ -28,6 +28,7 @@
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
 		C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020426870099007A5B2F /* Preview Assets.xcassets */; };
 		C6620061277BD8E3000AF577 /* ActivityWidgetAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620060277BD8E3000AF577 /* ActivityWidgetAdd.swift */; };
+		C6620063278A58D9000AF577 /* EditActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620062278A58D9000AF577 /* EditActivity.swift */; };
 		C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CD8268EAAF500991913 /* NotificationHelper.swift */; };
 		C6667CDB268EB2D000991913 /* LocalDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDA268EB2D000991913 /* LocalDataHelper.swift */; };
 		C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDE268F77D600991913 /* SettingsPage.swift */; };
@@ -84,6 +85,7 @@
 		C65A020426870099007A5B2F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C65A020626870099007A5B2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6620060277BD8E3000AF577 /* ActivityWidgetAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidgetAdd.swift; sourceTree = "<group>"; };
+		C6620062278A58D9000AF577 /* EditActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivity.swift; sourceTree = "<group>"; };
 		C6667CD8268EAAF500991913 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		C6667CDA268EB2D000991913 /* LocalDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataHelper.swift; sourceTree = "<group>"; };
 		C6667CDE268F77D600991913 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				C6BCB213276A63ED00D9677D /* ActivityWidget.swift */,
 				C6620060277BD8E3000AF577 /* ActivityWidgetAdd.swift */,
 				C6BCB215276A646D00D9677D /* ActivitiesAdd.swift */,
+				C6620062278A58D9000AF577 /* EditActivity.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
+				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
 				C630BDFC268D00BC0066D8C3 /* ActivityViewModel.swift in Sources */,
 				C630BDD8268C224D0066D8C3 /* Unit.swift in Sources */,
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
