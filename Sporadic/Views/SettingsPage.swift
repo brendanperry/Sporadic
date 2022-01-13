@@ -30,34 +30,36 @@ struct SettingsPage: View {
             Image("BackgroundImage")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
+            
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
                     textHelper.GetTextByType(text: "Settings", isCentered: false, type: TextType.largeTitle)
+                    
                     DaysAndTime(days: $days, time: $time)
+                    
                     RectangleWidget(
-                        image: "Measurement",
-                        text: "Measurement",
-                        actionText: measurement,
-                        actionView: AnyView(
-                            OptionPicker(title: "Measurement", options: measurementOptions, selection: $measurement)))
+                        image: "Notifications",
+                        text: "Notifications",
+                        actionText: "Prompt",
+                        actionView: AnyView(ContactButton()))
+                    
                     RectangleWidget(
                         image: "AppTheme",
                         text: "App Theme",
                         actionText: appTheme,
                         actionView: AnyView(
                             OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
-                    RectangleWidget(
-                        image: "Syncing",
-                        text: "Sync Data",
-                        actionText: "Sync",
-                        actionView: AnyView(SyncButton()))
+                    
                     AppIcons()
+                    
                     RectangleWidget(
                         image: "Support",
                         text: "Contact Us",
                         actionText: "Contact",
                         actionView: AnyView(ContactButton()))
+                    
                     NotificationButton()
+                    
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 100, height: 100, alignment: .bottom)
@@ -99,18 +101,6 @@ struct ContactButton: View {
     }
 }
 
-struct SyncButton: View {
-    @State private var isSyncDataPresented = false
-
-    var body: some View {
-        Button("Sync") {
-            isSyncDataPresented.toggle()
-        }
-        .withSettingsButtonStyle()
-        .fullScreenCover(isPresented: $isSyncDataPresented, content: FullScreenSyncData.init)
-    }
-}
-
 struct RectangleWidget: View {
     let image: String
     let text: String
@@ -124,8 +114,10 @@ struct RectangleWidget: View {
                 .resizable()
                 .frame(width: 30, height: 30)
                 .padding(.horizontal, 5)
+            
             textHelper.GetTextByType(text: text, isCentered: false, type: TextType.body)
                 .padding(5)
+            
             actionView
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -154,6 +146,7 @@ struct DaysAndTime: View {
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                         .foregroundColor(Color("SettingButtonTextColor"))
+                    
                     ZStack {
                         Picker(selection: $days, label: EmptyView()) {
                             ForEach(1...7, id: \.self) { number in
@@ -164,6 +157,7 @@ struct DaysAndTime: View {
                         .onChange(of: days) { _ in
                             activityViewModel.scheduleNotifs()
                         }
+                        
                         Text("\(days)")
                             .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
                             .frame(width: 200, height: 50, alignment: .center)
@@ -176,6 +170,7 @@ struct DaysAndTime: View {
                         .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                         .foregroundColor(Color("SettingButtonTextColor"))
                         .zIndex(1.0)
+                    
                     ZStack {
                         DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                             .labelsHidden()
@@ -183,6 +178,7 @@ struct DaysAndTime: View {
                             .onChange(of: time) { _ in
                                 activityViewModel.scheduleNotifs()
                             }
+                        
                         Group {
                             Text(dateHelper.getHoursAndMinutes(date: time))
                                 .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
@@ -217,9 +213,11 @@ struct AppIcons: View {
                     .resizable()
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
+                
                 textHelper.GetTextByType(text: "App Icon", isCentered: false, type: TextType.body)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            
             HStack(spacing: 50) {
                 AppIcon(name: "AppIcon-1")
                 AppIcon(name: "AppIcon-2")
@@ -251,86 +249,6 @@ struct AppIcons: View {
     }
 }
 
-// TODO : Localize this text
-struct FullScreenSyncData: View {
-    var body: some View {
-        ZStack {
-            Image("BackgroundImage")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                Spacer()
-                Text("It's a great idea to sync your data! This will keep your settings and stats safe even if you lose your phone.")
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .body))
-                    .foregroundColor(Color("LooksLikeBlack"))
-                    .padding()
-                Text("Steps:")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(Font.custom("Gilroy", size: 22, relativeTo: .title3))
-                    .foregroundColor(Color("LooksLikeBlack"))
-                    .padding()
-                ListItem(number: "1. ", text: "Go to the Settings app on your phone.")
-                ListItem(number: "2. ", text: "Select your profile at the top.")
-                ListItem(number: "3. ", text: "Select iCloud.")
-                ListItem(number: "4. ", text: "Turn on the toggle for Sporadic.")
-                Text("That's it! Now you can get back to your challenge with peace of mind.")
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .body))
-                    .foregroundColor(Color("LooksLikeBlack"))
-                    .padding()
-                Spacer()
-                DoneButton()
-            }
-            .padding()
-        }
-    }
-
-    struct ListItem: View {
-        var number: String
-        var text: String
-
-        var body: some View {
-            Group {
-                Text(number)
-                    .font(Font.custom("Gilroy", size: 18, relativeTo: .body)) +
-                Text(text)
-                    .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .title3))
-            }
-            .foregroundColor(Color("LooksLikeBlack"))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 1)
-            .padding([.bottom, .horizontal])
-        }
-    }
-}
-
-struct DoneButton: View {
-    @Environment(\.presentationMode) var presentationMode
-
-    var body: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(Color("ActivityBackgroundColor"))
-                    .frame(width: 100, height: 35)
-                    .offset(x: 5, y: 5)
-                Text("Done")
-                    .foregroundColor(Color("BlackWhiteColor"))
-                    .bold()
-                    .frame(width: 100, height: 35)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                        .stroke(lineWidth: 3)
-                        .foregroundColor(.blue)
-                    )
-            }
-        }
-    }
-}
-
 struct OptionPicker: View {
     var title: String
     var options: [String]
@@ -358,26 +276,9 @@ struct OptionPicker: View {
     }
 }
 
-extension Button {
-    func withSettingsButtonStyle() -> some View {
-        self.frame(width: 60)
-        .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-        .foregroundColor(Color("SettingButtonTextColor"))
-        .padding(12)
-        .background(Color("SettingsButtonBackgroundColor"))
-        .cornerRadius(10)
-    }
-}
-
 struct NoHitTesting: ViewModifier {
     func body(content: Content) -> some View {
         SwiftUIWrapper { content }.allowsHitTesting(false)
-    }
-}
-
-extension View {
-    func userInteractionDisabled() -> some View {
-        self.modifier(NoHitTesting())
     }
 }
 

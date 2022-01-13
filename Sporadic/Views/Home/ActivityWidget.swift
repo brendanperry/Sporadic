@@ -12,9 +12,6 @@ struct ActivityWidget: View {
 
     @EnvironmentObject var activityViewModel: ActivityViewModel
     
-    @Binding var activityToEdit: Activity
-    @Binding var isEditing: Bool
-    
     let textHelper = TextHelper()
 
     var body: some View {
@@ -26,8 +23,7 @@ struct ActivityWidget: View {
             
             Button(action: {
                 withAnimation {
-                    self.activityToEdit = self.activity
-                    self.isEditing = true
+                    // open modal
                 }
             }, label: {
                 Image(systemName: "pencil.circle.fill")

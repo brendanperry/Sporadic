@@ -7,7 +7,6 @@
 
 import Foundation
 
-// Localization done in Localizable.strings file
 struct Localize {
     static func getString(_ key: String) -> String {
         return NSLocalizedString(key, comment: "")

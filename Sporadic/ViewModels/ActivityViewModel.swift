@@ -9,6 +9,11 @@ import Foundation
 
 class ActivityViewModel: ObservableObject {
     @Published var activities = [Activity]()
+    
+    @Published var activityIdToEdit: Int = -1
+    
+    @Published var dummy: Int = 0
+    
     var notificationHelper = NotificationHelper()
     var localDataHelper = LocalDataHelper()
 
@@ -16,6 +21,10 @@ class ActivityViewModel: ObservableObject {
         self.activities = self.getInitializeActivities()
         
         self.loadActivities()
+    }
+    
+    func dummygo() {
+        dummy += 1
     }
     
     func loadActivities() {
@@ -26,23 +35,44 @@ class ActivityViewModel: ObservableObject {
         let run = Activity(
             id: 0,
             name: Localize.getString("Run"),
+            pastTense: "run",
+            presentTense: "running",
+            unit: "miles",
+            unitAbbreviation: "mi",
             minValue: 0.25,
             maxValue: 10,
+            minRange: 0.25,
+            selectedMin: 0.5,
+            selectedMax: 2,
             total: 24,
             isEnabled: true)
         let bike = Activity(
             id: 1,
             name: Localize.getString("Bike"),
-            minValue: 0.1,
+            pastTense: "biked",
+            presentTense: "biking",
+            unit: "miles",
+            unitAbbreviation: "mi",
+            minValue: 0.25,
             maxValue: 50,
-            total: 57,
+            minRange: 0.25,
+            selectedMin: 1,
+            selectedMax: 3,
+            total: 12,
             isEnabled: false)
         let yoga = Activity(
             id: 2,
             name: Localize.getString("Yoga"),
-            minValue: 0.1,
-            maxValue: 50,
-            total: 57,
+            pastTense: "trained",
+            presentTense: "yoga",
+            unit: "minutes",
+            unitAbbreviation: "min",
+            minValue: 1,
+            maxValue: 60,
+            minRange: 1,
+            selectedMin: 15,
+            selectedMax: 30,
+            total: 240,
             isEnabled: false)
 
         return [run, bike, yoga]
@@ -76,6 +106,10 @@ class ActivityViewModel: ObservableObject {
         self.saveActivities(activities: activities)
 
         notificationHelper.scheduleAllNotifications(activities: activities)
+    }
+    
+    func getActivity(byId: Int) -> Activity {
+        return activities.first(where: { $0.id == byId }) ?? Activity()
     }
 
     func scheduleNotifs() {

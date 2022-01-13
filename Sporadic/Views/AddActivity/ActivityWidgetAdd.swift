@@ -9,13 +9,11 @@
 import SwiftUI
 
 struct ActivityWidgetAdd: View {
-    var activity: Activity
-
-    @Binding var activityToEdit: Activity
-    @Binding var isEditing: Bool
+    @EnvironmentObject var activityViewModel: ActivityViewModel
     
     let textHelper = TextHelper()
-
+    let activity: Activity
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -43,8 +41,7 @@ struct ActivityWidgetAdd: View {
             .transition(.scale)
         }
         .onTapGesture {
-            self.activityToEdit = self.activity
-            self.isEditing = true
+            // open modal
         }
         .padding()
     }

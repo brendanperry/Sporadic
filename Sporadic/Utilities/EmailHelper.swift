@@ -9,7 +9,6 @@ import MessageUI
 import UIKit
 
 class SendEmailViewController: UIViewController, MFMailComposeViewControllerDelegate {
-
     @IBAction func sendEmail(_ sender: UIButton) {
         // Modify following variables with your text / recipient
         let recipientEmail = "contact@brendanperry.me"
