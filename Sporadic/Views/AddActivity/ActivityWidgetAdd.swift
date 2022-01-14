@@ -10,9 +10,9 @@ import SwiftUI
 
 struct ActivityWidgetAdd: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
-    
+    @State var activity: Activity
+    @State var isEditing = false
     let textHelper = TextHelper()
-    let activity: Activity
     
     var body: some View {
         ZStack {
@@ -41,8 +41,11 @@ struct ActivityWidgetAdd: View {
             .transition(.scale)
         }
         .onTapGesture {
-            // open modal
+            self.isEditing = true
         }
         .padding()
+        .fullScreenCover(isPresented: self.$isEditing) {
+            EditActivity(activity: self.activity, isEditing: self.$isEditing)
+        }
     }
 }

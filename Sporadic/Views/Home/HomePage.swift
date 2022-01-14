@@ -46,7 +46,6 @@ struct Welcome: View {
 }
 
 struct ChallengeButton: View {
-    // var viewModel: ActivityViewModel
     @State private var activityCompleted = false
 
     var body: some View {

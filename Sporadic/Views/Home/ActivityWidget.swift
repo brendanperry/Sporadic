@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct ActivityWidget: View {
-    var activity: Activity
-
     @EnvironmentObject var activityViewModel: ActivityViewModel
-    
+    @State var activity: Activity
+    @State var isEditing = false
     let textHelper = TextHelper()
 
     var body: some View {
@@ -23,7 +22,7 @@ struct ActivityWidget: View {
             
             Button(action: {
                 withAnimation {
-                    // open modal
+                    self.isEditing = true
                 }
             }, label: {
                 Image(systemName: "pencil.circle.fill")
@@ -53,5 +52,8 @@ struct ActivityWidget: View {
             .transition(.scale)
         }
         .padding()
+        .fullScreenCover(isPresented: self.$isEditing) {
+            EditActivity(activity: self.activity, isEditing: self.$isEditing)
+        }
     }
 }

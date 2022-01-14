@@ -9,9 +9,7 @@ import Foundation
 
 class ActivityViewModel: ObservableObject {
     @Published var activities = [Activity]()
-    
     @Published var activityIdToEdit: Int = -1
-    
     @Published var dummy: Int = 0
     
     var notificationHelper = NotificationHelper()
@@ -98,6 +96,7 @@ class ActivityViewModel: ObservableObject {
     
     func saveActivity(activity: Activity) {
         _ = localDataHelper.save(data: activity, key: "\(activity.id)")
+        self.loadActivities()
     }
 
     func activityCheckmarkClicked(activityId: Int, isOn: Bool) {
