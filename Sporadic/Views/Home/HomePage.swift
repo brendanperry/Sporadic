@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UserNotifications
 
 struct HomePage: View {
     var body: some View {
@@ -28,6 +27,7 @@ struct HomePage: View {
             })
             .padding(.top)
         }
+        .preferredColorScheme(ColorSchemeHelper().getColorSceme())
     }
 }
 

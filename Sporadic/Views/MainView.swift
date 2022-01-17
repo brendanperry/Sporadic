@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var activityViewModel = ActivityViewModel()
     @StateObject var viewRouter = ViewRouter()
     
     @State var selectedTab = 0
@@ -23,34 +22,20 @@ struct MainView: View {
                 switch viewRouter.currentPage {
                 case .home:
                     HomePage()
-                        .blur(radius: isAdding ? 100 : 0)
                 case .settings:
                     SettingsPage()
-                        .blur(radius: isAdding ? 100 : 0)
                 case .tutorial:
                     Text("Tutorial")
                 }
                 
-                AddPage(isAdding: self.isAdding, topSafeArea: geometry.safeAreaInsets.top)
+                if (isAdding) {
+                    AddPage()
+                }
                 
                 NavigationBar(isAdding: self.$isAdding)
             }
-            .environmentObject(activityViewModel)
             .environmentObject(viewRouter)
-            .preferredColorScheme(self.getColorSceme())
         }
-    }
-
-    func getColorSceme() -> ColorScheme? {
-        if appTheme == "Light" {
-            return .light
-        }
-
-        if appTheme == "Dark" {
-            return .dark
-        }
-
-        return nil
     }
 }
 

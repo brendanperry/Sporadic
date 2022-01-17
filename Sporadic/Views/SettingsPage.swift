@@ -19,7 +19,7 @@ struct SettingsPage: View {
 
     @AppStorage(UserPrefs.deliveryTime.rawValue)
     var time = Date()
-
+    
     let measurementOptions = ["Imperial", "Metric"]
     let appThemeOptions = ["System", "Light", "Dark"]
     
@@ -41,7 +41,7 @@ struct SettingsPage: View {
                         image: "Notifications",
                         text: "Notifications",
                         actionText: "Prompt",
-                        actionView: AnyView(ContactButton()))
+                        actionView: AnyView(NotificationButton()))
                     
                     RectangleWidget(
                         image: "AppTheme",
@@ -49,7 +49,7 @@ struct SettingsPage: View {
                         actionText: appTheme,
                         actionView: AnyView(
                             OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
-                    
+                        
                     AppIcons()
                     
                     RectangleWidget(
@@ -58,8 +58,6 @@ struct SettingsPage: View {
                         actionText: "Contact",
                         actionView: AnyView(ContactButton()))
                     
-                    NotificationButton()
-                    
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 100, height: 100, alignment: .bottom)
@@ -67,6 +65,7 @@ struct SettingsPage: View {
                 .padding()
             })
             .padding(.top)
+            .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         }
     }
 }
@@ -84,8 +83,9 @@ struct NotificationButton: View {
                 }
             }
         }, label: {
-            Text("Request Notification Access")
+            Text("Prompt")
         })
+        .withSettingsButtonStyle()
     }
 }
 
@@ -129,8 +129,8 @@ struct RectangleWidget: View {
 
 struct DaysAndTime: View {
     let dateHelper = DateHelper()
+    @Environment(\.managedObjectContext) var managedObjectContext
 
-    @EnvironmentObject var activityViewModel: ActivityViewModel
 
     @Binding var days: Int
     @Binding var time: Date
@@ -155,7 +155,8 @@ struct DaysAndTime: View {
                         }
                         .labelsHidden()
                         .onChange(of: days) { _ in
-                            activityViewModel.scheduleNotifs()
+                            let notificationHelper = NotificationHelper(context: managedObjectContext)
+                            notificationHelper.scheduleAllNotifications()
                         }
                         
                         Text("\(days)")
@@ -176,7 +177,8 @@ struct DaysAndTime: View {
                             .labelsHidden()
                             .scaleEffect(1.6)
                             .onChange(of: time) { _ in
-                                activityViewModel.scheduleNotifs()
+                                let notificationHelper = NotificationHelper(context: managedObjectContext)
+                                notificationHelper.scheduleAllNotifications()
                             }
                         
                         Group {
@@ -291,9 +293,7 @@ struct SwiftUIWrapper<T: View>: UIViewControllerRepresentable {
 }
 
 struct SettingsPage_Previews: PreviewProvider {
-    static let activityViewModel = ActivityViewModel()
-
     static var previews: some View {
-        SettingsPage().preferredColorScheme(.dark).environmentObject(activityViewModel)
+        SettingsPage().preferredColorScheme(.dark)
     }
 }

@@ -9,9 +9,9 @@ import SwiftUI
 import Introspect
 
 struct ActivitiesHome: View {
-    @EnvironmentObject var activityViewModel: ActivityViewModel
-    
     let textHelper = TextHelper()
+    
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var activities: FetchedResults<Activity>
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     
@@ -22,7 +22,7 @@ struct ActivitiesHome: View {
                 .padding(.top)
             
             LazyVGrid(columns: items, alignment: .center) {
-                ForEach(Array(activityViewModel.activities.enumerated()), id: \.offset) { index, activity in
+                ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
                     if (activity.isEnabled) {
                         ActivityWidget(activity: activity)
                     }

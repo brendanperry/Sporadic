@@ -20,20 +20,20 @@ struct NavigationBar: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: UIScreen.main.bounds.width * 0.90, height: 65, alignment: .bottom)
                     .padding()
-                    .offset(y: self.isAdding ? 100 : 0)
+                    .offset(y: self.isAdding ? 150 : 0)
             }
             .frame(maxHeight: .infinity)
             
             HStack {
                 Spacer()
                 TabBarIcon(viewRouter: viewRouter, assignedPage: .home, icon: viewRouter.currentPage == .home ? "HomeOn" : "HomeOff")
-                    .offset(y: self.isAdding ? 100 : 0)
+                    .offset(y: self.isAdding ? 150 : 0)
                     .disabled(self.isAdding)
                 Spacer()
                 AddButton(isAdding: self.$isAdding)
                 Spacer()
                 TabBarIcon(viewRouter: viewRouter, assignedPage: .settings, icon: viewRouter.currentPage == .home ? "SettingsOff" : "SettingsOn")
-                    .offset(y: self.isAdding ? 100 : 0)
+                    .offset(y: self.isAdding ? 150 : 0)
                     .disabled(self.isAdding)
                 Spacer()
             }
@@ -41,5 +41,6 @@ struct NavigationBar: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
             .cornerRadius(20, corners: [.topLeft, .topRight])
         }
+        .zIndex(2)
     }
 }

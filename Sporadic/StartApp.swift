@@ -11,10 +11,12 @@ import UserNotifications
 @main
 struct StartApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    @StateObject var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(\.managedObjectContext, dataController.controller.viewContext)
         }
     }
 }
@@ -23,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
        UNUserNotificationCenter.current().delegate = self
        return true
     }

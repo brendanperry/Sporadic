@@ -17,10 +17,12 @@ struct TabBarIcon: View {
             .resizable()
             .frame(width: 45, height: 45, alignment: .center)
             .onTapGesture {
-                viewRouter.currentPage = assignedPage
+                if (viewRouter.currentPage != assignedPage) {
+                    viewRouter.currentPage = assignedPage
 
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
+                    let impact = UIImpactFeedbackGenerator(style: .light)
+                    impact.impactOccurred()
+                }
              }
             .padding(10)
      }

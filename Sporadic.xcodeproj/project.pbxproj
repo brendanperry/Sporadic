@@ -15,10 +15,8 @@
 		C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */; };
 		C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */; };
 		C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */; };
-		C630BDD3268C19290066D8C3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDD2268C19290066D8C3 /* Activity.swift */; };
 		C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C630BDF7268C2CB60066D8C3 /* Localizable.strings */; };
 		C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDF9268C313B0066D8C3 /* Localize.swift */; };
-		C630BDFC268D00BC0066D8C3 /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDFB268D00BC0066D8C3 /* ActivityViewModel.swift */; };
 		C630BE0E268D2E3B0066D8C3 /* ActivityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BE0D268D2E3B0066D8C3 /* ActivityViewModelTests.swift */; };
 		C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
@@ -28,7 +26,6 @@
 		C6620061277BD8E3000AF577 /* ActivityWidgetAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620060277BD8E3000AF577 /* ActivityWidgetAdd.swift */; };
 		C6620063278A58D9000AF577 /* EditActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620062278A58D9000AF577 /* EditActivity.swift */; };
 		C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CD8268EAAF500991913 /* NotificationHelper.swift */; };
-		C6667CDB268EB2D000991913 /* LocalDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDA268EB2D000991913 /* LocalDataHelper.swift */; };
 		C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDE268F77D600991913 /* SettingsPage.swift */; };
 		C6667CE5268F8B7E00991913 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE4268F8B7E00991913 /* MainView.swift */; };
 		C6667CE7268FC35700991913 /* NotificationHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE6268FC35600991913 /* NotificationHelperTests.swift */; };
@@ -48,6 +45,10 @@
 		C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9601F278FA55000A67AA2 /* UIColorExtensions.swift */; };
 		C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96021278FA64F00A67AA2 /* DateExtensions.swift */; };
 		C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */; };
+		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
+		C6C9602C2794AE9600A67AA2 /* sporadic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */; };
+		C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602D2794AFAB00A67AA2 /* DataController.swift */; };
+		C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C9602F2795042C00A67AA2 /* CloudKit.framework */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 		E51B564D19948D408E9BDE83 /* Pods_Sporadic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3615B60E2826011191C92B7 /* Pods_Sporadic.framework */; };
 /* End PBXBuildFile section */
@@ -73,10 +74,8 @@
 		C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2@3x.png"; sourceTree = "<group>"; };
 		C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@2x.png"; sourceTree = "<group>"; };
 		C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@2x.png"; sourceTree = "<group>"; };
-		C630BDD2268C19290066D8C3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C630BDF6268C2CB60066D8C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C630BDF9268C313B0066D8C3 /* Localize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localize.swift; sourceTree = "<group>"; };
-		C630BDFB268D00BC0066D8C3 /* ActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		C630BE03268D2D230066D8C3 /* SporadicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SporadicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C630BE07268D2D230066D8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C630BE0D268D2E3B0066D8C3 /* ActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModelTests.swift; sourceTree = "<group>"; };
@@ -90,7 +89,6 @@
 		C6620060277BD8E3000AF577 /* ActivityWidgetAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidgetAdd.swift; sourceTree = "<group>"; };
 		C6620062278A58D9000AF577 /* EditActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivity.swift; sourceTree = "<group>"; };
 		C6667CD8268EAAF500991913 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
-		C6667CDA268EB2D000991913 /* LocalDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataHelper.swift; sourceTree = "<group>"; };
 		C6667CDE268F77D600991913 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		C6667CE4268F8B7E00991913 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C6667CE6268FC35600991913 /* NotificationHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelperTests.swift; sourceTree = "<group>"; };
@@ -110,6 +108,11 @@
 		C6C9601F278FA55000A67AA2 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		C6C96021278FA64F00A67AA2 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
+		C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeHelper.swift; sourceTree = "<group>"; };
+		C6C960292794A6B700A67AA2 /* Sporadic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sporadic.entitlements; sourceTree = "<group>"; };
+		C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic.xcdatamodel; sourceTree = "<group>"; };
+		C6C9602D2794AFAB00A67AA2 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		C6C9602F2795042C00A67AA2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		D3615B60E2826011191C92B7 /* Pods_Sporadic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sporadic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA86CBE80B165B2D5A06D99 /* Pods-SporadicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SporadicTests.debug.xcconfig"; path = "Target Support Files/Pods-SporadicTests/Pods-SporadicTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E51B564D19948D408E9BDE83 /* Pods_Sporadic.framework in Frameworks */,
+				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,12 +169,13 @@
 			children = (
 				C630BDF9268C313B0066D8C3 /* Localize.swift */,
 				C6667CD8268EAAF500991913 /* NotificationHelper.swift */,
-				C6667CDA268EB2D000991913 /* LocalDataHelper.swift */,
 				C6667D2D2690FB5D00991913 /* UserPrefs.swift */,
 				C613CFCC269559C70061DC49 /* EmailHelper.swift */,
 				C69395B026ADC267005BAD98 /* ViewRouter.swift */,
 				C69395B226B24BB3005BAD98 /* DateHelper.swift */,
 				C6BCB2112766B0CD00D9677D /* TextHelper.swift */,
+				C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */,
+				C6C9602D2794AFAB00A67AA2 /* DataController.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -178,7 +183,7 @@
 		C630BDDA268C227C0066D8C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C630BDD2268C19290066D8C3 /* Activity.swift */,
+				C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -186,7 +191,6 @@
 		C630BDDB268C22840066D8C3 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				C630BDFB268D00BC0066D8C3 /* ActivityViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -237,6 +241,7 @@
 		C65A01FC26870098007A5B2F /* Sporadic */ = {
 			isa = PBXGroup;
 			children = (
+				C6C960292794A6B700A67AA2 /* Sporadic.entitlements */,
 				C6C96010278F908100A67AA2 /* Extensions */,
 				C613CFCE26955C3D0061DC49 /* Icons */,
 				C6B18F40268D4698003A5BAF /* Fonts */,
@@ -331,6 +336,7 @@
 		FE7EE66C50E94596AE3B347F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C6C9602F2795042C00A67AA2 /* CloudKit.framework */,
 				D3615B60E2826011191C92B7 /* Pods_Sporadic.framework */,
 				F9BF5D6AC3D46CAD21129F05 /* Pods_SporadicTests.framework */,
 			);
@@ -525,21 +531,20 @@
 				C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C6620061277BD8E3000AF577 /* ActivityWidgetAdd.swift in Sources */,
-				C6667CDB268EB2D000991913 /* LocalDataHelper.swift in Sources */,
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
-				C630BDD3268C19290066D8C3 /* Activity.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
+				C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
-				C630BDFC268D00BC0066D8C3 /* ActivityViewModel.swift in Sources */,
+				C6C9602C2794AE9600A67AA2 /* sporadic.xcdatamodeld in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
 				C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */,
@@ -548,6 +553,7 @@
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
+				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
 				C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */,
 				C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */,
 			);
@@ -741,8 +747,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -765,8 +772,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -814,6 +822,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */,
+			);
+			currentVersion = C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */;
+			path = sporadic.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C65A01F226870098007A5B2F /* Project object */;
 }

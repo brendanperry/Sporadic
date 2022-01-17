@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AddButton: View {
-    @EnvironmentObject var activityViewModel: ActivityViewModel
     @Binding var isAdding: Bool
     
     var body: some View {

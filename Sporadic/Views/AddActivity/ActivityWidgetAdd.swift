@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct ActivityWidgetAdd: View {
-    @EnvironmentObject var activityViewModel: ActivityViewModel
     @State var activity: Activity
     @State var isEditing = false
     let textHelper = TextHelper()
@@ -22,13 +21,13 @@ struct ActivityWidgetAdd: View {
                 .offset(x: 10, y: 10)
             
             VStack {
-                Image(activity.name)
+                Image(activity.name ?? "Uknown")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 50, height: 50)
                     .foregroundColor(Color("ActivityBorderColor"))
             
-                textHelper.GetTextByType(text: activity.name, isCentered: true, type: .title)
+                textHelper.GetTextByType(text: activity.name ?? "Uknown", isCentered: true, type: .title)
                     .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
             }
             .overlay(
@@ -45,7 +44,7 @@ struct ActivityWidgetAdd: View {
         }
         .padding()
         .fullScreenCover(isPresented: self.$isEditing) {
-            EditActivity(activity: self.activity, isEditing: self.$isEditing)
+            EditActivity(activity: self.activity)
         }
     }
 }

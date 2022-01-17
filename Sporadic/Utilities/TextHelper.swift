@@ -18,7 +18,7 @@ class TextHelper {
         case TextType.title:
             return AnyView(GetText(text, isCentered)
                 .font(Font.custom("Gilroy", size: 32, relativeTo: .title))
-                .foregroundColor(color == nil ? Color.black : color))
+                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
         case TextType.medium:
             return AnyView(GetText(text, isCentered)
                 .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .subheadline))
