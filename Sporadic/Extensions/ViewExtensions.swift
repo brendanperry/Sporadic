@@ -17,6 +17,20 @@ extension View {
     }
 }
 
+struct NoHitTesting: ViewModifier {
+    func body(content: Content) -> some View {
+        SwiftUIWrapper { content }.allowsHitTesting(false)
+    }
+}
+
+struct SwiftUIWrapper<T: View>: UIViewControllerRepresentable {
+    let content: () -> T
+    func makeUIViewController(context: Context) -> UIHostingController<T> {
+        UIHostingController(rootView: content())
+    }
+    func updateUIViewController(_ uiViewController: UIHostingController<T>, context: Context) {}
+}
+
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomePage: View {
+    @Binding var isAdding: Bool
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -18,7 +20,7 @@ struct HomePage: View {
                     Welcome()
                     ChallengeButton()
                     Streak()
-                    ActivitiesHome()
+                    ActivitiesHome(isAdding: $isAdding)
                     Spacer()
                     Rectangle()
                         .foregroundColor(.clear)
@@ -46,35 +48,61 @@ struct Welcome: View {
 }
 
 struct ChallengeButton: View {
-    @State private var activityCompleted = false
-
+    @ObservedObject var viewModel = HomeViewModel(context: DataController.shared.controller.viewContext)
+    
+    @State var showCompletedPage = false
+    
     var body: some View {
         VStack {
-            Button(action: {
-                print("done")
-
-                activityCompleted = true
-            }) {
-                ZStack {
-                    Image("GoalButton")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 325)
-                    HStack {
-//                        Checkmark(size: 30, isOn: activityCompleted, activity: <#Activity#>, viewModel: viewModel)
-                        Text("Run 3 miles")
-                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title))
+            ZStack {
+                Image("GoalButton")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 325)
+                
+                HStack (spacing: 30) {
+                    Button(action: {
+                        viewModel.challenge?.isCompleted = true
+                        viewModel.saveChallenge()
+                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                        
+                        showCompletedPage = true
+                    }, label: {
+                        Circle()
+                            .strokeBorder(Color.white, lineWidth: 5)
+                            .frame(width: 40, height: 40, alignment: .center)
+                            .background(viewModel.challenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
+                    })
+                        .buttonStyle(ButtonPressAnimationStyle())
+                        .disabled(viewModel.challenge?.isCompleted ?? false)
+                    
+                    if let challenge = viewModel.challenge {
+                        Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") \(challenge.amount.removeZerosFromEnd()) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
+                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
+                    } else {
+                        Text("No Challenge")
+                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
                     }
-                    .offset(y: -7)
                 }
-
+                .offset(y: -7)
             }
             .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .disabled(activityCompleted)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fullScreenCover(isPresented: $showCompletedPage) {
+                VStack {
+                    Text("GOOD JOB!!!!!")
+                }
+            }
         }
         .padding(.horizontal)
         .padding(.bottom)
+    }
+    
+    private struct ButtonPressAnimationStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+        }
     }
 }
 

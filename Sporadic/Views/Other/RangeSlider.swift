@@ -7,33 +7,6 @@
 
 import SwiftUI
 
-struct RangeSliderPage: View {
-    @AppStorage ("testLeft8")
-    var left = -10.0
-
-    @AppStorage ("testRight8")
-    var right = 10.0
-
-    var body: some View {
-        VStack {
-            Text("Left Value: \(self.left.removeZerosFromEnd())")
-            Text("Right Value: \(self.right.removeZerosFromEnd())")
-            
-            RangeSlider(lineHeight: 3, lineWidth: 250, lineCornerRadius: 10, circleWidth: 15, circleShadowRadius: 1, roundToNearest: 0.5, minRange: 2, minValue: -10, maxValue: 10, circleBorder: 10, circleBorderColor: .blue, circleColor: .white, lineColorInRange: .blue, lineColorOutOfRange: Color(UIColor.lightGray), leftValue: $left, rightValue: $right)
-        }
-    }
-}
-
-extension Double {
-    func removeZerosFromEnd() -> String {
-        let formatter = NumberFormatter()
-        let number = NSNumber(value: self)
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 16
-        return String(formatter.string(from: number) ?? "")
-    }
-}
-
 struct RangeSlider: View {
     let lineHeight: Double
     let lineWidth: Double

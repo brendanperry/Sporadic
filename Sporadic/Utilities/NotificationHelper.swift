@@ -19,30 +19,29 @@ class NotificationHelper {
     }
     
     func scheduleAllNotifications() {
-//        if !isAuthorizedToSendNotifications() || activities.count == 0 {
-//            return
-//        }
+        let fetchRequest = Activity.fetchRequest()
         
-        let fetch = Activity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "isEnabled == true")
         
-        let activities = try? context.fetch(fetch)
+        let activities = try? context.fetch(fetchRequest)
+        
+        removeOldChallenges()
         
         if let activities = activities {
-            notificationCenter.removeAllPendingNotificationRequests()
+            if activities.count == 0 {
+                return
+            }
 
             var today = getToday()
             let daysPerWeek = defaults.integer(forKey: UserPrefs.daysPerWeek.rawValue)
-            let weeksToSchedule = 12;
+            let weeksToSchedule = 4;
             
-            for week in 0..<weeksToSchedule {
-                print("Week \(week)")
-                today = Calendar.current.date(byAdding: .day, value: 7, to: today)!
-                
+            for _ in 0..<weeksToSchedule {
                 var availableDays = [0, 1, 2, 3, 4, 5, 6]
 
                 scheduleOnDays(daysPerWeek, &availableDays, today, activities)
                 
-                print("")
+                today = Calendar.current.date(byAdding: .day, value: 7, to: today)!
             }
             
             scheduleReminder(date: today)
@@ -67,11 +66,15 @@ class NotificationHelper {
             if let days = daysToAdd {
                 availableDays = removeElement(days, from: availableDays)
                 
-                let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
+                var calendar = Calendar.current
+                
+                let scheduledDate = calendar.date(byAdding: .day, value: days, to: today)!
+                
+                //let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
                 
                 let activity = activities[Int.random(in: 0..<activities.count)]
                 
-                let amount = round(Double.random(in: activity.selectedMin...activity.selectedMax) * 100) / 100.0
+                let amount = round(Double.random(in: activity.minValue...activity.maxValue), toNearest: activity.minRange)
                 
                 let challenge = Challenge(context: context)
                 challenge.amount = amount
@@ -91,17 +94,42 @@ class NotificationHelper {
         }
     }
     
+    func round(_ value: Double, toNearest: Double) -> Double {
+        let rounded = Darwin.round(value / toNearest) * toNearest
+
+        return rounded == -0 ? 0 : rounded
+    }
+                                         
     internal func scheduleNotification(title: String, body: String, dateTime: DateComponents) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
         content.body = body
+        
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateTime, repeats: false)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    fileprivate func removeOldChallenges() {
+        notificationCenter.removeAllPendingNotificationRequests()
+        
+        let fetchRequest = Challenge.fetchRequest()
+        
+        //fetchRequest.predicate = NSPredicate(format: "time >= %@", NSDate())
+        
+        let filtered = try? context.fetch(fetchRequest)
+        
+        if let filtered = filtered {
+            for f in filtered {
+                context.delete(f)
+            }
+            
+            try? context.save()
+        }
     }
     
     internal func getToday() -> Date {
@@ -126,7 +154,7 @@ class NotificationHelper {
         }
 
         return Date()
-}
+    }
 
     internal func getCurrentDate(hour: Int, minutes: Int) -> DateComponents {
         var components = getComponentsFromDate(Date())

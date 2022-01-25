@@ -6,11 +6,20 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct AddPage: View {
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var activities: FetchedResults<Activity>
+    @ObservedObject var viewModel: AddActivityViewModel
+    
     let textHelper = TextHelper()
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
+    
+    @Binding var isAdding: Bool
+    
+    init(isAdding: Binding<Bool>) {
+        viewModel = AddActivityViewModel(dataController: DataController.shared, activityTemplateHelper: ActivityTemplateHelper())
+        self._isAdding = isAdding
+    }
     
     var body: some View {
         VStack {
@@ -22,10 +31,8 @@ struct AddPage: View {
                     .padding()
                 
                 LazyVGrid(columns: items, alignment: .center) {
-                    ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
-                        if (!activity.isEnabled) {
-                            ActivityWidgetAdd(activity: activity)
-                        }
+                    ForEach(Array(viewModel.activities.enumerated()), id: \.offset) { index, activity in
+                        ActivityWidget(activity: activity, isAdding: $isAdding)
                     }
                 }
                 .padding()

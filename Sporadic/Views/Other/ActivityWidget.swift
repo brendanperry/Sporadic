@@ -1,18 +1,18 @@
-
 //
-//  ActivityWidgetAdd.swift
+//  ActivityWidget.swift
 //  Sporadic
 //
-//  Created by Brendan Perry on 12/28/21.
+//  Created by Brendan Perry on 12/15/21.
 //
 
 import SwiftUI
 
-struct ActivityWidgetAdd: View {
+struct ActivityWidget: View {
     @State var activity: Activity
     @State var isEditing = false
+    @Binding var isAdding: Bool
     let textHelper = TextHelper()
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -21,14 +21,13 @@ struct ActivityWidgetAdd: View {
                 .offset(x: 10, y: 10)
             
             VStack {
-                Image(activity.name ?? "Uknown")
+                Image(activity.name ?? "Unkown")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 50, height: 50)
                     .foregroundColor(Color("ActivityBorderColor"))
             
-                textHelper.GetTextByType(text: activity.name ?? "Uknown", isCentered: true, type: .title)
-                    .font(Font.custom("Gilroy", size: 30, relativeTo: .title))
+                textHelper.GetTextByType(text: activity.name ?? "Unkown", isCentered: true, type: .title)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
@@ -38,13 +37,21 @@ struct ActivityWidgetAdd: View {
             )
             .padding()
             .transition(.scale)
-        }
-        .onTapGesture {
-            self.isEditing = true
+            
+            Image("EditActivityDots")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 20, height: 20)
+                .offset(x: 40, y: -40)
         }
         .padding()
+        .onTapGesture {
+            withAnimation {
+                self.isEditing = true
+            }
+        }
         .fullScreenCover(isPresented: self.$isEditing) {
-            EditActivity(activity: self.activity)
+            EditActivity(activity: self.activity, isAdding: $isAdding)
         }
     }
 }

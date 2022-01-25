@@ -88,5 +88,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSHealthShareUsageDescription</key>
+        <string>We need health data to see when you complete challenges.</string>
 </dict>
 </plist>

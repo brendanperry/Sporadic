@@ -15,6 +15,8 @@ struct ActivitiesHome: View {
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     
+    @Binding var isAdding: Bool
+    
     var body: some View {
         VStack {
             textHelper.GetTextByType(text: Localize.getString("Activities"), isCentered: false, type: .medium)
@@ -24,7 +26,7 @@ struct ActivitiesHome: View {
             LazyVGrid(columns: items, alignment: .center) {
                 ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
                     if (activity.isEnabled) {
-                        ActivityWidget(activity: activity)
+                        ActivityWidget(activity: activity, isAdding: $isAdding)
                     }
                 }
             }

@@ -11,12 +11,11 @@ import UserNotifications
 @main
 struct StartApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environment(\.managedObjectContext, dataController.controller.viewContext)
+                .environment(\.managedObjectContext, DataController.shared.controller.viewContext)
         }
     }
 }
