@@ -7,17 +7,22 @@
 
 import Foundation
 import CoreData
-import HealthKit
 
-class DataHelper {
-    let context: NSManagedObjectContext
-    
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
+class DataHelper: Repository {
+    let context = DataController.shared.controller.viewContext
     
     func fetchActivities() -> [Activity]? {
         let fetchRequest = Activity.fetchRequest()
+        
+        let activities = try? context.fetch(fetchRequest)
+        
+        return activities
+    }
+    
+    func fetchActiveActivities() -> [Activity]? {
+        let fetchRequest = Activity.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "isEnabled == true")
         
         let activities = try? context.fetch(fetchRequest)
         
@@ -36,11 +41,67 @@ class DataHelper {
         let challenge = Challenge(context: context)
         
         challenge.id = UUID()
-        challenge.amount = amount
+        challenge.total = amount
         challenge.time = time
         challenge.isCompleted = false
         challenge.oneChallengeToOneActivity = activity
         
         try? context.save()
-    }    
+    }
+    
+    func removeAllPendingChallenges() {        
+        let fetchRequest = Challenge.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "time > %@", getEndOfDay() as NSDate)
+        
+        let filtered = try? context.fetch(fetchRequest)
+        
+        if let filtered = filtered {
+            for f in filtered {
+                context.delete(f)
+            }
+            
+            try? context.save()
+        }
+    }
+    
+    func fetchCurrentChallenge() -> Challenge? {        
+        let fetchRequest = Challenge.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "time >= %@ && time <= %@", getStartOfDay() as NSDate, getEndOfDay() as NSDate)
+        
+        return try? context.fetch(fetchRequest).first
+    }
+    
+    func getStartOfDay() -> Date {
+        var components = getComponentsFromDate(Date())
+
+        components.hour = 0
+        components.minute = 00
+        components.second = 00
+        components.timeZone = TimeZone.current
+            
+        return Calendar.current.date(from: components)!
+    }
+                                    
+    func getEndOfDay() -> Date {
+        var components = getComponentsFromDate(Date())
+
+        components.hour = 23
+        components.minute = 59
+        components.second = 59
+        components.timeZone = TimeZone.current
+        
+        return Calendar.current.date(from: components)!
+    }
+
+    internal func getComponentsFromDate(_ date: Date) -> DateComponents {
+        let requestedComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
+
+        return Calendar.current.dateComponents(requestedComponents, from: date)
+    }
+    
+    func saveChanges() {
+        try? context.save()
+    }
 }

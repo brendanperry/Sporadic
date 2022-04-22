@@ -10,20 +10,18 @@ import UserNotifications
 import CoreData
 
 class NotificationHelper {
-    let context: NSManagedObjectContext
+    let dataHelper: DataHelper
     let defaults = UserDefaults()
     let notificationCenter = UNUserNotificationCenter.current()
+    let dateFormatter = DateFormatter()
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
+    init(dataHelper: DataHelper) {
+        self.dataHelper = dataHelper
+        dateFormatter.dateFormat = "MM/dd/YYYY HH:mm"
     }
     
     func scheduleAllNotifications() {
-        let fetchRequest = Activity.fetchRequest()
-        
-        fetchRequest.predicate = NSPredicate(format: "isEnabled == true")
-        
-        let activities = try? context.fetch(fetchRequest)
+        let activities = dataHelper.fetchActiveActivities()
         
         removeOldChallenges()
         
@@ -35,9 +33,17 @@ class NotificationHelper {
             var today = getToday()
             let daysPerWeek = defaults.integer(forKey: UserPrefs.daysPerWeek.rawValue)
             let weeksToSchedule = 4;
+            let currentChallenge = dataHelper.fetchCurrentChallenge()
             
-            for _ in 0..<weeksToSchedule {
-                var availableDays = [0, 1, 2, 3, 4, 5, 6]
+            for index in 0..<weeksToSchedule {
+                var availableDays = [Int]()
+                
+                // this keeps us from scheduling a challenge today if there is already one
+                if index == 0 && currentChallenge != nil {
+                    availableDays = [1, 2, 3, 4, 5, 6]
+                } else {
+                    availableDays = [0, 1, 2, 3, 4, 5, 6]
+                }
 
                 scheduleOnDays(daysPerWeek, &availableDays, today, activities)
                 
@@ -54,8 +60,8 @@ class NotificationHelper {
         print("\(finalDate) - reminder")
         
         scheduleNotification(
-            title: "We miss you!",
-            body: "Come back to the app to get more challenges.",
+            title: "There is more work to be done!",
+            body: "Come back to the app to get more challenges. Notifications have been paused.",
             dateTime: getComponentsFromDate(finalDate))
     }
     
@@ -66,23 +72,15 @@ class NotificationHelper {
             if let days = daysToAdd {
                 availableDays = removeElement(days, from: availableDays)
                 
-                var calendar = Calendar.current
-                
-                let scheduledDate = calendar.date(byAdding: .day, value: days, to: today)!
-                
-                //let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
-                
+                let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
                 let activity = activities[Int.random(in: 0..<activities.count)]
-                
                 let amount = round(Double.random(in: activity.minValue...activity.maxValue), toNearest: activity.minRange)
                 
-                let challenge = Challenge(context: context)
-                challenge.amount = amount
-                challenge.time = scheduledDate
-                challenge.isCompleted = false
-                challenge.oneChallengeToOneActivity = activity
-                
-                try? context.save()
+                dataHelper.createChallenge(
+                    amount: amount,
+                    time: scheduledDate,
+                    isCompleted: false,
+                    activity: activity)
                 
                 print("\(scheduledDate) - \(activity.name ?? "Unknown"): \(amount)")
                 
@@ -93,7 +91,7 @@ class NotificationHelper {
             }
         }
     }
-    
+
     func round(_ value: Double, toNearest: Double) -> Double {
         let rounded = Darwin.round(value / toNearest) * toNearest
 
@@ -117,19 +115,7 @@ class NotificationHelper {
     fileprivate func removeOldChallenges() {
         notificationCenter.removeAllPendingNotificationRequests()
         
-        let fetchRequest = Challenge.fetchRequest()
-        
-        //fetchRequest.predicate = NSPredicate(format: "time >= %@", NSDate())
-        
-        let filtered = try? context.fetch(fetchRequest)
-        
-        if let filtered = filtered {
-            for f in filtered {
-                context.delete(f)
-            }
-            
-            try? context.save()
-        }
+        dataHelper.removeAllPendingChallenges()
     }
     
     internal func getToday() -> Date {
@@ -162,7 +148,6 @@ class NotificationHelper {
         components.hour = hour
         components.minute = minutes
         components.second = 0
-        components.timeZone = TimeZone.current
 
         return components
     }

@@ -16,7 +16,7 @@ struct EditActivity: View {
     @Binding var isAdding: Bool
     
     init(activity: Activity, isAdding: Binding<Bool>) {
-        viewModel = EditActivityViewModel(activity: activity, dataController: DataController.shared, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(context: DataController.shared.controller.viewContext))
+        viewModel = EditActivityViewModel(activity: activity, dataController: DataController.shared, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(dataHelper: DataHelper()))
         
         self._isAdding = isAdding
     }

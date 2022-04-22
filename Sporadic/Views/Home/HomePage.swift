@@ -48,7 +48,7 @@ struct Welcome: View {
 }
 
 struct ChallengeButton: View {
-    @ObservedObject var viewModel = HomeViewModel(context: DataController.shared.controller.viewContext)
+    @ObservedObject var viewModel = HomeViewModel(dataHelper: DataHelper())
     
     @State var showCompletedPage = false
     
@@ -62,11 +62,13 @@ struct ChallengeButton: View {
                 
                 HStack (spacing: 30) {
                     Button(action: {
-                        viewModel.challenge?.isCompleted = true
-                        viewModel.saveChallenge()
-                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                        if let challenge = viewModel.challenge {
+                            challenge.isCompleted = true
+                            viewModel.saveChallenge()
+                            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                         
-                        showCompletedPage = true
+                            showCompletedPage = true
+                        }
                     }, label: {
                         Circle()
                             .strokeBorder(Color.white, lineWidth: 5)
@@ -77,7 +79,7 @@ struct ChallengeButton: View {
                         .disabled(viewModel.challenge?.isCompleted ?? false)
                     
                     if let challenge = viewModel.challenge {
-                        Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") \(challenge.amount.removeZerosFromEnd()) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
+                        Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
                             .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
                     } else {
                         Text("No Challenge")
@@ -89,8 +91,8 @@ struct ChallengeButton: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fullScreenCover(isPresented: $showCompletedPage) {
-                VStack {
-                    Text("GOOD JOB!!!!!")
+                if let challenge = viewModel.challenge {
+                    Complete(challenge: challenge)
                 }
             }
         }

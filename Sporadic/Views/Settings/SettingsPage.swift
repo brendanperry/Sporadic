@@ -27,7 +27,7 @@ struct SettingsPage: View {
     let viewModel: SettingsViewModel
     
     init() {
-        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(context: DataController.shared.controller.viewContext))
+        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(dataHelper: DataHelper()))
     }
 
     var body: some View {
@@ -75,21 +75,37 @@ struct SettingsPage: View {
     }
     
     struct NotificationButton: View {
+        @State var showDisabledAlert = false
+        @State var showEnabledAlert = false
+        
         var body: some View {
             Button(action: {
-                UNUserNotificationCenter
-                    .current()
+                UNUserNotificationCenter.current()
                     .requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                     if success {
                         print("All set!")
                     } else if let error = error {
                         print(error.localizedDescription)
                     }
+                        
+                    UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        if settings.authorizationStatus == .authorized {
+                            showEnabledAlert = true
+                        } else {
+                            showDisabledAlert = true
+                        }
+                    }
                 }
             }, label: {
                 Text("Prompt")
             })
             .withSettingsButtonStyle()
+            .alert(isPresented: $showDisabledAlert) {
+                Alert(title: Text("Notifications Disabled"), message: Text("Please enable notifications in your phone's settings."), dismissButton: .default(Text("Okay")))
+            }
+            .alert(isPresented: $showEnabledAlert) {
+                Alert(title: Text("Notifications Enabled"), message: Text("Nothing to do!"), dismissButton: .default(Text("Okay")))
+            }
         }
     }
 

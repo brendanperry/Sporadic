@@ -14,7 +14,7 @@ struct CompleteChallenges: View {
     var body: some View {
         VStack {
             List(challenges) { challenge in
-                Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") > \(challenge.amount)")
+                Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") > \(challenge.total)")
             }
         }
     }
