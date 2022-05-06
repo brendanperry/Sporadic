@@ -69,12 +69,6 @@ class homeViewModelTests: XCTestCase {
         XCTAssertTrue(challenge?.total == 10)
     }
     
-    internal func getComponentsFromDate(_ date: Date) -> DateComponents {
-        let requestedComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
-
-        return Calendar.current.dateComponents(requestedComponents, from: date)
-    }
-    
     func getStartOfDay() -> Date {
         var components = getComponentsFromDate(Date())
 
@@ -129,6 +123,9 @@ class DataHelperMock: Repository {
     
     var wasSaveCalled = false
     var wasFetchChallengesCalled = false
+    var wasRemovePendingChallengesCalled = false
+    var shouldCountAddedChallenges = false
+    var addedChallengesCount = 0
     
     let context = DataController.shared.controller.viewContext
     
@@ -146,6 +143,19 @@ class DataHelperMock: Repository {
         createdChallenge.oneChallengeToOneActivity = activity
         
         challenges.append(createdChallenge)
+        
+        if shouldCountAddedChallenges {
+            addedChallengesCount += 1
+        }
+    }
+    
+    func createActivity() -> Activity {
+        let createdActivity: Activity = Activity(context: context)
+        createdActivity.isEnabled = true
+        
+        activities.append(createdActivity)
+        
+        return createdActivity
     }
     
     func fetchChallenges() -> [Challenge]? {
@@ -160,4 +170,60 @@ class DataHelperMock: Repository {
     func saveChanges() {
         wasSaveCalled = true
     }
+    
+    func fetchActiveActivities() -> [Activity]? {
+        return activities.filter({ $0.isEnabled })
+    }
+    
+    func getTotalChallengesScheduled() -> Int {
+        return challenges.filter({ ($0.time ?? Date()) > getEndOfDay() }).count
+    }
+    
+    func removeAllPendingChallenges() {
+        wasRemovePendingChallengesCalled = true
+    }
+    
+    func fetchCurrentChallenge() -> Challenge? {
+        return challenges.first(where: { getComponentsFromDate($0.time ?? Date()).day ==  getComponentsFromDate(Date()).day})
+    }
+
+    func popLastScheduledChallenge() -> Date? {
+        let lastChallenge = challenges.sorted(by: { ($0.time ?? Date()) > ($1.time ?? Date()) }).first
+        
+        if let challenge = lastChallenge {
+            let time = lastChallenge?.time
+            challenges.remove(at: challenges.firstIndex(of: challenge) ?? 0)
+            return time
+        }
+        
+        return nil
+    }
+}
+
+func getComponentsFromDate(_ date: Date) -> DateComponents {
+    let requestedComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
+    
+    return Calendar.current.dateComponents(requestedComponents, from: date)
+}
+
+func getStartOfDay() -> Date {
+    var components = getComponentsFromDate(Date())
+    
+    components.hour = 0
+    components.minute = 00
+    components.second = 00
+    components.timeZone = TimeZone.current
+    
+    return Calendar.current.date(from: components)!
+}
+
+func getEndOfDay() -> Date {
+    var components = getComponentsFromDate(Date())
+    
+    components.hour = 23
+    components.minute = 59
+    components.second = 59
+    components.timeZone = TimeZone.current
+    
+    return Calendar.current.date(from: components)!
 }

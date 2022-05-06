@@ -24,7 +24,9 @@ struct SettingsPage: View {
     
     let textHelper = TextHelper()
     
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
+    
+    @Environment(\.scenePhase) var scenePhase
     
     init() {
         viewModel = SettingsViewModel(notificationHelper: NotificationHelper(dataHelper: DataHelper()))
@@ -46,14 +48,19 @@ struct SettingsPage: View {
                         image: "NotificationIcon",
                         text: "Notifications",
                         actionText: "Prompt",
-                        actionView: AnyView(NotificationButton()))
+                        actionView: AnyView(NotificationButton(viewModel: viewModel)))
+                        .alert(isPresented: $viewModel.showDisabledAlert) {
+                            Alert(title: Text("Notifications Disabled"), message: Text("Please enable notifications in your phone's settings."), dismissButton: .default(Text("Okay")))
+                        }
                     
                     RectangleWidget(
                         image: "AppTheme",
                         text: "App Theme",
                         actionText: appTheme,
-                        actionView: AnyView(
-                            OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
+                        actionView: AnyView(OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
+                        .alert(isPresented: $viewModel.showEnabledAlert) {
+                            Alert(title: Text("Notifications Enabled"), message: Text("Nothing to do!"), dismissButton: .default(Text("Okay")))
+                        }
                         
                     AppIcons()
                     
@@ -71,53 +78,66 @@ struct SettingsPage: View {
             })
             .padding(.top)
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+                }
+            }
         }
     }
     
     struct NotificationButton: View {
-        @State var showDisabledAlert = false
-        @State var showEnabledAlert = false
+        let viewModel: SettingsViewModel
         
         var body: some View {
             Button(action: {
                 UNUserNotificationCenter.current()
                     .requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                    if success {
-                        print("All set!")
-                    } else if let error = error {
-                        print(error.localizedDescription)
-                    }
+                        if success {
+                            print("All set!")
+                        }
                         
-                    UNUserNotificationCenter.current().getNotificationSettings { settings in
-                        if settings.authorizationStatus == .authorized {
-                            showEnabledAlert = true
-                        } else {
-                            showDisabledAlert = true
+                        UNUserNotificationCenter.current().getNotificationSettings { settings in
+                            DispatchQueue.main.async {
+                                if settings.authorizationStatus == .authorized {
+                                    viewModel.showEnabledAlert = true
+                                    viewModel.scheduleNotifications(settingsChanged: false)
+                                } else {
+                                    viewModel.showDisabledAlert = true
+                                }
+                            }
                         }
                     }
-                }
             }, label: {
                 Text("Prompt")
+                    .frame(minWidth: 60)
+                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("SettingButtonTextColor"))
+                    .padding(12)
+                    .background(Color("SettingsButtonBackgroundColor"))
+                    .cornerRadius(10)
             })
-            .withSettingsButtonStyle()
-            .alert(isPresented: $showDisabledAlert) {
-                Alert(title: Text("Notifications Disabled"), message: Text("Please enable notifications in your phone's settings."), dismissButton: .default(Text("Okay")))
-            }
-            .alert(isPresented: $showEnabledAlert) {
-                Alert(title: Text("Notifications Enabled"), message: Text("Nothing to do!"), dismissButton: .default(Text("Okay")))
-            }
+                .buttonStyle(ButtonPressAnimationStyle())
         }
     }
 
     struct ContactButton: View {
         var body: some View {
-            Button("Contact") {
-                let email = "contact@brendanperry.me"
+            Button(action: {
+                let email = "contact@sporadic.app"
                 if let url = URL(string: "mailto:\(email)") {
                     UIApplication.shared.open(url)
                 }
-            }
-            .withSettingsButtonStyle()
+            }, label: {
+                Text("Contact")
+                    .frame(minWidth: 60)
+                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("SettingButtonTextColor"))
+                    .padding(12)
+                    .background(Color("SettingsButtonBackgroundColor"))
+                    .cornerRadius(10)
+            })
+                .buttonStyle(ButtonPressAnimationStyle())
         }
     }
 
@@ -174,7 +194,7 @@ struct SettingsPage: View {
                             }
                             .labelsHidden()
                             .onChange(of: days) { _ in
-                                viewModel.scheduleNotifications()
+                                viewModel.scheduleNotifications(settingsChanged: true)
                             }
                             
                             Text("\(days)")
@@ -195,7 +215,7 @@ struct SettingsPage: View {
                                 .labelsHidden()
                                 .scaleEffect(1.6)
                                 .onChange(of: time) { _ in
-                                    viewModel.scheduleNotifications()
+                                    viewModel.scheduleNotifications(settingsChanged: true)
                                 }
                             
                             Group {
@@ -271,27 +291,32 @@ struct SettingsPage: View {
     struct OptionPicker: View {
         var title: String
         var options: [String]
-
+        
         @Binding var selection: String
         @State var showingOptions = false
-
+        
         var body: some View {
-            VStack {
-                Button(selection) {
-                    showingOptions = true
-                }
-                .withSettingsButtonStyle()
+            Button(action: {
+                showingOptions = true
+            }, label: {
+                Text(selection)
+                    .frame(minWidth: 60)
+                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("SettingButtonTextColor"))
+                    .padding(12)
+                    .background(Color("SettingsButtonBackgroundColor"))
+                    .cornerRadius(10)
+            })
+                .buttonStyle(ButtonPressAnimationStyle())
                 .actionSheet(isPresented: $showingOptions) {
                     ActionSheet(
                         title: Text(title),
                         buttons: options.map { option in
-                            .default(Text(option)) {
-                                selection = option
-                            }
-                        }
-                    )
+                                .default(Text(option)) {
+                                    selection = option
+                                }
+                        })
                 }
-            }
         }
     }
 }

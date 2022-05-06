@@ -9,12 +9,14 @@ import Foundation
 
 class SettingsViewModel : ObservableObject {
     let notificationHelper: NotificationHelper
+    @Published var showDisabledAlert = false
+    @Published var showEnabledAlert = false
     
     init(notificationHelper: NotificationHelper) {
         self.notificationHelper = notificationHelper
     }
     
-    func scheduleNotifications() {
-        notificationHelper.scheduleAllNotifications()
+    func scheduleNotifications(settingsChanged: Bool) {
+        notificationHelper.scheduleAllNotifications(settingsChanged: settingsChanged)
     }
 }

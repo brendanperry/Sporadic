@@ -7,23 +7,30 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 class HomeViewModel : ObservableObject {
     let dataHelper: Repository
+    let notificationHelper: NotificationHelper
     
-    @Published var challenge: Challenge?
-    
-    init(dataHelper: Repository) {
+    init(dataHelper: Repository, notificationHelper: NotificationHelper) {
         self.dataHelper = dataHelper
+        self.notificationHelper = notificationHelper
         
-        challenge = getDailyActivity()
+        notificationHelper.scheduleAllNotifications(settingsChanged: false)
     }
     
-    func saveChallenge() {
+    func completeChallenge() {
         dataHelper.saveChanges()
+        GlobalSettings.Env.currentChallenge?.oneChallengeToOneActivity?.total += GlobalSettings.Env.currentChallenge?.total ?? 0
+        GlobalSettings.Env.updateStatus()
     }
     
-    func getDailyActivity() -> Challenge? {
-        return dataHelper.fetchCurrentChallenge()
+    func getActivityCount() -> Int {
+        return dataHelper.fetchActiveActivities()?.count ?? 0
+    }
+    
+    func getNotificationStatus(completion: @escaping(Bool) -> Void) {
+        notificationHelper.getNotificationStatus(completion: completion)
     }
 }

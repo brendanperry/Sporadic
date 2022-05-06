@@ -60,6 +60,6 @@ class EditActivityViewModel : ObservableObject {
         
         try? dataController.controller.viewContext.save()
         
-        notificationHelper.scheduleAllNotifications()
+        notificationHelper.scheduleAllNotifications(settingsChanged: true)
     }
 }

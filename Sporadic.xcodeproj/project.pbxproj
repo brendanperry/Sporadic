@@ -47,6 +47,7 @@
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BFEA9D281256D7007A8B87 /* notificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9C281256D7007A8B87 /* notificationTests.swift */; };
+		C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */; };
 		C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9600D278F8F2000A67AA2 /* AddButton.swift */; };
 		C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */; };
 		C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96013278F9F3C00A67AA2 /* AddPage.swift */; };
@@ -118,6 +119,7 @@
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BFEA9C281256D7007A8B87 /* notificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTests.swift; sourceTree = "<group>"; };
+		C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6C9600D278F8F2000A67AA2 /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
 		C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C6C96013278F9F3C00A67AA2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				C664A930279643A900EE2195 /* HealthKitHelper.swift */,
 				C664A934279671FB00EE2195 /* DataHelper.swift */,
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
+				C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				C66424D027B856A700B574D7 /* Complete.swift in Sources */,
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
+				C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
@@ -727,7 +731,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -751,7 +755,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;

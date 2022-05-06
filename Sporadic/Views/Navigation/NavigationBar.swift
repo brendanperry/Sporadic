@@ -21,6 +21,7 @@ struct NavigationBar: View {
                     .frame(width: UIScreen.main.bounds.width * 0.90, height: 65, alignment: .bottom)
                     .padding()
                     .offset(y: self.isAdding ? 150 : 0)
+                    .shadow(radius: 3)
             }
             .frame(maxHeight: .infinity)
             

@@ -19,6 +19,41 @@ class DataHelper: Repository {
         return activities
     }
     
+    func getTotalChallengesScheduled() -> Int {
+        let fetchRequest = Challenge.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "time > %@", getEndOfDay() as NSDate)
+        
+        let challenges = try? context.fetch(fetchRequest)
+        
+        if let challenges = challenges {
+            return challenges.count
+        }
+        
+        return 0
+    }
+    
+    func popLastScheduledChallenge() -> Date? {
+        let fetchRequest = Challenge.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "time > %@", getEndOfDay() as NSDate)
+        
+        let challenges = try? context.fetch(fetchRequest)
+        
+        if let challenges = challenges {
+            let lastChallenge = challenges.sorted(by: { ($0.time ?? Date()) > ($1.time ?? Date()) }).first
+            
+            if let lastChallenge = lastChallenge {
+                let date = lastChallenge.time
+                context.delete(lastChallenge)
+                
+                return date
+            }
+        }
+        
+        return nil
+    }
+    
     func fetchActiveActivities() -> [Activity]? {
         let fetchRequest = Activity.fetchRequest()
         

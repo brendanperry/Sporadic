@@ -7,7 +7,7 @@
 */
 
 "WelcomeBack" = "Welcome back!";
-"YourGoal" = "Here's your sporatic goal for today.";
+"YourGoal" = "Here's your sporadic goal for today.";
 "CurrentRhythm" = "Current Rhythm";
 "Activities" = "Activities";
 "RandomNotificationDelivery" = "Random Notification Delivery";
@@ -15,3 +15,11 @@
 "Bike" = "Bike";
 "Yoga" = "Yoga";
 "TimesAWeek" = "times a week";
+"NoChallengesScheduled" = "No Challenges Scheduled";
+"SomethingIsWrong" = "Let's get things working.";
+"Activities" = "Activities";
+"NoActivities" = "No activities added. Please enable at least one activity to get daily challenges scheduled. These can be accessed by pressing the + button at the bottom of the screen.";
+"SomeActivities" = "Activities selected. Nothing to do.";
+"NotificationsDisabled" = "Notifications must be enabled for the app to function! Please enable notifications in your phone's settings and return to the app. The challenges will be scheduled on their own, and this warning will go away if it was successful.";
+"NotificationsEnabled" = "Notifications are enabled! Nothing to do.";
+"Loading" = "Loading your preferences...";

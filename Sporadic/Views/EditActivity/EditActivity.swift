@@ -81,7 +81,6 @@ struct EditActivity: View {
                         .padding(.bottom)
                     
                     TotalMiles(viewModel: viewModel)
-                    
                 }
             }
             .frame(maxHeight: .infinity, alignment: .bottom)

@@ -9,7 +9,10 @@ import SwiftUI
 
 struct HomePage: View {
     @Binding var isAdding: Bool
-    
+    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var env = GlobalSettings.Env
+    @Environment(\.scenePhase) var scenePhase
+
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -18,7 +21,11 @@ struct HomePage: View {
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack {
                     Welcome()
-                    ChallengeButton()
+                    ChallengeButton(viewModel: viewModel)
+                    
+                    if env.showWarning {
+                        WarningMessage(viewModel: viewModel)
+                    }
                     Streak()
                     ActivitiesHome(isAdding: $isAdding)
                     Spacer()
@@ -30,6 +37,101 @@ struct HomePage: View {
             .padding(.top)
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+        .onAppear {
+            GlobalSettings.Env.updateStatus()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+            }
+        }
+    }
+}
+
+struct WarningMessage: View {
+    @ObservedObject var viewModel: HomeViewModel
+    @State var showInvalidSettingsPopUp = false
+    @State var notificationsAuthorized: Bool?
+    let textHelper = TextHelper()
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Image(systemName: "exclamationmark.circle.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20, alignment: .leading)
+                    .offset(y: -1)
+                    .foregroundColor(.red)
+                    .padding(.leading)
+                
+                textHelper.GetTextByType(text: Localize.getString("NoChallengesScheduled"), isCentered: false, type: .medium)
+                    .padding([.top, .bottom])
+            }
+            
+            Button(action: {
+                showInvalidSettingsPopUp = true
+                
+                viewModel.getNotificationStatus { isAuthorized in
+                    notificationsAuthorized = isAuthorized
+                }
+            }, label: {
+                Text("Schedule")
+                    .frame(minWidth: 60)
+                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
+                    .foregroundColor(Color("SettingButtonTextColor"))
+                    .padding(12)
+                    .background(Color("SettingsButtonBackgroundColor"))
+                    .cornerRadius(10)
+            })
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding([.leading, .bottom])
+                .buttonStyle(ButtonPressAnimationStyle())
+                .fullScreenCover(isPresented: $showInvalidSettingsPopUp) {
+                    VStack {
+                        Button(action: {
+                            showInvalidSettingsPopUp = false
+                        }) {
+                            Image("CloseButton")
+                                .resizable()
+                                .frame(width: 40, height: 40, alignment: .leading)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        textHelper.GetTextByType(text: Localize.getString("SomethingIsWrong"), isCentered: false, type: .largeTitle)
+                            .padding()
+                        
+                        textHelper.GetTextByType(text: Localize.getString("Activities"), isCentered: false, type: .medium)
+                            .padding([.leading])
+                        
+                        if viewModel.getActivityCount() == 0 {
+                            textHelper.GetTextByType(text: Localize.getString("NoActivities"), isCentered: false, type: .body)
+                                .padding()
+                        } else {
+                            textHelper.GetTextByType(text: Localize.getString("SomeActivities"), isCentered: false, type: .body)
+                                .padding()
+                        }
+                        
+                        textHelper.GetTextByType(text: Localize.getString("Notifications"), isCentered: false, type: .medium)
+                            .padding([.leading])
+                        
+                        if let authorized = notificationsAuthorized {
+                            if authorized {
+                                textHelper.GetTextByType(text: Localize.getString("NotificationsEnabled"), isCentered: false, type: .body)
+                                    .padding()
+                            } else {
+                                textHelper.GetTextByType(text: Localize.getString("NotificationsDisabled"), isCentered: false, type: .body)
+                                    .padding()
+                            }
+                        } else {
+                            textHelper.GetTextByType(text: Localize.getString("Loading"), isCentered: false, type: .body)
+                                .padding()
+                        }
+
+                        Spacer()
+                    }
+                }
+        }
     }
 }
 
@@ -48,8 +150,8 @@ struct Welcome: View {
 }
 
 struct ChallengeButton: View {
-    @ObservedObject var viewModel = HomeViewModel(dataHelper: DataHelper())
-    
+    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var env = GlobalSettings.Env
     @State var showCompletedPage = false
     
     var body: some View {
@@ -62,9 +164,9 @@ struct ChallengeButton: View {
                 
                 HStack (spacing: 30) {
                     Button(action: {
-                        if let challenge = viewModel.challenge {
+                        if let challenge = env.currentChallenge {
                             challenge.isCompleted = true
-                            viewModel.saveChallenge()
+                            viewModel.completeChallenge()
                             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                         
                             showCompletedPage = true
@@ -73,12 +175,12 @@ struct ChallengeButton: View {
                         Circle()
                             .strokeBorder(Color.white, lineWidth: 5)
                             .frame(width: 40, height: 40, alignment: .center)
-                            .background(viewModel.challenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
+                            .background(env.currentChallenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
                     })
                         .buttonStyle(ButtonPressAnimationStyle())
-                        .disabled(viewModel.challenge?.isCompleted ?? false)
+                        .disabled(env.currentChallenge?.isCompleted ?? false)
                     
-                    if let challenge = viewModel.challenge {
+                    if let challenge = env.currentChallenge {
                         Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
                             .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
                     } else {
@@ -91,20 +193,13 @@ struct ChallengeButton: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fullScreenCover(isPresented: $showCompletedPage) {
-                if let challenge = viewModel.challenge {
+                if let challenge = env.currentChallenge {
                     Complete(challenge: challenge)
                 }
             }
         }
         .padding(.horizontal)
         .padding(.bottom)
-    }
-    
-    private struct ButtonPressAnimationStyle: ButtonStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
-        }
     }
 }
 

@@ -13,7 +13,7 @@ struct AddButton: View {
     var body: some View {
         Button(action: {
             withAnimation {
-                self.isAdding.toggle()
+                isAdding.toggle()
                 
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }

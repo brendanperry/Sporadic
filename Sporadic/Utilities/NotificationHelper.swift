@@ -10,29 +10,51 @@ import UserNotifications
 import CoreData
 
 class NotificationHelper {
-    let dataHelper: DataHelper
+    let dataHelper: Repository
     let defaults = UserDefaults()
     let notificationCenter = UNUserNotificationCenter.current()
     let dateFormatter = DateFormatter()
+    let maxNotificationsToSchedule = 90
     
-    init(dataHelper: DataHelper) {
+    init(dataHelper: Repository) {
         self.dataHelper = dataHelper
         dateFormatter.dateFormat = "MM/dd/YYYY HH:mm"
     }
     
-    func scheduleAllNotifications() {
+    func scheduleAllNotifications(settingsChanged: Bool) {
+        getNotificationStatus { [weak self] authorized in
+            if authorized {
+                self?.beginScheduling(settingsChanged)
+            }
+            
+            GlobalSettings.Env.updateStatus()
+        }
+    }
+    
+    internal func beginScheduling(_ settingsChanged: Bool) {
         let activities = dataHelper.fetchActiveActivities()
         
-        removeOldChallenges()
+        var dateToBeginScheduling = getToday()
+        
+        if settingsChanged {
+            removeOldChallenges()
+        } else {
+            if let finalChallengeDate = dataHelper.popLastScheduledChallenge() {
+               dateToBeginScheduling = finalChallengeDate
+            }
+        }
         
         if let activities = activities {
             if activities.count == 0 {
                 return
             }
 
-            var today = getToday()
-            let daysPerWeek = defaults.integer(forKey: UserPrefs.daysPerWeek.rawValue)
-            let weeksToSchedule = 4;
+            var daysPerWeek = defaults.integer(forKey: UserPrefs.daysPerWeek.rawValue)
+            if daysPerWeek == 0 {
+                daysPerWeek = 3
+            }
+            
+            let weeksToSchedule = Int((90 - dataHelper.getTotalChallengesScheduled()) / 7)
             let currentChallenge = dataHelper.fetchCurrentChallenge()
             
             for index in 0..<weeksToSchedule {
@@ -45,12 +67,12 @@ class NotificationHelper {
                     availableDays = [0, 1, 2, 3, 4, 5, 6]
                 }
 
-                scheduleOnDays(daysPerWeek, &availableDays, today, activities)
+                scheduleOnDays(daysPerWeek, &availableDays, dateToBeginScheduling, activities)
                 
-                today = Calendar.current.date(byAdding: .day, value: 7, to: today)!
+                dateToBeginScheduling = Calendar.current.date(byAdding: .day, value: 7, to: dateToBeginScheduling)!
             }
             
-            scheduleReminder(date: today)
+            scheduleReminder(date: dateToBeginScheduling)
         }
     }
     
@@ -65,14 +87,14 @@ class NotificationHelper {
             dateTime: getComponentsFromDate(finalDate))
     }
     
-    internal func scheduleOnDays(_ daysPerWeek: Int, _ availableDays: inout [Int], _ today: Date, _ activities: [Activity]) {
+    internal func scheduleOnDays(_ daysPerWeek: Int, _ availableDays: inout [Int], _ startDate: Date, _ activities: [Activity]) {
         for _ in 0..<daysPerWeek {
             let daysToAdd = availableDays.randomElement()
             
             if let days = daysToAdd {
                 availableDays = removeElement(days, from: availableDays)
                 
-                let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: today)!
+                let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: startDate)!
                 let activity = activities[Int.random(in: 0..<activities.count)]
                 let amount = round(Double.random(in: activity.minValue...activity.maxValue), toNearest: activity.minRange)
                 
@@ -86,7 +108,7 @@ class NotificationHelper {
                 
                 scheduleNotification(
                     title: "Your Challenge For Today",
-                    body: "\(activity.name ?? "Unknown") for \(amount) miles.",
+                    body: "\(activity.name ?? "Unknown") for \(amount) \(activity.unit ?? "").",
                     dateTime: getComponentsFromDate(scheduledDate))
             }
         }
@@ -169,25 +191,10 @@ class NotificationHelper {
 
         return newList
     }
-
-    // TODO: maybe refactor with async / await in new xcode?
-    internal func isAuthorizedToSendNotifications() -> Bool {
-        var notificationSettings: UNNotificationSettings?
-        let semasphore = DispatchSemaphore(value: 0)
-
-        DispatchQueue.global().async {
-            UNUserNotificationCenter.current().getNotificationSettings { setttings in
-                notificationSettings = setttings
-                semasphore.signal()
-            }
-        }
-
-        semasphore.wait()
-
-        if let settings = notificationSettings {
-            return settings.authorizationStatus == .authorized
-        } else {
-            return false
+    
+    func getNotificationStatus(completion: @escaping(Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            completion(settings.authorizationStatus == .authorized)
         }
     }
 }

@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-extension Button {
-    func withSettingsButtonStyle() -> some View {
-        self.frame(width: 60)
-        .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-        .foregroundColor(Color("SettingButtonTextColor"))
-        .padding(12)
-        .background(Color("SettingsButtonBackgroundColor"))
-        .cornerRadius(10)
+struct ButtonPressAnimationStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
     }
 }
