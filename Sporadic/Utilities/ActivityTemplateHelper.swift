@@ -62,7 +62,7 @@ class ActivityTemplateHelper {
     
     // pull out into activity helper maybe
     func getActivity(activityTemplate: ActivityTemplate) -> Activity {
-        let context = DataController.shared.controller.viewContext
+        let context = DataController.shared.container.viewContext
         let fetchRequest = Activity.fetchRequest()
         
         fetchRequest.predicate = NSPredicate(format: "activityTemplateId == %i", activityTemplate.id)
@@ -77,7 +77,7 @@ class ActivityTemplateHelper {
     }
     
     func createNewActivity(activityTemplate: ActivityTemplate) -> Activity {
-        let context = DataController.shared.controller.viewContext
+        let context = DataController.shared.container.viewContext
         let activity = Activity(context: context)
         activity.activityTemplateId = activityTemplate.id
         activity.name = activityTemplate.name
@@ -88,7 +88,7 @@ class ActivityTemplateHelper {
         activity.unit = activityTemplate.unit
         activity.minRange = activityTemplate.minRange
         
-        try? context.save()
+        //try? context.save()
         
         return activity
     }

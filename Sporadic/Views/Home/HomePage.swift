@@ -43,6 +43,12 @@ struct HomePage: View {
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+                
+                UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
+                    for notification in notifications {
+                        print("NOT: \(notification)")
+                    }
+                }
             }
         }
     }
@@ -69,6 +75,9 @@ struct WarningMessage: View {
             }
             
             Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
                 showInvalidSettingsPopUp = true
                 
                 viewModel.getNotificationStatus { isAuthorized in
@@ -89,6 +98,9 @@ struct WarningMessage: View {
                 .fullScreenCover(isPresented: $showInvalidSettingsPopUp) {
                     VStack {
                         Button(action: {
+                            let impact = UIImpactFeedbackGenerator(style: .light)
+                            impact.impactOccurred()
+                            
                             showInvalidSettingsPopUp = false
                         }) {
                             Image("CloseButton")
@@ -97,6 +109,7 @@ struct WarningMessage: View {
                         }
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .buttonStyle(ButtonPressAnimationStyle())
                         
                         textHelper.GetTextByType(text: Localize.getString("SomethingIsWrong"), isCentered: false, type: .largeTitle)
                             .padding()

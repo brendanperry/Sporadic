@@ -15,16 +15,19 @@ public class GlobalSettings: ObservableObject {
     @Published var currentChallenge: Challenge?
     @Published var showWarning = false
     
-    let dataHelper = DataHelper()
-    let notificationHelper = NotificationHelper(dataHelper: DataHelper())
+    let dataHelper = DataController.shared
+    let notificationHelper = NotificationHelper(dataHelper: DataController.shared)
     
     private init() { }
     
     func updateStatus() {
+        DispatchQueue.main.async { [weak self] in
+            self?.currentChallenge = self?.getDailyActivity()
+        }
+        
         self.notificationHelper.getNotificationStatus { isAuthorized in
             DispatchQueue.main.async { [weak self] in
                 self?.showWarning = self?.dataHelper.getTotalChallengesScheduled() == 0 || !isAuthorized
-                self?.currentChallenge = self?.getDailyActivity()
             }
         }
     }

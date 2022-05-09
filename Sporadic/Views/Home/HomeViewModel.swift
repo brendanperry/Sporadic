@@ -21,7 +21,6 @@ class HomeViewModel : ObservableObject {
     }
     
     func completeChallenge() {
-        dataHelper.saveChanges()
         GlobalSettings.Env.currentChallenge?.oneChallengeToOneActivity?.total += GlobalSettings.Env.currentChallenge?.total ?? 0
         GlobalSettings.Env.updateStatus()
     }

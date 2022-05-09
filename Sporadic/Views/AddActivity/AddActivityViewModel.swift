@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 class AddActivityViewModel : ObservableObject {
     let dataController: DataController
@@ -14,7 +13,8 @@ class AddActivityViewModel : ObservableObject {
     
     @Published var activities = [Activity]()
     
-    init(dataController: DataController, activityTemplateHelper: ActivityTemplateHelper) {
+    init(dataController: DataController,
+         activityTemplateHelper: ActivityTemplateHelper) {
         self.dataController = dataController
         self.activityTemplateHelper = activityTemplateHelper
             
@@ -22,15 +22,11 @@ class AddActivityViewModel : ObservableObject {
     }
     
     func getDisabledActivities() -> [Activity] {
-        let fetchRequest = Activity.fetchRequest()
-        
-        let activities = try? dataController.controller.viewContext.fetch(fetchRequest)
+        let activities = dataController.fetchInactiveActivities()
         
         if let activities = activities {
-            if activities.count != 0 {
-                return activities.filter { activity in
-                    return activity.isEnabled == false
-                }
+            if activities.count > 0 {
+                return activities
             }
         }
         

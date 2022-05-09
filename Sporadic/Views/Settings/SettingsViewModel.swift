@@ -17,6 +17,8 @@ class SettingsViewModel : ObservableObject {
     }
     
     func scheduleNotifications(settingsChanged: Bool) {
-        notificationHelper.scheduleAllNotifications(settingsChanged: settingsChanged)
+        DispatchQueue.main.async { [weak self] in
+            self?.notificationHelper.scheduleAllNotifications(settingsChanged: settingsChanged)
+        }
     }
 }

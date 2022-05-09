@@ -13,7 +13,7 @@ class EditActivityViewModel : ObservableObject {
     let notificationHelper: NotificationHelper
     let activity: Activity
     let activityTemplate: ActivityTemplate
-    let dataController: DataController
+    let dataHelper: Repository
     
     @Published var minValue = 0.0
     @Published var maxValue = 0.0
@@ -21,14 +21,14 @@ class EditActivityViewModel : ObservableObject {
     
     init(
         activity: Activity,
-        dataController: DataController,
         activityTemplateHelper: ActivityTemplateHelper,
-        notificationHelper: NotificationHelper
+        notificationHelper: NotificationHelper,
+        dataHelper: Repository
     ) {
         self.activityTemplateHelper = activityTemplateHelper
         self.notificationHelper = notificationHelper
         self.activity = activity
-        self.dataController = dataController
+        self.dataHelper = dataHelper
         
         activityTemplate = activityTemplateHelper.getActivityTemplateById(id: activity.activityTemplateId)
         
@@ -54,12 +54,12 @@ class EditActivityViewModel : ObservableObject {
     }
     
     func saveActivity() {
-        activity.isEnabled = isEnabled
-        activity.minValue = minValue
-        activity.maxValue = maxValue
-        
-        try? dataController.controller.viewContext.save()
-        
-        notificationHelper.scheduleAllNotifications(settingsChanged: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.activity.isEnabled = self?.isEnabled ?? false
+            self?.activity.minValue = self?.minValue ?? 0
+            self?.activity.maxValue = self?.maxValue ?? 0
+            
+            self?.notificationHelper.scheduleAllNotifications(settingsChanged: true)
+        }
     }
 }

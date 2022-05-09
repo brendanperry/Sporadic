@@ -25,9 +25,7 @@
 		C6620063278A58D9000AF577 /* EditActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620062278A58D9000AF577 /* EditActivity.swift */; };
 		C66424D027B856A700B574D7 /* Complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66424CF27B856A700B574D7 /* Complete.swift */; };
 		C664A92F2796208300EE2195 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C664A92E2796208300EE2195 /* HealthKit.framework */; };
-		C664A931279643A900EE2195 /* HealthKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A930279643A900EE2195 /* HealthKitHelper.swift */; };
 		C664A933279652C700EE2195 /* CompleteChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A932279652C700EE2195 /* CompleteChallenges.swift */; };
-		C664A935279671FB00EE2195 /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A934279671FB00EE2195 /* DataHelper.swift */; };
 		C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A936279A156400EE2195 /* ActivityTemplate.swift */; };
 		C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */; };
 		C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A93C279A3D7C00EE2195 /* EditActivityViewModel.swift */; };
@@ -97,9 +95,7 @@
 		C6620062278A58D9000AF577 /* EditActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivity.swift; sourceTree = "<group>"; };
 		C66424CF27B856A700B574D7 /* Complete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complete.swift; sourceTree = "<group>"; };
 		C664A92E2796208300EE2195 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		C664A930279643A900EE2195 /* HealthKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitHelper.swift; sourceTree = "<group>"; };
 		C664A932279652C700EE2195 /* CompleteChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteChallenges.swift; sourceTree = "<group>"; };
-		C664A934279671FB00EE2195 /* DataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHelper.swift; sourceTree = "<group>"; };
 		C664A936279A156400EE2195 /* ActivityTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplate.swift; sourceTree = "<group>"; };
 		C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplateHelper.swift; sourceTree = "<group>"; };
 		C664A93C279A3D7C00EE2195 /* EditActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivityViewModel.swift; sourceTree = "<group>"; };
@@ -112,6 +108,7 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic_v1.0.1.xcdatamodel; sourceTree = "<group>"; };
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -184,8 +181,6 @@
 				C6BCB2112766B0CD00D9677D /* TextHelper.swift */,
 				C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */,
 				C6C9602D2794AFAB00A67AA2 /* DataController.swift */,
-				C664A930279643A900EE2195 /* HealthKitHelper.swift */,
-				C664A934279671FB00EE2195 /* DataHelper.swift */,
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
 				C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */,
 			);
@@ -514,7 +509,6 @@
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */,
-				C664A935279671FB00EE2195 /* DataHelper.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
@@ -530,7 +524,6 @@
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
-				C664A931279643A900EE2195 /* HealthKitHelper.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
 				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
 				C664A93F279A4D1600EE2195 /* DoubleExtensions.swift in Sources */,
@@ -731,7 +724,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -755,7 +748,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -808,6 +801,7 @@
 		C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */,
 				C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */,
 			);
 			currentVersion = C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */;

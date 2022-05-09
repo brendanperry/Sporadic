@@ -9,6 +9,8 @@ import XCTest
 import CoreData
 @testable import Sporadic
 
+// need to mock out notification status
+
 class notificationTests: XCTestCase {
 
     func testGivenSettingsChangedThenNotifcationsAreCleared() {

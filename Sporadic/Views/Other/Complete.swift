@@ -17,6 +17,9 @@ struct Complete: View {
     var body: some View {
         VStack {
             Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
                 dismiss()
             }) {
                 Image("CloseButton")
@@ -24,6 +27,7 @@ struct Complete: View {
                     .frame(width: 40, height: 40, alignment: .leading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .buttonStyle(ButtonPressAnimationStyle())
             
             Spacer()
             

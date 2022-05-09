@@ -29,7 +29,7 @@ struct SettingsPage: View {
     @Environment(\.scenePhase) var scenePhase
     
     init() {
-        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(dataHelper: DataHelper()))
+        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(dataHelper: DataController.shared))
     }
 
     var body: some View {
@@ -91,6 +91,9 @@ struct SettingsPage: View {
         
         var body: some View {
             Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
                 UNUserNotificationCenter.current()
                     .requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                         if success {
@@ -124,6 +127,9 @@ struct SettingsPage: View {
     struct ContactButton: View {
         var body: some View {
             Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
                 let email = "contact@sporadic.app"
                 if let url = URL(string: "mailto:\(email)") {
                     UIApplication.shared.open(url)
@@ -278,6 +284,9 @@ struct SettingsPage: View {
                     .frame(width: 60, height: 60)
                     .cornerRadius(15)
                     .onTapGesture {
+                        let impact = UIImpactFeedbackGenerator(style: .light)
+                        impact.impactOccurred()
+                        
                         if name == "AppIcon-1" {
                             UIApplication.shared.setAlternateIconName(nil)
                         } else {
@@ -297,6 +306,9 @@ struct SettingsPage: View {
         
         var body: some View {
             Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
                 showingOptions = true
             }, label: {
                 Text(selection)

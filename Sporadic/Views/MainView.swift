@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewRouter = ViewRouter()
-    @ObservedObject var homeViewModel = HomeViewModel(dataHelper: DataHelper(), notificationHelper: NotificationHelper(dataHelper: DataHelper()))
+    @ObservedObject var homeViewModel = HomeViewModel(dataHelper: DataController.shared, notificationHelper: NotificationHelper(dataHelper: DataController.shared))
     @State var selectedTab = 0
     @State var isAdding = false
     

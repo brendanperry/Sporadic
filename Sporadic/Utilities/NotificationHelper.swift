@@ -24,7 +24,9 @@ class NotificationHelper {
     func scheduleAllNotifications(settingsChanged: Bool) {
         getNotificationStatus { [weak self] authorized in
             if authorized {
-                self?.beginScheduling(settingsChanged)
+                DispatchQueue.main.sync {
+                    self?.beginScheduling(settingsChanged)
+                }
             }
             
             GlobalSettings.Env.updateStatus()
@@ -126,7 +128,6 @@ class NotificationHelper {
         content.sound = UNNotificationSound.default
         content.body = body
         
-
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateTime, repeats: false)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)

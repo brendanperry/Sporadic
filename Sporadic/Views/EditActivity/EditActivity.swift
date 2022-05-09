@@ -16,7 +16,7 @@ struct EditActivity: View {
     @Binding var isAdding: Bool
     
     init(activity: Activity, isAdding: Binding<Bool>) {
-        viewModel = EditActivityViewModel(activity: activity, dataController: DataController.shared, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(dataHelper: DataHelper()))
+        viewModel = EditActivityViewModel(activity: activity, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(dataHelper: DataController.shared), dataHelper: DataController.shared)
         
         self._isAdding = isAdding
     }
@@ -30,6 +30,9 @@ struct EditActivity: View {
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
                     Button(action: {
+                        let impact = UIImpactFeedbackGenerator(style: .light)
+                        impact.impactOccurred()
+                        
                         viewModel.saveActivity()
                         isAdding = false
                         dismiss()
@@ -39,6 +42,7 @@ struct EditActivity: View {
                             .frame(width: 40, height: 40, alignment: .leading)
                     }
                     .padding()
+                    .buttonStyle(ButtonPressAnimationStyle())
                     
                     textHelper.GetTextByType(text: viewModel.activity.name ?? "Unkown" + " settings", isCentered: false, type: .title)
                         .padding(.leading)
