@@ -49,7 +49,7 @@ class ActivityTemplateHelper {
         return activityTemplatesToAdd
     }
     
-    func getDefaultActivities() -> [Activity] {
+    func getAndCreateDefaultActivities() -> [Activity] {
         var activities = [Activity]()
         let templates = getActivityTemplates()
         
@@ -87,8 +87,6 @@ class ActivityTemplateHelper {
         activity.total = 0
         activity.unit = activityTemplate.unit
         activity.minRange = activityTemplate.minRange
-        
-        //try? context.save()
         
         return activity
     }

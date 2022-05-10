@@ -17,6 +17,8 @@ class HomeViewModel : ObservableObject {
         self.dataHelper = dataHelper
         self.notificationHelper = notificationHelper
         
+        dataHelper.resolveDuplicateActivities()
+        
         notificationHelper.scheduleAllNotifications(settingsChanged: false)
     }
     

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewRouter = ViewRouter()
-    @ObservedObject var homeViewModel = HomeViewModel(dataHelper: DataController.shared, notificationHelper: NotificationHelper(dataHelper: DataController.shared))
     @State var selectedTab = 0
     @State var isAdding = false
     
@@ -23,7 +22,7 @@ struct MainView: View {
             ZStack(alignment: .trailing) {
                 switch viewRouter.currentPage {
                 case .home:
-                    HomePage(isAdding: $isAdding, viewModel: homeViewModel)
+                    HomePage(isAdding: $isAdding)
                 case .settings:
                     SettingsPage()
                 case .tutorial:

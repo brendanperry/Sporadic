@@ -33,6 +33,49 @@ class DataController: ObservableObject, Repository {
         return activities
     }
     
+    // when saving activities in iCloud
+    // it is possible a user creates a new activity
+    // then sync with iCloud later
+    // we merge their stats and take the preferences of the most recent one
+    func resolveDuplicateActivities() {
+        let templateHelper = ActivityTemplateHelper()
+        let activities = fetchActivities()
+        let templates = templateHelper.getActivityTemplates()
+        
+        if let activities = activities {
+            if activities.count > templates.count {
+                for template in templates {
+                    let name = template.name
+                    
+                    let activitiesForName = activities.filter({ $0.name == name })
+                    
+                    var challenges = [Challenge]()
+                    var total = 0.0
+                    for activity in activitiesForName {
+                        if let activityChallenges = activity.oneActivityToManyChallenges?.allObjects as? [Challenge] {
+                            challenges.append(contentsOf: activityChallenges)
+                        }
+                        
+                        total += activity.total
+                    }
+                    
+                    guard let masterActivity = activitiesForName.first else {
+                        continue
+                    }
+                    
+                    masterActivity.total = total
+                    for challenge in challenges {
+                        challenge.oneChallengeToOneActivity = masterActivity
+                    }
+                    
+                    for otherActivity in activitiesForName.filter({ $0.id != masterActivity.id }) {
+                        container.viewContext.delete(otherActivity as NSManagedObject)
+                    }
+                }
+            }
+        }
+    }
+    
     func getTotalChallengesScheduled() -> Int {
         let fetchRequest = Challenge.fetchRequest()
         
@@ -145,10 +188,12 @@ class DataController: ObservableObject, Repository {
         let context = container.viewContext
         
         if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error)
+            DispatchQueue.main.async {
+                do {
+                    try context.save()
+                } catch {
+                    print(error)
+                }
             }
         }
     }

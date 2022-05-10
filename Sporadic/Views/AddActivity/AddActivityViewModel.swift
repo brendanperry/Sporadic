@@ -18,7 +18,11 @@ class AddActivityViewModel : ObservableObject {
         self.dataController = dataController
         self.activityTemplateHelper = activityTemplateHelper
             
-        activities = getDisabledActivities()
+        DispatchQueue.main.async { [weak self] in
+            if let activities = self?.getDisabledActivities() {
+                self?.activities = activities
+            }
+        }
     }
     
     func getDisabledActivities() -> [Activity] {
@@ -26,10 +30,11 @@ class AddActivityViewModel : ObservableObject {
         
         if let activities = activities {
             if activities.count > 0 {
+                
                 return activities
             }
         }
         
-        return activityTemplateHelper.getDefaultActivities()
+        return activityTemplateHelper.getAndCreateDefaultActivities()
     }
 }

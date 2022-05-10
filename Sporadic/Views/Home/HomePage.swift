@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomePage: View {
     @Binding var isAdding: Bool
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel = HomeViewModel(dataHelper: DataController.shared, notificationHelper: NotificationHelper(dataHelper: DataController.shared))
     @ObservedObject var env = GlobalSettings.Env
     @Environment(\.scenePhase) var scenePhase
 

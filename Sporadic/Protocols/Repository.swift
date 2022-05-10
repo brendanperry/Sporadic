@@ -17,4 +17,5 @@ protocol Repository {
     func getTotalChallengesScheduled() -> Int
     func removeAllPendingChallenges() 
     func popLastScheduledChallenge() -> Date?
+    func resolveDuplicateActivities()
 }
