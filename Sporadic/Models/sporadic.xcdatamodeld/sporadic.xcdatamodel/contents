@@ -9,17 +9,32 @@
         <attribute name="name" attributeType="String" defaultValueString="Unknown"/>
         <attribute name="total" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="unit" attributeType="String" defaultValueString="Uknown"/>
-        <relationship name="oneActivityToManyChallenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="oneChallengeToOneActivity" inverseEntity="Challenge"/>
+        <relationship name="challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="activity" inverseEntity="Challenge"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="activities" inverseEntity="Group"/>
     </entity>
     <entity name="Challenge" representedClassName="Challenge" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isCompleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="time" attributeType="Date" defaultDateTimeInterval="664077720" usesScalarValueType="NO"/>
         <attribute name="total" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="oneChallengeToOneActivity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="oneActivityToManyChallenges" inverseEntity="Activity"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="challenges" inverseEntity="Activity"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="challenges" inverseEntity="User"/>
+    </entity>
+    <entity name="Group" representedClassName="Group" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Activity" inverseName="group" inverseEntity="Activity"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="groups" inverseEntity="User"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="users" inverseEntity="Challenge"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Group" inverseName="users" inverseEntity="Group"/>
     </entity>
     <elements>
-        <element name="Activity" positionX="-306.6873779296875" positionY="34.24801635742188" width="128" height="164"/>
-        <element name="Challenge" positionX="82.522216796875" positionY="34.6790771484375" width="128" height="104"/>
+        <element name="Activity" positionX="-306.6873779296875" positionY="34.24801635742188" width="128" height="179"/>
+        <element name="Challenge" positionX="82.522216796875" positionY="34.6790771484375" width="128" height="119"/>
+        <element name="Group" positionX="-108" positionY="108" width="128" height="74"/>
+        <element name="User" positionX="-99" positionY="117" width="128" height="89"/>
     </elements>
 </model>

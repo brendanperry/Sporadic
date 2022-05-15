@@ -18,9 +18,8 @@ struct ActivitiesHome: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(text: Localize.getString("Activities"), isCentered: false, type: .medium)
-                .padding(.leading)
-                .padding(.top)
+            textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
+                .padding([.leading, .top])
             
             LazyVGrid(columns: items, alignment: .center) {
                 ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in

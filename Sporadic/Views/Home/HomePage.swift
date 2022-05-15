@@ -70,7 +70,7 @@ struct WarningMessage: View {
                     .foregroundColor(.red)
                     .padding(.leading)
                 
-                textHelper.GetTextByType(text: Localize.getString("NoChallengesScheduled"), isCentered: false, type: .medium)
+                textHelper.GetTextByType(key: "NoChallengesScheduled", alignment: .leading, type: .medium)
                     .padding([.top, .bottom])
             }
             
@@ -111,33 +111,33 @@ struct WarningMessage: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .buttonStyle(ButtonPressAnimationStyle())
                         
-                        textHelper.GetTextByType(text: Localize.getString("SomethingIsWrong"), isCentered: false, type: .largeTitle)
+                        textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .largeTitle)
                             .padding()
                         
-                        textHelper.GetTextByType(text: Localize.getString("Activities"), isCentered: false, type: .medium)
+                        textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
                             .padding([.leading])
                         
                         if viewModel.getActivityCount() == 0 {
-                            textHelper.GetTextByType(text: Localize.getString("NoActivities"), isCentered: false, type: .body)
+                            textHelper.GetTextByType(key: "NoActivities", alignment: .leading, type: .body)
                                 .padding()
                         } else {
-                            textHelper.GetTextByType(text: Localize.getString("SomeActivities"), isCentered: false, type: .body)
+                            textHelper.GetTextByType(key: "SomeActivities", alignment: .leading, type: .body)
                                 .padding()
                         }
                         
-                        textHelper.GetTextByType(text: Localize.getString("Notifications"), isCentered: false, type: .medium)
+                        textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .medium)
                             .padding([.leading])
                         
                         if let authorized = notificationsAuthorized {
                             if authorized {
-                                textHelper.GetTextByType(text: Localize.getString("NotificationsEnabled"), isCentered: false, type: .body)
+                                textHelper.GetTextByType(key: "NotificationsEnabled", alignment: .leading, type: .body)
                                     .padding()
                             } else {
-                                textHelper.GetTextByType(text: Localize.getString("NotificationsDisabled"), isCentered: false, type: .body)
+                                textHelper.GetTextByType(key: "NotificationsDisabled", alignment: .leading, type: .body)
                                     .padding()
                             }
                         } else {
-                            textHelper.GetTextByType(text: Localize.getString("Loading"), isCentered: false, type: .body)
+                            textHelper.GetTextByType(key: "Loading", alignment: .leading, type: .body)
                                 .padding()
                         }
 
@@ -153,12 +153,11 @@ struct Welcome: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(text: Localize.getString("WelcomeBack"), isCentered: false, type: TextType.medium)
-            textHelper.GetTextByType(text: Localize.getString("YourGoal"), isCentered: false, type: TextType.largeTitle)
+            textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: TextType.medium)
+            textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: TextType.largeTitle)
         }
-        .padding(.horizontal)
+        .padding([.horizontal, .bottom])
         .padding(.top, 50)
-        .padding(.bottom)
     }
 }
 
@@ -224,13 +223,9 @@ struct Streak: View {
 
     var body: some View {
         VStack {
-            textHelper.GetTextByType(text: Localize.getString("CurrentRhythm"), isCentered: false, type: .medium)
-            textHelper.GetTextByType(text: Localize.getString(self.getStreakText()), isCentered: false, type: .largeTitle)
+            textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .medium)
+            textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, prefix: "\(streak)", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
         }
         .padding()
-    }
-
-    func getStreakText() -> String {
-        return streak == 1 ? "1 day" : "\(streak) days"
     }
 }

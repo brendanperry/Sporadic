@@ -14,5 +14,13 @@ enum Page {
  }
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page = .home
+    @Published var currentPage: Page
+    
+    init() {
+        if !UserDefaults.standard.bool(forKey: UserPrefs.tutorial.rawValue) {
+            currentPage = .tutorial
+        } else {
+            currentPage = .home
+        }
+    }
 }

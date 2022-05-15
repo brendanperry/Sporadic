@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import CloudKit
 
 class DataController: ObservableObject, Repository {
     let container: NSPersistentCloudKitContainer
@@ -15,6 +16,13 @@ class DataController: ObservableObject, Repository {
     
     private init() {
         container = NSPersistentCloudKitContainer(name: "sporadic")
+        
+        guard let description = container.persistentStoreDescriptions.first else {
+             print("Can't set description")
+             fatalError("Error")
+         }
+            
+        description.cloudKitContainerOptions?.databaseScope = .public
         
         container.loadPersistentStores { description, error in
             if let error = error {

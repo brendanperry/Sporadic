@@ -24,10 +24,10 @@ struct AddPage: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                textHelper.GetTextByType(text: "Add a new activity", isCentered: false, type: .title)
+                textHelper.GetTextByType(key: "AddANewActivity", alignment: .leading, type: .title)
                     .padding()
                 
-                textHelper.GetTextByType(text: "Select a new activity to be challenged with.", isCentered: false, type: .medium)
+                textHelper.GetTextByType(key: "SelectANewActivity", alignment: .leading, type: .medium)
                     .padding()
                 
                 LazyVGrid(columns: items, alignment: .center) {

@@ -26,14 +26,16 @@ struct MainView: View {
                 case .settings:
                     SettingsPage()
                 case .tutorial:
-                    Text("Tutorial")
+                    Tutorial()
                 }
                 
                 if (isAdding) {
                     AddPage(isAdding: $isAdding)
                 }
                 
-                NavigationBar(isAdding: self.$isAdding)
+                if viewRouter.currentPage != .tutorial {
+                    NavigationBar(isAdding: self.$isAdding)
+                }
             }
             .environmentObject(viewRouter)
         }

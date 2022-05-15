@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -38,6 +38,11 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
 		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
+		C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616928301AB3008A0C87 /* Tutorial.swift */; };
+		C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616B28301EED008A0C87 /* TransitionExtension.swift */; };
+		C689616E28303572008A0C87 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616D28303572008A0C87 /* CustomSlider.swift */; };
+		C68961712831AA26008A0C87 /* OneSignal in Frameworks */ = {isa = PBXBuildFile; productRef = C68961702831AA26008A0C87 /* OneSignal */; };
+		C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */ = {isa = PBXBuildFile; productRef = C68961722831AA26008A0C87 /* OneSignalExtension */; };
 		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
@@ -109,6 +114,9 @@
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
 		C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic_v1.0.1.xcdatamodel; sourceTree = "<group>"; };
+		C689616928301AB3008A0C87 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		C689616B28301EED008A0C87 /* TransitionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionExtension.swift; sourceTree = "<group>"; };
+		C689616D28303572008A0C87 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -150,6 +158,8 @@
 			files = (
 				C664A92F2796208300EE2195 /* HealthKit.framework in Frameworks */,
 				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
+				C68961712831AA26008A0C87 /* OneSignal in Frameworks */,
+				C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +209,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C689616828301AA4008A0C87 /* Tutorial */,
 				C664A945279DCBFE00EE2195 /* Other */,
 				C664A944279DCBEA00EE2195 /* Settings */,
 				C6C9601C278FA4D000A67AA2 /* Home */,
@@ -283,8 +294,17 @@
 				C6BCB213276A63ED00D9677D /* ActivityWidget.swift */,
 				C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */,
 				C66424CF27B856A700B574D7 /* Complete.swift */,
+				C689616D28303572008A0C87 /* CustomSlider.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		C689616828301AA4008A0C87 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				C689616928301AB3008A0C87 /* Tutorial.swift */,
+			);
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 		C6A6865827DD40BC00B607CA /* Protocols */ = {
@@ -321,6 +341,7 @@
 				C6C96021278FA64F00A67AA2 /* DateExtensions.swift */,
 				C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */,
 				C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */,
+				C689616B28301EED008A0C87 /* TransitionExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -408,6 +429,10 @@
 			dependencies = (
 			);
 			name = Sporadic;
+			packageProductDependencies = (
+				C68961702831AA26008A0C87 /* OneSignal */,
+				C68961722831AA26008A0C87 /* OneSignalExtension */,
+			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
 			productType = "com.apple.product-type.application";
@@ -441,6 +466,9 @@
 				es,
 			);
 			mainGroup = C65A01F126870098007A5B2F;
+			packageReferences = (
+				C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -512,6 +540,7 @@
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
+				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
 				C6C9602C2794AE9600A67AA2 /* sporadic.xcdatamodeld in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
@@ -520,6 +549,8 @@
 				C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */,
 				C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */,
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
+				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
+				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
@@ -796,6 +827,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C68961702831AA26008A0C87 /* OneSignal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
+			productName = OneSignal;
+		};
+		C68961722831AA26008A0C87 /* OneSignalExtension */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
+			productName = OneSignalExtension;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */ = {

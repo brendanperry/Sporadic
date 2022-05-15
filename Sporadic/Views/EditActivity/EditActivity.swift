@@ -44,21 +44,21 @@ struct EditActivity: View {
                     .padding()
                     .buttonStyle(ButtonPressAnimationStyle())
                     
-                    textHelper.GetTextByType(text: viewModel.activity.name ?? "Unkown" + " settings", isCentered: false, type: .title)
+                    textHelper.GetTextByType(key: viewModel.activity.name ?? "Unkown" + " settings", alignment: .leading, type: .title)
                         .padding(.leading)
                         .padding(.top, 100)
                     
-                    textHelper.GetTextByType(text: "Edit your activity", isCentered: false, type: .body)
+                    textHelper.GetTextByType(key: "EditYourActivity", alignment: .leading, type: .body)
                         .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(text: "Toggle \(viewModel.activity.name ?? "Unkown")", isCentered: false, type: .settingsEntryTitle)
+                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: viewModel.activity.name ?? "Unkown")
                         .padding([.leading, .top])
                     
                     Toggle("", isOn: $viewModel.isEnabled)
                         .labelsHidden()
                         .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(text: "Set the range for your challenge", isCentered: false, type: .settingsEntryTitle)
+                    textHelper.GetTextByType(key: "SetTheRangeForYourActivity", alignment: .leading, type: .settingsEntryTitle)
                         .padding()
                     
                     RangeSlider(lineHeight: 12,
@@ -79,9 +79,9 @@ struct EditActivity: View {
                                 rightValue: $viewModel.maxValue)
                         .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
                     
-                    textHelper.GetTextByType(text: "\(viewModel.minValue)\t\t-\t\t\(viewModel.maxValue)", isCentered: true, type: .title)
+                    textHelper.GetTextByType(key: "", alignment: .leading, type: .title, prefix: "\(viewModel.minValue)" + "\t\t-\t\t", suffix: "\(viewModel.maxValue)")
                     
-                    textHelper.GetTextByType(text: "\(viewModel.activity.unit ?? "Unkown")", isCentered: true, type: .title)
+                    textHelper.GetTextByType(key: "", alignment: .leading, type: .title, suffix: "\(viewModel.activity.unit ?? "Unkown")")
                         .padding(.bottom)
                     
                     TotalMiles(viewModel: viewModel)
@@ -99,10 +99,10 @@ struct EditActivity: View {
         
         var body: some View {
             VStack {
-                textHelper.GetTextByType(text: "You have \(viewModel.activity.name ?? "Unknown") a total of ", isCentered: false, type: .settingsEntryTitle)
+                textHelper.GetTextByType(key: "YouHave", alignment: .leading, type: .settingsEntryTitle, prefix: "\(viewModel.activity.name ?? "Unknown")", suffix: Localize.getString("ATotalOf"))
                     .padding([.leading, .top])
                 
-                textHelper.GetTextByType(text: "\(viewModel.activity.total) \(viewModel.activity.unit ?? "Unknown")!", isCentered: false, type: .title, color: Color.green)
+                textHelper.GetTextByType(key: "", alignment: .leading, type: .title, color: Color.green, prefix: "\(viewModel.activity.total) \(viewModel.activity.unit ?? "Unknown")!")
                     .padding([.leading])
             }
         }

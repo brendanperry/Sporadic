@@ -40,7 +40,7 @@ struct SettingsPage: View {
             
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
-                    textHelper.GetTextByType(text: "Settings", isCentered: false, type: TextType.largeTitle)
+                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: TextType.largeTitle)
                     
                     DaysAndTime(viewModel: viewModel, days: $days, time: $time)
                     
@@ -50,16 +50,16 @@ struct SettingsPage: View {
                         actionText: "Prompt",
                         actionView: AnyView(NotificationButton(viewModel: viewModel)))
                         .alert(isPresented: $viewModel.showDisabledAlert) {
-                            Alert(title: Text("Notifications Disabled"), message: Text("Please enable notifications in your phone's settings."), dismissButton: .default(Text("Okay")))
+                            Alert(title: Text(Localize.getString("NotificationsDisabled")), message: Text(Localize.getString("PleaseEnableNotifications")), dismissButton: .default(Text(Localize.getString("Okay"))))
                         }
                     
                     RectangleWidget(
                         image: "AppTheme",
                         text: "App Theme",
                         actionText: appTheme,
-                        actionView: AnyView(OptionPicker(title: "App Theme", options: appThemeOptions, selection: $appTheme)))
+                        actionView: AnyView(OptionPicker(title: Localize.getString("AppTheme"), options: appThemeOptions, selection: $appTheme)))
                         .alert(isPresented: $viewModel.showEnabledAlert) {
-                            Alert(title: Text("Notifications Enabled"), message: Text("Nothing to do!"), dismissButton: .default(Text("Okay")))
+                            Alert(title: Text(Localize.getString("NotificationsEnabled")), message: Text(Localize.getString("NothingToDo")), dismissButton: .default(Text(Localize.getString("Okay"))))
                         }
                         
                     AppIcons()
@@ -161,7 +161,7 @@ struct SettingsPage: View {
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                textHelper.GetTextByType(text: text, isCentered: false, type: TextType.body)
+                textHelper.GetTextByType(key: "", alignment: .leading, type: TextType.body, prefix: text)
                     .padding(5)
                 
                 actionView
@@ -259,7 +259,7 @@ struct SettingsPage: View {
                         .frame(width: 30, height: 30)
                         .padding(.horizontal, 5)
                     
-                    textHelper.GetTextByType(text: "App Icon", isCentered: false, type: TextType.body)
+                    textHelper.GetTextByType(key: "AppIcon", alignment: .leading, type: TextType.body)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 

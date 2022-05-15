@@ -32,7 +32,7 @@ struct Complete: View {
             Spacer()
             
             VStack {
-                textHelper.GetTextByType(text: "Great work!", isCentered: true, type: .largeTitle, color: nil)
+                textHelper.GetTextByType(key: "GreatWork", alignment: .leading, type: .largeTitle, color: nil)
                 ZStack {
                     Image("GoalButton")
                         .resizable()
@@ -51,19 +51,19 @@ struct Complete: View {
                             }
                             .offset(x: -100, y: -5)
                     
-                    textHelper.GetTextByType(text: "Complete!", isCentered: true, type: .title, color: .white)
+                    textHelper.GetTextByType(key: "Complete", alignment: .leading, type: .title, color: .white)
                         .offset(x: 25, y: -5)
                 }
                 .padding(.bottom)
                 
-                textHelper.GetTextByType(text: "Current Rhythm", isCentered: true, type: .settingsEntryTitle, color: nil)
+                textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .settingsEntryTitle, color: nil)
                 
-                textHelper.GetTextByType(text: "\(streak) days", isCentered: true, type: .largeTitle, color: nil)
+                textHelper.GetTextByType(key: "days", alignment: .leading, type: .largeTitle, color: nil, prefix: "\(streak) ")
                     .padding(.bottom)
                 
-                textHelper.GetTextByType(text: "You new total is", isCentered: true, type: .settingsEntryTitle, color: nil)
+                textHelper.GetTextByType(key: "YourNewTotalIs", alignment: .leading, type: .settingsEntryTitle, color: nil)
                 
-                textHelper.GetTextByType(text: "\(challenge.oneChallengeToOneActivity?.total ?? 0) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")", isCentered: true, type: .largeTitle, color: Color("CheckGreen"))
+                textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, color: Color("CheckGreen"), prefix: "\(challenge.oneChallengeToOneActivity?.total ?? 0) ", suffix: "\(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
             }
             
             Spacer()
