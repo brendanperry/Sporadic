@@ -15,4 +15,5 @@ enum UserPrefs: String, Codable {
     case measurement
     case streak
     case tutorial
+    case userId
 }

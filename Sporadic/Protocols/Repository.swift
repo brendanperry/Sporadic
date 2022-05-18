@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Repository {
-    func createChallenge(amount: Double, time: Date, isCompleted: Bool, activity: Activity)
+    func createChallenge(amount: Double, time: Date, isCompleted: Bool, activity: Activity) -> Challenge
     func fetchChallenges() -> [Challenge]?
     func fetchActivities() -> [Activity]?
     func fetchActiveActivities() -> [Activity]?
@@ -18,4 +18,5 @@ protocol Repository {
     func removeAllPendingChallenges() 
     func popLastScheduledChallenge() -> Date?
     func resolveDuplicateActivities()
+    func setChallengeNotification(challenge: Challenge, notificationId: String)
 }

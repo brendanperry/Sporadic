@@ -15,10 +15,12 @@ class NotificationHelper {
     let notificationCenter = UNUserNotificationCenter.current()
     let dateFormatter = DateFormatter()
     let maxNotificationsToSchedule = 90
+    let oneSignalHelper = OneSignalHelper()
     
     init(dataHelper: Repository) {
         self.dataHelper = dataHelper
         dateFormatter.dateFormat = "MM/dd/YYYY HH:mm"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
     }
     
     func scheduleAllNotifications(settingsChanged: Bool) {
@@ -86,7 +88,9 @@ class NotificationHelper {
         scheduleNotification(
             title: "There is more work to be done!",
             body: "Come back to the app to get more challenges. Notifications have been paused.",
-            dateTime: getComponentsFromDate(finalDate))
+            dateTime: finalDate) { id in
+                print(id)
+            }
     }
     
     internal func scheduleOnDays(_ daysPerWeek: Int, _ availableDays: inout [Int], _ startDate: Date, _ activities: [Activity]) {
@@ -100,7 +104,7 @@ class NotificationHelper {
                 let activity = activities[Int.random(in: 0..<activities.count)]
                 let amount = round(Double.random(in: activity.minValue...activity.maxValue), toNearest: activity.minRange)
                 
-                dataHelper.createChallenge(
+                let challenge = dataHelper.createChallenge(
                     amount: amount,
                     time: scheduledDate,
                     isCompleted: false,
@@ -111,7 +115,11 @@ class NotificationHelper {
                 scheduleNotification(
                     title: "Your Challenge For Today",
                     body: "\(activity.name ?? "Unknown") for \(amount) \(activity.unit ?? "").",
-                    dateTime: getComponentsFromDate(scheduledDate))
+                    dateTime: scheduledDate) { [weak self] id in
+                        if let id = id {
+                            self?.dataHelper.setChallengeNotification(challenge: challenge, notificationId: id)
+                        }
+                    }
             }
         }
     }
@@ -122,17 +130,45 @@ class NotificationHelper {
         return rounded == -0 ? 0 : rounded
     }
                                          
-    internal func scheduleNotification(title: String, body: String, dateTime: DateComponents) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.sound = UNNotificationSound.default
-        content.body = body
+    internal func scheduleNotification(title: String, body: String, dateTime: Date, completion: @escaping(String?) -> Void) {
+        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: dateTime))
+        var timeString = ""
+        if let deliveryTime = UserDefaults.standard.object(forKey: UserPrefs.deliveryTime.rawValue) as? Date {
+            let date = Calendar.current.dateComponents([.hour, .minute], from: deliveryTime)
+            timeString = "\(date.hour ?? 0) \(date.minute ?? 0)"
+        }
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateTime, repeats: false)
-
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request)
+        OneSignal.postNotification(
+            withJsonString:
+            """
+            {
+                "app_id" : "f211cce4-760d-4404-97f3-34df31eccde8",
+                "contents" : {
+                    "en": "\(body)"
+                },
+                "headings" : {
+                    "en": "New challenge"
+                },
+                "include_external_user_ids": [
+                    "\(UserDefaults.standard.string(forKey: UserPrefs.userId.rawValue) ?? "")"
+                ],
+                "channel_for_external_user_ids": "push",
+                "send_after": "\(dateString)",
+                "delayed_option" : "timezone",
+                "delivery_time_of_day": "\(timeString)"
+            }
+            """,
+            onSuccess: { result in
+                print("Success")
+                if let result = result {
+                    completion(result["id"] as? String)
+                } else {
+                    completion(nil)
+                }
+            }, onFailure: { _ in
+                print("Failure")
+                completion(nil)
+            })
     }
     
     fileprivate func removeOldChallenges() {

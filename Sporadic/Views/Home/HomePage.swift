@@ -193,7 +193,7 @@ struct ChallengeButton: View {
                         .disabled(env.currentChallenge?.isCompleted ?? false)
                     
                     if let challenge = env.currentChallenge {
-                        Text("\(challenge.oneChallengeToOneActivity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.oneChallengeToOneActivity?.unit ?? "miles")")
+                        Text("\(challenge.activity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.activity?.unit ?? "miles")")
                             .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
                     } else {
                         Text("No Challenge")

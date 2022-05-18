@@ -38,6 +38,8 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
 		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
+		C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67B52192831FDFE00C99356 /* OneSignalHelper.swift */; };
+		C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C67B521C2831FFDA00C99356 /* Alamofire */; };
 		C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616928301AB3008A0C87 /* Tutorial.swift */; };
 		C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616B28301EED008A0C87 /* TransitionExtension.swift */; };
 		C689616E28303572008A0C87 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616D28303572008A0C87 /* CustomSlider.swift */; };
@@ -61,9 +63,9 @@
 		C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96021278FA64F00A67AA2 /* DateExtensions.swift */; };
 		C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */; };
 		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
-		C6C9602C2794AE9600A67AA2 /* sporadic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */; };
 		C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602D2794AFAB00A67AA2 /* DataController.swift */; };
 		C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C9602F2795042C00A67AA2 /* CloudKit.framework */; };
+		C6D1BD762831CA2E00895ABF /* sporadic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +115,7 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		C67B52192831FDFE00C99356 /* OneSignalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalHelper.swift; sourceTree = "<group>"; };
 		C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic_v1.0.1.xcdatamodel; sourceTree = "<group>"; };
 		C689616928301AB3008A0C87 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		C689616B28301EED008A0C87 /* TransitionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionExtension.swift; sourceTree = "<group>"; };
@@ -156,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */,
 				C664A92F2796208300EE2195 /* HealthKit.framework in Frameworks */,
 				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
 				C68961712831AA26008A0C87 /* OneSignal in Frameworks */,
@@ -193,6 +197,7 @@
 				C6C9602D2794AFAB00A67AA2 /* DataController.swift */,
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
 				C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */,
+				C67B52192831FDFE00C99356 /* OneSignalHelper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -432,6 +437,7 @@
 			packageProductDependencies = (
 				C68961702831AA26008A0C87 /* OneSignal */,
 				C68961722831AA26008A0C87 /* OneSignalExtension */,
+				C67B521C2831FFDA00C99356 /* Alamofire */,
 			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
@@ -468,6 +474,7 @@
 			mainGroup = C65A01F126870098007A5B2F;
 			packageReferences = (
 				C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+				C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
@@ -542,7 +549,6 @@
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
-				C6C9602C2794AE9600A67AA2 /* sporadic.xcdatamodeld in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C664A933279652C700EE2195 /* CompleteChallenges.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
@@ -552,7 +558,9 @@
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
+				C6D1BD762831CA2E00895ABF /* sporadic.xcdatamodeld in Sources */,
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
+				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
@@ -829,6 +837,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework";
@@ -840,6 +856,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C67B521C2831FFDA00C99356 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		C68961702831AA26008A0C87 /* OneSignal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;

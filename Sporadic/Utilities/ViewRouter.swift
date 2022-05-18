@@ -18,7 +18,8 @@ class ViewRouter: ObservableObject {
     
     init() {
         if !UserDefaults.standard.bool(forKey: UserPrefs.tutorial.rawValue) {
-            currentPage = .tutorial
+            //currentPage = .tutorial
+            currentPage = .home
         } else {
             currentPage = .home
         }

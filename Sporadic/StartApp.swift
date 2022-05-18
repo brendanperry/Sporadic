@@ -49,23 +49,40 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         iCloudUserIDAsync { (recordID: CKRecord.ID?, error: NSError?) in
             if let userID = recordID?.recordName {
-                print("received iCloudID \(userID)")
+                DispatchQueue.main.async {
+                    print("received iCloudID \(userID)")
+                    UserDefaults.standard.set(userID, forKey: UserPrefs.userId.rawValue)
+                    
+                    // Remove this method to stop OneSignal Debugging
+                    OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+                     
+                    OneSignal.initWithLaunchOptions(launchOptions)
+                    OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
+                     
+                    OneSignal.promptForPushNotifications(userResponse: { accepted in
+                        print("User accepted notification: \(accepted)")
+                        OneSignal.setExternalUserId(userID)
+                    })
+                }
             } else {
-                print("Fetched iCloudID was nil")
+                DispatchQueue.main.async {
+                    print("Fetched iCloudID was nil")
+                    let userId = "local_\(UUID())"
+                    UserDefaults.standard.set(userId, forKey: UserPrefs.userId.rawValue)
+                    
+                    // Remove this method to stop OneSignal Debugging
+                    OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+                     
+                    OneSignal.initWithLaunchOptions(launchOptions)
+                    OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
+                     
+                    OneSignal.promptForPushNotifications(userResponse: { accepted in
+                        print("User accepted notification: \(accepted)")
+                        OneSignal.setExternalUserId(userId)
+                    })
+                }
             }
         }
-       // Remove this method to stop OneSignal Debugging
-       OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
-        
-       OneSignal.initWithLaunchOptions(launchOptions)
-       OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
-        
-       OneSignal.promptForPushNotifications(userResponse: { accepted in
-         print("User accepted notification: \(accepted)")
-       })
-      
-      // Set your customer userId
-      // OneSignal.setExternalUserId("userId")
       
        return true
     }

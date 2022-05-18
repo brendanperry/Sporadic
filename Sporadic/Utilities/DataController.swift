@@ -13,6 +13,7 @@ class DataController: ObservableObject, Repository {
     let container: NSPersistentCloudKitContainer
     
     static let shared = DataController()
+    let oneSignalHelper = OneSignalHelper()
     
     private init() {
         container = NSPersistentCloudKitContainer(name: "sporadic")
@@ -60,7 +61,7 @@ class DataController: ObservableObject, Repository {
                     var challenges = [Challenge]()
                     var total = 0.0
                     for activity in activitiesForName {
-                        if let activityChallenges = activity.oneActivityToManyChallenges?.allObjects as? [Challenge] {
+                        if let activityChallenges = activity.challenges?.allObjects as? [Challenge] {
                             challenges.append(contentsOf: activityChallenges)
                         }
                         
@@ -73,7 +74,7 @@ class DataController: ObservableObject, Repository {
                     
                     masterActivity.total = total
                     for challenge in challenges {
-                        challenge.oneChallengeToOneActivity = masterActivity
+                        challenge.activity = masterActivity
                     }
                     
                     for otherActivity in activitiesForName.filter({ $0.id != masterActivity.id }) {
@@ -148,14 +149,22 @@ class DataController: ObservableObject, Repository {
         return challenges
     }
     
-    func createChallenge(amount: Double, time: Date, isCompleted: Bool, activity: Activity) {
+    func createChallenge(amount: Double, time: Date, isCompleted: Bool, activity: Activity) -> Challenge {
         let challenge = Challenge(context: container.viewContext)
         
         challenge.id = UUID()
         challenge.total = amount
         challenge.time = time
         challenge.isCompleted = false
-        challenge.oneChallengeToOneActivity = activity
+        challenge.activity = activity
+        
+        saveChanges()
+        
+        return challenge
+    }
+    
+    func setChallengeNotification(challenge: Challenge, notificationId: String) {
+        challenge.notification = notificationId
         
         saveChanges()
     }
@@ -170,10 +179,17 @@ class DataController: ObservableObject, Repository {
         if let filtered = filtered {
             for f in filtered {
                 container.viewContext.delete(f)
+                if let notification = f.notification {
+                    cancelNotification(notificationId: notification)
+                }
             }
         }
         
         saveChanges()
+    }
+    
+    func cancelNotification(notificationId: String) {
+        oneSignalHelper.cancelNotification(notificationId: notificationId)
     }
     
     func fetchCurrentChallenge() -> Challenge? {

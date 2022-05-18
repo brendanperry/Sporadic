@@ -191,7 +191,7 @@ struct SettingsPage: View {
                             .multilineTextAlignment(.center)
                             .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                             .foregroundColor(Color("SettingButtonTextColor"))
-                        
+
                         ZStack {
                             Picker(selection: $days, label: EmptyView()) {
                                 ForEach(1...7, id: \.self) { number in
@@ -202,7 +202,7 @@ struct SettingsPage: View {
                             .onChange(of: days) { _ in
                                 viewModel.scheduleNotifications(settingsChanged: true)
                             }
-                            
+
                             Text("\(days)")
                                 .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
                                 .frame(width: 200, height: 50, alignment: .center)
@@ -215,7 +215,7 @@ struct SettingsPage: View {
                             .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                             .foregroundColor(Color("SettingButtonTextColor"))
                             .zIndex(1.0)
-                        
+
                         ZStack {
                             DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                                 .labelsHidden()
@@ -223,7 +223,7 @@ struct SettingsPage: View {
                                 .onChange(of: time) { _ in
                                     viewModel.scheduleNotifications(settingsChanged: true)
                                 }
-                            
+
                             Group {
                                 Text(dateHelper.getHoursAndMinutes(date: time))
                                     .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
