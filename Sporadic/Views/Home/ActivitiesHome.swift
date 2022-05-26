@@ -10,7 +10,8 @@ import SwiftUI
 struct ActivitiesHome: View {
     let textHelper = TextHelper()
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var activities: FetchedResults<Activity>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
+    var activities: FetchedResults<Activity>
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     

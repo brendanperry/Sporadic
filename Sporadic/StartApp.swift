@@ -50,12 +50,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         iCloudUserIDAsync { (recordID: CKRecord.ID?, error: NSError?) in
             if let userID = recordID?.recordName {
                 DispatchQueue.main.async {
-                    print("received iCloudID \(userID)")
                     UserDefaults.standard.set(userID, forKey: UserPrefs.userId.rawValue)
                     
                     // Remove this method to stop OneSignal Debugging
                     OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
-                     
                     OneSignal.initWithLaunchOptions(launchOptions)
                     OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
                      
@@ -72,7 +70,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                     
                     // Remove this method to stop OneSignal Debugging
                     OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
-                     
                     OneSignal.initWithLaunchOptions(launchOptions)
                     OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
                      

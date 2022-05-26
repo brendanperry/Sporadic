@@ -191,6 +191,7 @@ struct SettingsPage: View {
                             .multilineTextAlignment(.center)
                             .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
                             .foregroundColor(Color("SettingButtonTextColor"))
+                            .offset(y: 10)
 
                         ZStack {
                             Picker(selection: $days, label: EmptyView()) {
@@ -198,6 +199,7 @@ struct SettingsPage: View {
                                     Text(String(number))
                                 }
                             }
+                            .frame(width: 125, height: 50, alignment: .center)
                             .labelsHidden()
                             .onChange(of: days) { _ in
                                 viewModel.scheduleNotifications(settingsChanged: true)
@@ -220,6 +222,7 @@ struct SettingsPage: View {
                             DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                                 .labelsHidden()
                                 .scaleEffect(1.6)
+                                .frame(width: 125)
                                 .onChange(of: time) { _ in
                                     viewModel.scheduleNotifications(settingsChanged: true)
                                 }
@@ -336,6 +339,9 @@ struct SettingsPage: View {
 
 struct SettingsPage_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsPage().preferredColorScheme(.dark)
+        Group {
+            SettingsPage().preferredColorScheme(.dark)
+            SettingsPage().previewDevice("iPhone 13 Pro Max").preferredColorScheme(.light)
+        }
     }
 }

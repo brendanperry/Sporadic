@@ -15,8 +15,8 @@ protocol Repository {
     func saveChanges()
     func fetchCurrentChallenge() -> Challenge?
     func getTotalChallengesScheduled() -> Int
-    func removeAllPendingChallenges() 
-    func popLastScheduledChallenge() -> Date?
+    func removeAllPendingChallenges() -> [String]
+    func getDayAfterLastChallenge() -> Date?
     func resolveDuplicateActivities()
     func setChallengeNotification(challenge: Challenge, notificationId: String)
 }

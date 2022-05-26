@@ -51,7 +51,7 @@ struct EditActivity: View {
                     textHelper.GetTextByType(key: "EditYourActivity", alignment: .leading, type: .body)
                         .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: viewModel.activity.name ?? "Unkown")
+                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: " \(viewModel.activity.name ?? "Unkown")")
                         .padding([.leading, .top])
                     
                     Toggle("", isOn: $viewModel.isEnabled)
@@ -79,9 +79,9 @@ struct EditActivity: View {
                                 rightValue: $viewModel.maxValue)
                         .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
                     
-                    textHelper.GetTextByType(key: "", alignment: .leading, type: .title, prefix: "\(viewModel.minValue)" + "\t\t-\t\t", suffix: "\(viewModel.maxValue)")
+                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, prefix: "\(viewModel.minValue)" + "\t\t-\t\t", suffix: "\(viewModel.maxValue)")
                     
-                    textHelper.GetTextByType(key: "", alignment: .leading, type: .title, suffix: "\(viewModel.activity.unit ?? "Unkown")")
+                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, suffix: "\(viewModel.activity.unit ?? "Unkown")")
                         .padding(.bottom)
                     
                     TotalMiles(viewModel: viewModel)
@@ -99,7 +99,7 @@ struct EditActivity: View {
         
         var body: some View {
             VStack {
-                textHelper.GetTextByType(key: "YouHave", alignment: .leading, type: .settingsEntryTitle, prefix: "\(viewModel.activity.name ?? "Unknown")", suffix: Localize.getString("ATotalOf"))
+                textHelper.GetTextByType(key: " \(viewModel.activity.name ?? "Unknown") ".lowercased(), alignment: .leading, type: .settingsEntryTitle, prefix: Localize.getString("YouHave"), suffix: Localize.getString("ATotalOf"))
                     .padding([.leading, .top])
                 
                 textHelper.GetTextByType(key: "", alignment: .leading, type: .title, color: Color.green, prefix: "\(viewModel.activity.total) \(viewModel.activity.unit ?? "Unknown")!")

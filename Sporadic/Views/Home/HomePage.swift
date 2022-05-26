@@ -224,7 +224,7 @@ struct Streak: View {
     var body: some View {
         VStack {
             textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .medium)
-            textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, prefix: "\(streak)", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
+            textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
         }
         .padding()
     }

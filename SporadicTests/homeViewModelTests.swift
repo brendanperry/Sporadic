@@ -140,7 +140,7 @@ class DataHelperMock: Repository {
         createdChallenge.total = amount
         createdChallenge.time = time
         createdChallenge.isCompleted = isCompleted
-        createdChallenge.oneChallengeToOneActivity = activity
+        createdChallenge.activity = activity
         
         challenges.append(createdChallenge)
         
@@ -187,13 +187,11 @@ class DataHelperMock: Repository {
         return challenges.first(where: { getComponentsFromDate($0.time ?? Date()).day ==  getComponentsFromDate(Date()).day})
     }
 
-    func popLastScheduledChallenge() -> Date? {
+    func getDayAfterLastChallenge() -> Date? {
         let lastChallenge = challenges.sorted(by: { ($0.time ?? Date()) > ($1.time ?? Date()) }).first
         
         if let challenge = lastChallenge {
-            let time = lastChallenge?.time
-            challenges.remove(at: challenges.firstIndex(of: challenge) ?? 0)
-            return time
+            return Calendar.current.date(byAdding: .day, value: 1, to: challenge?.time ?? Date())
         }
         
         return nil

@@ -27,7 +27,7 @@ struct ActivityWidget: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(Color("ActivityBorderColor"))
             
-                textHelper.GetTextByType(key: "", alignment: .leading, type: .title, prefix: activity.unit)
+                textHelper.GetTextByType(key: "", alignment: .center, type: .title, prefix: activity.name)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: 20)

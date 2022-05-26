@@ -26,7 +26,7 @@ class NotificationHelper {
     func scheduleAllNotifications(settingsChanged: Bool) {
         getNotificationStatus { [weak self] authorized in
             if authorized {
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self?.beginScheduling(settingsChanged)
                 }
             }
@@ -36,64 +36,78 @@ class NotificationHelper {
     }
     
     internal func beginScheduling(_ settingsChanged: Bool) {
+        var challengesScheduled = [Challenge]()
+        var notificationIdsToCancel = [String]()
         let activities = dataHelper.fetchActiveActivities()
         
         var dateToBeginScheduling = getToday()
         
+        // remove things at the end all at once
         if settingsChanged {
-            removeOldChallenges()
+            notificationIdsToCancel.append(contentsOf: removeOldChallenges())
         } else {
-            if let finalChallengeDate = dataHelper.popLastScheduledChallenge() {
+            if let finalChallengeDate = dataHelper.getDayAfterLastChallenge() {
                dateToBeginScheduling = finalChallengeDate
             }
         }
         
+        // OneSignal has a limit of 30 days out
+        let lastDayWeCanSchedule = Calendar.current.date(byAdding: .day, value: 28, to: getToday()) ?? Date()
+        
         if let activities = activities {
             if activities.count == 0 {
+                postNotifications(notificationIdsToCancel, challengesScheduled)
                 return
             }
 
+            // will pull this per group
             var daysPerWeek = defaults.integer(forKey: UserPrefs.daysPerWeek.rawValue)
             if daysPerWeek == 0 {
                 daysPerWeek = 3
             }
             
-            let weeksToSchedule = Int((90 - dataHelper.getTotalChallengesScheduled()) / 7)
             let currentChallenge = dataHelper.fetchCurrentChallenge()
             
-            for index in 0..<weeksToSchedule {
+            var continueScheduling = true
+            var i = 0
+            while continueScheduling {
                 var availableDays = [Int]()
                 
                 // this keeps us from scheduling a challenge today if there is already one
-                if index == 0 && currentChallenge != nil {
+                if i == 0 && currentChallenge != nil {
                     availableDays = [1, 2, 3, 4, 5, 6]
                 } else {
                     availableDays = [0, 1, 2, 3, 4, 5, 6]
                 }
+                
+                let result = scheduleOnDays(maxScheduleDate: lastDayWeCanSchedule, daysPerWeek, &availableDays, dateToBeginScheduling, activities)
 
-                scheduleOnDays(daysPerWeek, &availableDays, dateToBeginScheduling, activities)
+                continueScheduling = result.0
+                challengesScheduled.append(contentsOf: result.1)
                 
                 dateToBeginScheduling = Calendar.current.date(byAdding: .day, value: 7, to: dateToBeginScheduling)!
+                i += 1
             }
             
-            scheduleReminder(date: dateToBeginScheduling)
+            postNotifications(notificationIdsToCancel, challengesScheduled)
         }
     }
     
-    internal func scheduleReminder(date: Date) {
-        let finalDate = Calendar.current.date(byAdding: .day, value: 7, to: date)!
-        
-        print("\(finalDate) - reminder")
-        
-        scheduleNotification(
-            title: "There is more work to be done!",
-            body: "Come back to the app to get more challenges. Notifications have been paused.",
-            dateTime: finalDate) { id in
-                print(id)
+    func postNotifications(_ notificationIdsToCancel: [String], _ challengesScheduled: [Challenge]) {
+        // schedule notifications
+        oneSignalHelper.postNotification(cancelledNotificationIds: notificationIdsToCancel, challenges: challengesScheduled) { result in
+            
+            // store notification id on challenge object if we need to cancel later
+            for (challenge, notification) in zip(challengesScheduled, result) {
+                challenge.notification = notification
             }
+        }
     }
     
-    internal func scheduleOnDays(_ daysPerWeek: Int, _ availableDays: inout [Int], _ startDate: Date, _ activities: [Activity]) {
+    // returns true if we should keep going and false if we should stop
+    internal func scheduleOnDays(maxScheduleDate: Date, _ daysPerWeek: Int, _ availableDays: inout [Int], _ startDate: Date, _ activities: [Activity]) -> (Bool, [Challenge]) {
+        var challengesScheduled = [Challenge]()
+        
         for _ in 0..<daysPerWeek {
             let daysToAdd = availableDays.randomElement()
             
@@ -101,6 +115,11 @@ class NotificationHelper {
                 availableDays = removeElement(days, from: availableDays)
                 
                 let scheduledDate = Calendar.current.date(byAdding: .day, value: days, to: startDate)!
+                
+                if scheduledDate > maxScheduleDate {
+                    return (false, challengesScheduled)
+                }
+                
                 let activity = activities[Int.random(in: 0..<activities.count)]
                 let amount = round(Double.random(in: activity.minValue...activity.maxValue), toNearest: activity.minRange)
                 
@@ -110,18 +129,13 @@ class NotificationHelper {
                     isCompleted: false,
                     activity: activity)
                 
-                print("\(scheduledDate) - \(activity.name ?? "Unknown"): \(amount)")
+                challengesScheduled.append(challenge)
                 
-                scheduleNotification(
-                    title: "Your Challenge For Today",
-                    body: "\(activity.name ?? "Unknown") for \(amount) \(activity.unit ?? "").",
-                    dateTime: scheduledDate) { [weak self] id in
-                        if let id = id {
-                            self?.dataHelper.setChallengeNotification(challenge: challenge, notificationId: id)
-                        }
-                    }
+                print("\(scheduledDate) - \(activity.name ?? "Unknown"): \(amount)")
             }
         }
+        
+        return (true, challengesScheduled)
     }
 
     func round(_ value: Double, toNearest: Double) -> Double {
@@ -129,52 +143,23 @@ class NotificationHelper {
 
         return rounded == -0 ? 0 : rounded
     }
-                                         
-    internal func scheduleNotification(title: String, body: String, dateTime: Date, completion: @escaping(String?) -> Void) {
-        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: dateTime))
-        var timeString = ""
-        if let deliveryTime = UserDefaults.standard.object(forKey: UserPrefs.deliveryTime.rawValue) as? Date {
-            let date = Calendar.current.dateComponents([.hour, .minute], from: deliveryTime)
-            timeString = "\(date.hour ?? 0) \(date.minute ?? 0)"
-        }
-        
-        OneSignal.postNotification(
-            withJsonString:
-            """
-            {
-                "app_id" : "f211cce4-760d-4404-97f3-34df31eccde8",
-                "contents" : {
-                    "en": "\(body)"
-                },
-                "headings" : {
-                    "en": "New challenge"
-                },
-                "include_external_user_ids": [
-                    "\(UserDefaults.standard.string(forKey: UserPrefs.userId.rawValue) ?? "")"
-                ],
-                "channel_for_external_user_ids": "push",
-                "send_after": "\(dateString)",
-                "delayed_option" : "timezone",
-                "delivery_time_of_day": "\(timeString)"
-            }
-            """,
-            onSuccess: { result in
-                print("Success")
-                if let result = result {
-                    completion(result["id"] as? String)
-                } else {
-                    completion(nil)
-                }
-            }, onFailure: { _ in
-                print("Failure")
-                completion(nil)
-            })
-    }
+//
+//    func getNotificationTime(date: Date) -> Date {
+//        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: date))
+//
+//    }
+//
+//    internal func scheduleNotification(title: String, body: String, dateTime: Date, completion: @escaping(String?) -> Void) {
+//        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: dateTime))
+//        var timeString = ""
+//        if let deliveryTime = UserDefaults.standard.object(forKey: UserPrefs.deliveryTime.rawValue) as? Date {
+//            let date = Calendar.current.dateComponents([.hour, .minute], from: deliveryTime)
+//            timeString = "\(date.hour ?? 0) \(date.minute ?? 0)"
+//        }
+//    }
     
-    fileprivate func removeOldChallenges() {
-        notificationCenter.removeAllPendingNotificationRequests()
-        
-        dataHelper.removeAllPendingChallenges()
+    fileprivate func removeOldChallenges() -> [String] {
+        return dataHelper.removeAllPendingChallenges()
     }
     
     internal func getToday() -> Date {

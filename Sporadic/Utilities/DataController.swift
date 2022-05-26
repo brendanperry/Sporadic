@@ -99,7 +99,7 @@ class DataController: ObservableObject, Repository {
         return 0
     }
     
-    func popLastScheduledChallenge() -> Date? {
+    func getDayAfterLastChallenge() -> Date? {
         let fetchRequest = Challenge.fetchRequest()
         
         fetchRequest.predicate = NSPredicate(format: "time > %@", getEndOfDay() as NSDate)
@@ -111,8 +111,6 @@ class DataController: ObservableObject, Repository {
             
             if let lastChallenge = lastChallenge {
                 let date = lastChallenge.time
-                container.viewContext.delete(lastChallenge)
-                saveChanges()
                 
                 return date
             }
@@ -169,41 +167,33 @@ class DataController: ObservableObject, Repository {
         saveChanges()
     }
     
-    func removeAllPendingChallenges() {
+    func removeAllPendingChallenges() -> [String] {
         let fetchRequest = Challenge.fetchRequest()
         
         fetchRequest.predicate = NSPredicate(format: "time > %@", getEndOfDay() as NSDate)
         
         let filtered = try? container.viewContext.fetch(fetchRequest)
         
+        var notificationIds = [String]()
+        
         if let filtered = filtered {
             for f in filtered {
-                container.viewContext.delete(f)
                 if let notification = f.notification {
-                    cancelNotification(notificationId: notification)
+                    notificationIds.append(notification)
                 }
+                
+                container.viewContext.delete(f)
             }
         }
         
         saveChanges()
-    }
-    
-    func cancelNotification(notificationId: String) {
-        oneSignalHelper.cancelNotification(notificationId: notificationId)
+        return notificationIds
     }
     
     func fetchCurrentChallenge() -> Challenge? {
         let fetchRequest = Challenge.fetchRequest()
         
         fetchRequest.predicate = NSPredicate(format: "time >= %@ && time <= %@", getStartOfDay() as NSDate, getEndOfDay() as NSDate)
-        
-        let challenges = try? container.viewContext.fetch(fetchRequest)
-        
-        if let challenges = challenges {
-            for challenge in challenges {
-                print("WOW: \(challenge.total)")
-            }
-        }
         
         return try? container.viewContext.fetch(fetchRequest).first
     }

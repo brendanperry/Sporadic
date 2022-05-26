@@ -38,6 +38,8 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
 		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
+		C66A372A283F1CB50096757C /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupView.swift */; };
+		C66A372C283F21CF0096757C /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupViewModel.swift */; };
 		C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67B52192831FDFE00C99356 /* OneSignalHelper.swift */; };
 		C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C67B521C2831FFDA00C99356 /* Alamofire */; };
 		C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616928301AB3008A0C87 /* Tutorial.swift */; };
@@ -115,6 +117,8 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		C66A3729283F1CB50096757C /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		C66A372B283F21CF0096757C /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		C67B52192831FDFE00C99356 /* OneSignalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalHelper.swift; sourceTree = "<group>"; };
 		C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic_v1.0.1.xcdatamodel; sourceTree = "<group>"; };
 		C689616928301AB3008A0C87 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C66A3728283F1C9B0096757C /* Group */,
 				C689616828301AA4008A0C87 /* Tutorial */,
 				C664A945279DCBFE00EE2195 /* Other */,
 				C664A944279DCBEA00EE2195 /* Settings */,
@@ -302,6 +307,15 @@
 				C689616D28303572008A0C87 /* CustomSlider.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		C66A3728283F1C9B0096757C /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				C66A3729283F1CB50096757C /* GroupView.swift */,
+				C66A372B283F21CF0096757C /* GroupViewModel.swift */,
+			);
+			path = Group;
 			sourceTree = "<group>";
 		};
 		C689616828301AA4008A0C87 /* Tutorial */ = {
@@ -540,6 +554,7 @@
 				C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
+				C66A372C283F21CF0096757C /* GroupViewModel.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
@@ -562,6 +577,7 @@
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
+				C66A372A283F1CB50096757C /* GroupView.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
 				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
@@ -763,7 +779,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -787,7 +803,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
