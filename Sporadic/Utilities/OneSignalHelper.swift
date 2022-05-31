@@ -41,31 +41,31 @@ struct OneSignalHelper {
     
     func postNotification(cancelledNotificationIds: [String], challenges: [Challenge], completion: @escaping([String]) -> Void) {
         // update this for groups
-        let notificationsToSchedule = challenges.map {
-            NotificationTemplate(
-                users: [UserDefaults.standard.string(forKey: UserPrefs.userId.rawValue) ?? ""],
-                title: "New challenge",
-                subtitle: "",
-                message: "\($0.activity?.name ?? "") \($0.total) \($0.activity?.unit ?? "")",
-                date: dateFormatter.string(from: $0.time ?? Date()))
-        }
+//        let notificationsToSchedule = challenges.map {
+//            NotificationTemplate(
+//                users: [UserDefaults.standard.string(forKey: UserPrefs.userId.rawValue) ?? ""],
+//                title: "New challenge",
+//                subtitle: "",
+//                message: "\($0.activity?.name ?? "") \($0.amount) \($0.activity?.unit ?? "")",
+//                date: dateFormatter.string(from: $0.startTime ?? Date()))
+//        }
         
-        let params = NotificationParams(notificationIdsToCancel: cancelledNotificationIds, notificationsToSchedule: notificationsToSchedule)
-        
-        AF.request("https://echv52sz7o6l45jjjevlpfcczu0uxxml.lambda-url.us-east-2.on.aws/",
-                                  method: .post,
-                                  parameters: params,
-                                  encoder: .json,
-                                  headers: .init([.accept("application/json")]),
-                                  interceptor: nil,
-                                  requestModifier: nil).responseDecodable(of: ResponseObject.self, queue: .main) { response in
-            switch response.result {
-            case .success(let object):
-                completion(object.ids)
-            case .failure(let error):
-                print(error)
-                completion([])
-            }
-        }
+//        let params = NotificationParams(notificationIdsToCancel: cancelledNotificationIds, notificationsToSchedule: notificationsToSchedule)
+//        
+//        AF.request("https://echv52sz7o6l45jjjevlpfcczu0uxxml.lambda-url.us-east-2.on.aws/",
+//                                  method: .post,
+//                                  parameters: params,
+//                                  encoder: .json,
+//                                  headers: .init([.accept("application/json")]),
+//                                  interceptor: nil,
+//                                  requestModifier: nil).responseDecodable(of: ResponseObject.self, queue: .main) { response in
+//            switch response.result {
+//            case .success(let object):
+//                completion(object.ids)
+//            case .failure(let error):
+//                print(error)
+//                completion([])
+//            }
+//        }
     }
 }

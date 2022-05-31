@@ -15,7 +15,7 @@ struct MainView: View {
     @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var activities: FetchedResults<Activity>
+//    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var activities: FetchedResults<Activity>
     
     var body: some View {
         GeometryReader { geometry in

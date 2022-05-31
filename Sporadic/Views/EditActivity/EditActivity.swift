@@ -11,12 +11,12 @@ struct EditActivity: View {
     @Environment(\.dismiss) var dismiss
     
     let textHelper = TextHelper()
-    @ObservedObject var viewModel: EditActivityViewModel
+//    @ObservedObject var viewModel: EditActivityViewModel
     
     @Binding var isAdding: Bool
     
     init(activity: Activity, isAdding: Binding<Bool>) {
-        viewModel = EditActivityViewModel(activity: activity, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(dataHelper: DataController.shared), dataHelper: DataController.shared)
+//        viewModel = EditActivityViewModel(activity: activity, activityTemplateHelper: ActivityTemplateHelper(), notificationHelper: NotificationHelper(dataHelper: DataController.shared), dataHelper: DataController.shared)
         
         self._isAdding = isAdding
     }
@@ -33,7 +33,7 @@ struct EditActivity: View {
                         let impact = UIImpactFeedbackGenerator(style: .light)
                         impact.impactOccurred()
                         
-                        viewModel.saveActivity()
+//                        viewModel.saveActivity()
                         isAdding = false
                         dismiss()
                     }) {
@@ -44,47 +44,47 @@ struct EditActivity: View {
                     .padding()
                     .buttonStyle(ButtonPressAnimationStyle())
                     
-                    textHelper.GetTextByType(key: viewModel.activity.name ?? "Unkown" + " settings", alignment: .leading, type: .title)
-                        .padding(.leading)
-                        .padding(.top, 100)
+//                    textHelper.GetTextByType(key: viewModel.activity.name ?? "Unkown" + " settings", alignment: .leading, type: .title)
+//                        .padding(.leading)
+//                        .padding(.top, 100)
                     
                     textHelper.GetTextByType(key: "EditYourActivity", alignment: .leading, type: .body)
                         .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: " \(viewModel.activity.name ?? "Unkown")")
-                        .padding([.leading, .top])
+//                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: " \(viewModel.activity.name ?? "Unkown")")
+//                        .padding([.leading, .top])
                     
-                    Toggle("", isOn: $viewModel.isEnabled)
-                        .labelsHidden()
-                        .padding([.leading, .bottom])
+//                    Toggle("", isOn: $viewModel.isEnabled)
+//                        .labelsHidden()
+//                        .padding([.leading, .bottom])
                     
                     textHelper.GetTextByType(key: "SetTheRangeForYourActivity", alignment: .leading, type: .settingsEntryTitle)
                         .padding()
                     
-                    RangeSlider(lineHeight: 12,
-                                lineWidth: UIScreen.main.bounds.width - 50,
-                                lineCornerRadius: 10,
-                                circleWidth: 30,
-                                circleShadowRadius: 5,
-                                roundToNearest: viewModel.activity.minRange,
-                                minRange: viewModel.activity.minRange,
-                                minValue: viewModel.activityTemplate.minValue,
-                                maxValue: viewModel.activityTemplate.maxValue,
-                                circleBorder: 4,
-                                circleBorderColor: .white,
-                                circleColor: .white,
-                                lineColorInRange: Color("ActivityRangeColor"),
-                                lineColorOutOfRange: Color("SliderBackground"),
-                                leftValue: $viewModel.minValue,
-                                rightValue: $viewModel.maxValue)
+//                    RangeSlider(lineHeight: 12,
+//                                lineWidth: UIScreen.main.bounds.width - 50,
+//                                lineCornerRadius: 10,
+//                                circleWidth: 30,
+//                                circleShadowRadius: 5,
+//                                roundToNearest: viewModel.activity.minRange,
+//                                minRange: viewModel.activity.minRange,
+//                                minValue: viewModel.activityTemplate.minValue,
+//                                maxValue: viewModel.activityTemplate.maxValue,
+//                                circleBorder: 4,
+//                                circleBorderColor: .white,
+//                                circleColor: .white,
+//                                lineColorInRange: Color("ActivityRangeColor"),
+//                                lineColorOutOfRange: Color("SliderBackground"),
+//                                leftValue: $viewModel.minValue,
+//                                rightValue: $viewModel.maxValue)
                         .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
                     
-                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, prefix: "\(viewModel.minValue)" + "\t\t-\t\t", suffix: "\(viewModel.maxValue)")
+//                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, prefix: "\(viewModel.minValue)" + "\t\t-\t\t", suffix: "\(viewModel.maxValue)")
+//                    
+//                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, suffix: "\(viewModel.activity.unit ?? "Unkown")")
+//                        .padding(.bottom)
                     
-                    textHelper.GetTextByType(key: "", alignment: .center, type: .title, suffix: "\(viewModel.activity.unit ?? "Unkown")")
-                        .padding(.bottom)
-                    
-                    TotalMiles(viewModel: viewModel)
+//                    TotalMiles(viewModel: viewModel)
                 }
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
@@ -95,15 +95,15 @@ struct EditActivity: View {
     
     struct TotalMiles : View {
         let textHelper = TextHelper()
-        let viewModel: EditActivityViewModel
+//        let viewModel: EditActivityViewModel
         
         var body: some View {
             VStack {
-                textHelper.GetTextByType(key: " \(viewModel.activity.name ?? "Unknown") ".lowercased(), alignment: .leading, type: .settingsEntryTitle, prefix: Localize.getString("YouHave"), suffix: Localize.getString("ATotalOf"))
-                    .padding([.leading, .top])
-                
-                textHelper.GetTextByType(key: "", alignment: .leading, type: .title, color: Color.green, prefix: "\(viewModel.activity.total) \(viewModel.activity.unit ?? "Unknown")!")
-                    .padding([.leading])
+//                textHelper.GetTextByType(key: " \(viewModel.activity.name ?? "Unknown") ".lowercased(), alignment: .leading, type: .settingsEntryTitle, prefix: Localize.getString("YouHave"), suffix: Localize.getString("ATotalOf"))
+//                    .padding([.leading, .top])
+//                
+//                textHelper.GetTextByType(key: "", alignment: .leading, type: .title, color: Color.green, prefix: "\(viewModel.activity.total) \(viewModel.activity.unit ?? "Unknown")!")
+//                    .padding([.leading])
             }
         }
     }

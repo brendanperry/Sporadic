@@ -24,8 +24,6 @@
 		C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020426870099007A5B2F /* Preview Assets.xcassets */; };
 		C6620063278A58D9000AF577 /* EditActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620062278A58D9000AF577 /* EditActivity.swift */; };
 		C66424D027B856A700B574D7 /* Complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66424CF27B856A700B574D7 /* Complete.swift */; };
-		C664A92F2796208300EE2195 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C664A92E2796208300EE2195 /* HealthKit.framework */; };
-		C664A933279652C700EE2195 /* CompleteChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A932279652C700EE2195 /* CompleteChallenges.swift */; };
 		C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A936279A156400EE2195 /* ActivityTemplate.swift */; };
 		C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */; };
 		C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A93C279A3D7C00EE2195 /* EditActivityViewModel.swift */; };
@@ -38,10 +36,18 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
 		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
-		C66A372A283F1CB50096757C /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupView.swift */; };
-		C66A372C283F21CF0096757C /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupViewModel.swift */; };
+		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
+		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
 		C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67B52192831FDFE00C99356 /* OneSignalHelper.swift */; };
 		C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C67B521C2831FFDA00C99356 /* Alamofire */; };
+		C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BA2843F43B00ABB6B3 /* Challenges.swift */; };
+		C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BC28440FF700ABB6B3 /* Activity.swift */; };
+		C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */; };
+		C68378C12844140500ABB6B3 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C02844140500ABB6B3 /* Challenge.swift */; };
+		C68378C32844144B00ABB6B3 /* Invite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C22844144B00ABB6B3 /* Invite.swift */; };
+		C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C42844148400ABB6B3 /* UserGroup.swift */; };
+		C68378C72844152C00ABB6B3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C62844152C00ABB6B3 /* User.swift */; };
+		C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C8284542D500ABB6B3 /* GroupList.swift */; };
 		C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616928301AB3008A0C87 /* Tutorial.swift */; };
 		C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616B28301EED008A0C87 /* TransitionExtension.swift */; };
 		C689616E28303572008A0C87 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616D28303572008A0C87 /* CustomSlider.swift */; };
@@ -67,7 +73,6 @@
 		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
 		C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602D2794AFAB00A67AA2 /* DataController.swift */; };
 		C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C9602F2795042C00A67AA2 /* CloudKit.framework */; };
-		C6D1BD762831CA2E00895ABF /* sporadic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 /* End PBXBuildFile section */
 
@@ -104,7 +109,6 @@
 		C6620062278A58D9000AF577 /* EditActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivity.swift; sourceTree = "<group>"; };
 		C66424CF27B856A700B574D7 /* Complete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complete.swift; sourceTree = "<group>"; };
 		C664A92E2796208300EE2195 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		C664A932279652C700EE2195 /* CompleteChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteChallenges.swift; sourceTree = "<group>"; };
 		C664A936279A156400EE2195 /* ActivityTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplate.swift; sourceTree = "<group>"; };
 		C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplateHelper.swift; sourceTree = "<group>"; };
 		C664A93C279A3D7C00EE2195 /* EditActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivityViewModel.swift; sourceTree = "<group>"; };
@@ -117,10 +121,17 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
 		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
-		C66A3729283F1CB50096757C /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
-		C66A372B283F21CF0096757C /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		C66A3729283F1CB50096757C /* GroupOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverview.swift; sourceTree = "<group>"; };
+		C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverviewViewModel.swift; sourceTree = "<group>"; };
 		C67B52192831FDFE00C99356 /* OneSignalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalHelper.swift; sourceTree = "<group>"; };
-		C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic_v1.0.1.xcdatamodel; sourceTree = "<group>"; };
+		C68378BA2843F43B00ABB6B3 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
+		C68378BC28440FF700ABB6B3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
+		C68378C02844140500ABB6B3 /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		C68378C22844144B00ABB6B3 /* Invite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
+		C68378C42844148400ABB6B3 /* UserGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
+		C68378C62844152C00ABB6B3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C68378C8284542D500ABB6B3 /* GroupList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupList.swift; sourceTree = "<group>"; };
 		C689616928301AB3008A0C87 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		C689616B28301EED008A0C87 /* TransitionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionExtension.swift; sourceTree = "<group>"; };
 		C689616D28303572008A0C87 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
@@ -143,7 +154,6 @@
 		C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeHelper.swift; sourceTree = "<group>"; };
 		C6C960292794A6B700A67AA2 /* Sporadic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sporadic.entitlements; sourceTree = "<group>"; };
-		C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sporadic.xcdatamodel; sourceTree = "<group>"; };
 		C6C9602D2794AFAB00A67AA2 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		C6C9602F2795042C00A67AA2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -164,7 +174,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */,
-				C664A92F2796208300EE2195 /* HealthKit.framework in Frameworks */,
 				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
 				C68961712831AA26008A0C87 /* OneSignal in Frameworks */,
 				C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */,
@@ -202,6 +211,7 @@
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
 				C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */,
 				C67B52192831FDFE00C99356 /* OneSignalHelper.swift */,
+				C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -209,8 +219,12 @@
 		C630BDDA268C227C0066D8C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */,
 				C664A936279A156400EE2195 /* ActivityTemplate.swift */,
+				C68378BC28440FF700ABB6B3 /* Activity.swift */,
+				C68378C02844140500ABB6B3 /* Challenge.swift */,
+				C68378C22844144B00ABB6B3 /* Invite.swift */,
+				C68378C42844148400ABB6B3 /* UserGroup.swift */,
+				C68378C62844152C00ABB6B3 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -218,7 +232,8 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C66A3728283F1C9B0096757C /* Group */,
+				C68378B92843F42900ABB6B3 /* Challenges */,
+				C66A3728283F1C9B0096757C /* GroupOverview */,
 				C689616828301AA4008A0C87 /* Tutorial */,
 				C664A945279DCBFE00EE2195 /* Other */,
 				C664A944279DCBEA00EE2195 /* Settings */,
@@ -227,7 +242,7 @@
 				C6C9601A278FA47900A67AA2 /* AddActivity */,
 				C6C96017278FA22600A67AA2 /* Navigation */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
-				C664A932279652C700EE2195 /* CompleteChallenges.swift */,
+				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -309,13 +324,21 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
-		C66A3728283F1C9B0096757C /* Group */ = {
+		C66A3728283F1C9B0096757C /* GroupOverview */ = {
 			isa = PBXGroup;
 			children = (
-				C66A3729283F1CB50096757C /* GroupView.swift */,
-				C66A372B283F21CF0096757C /* GroupViewModel.swift */,
+				C66A3729283F1CB50096757C /* GroupOverview.swift */,
+				C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */,
 			);
-			path = Group;
+			path = GroupOverview;
+			sourceTree = "<group>";
+		};
+		C68378B92843F42900ABB6B3 /* Challenges */ = {
+			isa = PBXGroup;
+			children = (
+				C68378BA2843F43B00ABB6B3 /* Challenges.swift */,
+			);
+			path = Challenges;
 			sourceTree = "<group>";
 		};
 		C689616828301AA4008A0C87 /* Tutorial */ = {
@@ -542,10 +565,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
 				C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */,
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
+				C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
 				C66424D027B856A700B574D7 /* Complete.swift in Sources */,
@@ -554,18 +579,22 @@
 				C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
-				C66A372C283F21CF0096757C /* GroupViewModel.swift in Sources */,
+				C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
+				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */,
+				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
+				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
+				C68378C12844140500ABB6B3 /* Challenge.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
-				C664A933279652C700EE2195 /* CompleteChallenges.swift in Sources */,
+				C68378C72844152C00ABB6B3 /* User.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
 				C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */,
 				C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */,
@@ -573,11 +602,11 @@
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
-				C6D1BD762831CA2E00895ABF /* sporadic.xcdatamodeld in Sources */,
 				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
-				C66A372A283F1CB50096757C /* GroupView.swift in Sources */,
+				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,
+				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
 				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
@@ -888,20 +917,6 @@
 			productName = OneSignalExtension;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		C6C9602A2794AE9600A67AA2 /* sporadic.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C689616728276309008A0C87 /* sporadic_v1.0.1.xcdatamodel */,
-				C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */,
-			);
-			currentVersion = C6C9602B2794AE9600A67AA2 /* sporadic.xcdatamodel */;
-			path = sporadic.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = C65A01F226870098007A5B2F /* Project object */;
 }

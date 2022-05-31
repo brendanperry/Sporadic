@@ -29,7 +29,7 @@ struct SettingsPage: View {
     @Environment(\.scenePhase) var scenePhase
     
     init() {
-        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(dataHelper: DataController.shared))
+        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
     }
 
     var body: some View {
@@ -80,7 +80,7 @@ struct SettingsPage: View {
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+//                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
                 }
             }
         }

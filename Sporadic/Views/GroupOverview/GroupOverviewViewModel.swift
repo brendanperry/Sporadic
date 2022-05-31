@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GroupViewModel: ObservableObject {
+class GroupOverviewViewModel: ObservableObject {
     @Published var days = 3
     @Published var time = Date()
     

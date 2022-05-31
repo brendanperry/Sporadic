@@ -28,9 +28,22 @@ class TextHelper {
                 .lineSpacing(5)
                 .font(Font.custom("Gilroy-Medium", size: 16, relativeTo: .body))
                 .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
+        case .largeBody:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .lineSpacing(5)
+                .font(Font.custom("Gilroy", size: 16, relativeTo: .subheadline))
+                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
         case .settingsEntryTitle:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Gilroy", size: 18, relativeTo: .title3)))
+        case .small:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Gilroy-Medium", size: 13, relativeTo: .footnote))
+                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
+        case .smallBold:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Gilroy", size: 13, relativeTo: .footnote))
+                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
         }
     }
     
@@ -45,5 +58,8 @@ enum TextType {
     case title
     case medium
     case body
+    case largeBody
     case settingsEntryTitle
+    case small
+    case smallBold
 }

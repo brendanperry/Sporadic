@@ -6,43 +6,65 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct HomePage: View {
     @Binding var isAdding: Bool
-    @ObservedObject var viewModel = HomeViewModel(dataHelper: DataController.shared, notificationHelper: NotificationHelper(dataHelper: DataController.shared))
+    @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared, notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
     @ObservedObject var env = GlobalSettings.Env
     @Environment(\.scenePhase) var scenePhase
-
+    
     var body: some View {
-        ZStack {
-            Image("BackgroundImage")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-            ScrollView(.vertical, showsIndicators: false, content: {
-                VStack {
-                    Welcome()
-                    ChallengeButton(viewModel: viewModel)
-                    
-                    if env.showWarning {
-                        WarningMessage(viewModel: viewModel)
+        NavigationView {
+            ZStack {
+                Image("BackgroundImage")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        Welcome()
+                            .padding(.bottom)
+                        if env.showWarning {
+                            WarningMessage(viewModel: viewModel)
+                        }
+                        
+                        Challenges(challenges: [
+                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 12, endTime: Date(), startTime: Date(), isCompleted: false),
+                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 9, endTime: Calendar.current.date(byAdding: .hour, value: 5, to: Date()) ?? Date(), startTime: Date(), isCompleted: false),
+                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true)
+                        ])
+                        .padding(.bottom)
+                        
+                        GroupList(groups: [
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🥑", backgroundColor: .green, name: "Avacado Hoes", users: []),
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "😘", backgroundColor: .blue, name: "Your mom's a hoe", users: []),
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🧔🏿‍♀️", backgroundColor: .red, name: "Come to the dark side", users: [])
+                        ])
+                        
+                        Spacer()
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: 100, height: 100, alignment: .bottom)
                     }
-                    Streak()
-                    ActivitiesHome(isAdding: $isAdding)
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 100, height: 100, alignment: .bottom)
                 }
-            })
-            .padding(.top)
+                .padding(.top)
+                .navigationBarHidden(true)
+                .navigationTitle("")
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
-            GlobalSettings.Env.updateStatus()
+            //            GlobalSettings.Env.updateStatus()
+        }
+        .task {
+            await viewModel.getUser()
+            await viewModel.getChallenges()
+            await viewModel.getGroups()
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
-                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+                //                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
                 
                 UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
                     for notification in notifications {
@@ -92,58 +114,58 @@ struct WarningMessage: View {
                     .background(Color("SettingsButtonBackgroundColor"))
                     .cornerRadius(10)
             })
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding([.leading, .bottom])
-                .buttonStyle(ButtonPressAnimationStyle())
-                .fullScreenCover(isPresented: $showInvalidSettingsPopUp) {
-                    VStack {
-                        Button(action: {
-                            let impact = UIImpactFeedbackGenerator(style: .light)
-                            impact.impactOccurred()
-                            
-                            showInvalidSettingsPopUp = false
-                        }) {
-                            Image("CloseButton")
-                                .resizable()
-                                .frame(width: 40, height: 40, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .buttonStyle(ButtonPressAnimationStyle())
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding([.leading, .bottom])
+            .buttonStyle(ButtonPressAnimationStyle())
+            .fullScreenCover(isPresented: $showInvalidSettingsPopUp) {
+                VStack {
+                    Button(action: {
+                        let impact = UIImpactFeedbackGenerator(style: .light)
+                        impact.impactOccurred()
                         
-                        textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .largeTitle)
-                            .padding()
-                        
-                        textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
-                            .padding([.leading])
-                        
-                        if viewModel.getActivityCount() == 0 {
-                            textHelper.GetTextByType(key: "NoActivities", alignment: .leading, type: .body)
-                                .padding()
-                        } else {
-                            textHelper.GetTextByType(key: "SomeActivities", alignment: .leading, type: .body)
-                                .padding()
-                        }
-                        
-                        textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .medium)
-                            .padding([.leading])
-                        
-                        if let authorized = notificationsAuthorized {
-                            if authorized {
-                                textHelper.GetTextByType(key: "NotificationsEnabled", alignment: .leading, type: .body)
-                                    .padding()
-                            } else {
-                                textHelper.GetTextByType(key: "NotificationsDisabled", alignment: .leading, type: .body)
-                                    .padding()
-                            }
-                        } else {
-                            textHelper.GetTextByType(key: "Loading", alignment: .leading, type: .body)
-                                .padding()
-                        }
-
-                        Spacer()
+                        showInvalidSettingsPopUp = false
+                    }) {
+                        Image("CloseButton")
+                            .resizable()
+                            .frame(width: 40, height: 40, alignment: .leading)
                     }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    
+                    textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .largeTitle)
+                        .padding()
+                    
+                    textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
+                        .padding([.leading])
+                    
+                    //                        if viewModel.getActivityCount() == 0 {
+                    //                            textHelper.GetTextByType(key: "NoActivities", alignment: .leading, type: .body)
+                    //                                .padding()
+                    //                        } else {
+                    //                            textHelper.GetTextByType(key: "SomeActivities", alignment: .leading, type: .body)
+                    //                                .padding()
+                    //                        }
+                    
+                    textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .medium)
+                        .padding([.leading])
+                    
+                    if let authorized = notificationsAuthorized {
+                        if authorized {
+                            textHelper.GetTextByType(key: "NotificationsEnabled", alignment: .leading, type: .body)
+                                .padding()
+                        } else {
+                            textHelper.GetTextByType(key: "NotificationsDisabled", alignment: .leading, type: .body)
+                                .padding()
+                        }
+                    } else {
+                        textHelper.GetTextByType(key: "Loading", alignment: .leading, type: .body)
+                            .padding()
+                    }
+                    
+                    Spacer()
                 }
+            }
         }
     }
 }
@@ -152,9 +174,17 @@ struct Welcome: View {
     let textHelper = TextHelper()
     
     var body: some View {
-        VStack {
-            textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: TextType.medium)
-            textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: TextType.largeTitle)
+        HStack {
+            VStack {
+                textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: TextType.medium, suffix: "Brendan.")
+                textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: TextType.title)
+            }
+            
+            Image("nic")
+                .resizable()
+                .frame(width: 50, height: 50, alignment: .trailing)
+                .cornerRadius(100)
+                .padding()
         }
         .padding([.horizontal, .bottom])
         .padding(.top, 50)
@@ -177,24 +207,24 @@ struct ChallengeButton: View {
                 HStack (spacing: 30) {
                     Button(action: {
                         if let challenge = env.currentChallenge {
-                            challenge.isCompleted = true
+                            //                            challenge.isCompleted = true
                             viewModel.completeChallenge()
                             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                        
+                            
                             showCompletedPage = true
                         }
                     }, label: {
                         Circle()
                             .strokeBorder(Color.white, lineWidth: 5)
                             .frame(width: 40, height: 40, alignment: .center)
-                            .background(env.currentChallenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
+                        //                            .background(env.currentChallenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
                     })
-                        .buttonStyle(ButtonPressAnimationStyle())
-                        .disabled(env.currentChallenge?.isCompleted ?? false)
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    //                        .disabled(env.currentChallenge?.isCompleted ?? false)
                     
                     if let challenge = env.currentChallenge {
-                        Text("\(challenge.activity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.activity?.unit ?? "miles")")
-                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
+                        //                        Text("\(challenge.activity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.activity?.unit ?? "miles")")
+                        //                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
                     } else {
                         Text("No Challenge")
                             .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
@@ -220,7 +250,7 @@ struct Streak: View {
     var streak = 0
     
     var textHelper = TextHelper()
-
+    
     var body: some View {
         VStack {
             textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .medium)

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct GroupView: View {
-    let viewModel = GroupViewModel()
+struct GroupOverview: View {
+    let viewModel = GroupOverviewViewModel()
 //    @FetchRequest(
 //        sortDescriptors: [SortDescriptor(\.name)],
 //        predicate: NSPredicate(format: "isEnabled = true AND "))
@@ -37,7 +37,7 @@ struct GroupView: View {
 
 struct DaysAndTime: View {
     let dateHelper = DateHelper()
-    @ObservedObject var viewModel: GroupViewModel
+    @ObservedObject var viewModel: GroupOverviewViewModel
     
     @State var isPresented = false
     
@@ -106,6 +106,6 @@ struct DaysAndTime: View {
 
 struct GroupView_Previews: PreviewProvider {
     static var previews: some View {
-        GroupView()
+        GroupOverview()
     }
 }

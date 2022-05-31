@@ -10,8 +10,8 @@ import SwiftUI
 struct ActivitiesHome: View {
     let textHelper = TextHelper()
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
-    var activities: FetchedResults<Activity>
+//    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
+//    var activities: FetchedResults<Activity>
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     
@@ -23,11 +23,11 @@ struct ActivitiesHome: View {
                 .padding([.leading, .top])
             
             LazyVGrid(columns: items, alignment: .center) {
-                ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
-                    if (activity.isEnabled) {
-                        ActivityWidget(activity: activity, isAdding: $isAdding)
-                    }
-                }
+//                ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
+//                    if (activity.isEnabled) {
+//                        ActivityWidget(activity: activity, isAdding: $isAdding)
+//                    }
+//                }
             }
         }
     }

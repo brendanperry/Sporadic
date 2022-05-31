@@ -11,21 +11,21 @@ import CloudKit
 
 @main
 struct StartApp: App {
-    let dataController = DataController.shared
+    //let dataController = DataController.shared
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification), perform: { output in
-                    dataController.saveChanges()
-                })
+                //.environment(\.managedObjectContext, dataController.container.viewContext)
+//                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification), perform: { output in
+//                    dataController.saveChanges()
+//                })
         }
-        .onChange(of: scenePhase) { _ in
-            dataController.saveChanges()
-        }
+//        .onChange(of: scenePhase) { _ in
+//            dataController.saveChanges()
+//        }
     }
 }
 

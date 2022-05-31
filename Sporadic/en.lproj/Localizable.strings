@@ -6,8 +6,8 @@
   
 */
 
-"WelcomeBack" = "Welcome back!";
-"YourGoal" = "Here's your sporadic goal for today.";
+"WelcomeBack" = "Welcome back, ";
+"YourGoal" = "Let's keep things sporadic!";
 "CurrentRhythm" = "Current Rhythm";
 "Activities" = "Activities";
 "RandomNotificationDelivery" = "Random Notification Delivery";
@@ -52,3 +52,5 @@
 "YouHave" = "You have";
 "ATotalOf" = "a total of";
 "day" = "day";
+"EditGroup" = "Edit group";
+"Groups" = "Groups";

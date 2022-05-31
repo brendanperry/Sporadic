@@ -62,8 +62,8 @@ struct Complete: View {
                     .padding(.bottom)
                 
                 textHelper.GetTextByType(key: "YourNewTotalIs", alignment: .leading, type: .settingsEntryTitle, color: nil)
-                
-                textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, color: Color("CheckGreen"), prefix: "\(challenge.activity?.total ?? 0) ", suffix: "\(challenge.activity?.unit ?? "miles")")
+//                
+//                textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, color: Color("CheckGreen"), prefix: "\(challenge.activity?.total ?? 0) ", suffix: "\(challenge.activity?.unit ?? "miles")")
             }
             
             Spacer()
