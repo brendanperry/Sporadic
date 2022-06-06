@@ -11,39 +11,38 @@ import Foundation
 class TextHelper {
     func GetTextByType(key: String, alignment: Alignment, type: TextType, color: Color? = nil, prefix: String? = nil, suffix: String? = nil) -> some View {
         switch(type) {
-        case TextType.largeTitle:
+        case .h1:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy", size: 38, relativeTo: .largeTitle))
-                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
-        case TextType.title:
+                .font(Font.custom("Lexend-SemiBold", size: 28, relativeTo: .largeTitle))
+                .foregroundColor(Color("Header")))
+        case .h2:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy", size: 32, relativeTo: .title))
-                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
-        case TextType.medium:
+                .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
+                .foregroundColor(Color("Header")))
+        case .h3:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy-Medium", size: 18, relativeTo: .subheadline))
-                .foregroundColor(color == nil ? Color("SubHeadingColor") : color))
+                .font(Font.custom("Lexend-Regular", size: 18, relativeTo: .title2))
+                .foregroundColor(Color("Header")))
+        case .h4:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .title3))
+                .foregroundColor(Color("Header")))
         case .body:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .lineSpacing(5)
-                .font(Font.custom("Gilroy-Medium", size: 16, relativeTo: .body))
-                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
-        case .largeBody:
+                .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
+                .foregroundColor(Color("Body")))
+        case .challengeAndSettings:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .lineSpacing(5)
-                .font(Font.custom("Gilroy", size: 16, relativeTo: .subheadline))
-                .foregroundColor(color == nil ? Color("LooksLikeBlack") : color))
-        case .settingsEntryTitle:
+                .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
+                .foregroundColor(Color(.sRGB, white: 1, opacity: 1)))
+        case .challengeGroup:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy", size: 18, relativeTo: .title3)))
-        case .small:
+                .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .footnote))
+                .foregroundColor(Color("Body")))
+        case .activityTitle:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy-Medium", size: 13, relativeTo: .footnote))
-                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
-        case .smallBold:
-            return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Gilroy", size: 13, relativeTo: .footnote))
-                .foregroundColor(color == nil ? Color(UIColor.lightGray) : color))
+                .font(Font.custom("Lexend-SemiBold", size: 23, relativeTo: .largeTitle))
+                .foregroundColor(Color("Header")))
         }
     }
     
@@ -54,12 +53,12 @@ class TextHelper {
 }
         
 enum TextType {
-    case largeTitle
-    case title
-    case medium
+    case h1
+    case h2
+    case h3
+    case h4
     case body
-    case largeBody
-    case settingsEntryTitle
-    case small
-    case smallBold
+    case challengeAndSettings
+    case challengeGroup
+    case activityTitle
 }

@@ -9,10 +9,16 @@ import SwiftUI
 import CloudKit
 
 struct HomePage: View {
-    @Binding var isAdding: Bool
     @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared, notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
     @ObservedObject var env = GlobalSettings.Env
-    @Environment(\.scenePhase) var scenePhase
+//    @Environment(\.scenePhase) var scenePhase
+    @EnvironmentObject var viewRouter: ViewRouter
+    
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 20)!]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Header"))]
+    }
     
     var body: some View {
         NavigationView {
@@ -48,9 +54,12 @@ struct HomePage: View {
                     }
                 }
                 .padding(.top)
-                .navigationBarHidden(true)
-                .navigationTitle("")
+                
+                NavigationBar(viewRouter: viewRouter)
             }
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
@@ -62,17 +71,17 @@ struct HomePage: View {
             await viewModel.getChallenges()
             await viewModel.getGroups()
         }
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                //                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
-                
-                UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
-                    for notification in notifications {
-                        print("NOT: \(notification)")
-                    }
-                }
-            }
-        }
+//        .onChange(of: scenePhase) { newPhase in
+//            if newPhase == .active {
+//                //                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+//
+//                UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
+//                    for notification in notifications {
+//                        print("NOT: \(notification)")
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
@@ -92,7 +101,7 @@ struct WarningMessage: View {
                     .foregroundColor(.red)
                     .padding(.leading)
                 
-                textHelper.GetTextByType(key: "NoChallengesScheduled", alignment: .leading, type: .medium)
+                textHelper.GetTextByType(key: "NoChallengesScheduled", alignment: .leading, type: .challengeAndSettings)
                     .padding([.top, .bottom])
             }
             
@@ -133,10 +142,10 @@ struct WarningMessage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .buttonStyle(ButtonPressAnimationStyle())
                     
-                    textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .largeTitle)
+                    textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .activityTitle)
                         .padding()
                     
-                    textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
+                    textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .h3)
                         .padding([.leading])
                     
                     //                        if viewModel.getActivityCount() == 0 {
@@ -147,7 +156,7 @@ struct WarningMessage: View {
                     //                                .padding()
                     //                        }
                     
-                    textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .medium)
+                    textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .h3)
                         .padding([.leading])
                     
                     if let authorized = notificationsAuthorized {
@@ -176,8 +185,8 @@ struct Welcome: View {
     var body: some View {
         HStack {
             VStack {
-                textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: TextType.medium, suffix: "Brendan.")
-                textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: TextType.title)
+                textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: .body, suffix: "Brendan.")
+                textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: .h1)
             }
             
             Image("nic")
@@ -191,60 +200,6 @@ struct Welcome: View {
     }
 }
 
-struct ChallengeButton: View {
-    @ObservedObject var viewModel: HomeViewModel
-    @ObservedObject var env = GlobalSettings.Env
-    @State var showCompletedPage = false
-    
-    var body: some View {
-        VStack {
-            ZStack {
-                Image("GoalButton")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 325)
-                
-                HStack (spacing: 30) {
-                    Button(action: {
-                        if let challenge = env.currentChallenge {
-                            //                            challenge.isCompleted = true
-                            viewModel.completeChallenge()
-                            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                            
-                            showCompletedPage = true
-                        }
-                    }, label: {
-                        Circle()
-                            .strokeBorder(Color.white, lineWidth: 5)
-                            .frame(width: 40, height: 40, alignment: .center)
-                        //                            .background(env.currentChallenge?.isCompleted == true ? Circle().fill(Color.green) : Circle().fill(Color(UIColor.lightGray)))
-                    })
-                    .buttonStyle(ButtonPressAnimationStyle())
-                    //                        .disabled(env.currentChallenge?.isCompleted ?? false)
-                    
-                    if let challenge = env.currentChallenge {
-                        //                        Text("\(challenge.activity?.name ?? "Activity") \(challenge.total.removeZerosFromEnd()) \(challenge.activity?.unit ?? "miles")")
-                        //                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
-                    } else {
-                        Text("No Challenge")
-                            .font(Font.custom("Gilroy", size: 32, relativeTo: .title2))
-                    }
-                }
-                .offset(y: -7)
-            }
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fullScreenCover(isPresented: $showCompletedPage) {
-                if let challenge = env.currentChallenge {
-                    Complete(challenge: challenge)
-                }
-            }
-        }
-        .padding(.horizontal)
-        .padding(.bottom)
-    }
-}
-
 struct Streak: View {
     @AppStorage(UserPrefs.streak.rawValue)
     var streak = 0
@@ -253,8 +208,8 @@ struct Streak: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .medium)
-            textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
+            textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .h4)
+            textHelper.GetTextByType(key: "", alignment: .leading, type: .activityTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
         }
         .padding()
     }

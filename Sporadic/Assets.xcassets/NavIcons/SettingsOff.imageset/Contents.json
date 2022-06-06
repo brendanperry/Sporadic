@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "nav_settings-off-light-100px.png",
+      "filename" : "Settings Icon Inactive.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "nav_settings-off-dark-100px.png",
+      "filename" : "Settings Icon Inactive Dark.png",
       "idiom" : "universal"
     }
   ],

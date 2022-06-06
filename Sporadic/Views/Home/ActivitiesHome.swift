@@ -19,7 +19,7 @@ struct ActivitiesHome: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .medium)
+            textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .activityTitle)
                 .padding([.leading, .top])
             
             LazyVGrid(columns: items, alignment: .center) {

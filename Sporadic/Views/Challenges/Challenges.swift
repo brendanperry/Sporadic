@@ -14,7 +14,7 @@ struct Challenges: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Challenges", alignment: .leading, type: .smallBold, color: .black)
+            textHelper.GetTextByType(key: "Challenges", alignment: .leading, type: .h2, color: .primary)
                 .padding(.horizontal)
             
             VStack {
@@ -40,34 +40,34 @@ struct ChallengeView: View {
                 inProgressCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "Run 3 Miles", alignment: .leading, type: .largeBody, color: .white)
-                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .small)
+                    textHelper.GetTextByType(key: "Run 3 Miles", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .challengeGroup)
                 }
             case .completed:
                 completedCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "ChallengeCompleted", alignment: .leading, type: .largeBody, color: .white)
-                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .small)
+                    textHelper.GetTextByType(key: "ChallengeCompleted", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .challengeGroup)
                 }
             case .failed:
                 failedCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "ChallengeFailed", alignment: .leading, type: .largeBody, color: .white)
-                    textHelper.GetTextByType(key: "Avacado Hoes", alignment: .leading, type: .small)
+                    textHelper.GetTextByType(key: "ChallengeFailed", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    textHelper.GetTextByType(key: "Avacado Hoes", alignment: .leading, type: .challengeGroup)
                 }
             }
             
-            Image(systemName: "chevron.forward")
+            Image("View Group Carrot Icon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 15, height: 15, alignment: .center)
-                .foregroundColor(Color(uiColor: UIColor.lightGray))
+                .foregroundColor(.white)
         }
         .padding()
         .frame(height: 75, alignment: .center)
-        .background(Color.blue)
+        .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
         .cornerRadius(10)
         .shadow(radius: 3)
         .padding(.horizontal)
@@ -78,53 +78,31 @@ struct ChallengeView: View {
         Button(action: {
             print("COMPLETE")
         }, label: {
-            Circle()
-                .stroke(lineWidth: 7)
-                .foregroundColor(.purple)
-                .frame(width: 23, height: 23, alignment: .center)
+            Image("Unmarked Challenge Icon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white)
+                .frame(width: 35, height: 35, alignment: .center)
         })
         .padding(.trailing, 5)
     }
     
     func completedCheckbox() -> some View {
-        ZStack {
-            Circle()
-                .frame(width: 30, height: 30, alignment: .center)
-                .foregroundColor(.green)
-            
-            Image(systemName: "checkmark")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
-                .frame(width: 15, height: 15, alignment: .center)
-        }
-        .padding(.trailing, 5)
+        Image("Completed Challenge Icon")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .foregroundColor(.white)
+            .frame(width: 35, height: 35, alignment: .center)
+            .padding(.trailing, 5)
     }
     
     func failedCheckbox() -> some View {
-        ZStack {
-            Circle()
-                .frame(width: 30, height: 30, alignment: .center)
-                .foregroundColor(.red)
-            
-            Image(systemName: "xmark")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
-                .frame(width: 15, height: 15, alignment: .center)
-        }
-        .padding(.trailing, 5)
-    }
-    
-    func getImage(challengeStatus: ChallengeStatus) -> String {
-        switch challengeStatus {
-        case .completed:
-            return "checkmark"
-        case .failed:
-            return "xmark"
-        case .inProgress:
-            return ""
-        }
+        Image("Failed Challenge Icon")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .foregroundColor(.white)
+            .frame(width: 35, height: 35, alignment: .center)
+            .padding(.trailing, 5)
     }
 }
 

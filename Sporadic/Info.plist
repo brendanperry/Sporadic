@@ -57,8 +57,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Gilroy-ExtraBold.otf</string>
-		<string>Gilroy-Medium.ttf</string>
+		<string>Lexend-SemiBold.ttf</string>
+		<string>Lexend-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

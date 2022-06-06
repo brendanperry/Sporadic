@@ -34,8 +34,6 @@
 		C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDE268F77D600991913 /* SettingsPage.swift */; };
 		C6667CE5268F8B7E00991913 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE4268F8B7E00991913 /* MainView.swift */; };
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
-		C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D2F2691321100991913 /* Gilroy-Medium.ttf */; };
-		C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6667D302691321100991913 /* Gilroy-ExtraBold.otf */; };
 		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
 		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
 		C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67B52192831FDFE00C99356 /* OneSignalHelper.swift */; };
@@ -48,6 +46,11 @@
 		C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C42844148400ABB6B3 /* UserGroup.swift */; };
 		C68378C72844152C00ABB6B3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C62844152C00ABB6B3 /* User.swift */; };
 		C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C8284542D500ABB6B3 /* GroupList.swift */; };
+		C68378CE2849834400ABB6B3 /* Lexend-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68378CC2849834400ABB6B3 /* Lexend-SemiBold.ttf */; };
+		C68378CF2849834400ABB6B3 /* Lexend-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68378CD2849834400ABB6B3 /* Lexend-Regular.ttf */; };
+		C68378D12849834D00ABB6B3 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = C68378D02849834D00ABB6B3 /* OFL.txt */; };
+		C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378D22849AC9800ABB6B3 /* Stats.swift */; };
+		C68378D8284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378D7284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift */; };
 		C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616928301AB3008A0C87 /* Tutorial.swift */; };
 		C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616B28301EED008A0C87 /* TransitionExtension.swift */; };
 		C689616E28303572008A0C87 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616D28303572008A0C87 /* CustomSlider.swift */; };
@@ -61,7 +64,6 @@
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BFEA9D281256D7007A8B87 /* notificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9C281256D7007A8B87 /* notificationTests.swift */; };
 		C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */; };
-		C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9600D278F8F2000A67AA2 /* AddButton.swift */; };
 		C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */; };
 		C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96013278F9F3C00A67AA2 /* AddPage.swift */; };
 		C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96015278FA14200A67AA2 /* NavigationBar.swift */; };
@@ -119,8 +121,6 @@
 		C6667CDE268F77D600991913 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		C6667CE4268F8B7E00991913 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
-		C6667D2F2691321100991913 /* Gilroy-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.ttf"; sourceTree = "<group>"; };
-		C6667D302691321100991913 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
 		C66A3729283F1CB50096757C /* GroupOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverview.swift; sourceTree = "<group>"; };
 		C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverviewViewModel.swift; sourceTree = "<group>"; };
 		C67B52192831FDFE00C99356 /* OneSignalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalHelper.swift; sourceTree = "<group>"; };
@@ -132,6 +132,11 @@
 		C68378C42844148400ABB6B3 /* UserGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
 		C68378C62844152C00ABB6B3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C68378C8284542D500ABB6B3 /* GroupList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupList.swift; sourceTree = "<group>"; };
+		C68378CC2849834400ABB6B3 /* Lexend-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lexend-SemiBold.ttf"; sourceTree = "<group>"; };
+		C68378CD2849834400ABB6B3 /* Lexend-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lexend-Regular.ttf"; sourceTree = "<group>"; };
+		C68378D02849834D00ABB6B3 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		C68378D22849AC9800ABB6B3 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
+		C68378D7284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtensions.swift; sourceTree = "<group>"; };
 		C689616928301AB3008A0C87 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		C689616B28301EED008A0C87 /* TransitionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionExtension.swift; sourceTree = "<group>"; };
 		C689616D28303572008A0C87 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
@@ -143,7 +148,6 @@
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BFEA9C281256D7007A8B87 /* notificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTests.swift; sourceTree = "<group>"; };
 		C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
-		C6C9600D278F8F2000A67AA2 /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
 		C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C6C96013278F9F3C00A67AA2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
 		C6C96015278FA14200A67AA2 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 				C6C96017278FA22600A67AA2 /* Navigation */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
+				C68378D22849AC9800ABB6B3 /* Stats.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -360,18 +365,11 @@
 		C6B18F40268D4698003A5BAF /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				C6C9600F278F906600A67AA2 /* New Group */,
-				C6667D302691321100991913 /* Gilroy-ExtraBold.otf */,
-				C6667D2F2691321100991913 /* Gilroy-Medium.ttf */,
+				C68378D02849834D00ABB6B3 /* OFL.txt */,
+				C68378CD2849834400ABB6B3 /* Lexend-Regular.ttf */,
+				C68378CC2849834400ABB6B3 /* Lexend-SemiBold.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		C6C9600F278F906600A67AA2 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		C6C96010278F908100A67AA2 /* Extensions */ = {
@@ -384,6 +382,7 @@
 				C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */,
 				C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */,
 				C689616B28301EED008A0C87 /* TransitionExtension.swift */,
+				C68378D7284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -393,7 +392,6 @@
 			children = (
 				C6C96018278FA23500A67AA2 /* TabBarIcon.swift */,
 				C6C96015278FA14200A67AA2 /* NavigationBar.swift */,
-				C6C9600D278F8F2000A67AA2 /* AddButton.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -537,11 +535,12 @@
 			files = (
 				C613CFE326955EBF0061DC49 /* Icon-2-@2x.png in Resources */,
 				C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */,
-				C6667D312691321100991913 /* Gilroy-Medium.ttf in Resources */,
 				C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */,
-				C6667D322691321100991913 /* Gilroy-ExtraBold.otf in Resources */,
 				C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */,
 				C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */,
+				C68378CE2849834400ABB6B3 /* Lexend-SemiBold.ttf in Resources */,
+				C68378D12849834D00ABB6B3 /* OFL.txt in Resources */,
+				C68378CF2849834400ABB6B3 /* Lexend-Regular.ttf in Resources */,
 				C613CFE126955EBF0061DC49 /* Icon-3@3x.png in Resources */,
 				C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */,
 				C65A020226870099007A5B2F /* Assets.xcassets in Resources */,
@@ -581,11 +580,13 @@
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
+				C68378D8284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */,
 				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
+				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
@@ -602,7 +603,6 @@
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
-				C6C9600E278F8F2000A67AA2 /* AddButton.swift in Sources */,
 				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,

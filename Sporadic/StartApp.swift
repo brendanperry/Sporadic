@@ -17,7 +17,7 @@ struct StartApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+                MainView()
                 //.environment(\.managedObjectContext, dataController.container.viewContext)
 //                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification), perform: { output in
 //                    dataController.saveChanges()
@@ -46,6 +46,10 @@ func iCloudUserIDAsync(complete: @escaping (_ instance: CKRecord.ID?, _ error: N
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        UINavigationBar.appearance().isHidden = true
         
         iCloudUserIDAsync { (recordID: CKRecord.ID?, error: NSError?) in
             if let userID = recordID?.recordName {

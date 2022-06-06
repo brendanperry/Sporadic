@@ -28,6 +28,8 @@ struct SettingsPage: View {
     
     @Environment(\.scenePhase) var scenePhase
     
+    @EnvironmentObject var viewRouter: ViewRouter
+    
     init() {
         viewModel = SettingsViewModel(notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
     }
@@ -40,7 +42,7 @@ struct SettingsPage: View {
             
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
-                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: TextType.largeTitle)
+                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: TextType.activityTitle)
                     
                     DaysAndTime(viewModel: viewModel, days: $days, time: $time)
                     
@@ -84,6 +86,8 @@ struct SettingsPage: View {
                 }
             }
         }
+        
+        NavigationBar(viewRouter: viewRouter)
     }
     
     struct NotificationButton: View {

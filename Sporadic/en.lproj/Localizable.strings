@@ -54,3 +54,6 @@
 "day" = "day";
 "EditGroup" = "Edit group";
 "Groups" = "Groups";
+"ChallengeFailed" = "Challenge Failed";
+"ChallengeCompleted" = "Challenge Completed";
+"GroupActivities" = "Group Activities";

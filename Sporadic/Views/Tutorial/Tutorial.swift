@@ -71,7 +71,7 @@ struct Tutorial: View {
             Image("landing-rotation")
                 .resizable()
                 .frame(height: 350, alignment: .leading)
-            textHelper.GetTextByType(key: "StayActive", alignment: .leading, type: .title, color: .white)
+            textHelper.GetTextByType(key: "StayActive", alignment: .leading, type: .h2, color: .white)
                 .padding()
             Spacer()
         }
@@ -89,7 +89,7 @@ struct Tutorial: View {
                 .frame(maxWidth: .infinity, alignment: .top)
                 .padding(.bottom, -45)
                 .background(Color.blue)
-            textHelper.GetTextByType(key: "GetNotifications", alignment: .leading, type: .title)
+            textHelper.GetTextByType(key: "GetNotifications", alignment: .leading, type: .h2)
                 .padding()
                 .background(Color.red)
             textHelper.GetTextByType(key: "SetDays", alignment: .leading, type: .body)
@@ -111,10 +111,10 @@ struct Tutorial: View {
             .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
             
             HStack {
-                textHelper.GetTextByType(key: "1", alignment: .leading, type: .medium)
+                textHelper.GetTextByType(key: "1", alignment: .leading, type: .body)
                     .padding(.leading)
 
-                textHelper.GetTextByType(key: "7", alignment: .trailing, type: .medium)
+                textHelper.GetTextByType(key: "7", alignment: .trailing, type: .h2)
                     .padding(.trailing)
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -132,7 +132,7 @@ struct Tutorial: View {
                 .scaledToFit()
                 .edgesIgnoringSafeArea(.top)
                 .frame(maxWidth: .infinity, alignment: .top)
-            textHelper.GetTextByType(key: "ScheduleChallenges", alignment: .leading, type: .title)
+            textHelper.GetTextByType(key: "ScheduleChallenges", alignment: .leading, type: .h2)
                 .padding()
             textHelper.GetTextByType(key: "SetTime", alignment: .leading, type: .body)
                 .padding()
@@ -145,7 +145,7 @@ struct Tutorial: View {
     
     func fourthPage() -> some View {
         VStack {
-            textHelper.GetTextByType(key: "ChooseActivities", alignment: .leading, type: .title)
+            textHelper.GetTextByType(key: "ChooseActivities", alignment: .leading, type: .h2)
                 .padding()
             textHelper.GetTextByType(key: "ChooseRange", alignment: .leading, type: .body)
                 .padding()

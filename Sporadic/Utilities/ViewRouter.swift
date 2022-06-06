@@ -10,11 +10,13 @@ import SwiftUI
 enum Page {
     case home
     case settings
+    case stats
     case tutorial
  }
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page
+    private(set) var currentPage: Page
+    @Published var previousPage: Page
     
     init() {
         if !UserDefaults.standard.bool(forKey: UserPrefs.tutorial.rawValue) {
@@ -22,6 +24,21 @@ class ViewRouter: ObservableObject {
             currentPage = .home
         } else {
             currentPage = .home
+        }
+        
+        previousPage = .home
+    }
+    
+    public func navigateTo(_ page: Page) {
+        if currentPage != page {
+            previousPage = currentPage
+            
+            withAnimation {
+                currentPage = page
+            }
+            
+            let impact = UIImpactFeedbackGenerator(style: .light)
+            impact.impactOccurred()
         }
     }
 }

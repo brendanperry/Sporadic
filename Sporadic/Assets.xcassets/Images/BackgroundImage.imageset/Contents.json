@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "background-light.jpg",
+      "filename" : "Light Mode Background.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "background-dark.jpg",
+      "filename" : "Dark Mode Background.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Challenge Carrot Icon.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

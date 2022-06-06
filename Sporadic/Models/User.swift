@@ -12,7 +12,7 @@ struct User: Identifiable {
     let id = UUID()
     let recordId: NSObject
     let name: String
-    let photo: CKAsset
+    let photo: String
 }
 
 extension User {
@@ -24,6 +24,6 @@ extension User {
             return nil
         }
         
-        self.init(recordId: record.recordID, name: name, photo: photo)
+        self.init(recordId: record.recordID, name: name, photo: "")
     }
 }

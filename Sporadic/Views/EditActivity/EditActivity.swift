@@ -58,7 +58,7 @@ struct EditActivity: View {
 //                        .labelsHidden()
 //                        .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(key: "SetTheRangeForYourActivity", alignment: .leading, type: .settingsEntryTitle)
+                    textHelper.GetTextByType(key: "SetTheRangeForYourActivity", alignment: .leading, type: .challengeAndSettings)
                         .padding()
                     
 //                    RangeSlider(lineHeight: 12,

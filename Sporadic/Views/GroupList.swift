@@ -10,20 +10,19 @@ import SwiftUI
 struct GroupList: View {
     let textHelper = TextHelper()
     let groups: [UserGroup]
-    var items: [GridItem] = Array(repeating: .init(.fixed(175), spacing: 0), count: 2)
+    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
+    @State var isActive = false
+    
+    @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Groups", alignment: .leading, type: .medium)
-                .padding()
+            textHelper.GetTextByType(key: "Groups", alignment: .leading, type: .h2, color: .primary)
+                .padding(.horizontal)
             
-            LazyVGrid(columns: items, spacing: 25) {
+            LazyVGrid(columns: items, spacing: 0) {
                 ForEach(groups) { group in
-                    NavigationLink(
-                        destination: GroupOverview()
-                            .navigationBarHidden(true)
-                            .navigationTitle("")
-                    ) {
+                    NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group))) {
                         GroupWidget(group: group)
                     }
                     .buttonStyle(ButtonPressAnimationStyle())
@@ -36,40 +35,48 @@ struct GroupList: View {
 struct GroupWidget: View {
     let group: UserGroup
     let textHelper = TextHelper()
+    @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ZStack {
                 Circle()
-                    .frame(width: 35, height: 35, alignment: .leading)
+                    .frame(minWidth: 40, maxWidth: 50, minHeight: 40, maxHeight: 75, alignment: .leading)
                     .foregroundColor(group.backgroundColor.getColor())
                 
                 Text(group.emoji)
+                    .font(.system(size: 25))
             }
-            .frame(maxWidth: 125, alignment: .leading)
             .padding([.horizontal, .top])
             
-            textHelper.GetTextByType(key: "", alignment: .leading, type: .largeBody, prefix: group.name)
+            textHelper.GetTextByType(key: "", alignment: .leading, type: .h3, prefix: group.name)
                 .padding(.horizontal)
                 .frame(height: 50)
                 .lineLimit(2)
             
-            HStack(spacing: 0) {
-                textHelper.GetTextByType(key: "EditGroup", alignment: .leading, type: .small)
+            HStack(alignment: .bottom, spacing: 0) {
+                textHelper.GetTextByType(key: "EditGroup", alignment: .leading, type: .challengeGroup)
+                    .frame(width: 70)
                 
-                Image(systemName: "chevron.forward")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 7, alignment: .leading)
-                    .foregroundColor(Color(uiColor: UIColor.lightGray))
+                VStack {
+                    Spacer()
+                    Image("View Group Carrot Icon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .offset(y: -2)
+                }
+                .frame(maxWidth: .infinity)
             }
+            .frame(height: 18)
             .padding([.horizontal, .bottom])
-            .padding(.top, 5)
         }
-        .background(Color.white)
+        .background(Color("Panel"))
         .cornerRadius(10)
-        .frame(width: 150, height: 150)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .aspectRatio(1, contentMode: .fit)
         .shadow(radius: 3)
+        .padding()
     }
 }
 
