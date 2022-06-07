@@ -16,7 +16,7 @@ struct GroupList: View {
     @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             textHelper.GetTextByType(key: "Groups", alignment: .leading, type: .h2, color: .primary)
                 .padding(.horizontal)
             

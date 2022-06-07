@@ -57,3 +57,10 @@
 "ChallengeFailed" = "Challenge Failed";
 "ChallengeCompleted" = "Challenge Completed";
 "GroupActivities" = "Group Activities";
+"ChallengesPerWeek" = "Weekly Challenges";
+"DeliveryTime" = "Delivery Time";
+"ChallengeSettings" = "Challenge Settings";
+"PotentialDays" = "Potential days to receive a challenge";
+"PeopleInGroup" = "People In Group";
+"DeletingGroups" = "Deleting Groups Can't Be Undone";
+"DeleteGroup" = "Delete Group";

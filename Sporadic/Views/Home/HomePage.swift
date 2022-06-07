@@ -15,7 +15,7 @@ struct HomePage: View {
     @EnvironmentObject var viewRouter: ViewRouter
     
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 20)!]
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Header"))]
     }
@@ -27,9 +27,9 @@ struct HomePage: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack {
+                    VStack(spacing: 35) {
                         Welcome()
-                            .padding(.bottom)
+                        
                         if env.showWarning {
                             WarningMessage(viewModel: viewModel)
                         }
@@ -39,18 +39,13 @@ struct HomePage: View {
                             Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 9, endTime: Calendar.current.date(byAdding: .hour, value: 5, to: Date()) ?? Date(), startTime: Date(), isCompleted: false),
                             Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true)
                         ])
-                        .padding(.bottom)
                         
                         GroupList(groups: [
                             UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🥑", backgroundColor: .green, name: "Avacado Hoes", users: []),
                             UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "😘", backgroundColor: .blue, name: "Your mom's a hoe", users: []),
                             UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🧔🏿‍♀️", backgroundColor: .red, name: "Come to the dark side", users: [])
                         ])
-                        
-                        Spacer()
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(width: 100, height: 100, alignment: .bottom)
+                        .padding(.bottom, 100)
                     }
                 }
                 .padding(.top)
@@ -191,11 +186,11 @@ struct Welcome: View {
             
             Image("nic")
                 .resizable()
-                .frame(width: 50, height: 50, alignment: .trailing)
+                .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
                 .padding()
         }
-        .padding([.horizontal, .bottom])
+        .padding(.horizontal)
         .padding(.top, 50)
     }
 }

@@ -18,7 +18,7 @@ class TextHelper {
         case .h2:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
-                .foregroundColor(Color("Header")))
+                .foregroundColor(color == nil ? Color("Header") : color))
         case .h3:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 18, relativeTo: .title2))
@@ -30,7 +30,7 @@ class TextHelper {
         case .body:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
-                .foregroundColor(Color("Body")))
+                .foregroundColor(color == nil ? Color("Body") : color))
         case .challengeAndSettings:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
@@ -42,7 +42,7 @@ class TextHelper {
         case .activityTitle:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-SemiBold", size: 23, relativeTo: .largeTitle))
-                .foregroundColor(Color("Header")))
+                .foregroundColor(color == nil ? Color("Header") : color))
         }
     }
     

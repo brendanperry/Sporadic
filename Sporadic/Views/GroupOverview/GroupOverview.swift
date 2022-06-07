@@ -27,7 +27,7 @@ struct GroupOverview: View {
             
             VStack {
                 ScrollView(.vertical) {
-                    VStack {
+                    VStack(spacing: 35) {
                         groupHeader()
                         
                         YourActivities(activities: [
@@ -35,11 +35,12 @@ struct GroupOverview: View {
                         ])
                         
                         DaysAndTime(viewModel: viewModel)
-                            .padding()
                         
                         DaysForChallenges(viewModel: viewModel)
                         
                         UsersInGroup(users: [
+                            User(recordId: NSObject(), name: "Nic Cage", photo: "nic"),
+                            User(recordId: NSObject(), name: "Nic Cage", photo: "nic"),
                             User(recordId: NSObject(), name: "Nic Cage", photo: "nic"),
                             User(recordId: NSObject(), name: "Nic Cage", photo: "nic"),
                             User(recordId: NSObject(), name: "Nic Cage", photo: "nic")
@@ -49,7 +50,6 @@ struct GroupOverview: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -74,13 +74,13 @@ struct GroupOverview: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .padding()
+        .padding(.top)
     }
 }
 
 struct BackButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     var body: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
@@ -88,7 +88,7 @@ struct BackButton: View {
             Image("BackButton")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 30, height: 30, alignment: .leading)
+                .frame(width: 20, height: 20, alignment: .leading)
         })
         .buttonStyle(ButtonPressAnimationStyle())
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -100,70 +100,74 @@ struct YourActivities: View {
     let activities: [Activity]
     
     var body: some View {
-        textHelper.GetTextByType(key: "GroupActivities", alignment: .leading, type: .challengeAndSettings)
-            .padding(.horizontal)
-        
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(activities) { activity in
-                    VStack {
-                        ZStack {
-                            Circle()
-                                .frame(width: 45, height: 45, alignment: .center)
+        VStack {
+            textHelper.GetTextByType(key: "GroupActivities", alignment: .leading, type: .h2)
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(activities) { activity in
+                        VStack(spacing: 0) {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 50, height: 50, alignment: .center)
+                                    .foregroundColor(.white)
+                                
+                                Image("Bike")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30, alignment: .center)
+                            }
                             
-                            Image("nic")
-                                .resizable()
-                                .frame(width: 25, height: 25, alignment: .center)
+                            textHelper.GetTextByType(key: "Run", alignment: .center, type: .activityTitle, color: .white)
+                                .padding(.bottom)
+                            
+                            textHelper.GetTextByType(key: "\(activity.minValue) - \(activity.maxValue) mi", alignment: .center, type: .body, color: .white)
+                                .opacity(0.75)
                         }
-                        
-                        textHelper.GetTextByType(key: "Run", alignment: .center, type: .h2)
-                            .padding(.bottom)
-                        
-                        textHelper.GetTextByType(key: "\(activity.minValue) - \(activity.maxValue) mi", alignment: .center, type: .challengeGroup)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(16)
+                        .padding()
                     }
-                    .padding()
-                    .background(Color.purple)
-                    .cornerRadius(16)
-                    .padding()
-                }
-                
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .center)
-                    .foregroundColor(.blue)
                     .padding(10)
-                    .background(Circle().foregroundColor(.white))
-                    .padding(20)
-                    .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
+                    
+                    Image("Custom Plus")
+                        .resizable()
+                        .frame(width: 20, height: 20, alignment: .center)
+                        .foregroundColor(.blue)
+                        .padding(5)
+                        .background(Circle().foregroundColor(.white))
+                        .padding(15)
+                        .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
+                }
             }
+            .background(Color("Panel"))
+            .cornerRadius(16)
         }
-        .background(Color.white)
-        .cornerRadius(16)
-        .padding([.horizontal, .bottom])
+        .padding(.horizontal)
     }
 }
 
 struct DeleteButton: View {
     let textHelper = TextHelper()
-
+    
     var body: some View {
         VStack(alignment: .leading) {
-            textHelper.GetTextByType(key: "DeleteCannotBeUndone", alignment: .leading, type: .h3)
-                .padding(.horizontal)
+            textHelper.GetTextByType(key: "DeletingGroups", alignment: .leading, type: .h2)
             
             Button(action: {
                 print("Delete")
             }, label: {
-                textHelper.GetTextByType(key: "Delete", alignment: .center, type: .h3)
+                textHelper.GetTextByType(key: "DeleteGroup", alignment: .center, type: .h2)
             })
-            .frame(width: 150)
             .padding()
-            .background(Color.red)
+            .frame(width: 150, height: 40, alignment: .leading)
+            .background(Color("Delete"))
             .cornerRadius(16)
-            .padding()
-            .padding(.bottom, 100)
+            .padding(.bottom)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
 }
 
@@ -179,31 +183,29 @@ struct UsersInGroup: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "PeopleInGroup", alignment: .leading, type: .h3)
-                .padding(.horizontal)
+            textHelper.GetTextByType(key: "PeopleInGroup", alignment: .leading, type: .h2)
             
-            List {
-                ForEach(users) { user in
-                    HStack {
-                        Image("nic")
-                            .resizable()
-                            .frame(width: 50, height: 50, alignment: .leading)
-                            .cornerRadius(100)
-                        
-                        textHelper.GetTextByType(key: user.name, alignment: .leading, type: .body)
+            ScrollView(.vertical) {
+                VStack(spacing: 0) {
+                    ForEach(users) { user in
+                        HStack {
+                            Image("nic")
+                                .resizable()
+                                .frame(width: 50, height: 50, alignment: .leading)
+                                .cornerRadius(100)
+                            
+                            textHelper.GetTextByType(key: user.name, alignment: .leading, type: .h2)
+                        }
                     }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.white)
+                    .padding(12)
                 }
-                .onDelete(perform: delete)
             }
-            .background(Color.clear)
+            .frame(height: 250)
+            .padding(12)
+            .background(Color("Panel"))
+            .cornerRadius(16)
         }
-        .fixedSize(horizontal: false, vertical: true)
-    }
-    
-    func delete(at offsets: IndexSet) {
-        users.remove(atOffsets: offsets)
+        .padding(.horizontal)
     }
 }
 
@@ -214,7 +216,7 @@ struct DaysForChallenges: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "PotentialDays", alignment: .leading, type: .body)
+            textHelper.GetTextByType(key: "PotentialDays", alignment: .leading, type: .h2)
                 .padding(.horizontal)
             
             ScrollView(.horizontal) {
@@ -230,18 +232,19 @@ struct DaysForChallenges: View {
                             
                             print(viewModel.daysInTheWeek)
                         }, label: {
-                            textHelper.GetTextByType(key: day, alignment: .center, type: .body)
+                            textHelper.GetTextByType(key: day, alignment: .center, type: .h2, color: .white)
                                 .padding()
-                                .background(Circle().foregroundColor(viewModel.daysInTheWeek.contains(day) ? .blue : .gray))
+                                .background(Circle().foregroundColor(Color("DaySelection")))
+                                .opacity(viewModel.daysInTheWeek.contains(day) ? 1 : 0.25)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
                 }
                 .padding()
             }
-            .background(Color.white)
+            .background(Color("Panel"))
             .cornerRadius(16)
-            .padding()
+            .padding(.horizontal)
         }
     }
 }
@@ -255,18 +258,17 @@ struct DaysAndTime: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Challenge Settings", alignment: .leading, type: .h3)
-                .padding([.horizontal, .bottom])
+            textHelper.GetTextByType(key: "ChallengeSettings", alignment: .leading, type: .h2)
             
             HStack(spacing: 25) {
                 Group {
                     VStack {
-                        Text("ChallengesPerWeek")
-                            .frame(height: 50)
+                        Text(Localize.getString("ChallengesPerWeek"))
+                            .font(Font.custom("Lexend-Regular", size: 16, relativeTo: .title2))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                             .multilineTextAlignment(.center)
-                            .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
-                            .foregroundColor(Color("SettingButtonTextColor"))
-                            .offset(y: 10)
+                            .foregroundColor(Color("Body"))
                         
                         ZStack {
                             Picker(selection: $viewModel.days, label: EmptyView()) {
@@ -274,20 +276,21 @@ struct DaysAndTime: View {
                                     Text(String(number))
                                 }
                             }
-                            .frame(width: 125, height: 50, alignment: .center)
+                            .frame(width: 125, height: 40, alignment: .center)
+                            .scaleEffect(3)
                             .labelsHidden()
                             
                             Text("\(viewModel.days)")
-                                .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
+                                .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2))
                                 .frame(width: 200, height: 50, alignment: .center)
-                                .background(Color("ActivityBackgroundColor"))
+                                .background(Color("Panel"))
                                 .userInteractionDisabled()
                         }
                     }
                     VStack {
-                        Text("Delivery Time")
-                            .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
-                            .foregroundColor(Color("SettingButtonTextColor"))
+                        Text(Localize.getString("DeliveryTime"))
+                            .font(Font.custom("Lexend-Regular", size: 16, relativeTo: .title2))
+                            .foregroundColor(Color("Body"))
                             .zIndex(1.0)
                         
                         ZStack {
@@ -298,31 +301,25 @@ struct DaysAndTime: View {
                             
                             Group {
                                 Text(dateHelper.getHoursAndMinutes(date: viewModel.time))
-                                    .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
+                                    .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2)) +
                                 Text(" ") +
                                 Text(dateHelper.getAmPm(date: viewModel.time))
-                                    .font(Font.custom("Gilroy", size: 22, relativeTo: .title2))
+                                    .font(Font.custom("Lexend-SemiBold", size: 20, relativeTo: .title2))
                             }
                             .frame(width: 200, height: 200, alignment: .center)
-                            .background(Color("ActivityBackgroundColor"))
+                            .background(Color("Panel"))
                             .userInteractionDisabled()
                         }
-                        .background(Color("ActivityBackgroundColor"))
-                        .padding(.top, 1)
+                        .background(Color("Panel"))
                     }
                 }
                 .frame(height: 75, alignment: .center)
                 .frame(maxWidth: .infinity)
                 .padding(15)
-                .background(Color("ActivityBackgroundColor"))
+                .background(Color("Panel"))
                 .cornerRadius(15)
             }
         }
+        .padding(.horizontal)
     }
 }
-
-//struct GroupView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GroupOverview(viewModel: )
-//    }
-//}
