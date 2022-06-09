@@ -34,7 +34,7 @@ class TextHelper {
         case .challengeAndSettings:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
-                .foregroundColor(Color(.sRGB, white: 1, opacity: 1)))
+                .foregroundColor(color == nil ? Color("Header") : color))
         case .challengeGroup:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .footnote))

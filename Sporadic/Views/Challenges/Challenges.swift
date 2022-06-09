@@ -19,8 +19,8 @@ struct Challenges: View {
             
             VStack {
                 ForEach(challenges) { challenge in
-                    NavigationLink(destination: Text("Challenge")) {
-                        ChallengeView(challenge: challenge)
+                    NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
+                        ChallengeView(challenge: challenge, showNavigationCarrot: true)
                     }
                     .buttonStyle(ButtonPressAnimationStyle())
                 }
@@ -32,6 +32,7 @@ struct Challenges: View {
 struct ChallengeView: View {
     let textHelper = TextHelper()
     let challenge: Challenge
+    let showNavigationCarrot: Bool
     
     var body: some View {
         HStack {
@@ -59,11 +60,13 @@ struct ChallengeView: View {
                 }
             }
             
-            Image("View Group Carrot Icon")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 15, height: 15, alignment: .center)
-                .foregroundColor(.white)
+            if showNavigationCarrot {
+                Image("View Group Carrot Icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 15, height: 15, alignment: .center)
+                    .foregroundColor(.white)
+            }
         }
         .padding()
         .frame(height: 75, alignment: .center)

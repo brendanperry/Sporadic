@@ -41,9 +41,9 @@ struct HomePage: View {
                         ])
                         
                         GroupList(groups: [
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🥑", backgroundColor: .green, name: "Avacado Hoes", users: []),
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "😘", backgroundColor: .blue, name: "Your mom's a hoe", users: []),
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🧔🏿‍♀️", backgroundColor: .red, name: "Come to the dark side", users: [])
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🥑", backgroundColor: .green, name: "Test Group 1", users: []),
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "😘", backgroundColor: .blue, name: "Test Group 2", users: []),
+                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "⛄️", backgroundColor: .red, name: "Test Group 3", users: [])
                         ])
                         .padding(.bottom, 100)
                     }

@@ -10,17 +10,16 @@ import SwiftUI
 struct SettingsPage: View {
     @AppStorage(UserPrefs.measurement.rawValue)
     var measurement = "Imperial"
-
+    
     @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
-
-    @AppStorage(UserPrefs.daysPerWeek.rawValue)
-    var days = 3
-
+    
     @AppStorage(UserPrefs.deliveryTime.rawValue)
     var time = Date()
     
     let appThemeOptions = ["System", "Light", "Dark"]
+    
+    @State var showThemeOptions = false
     
     let textHelper = TextHelper()
     
@@ -33,7 +32,7 @@ struct SettingsPage: View {
     init() {
         viewModel = SettingsViewModel(notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
     }
-
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -42,59 +41,36 @@ struct SettingsPage: View {
             
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
-                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: TextType.activityTitle)
+                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: .h1)
+                        .padding(.top, 50)
+                        .padding(.bottom)
                     
-                    DaysAndTime(viewModel: viewModel, days: $days, time: $time)
-                    
-                    RectangleWidget(
-                        image: "NotificationIcon",
-                        text: "Notifications",
-                        actionText: "Prompt",
-                        actionView: AnyView(NotificationButton(viewModel: viewModel)))
-                        .alert(isPresented: $viewModel.showDisabledAlert) {
-                            Alert(title: Text(Localize.getString("NotificationsDisabled")), message: Text(Localize.getString("PleaseEnableNotifications")), dismissButton: .default(Text(Localize.getString("Okay"))))
-                        }
-                    
-                    RectangleWidget(
-                        image: "AppTheme",
-                        text: "App Theme",
-                        actionText: appTheme,
-                        actionView: AnyView(OptionPicker(title: Localize.getString("AppTheme"), options: appThemeOptions, selection: $appTheme)))
-                        .alert(isPresented: $viewModel.showEnabledAlert) {
-                            Alert(title: Text(Localize.getString("NotificationsEnabled")), message: Text(Localize.getString("NothingToDo")), dismissButton: .default(Text(Localize.getString("Okay"))))
-                        }
-                        
+                    UserSettings()
+                    NotificationWidget()
+                    AppTheme()
                     AppIcons()
-                    
-                    RectangleWidget(
-                        image: "Support",
-                        text: "Contact Us",
-                        actionText: "Contact",
-                        actionView: AnyView(ContactButton()))
-                    
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 100, height: 100, alignment: .bottom)
+                    Contact()
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom, 100)
             })
-            .padding(.top)
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-//                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
+                    //                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
                 }
             }
+            .padding(.top)
+            
+            NavigationBar(viewRouter: viewRouter)
         }
-        
-        NavigationBar(viewRouter: viewRouter)
     }
     
-    struct NotificationButton: View {
-        let viewModel: SettingsViewModel
-        
-        var body: some View {
-            Button(action: {
+    func NotificationWidget() -> some View {
+        RectangleWidget(
+            image: "NotificationIcon",
+            text: "Notifications",
+            actionText: "Prompt") {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
@@ -115,22 +91,42 @@ struct SettingsPage: View {
                             }
                         }
                     }
-            }, label: {
-                Text("Prompt")
-                    .frame(minWidth: 60)
-                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("SettingButtonTextColor"))
-                    .padding(12)
-                    .background(Color("SettingsButtonBackgroundColor"))
-                    .cornerRadius(10)
-            })
-                .buttonStyle(ButtonPressAnimationStyle())
-        }
+            }
+            .alert(isPresented: $viewModel.showDisabledAlert) {
+                Alert(title: Text(Localize.getString("NotificationsDisabled")), message: Text(Localize.getString("PleaseEnableNotifications")), dismissButton: .default(Text(Localize.getString("Okay"))))
+            }
     }
-
-    struct ContactButton: View {
-        var body: some View {
-            Button(action: {
+    
+    func AppTheme() -> some View {
+        RectangleWidget(
+            image: "AppTheme",
+            text: "App Theme",
+            actionText: appTheme) {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
+                showThemeOptions = true
+            }
+            .alert(isPresented: $viewModel.showEnabledAlert) {
+                Alert(title: Text(Localize.getString("NotificationsEnabled")), message: Text(Localize.getString("NothingToDo")), dismissButton: .default(Text(Localize.getString("Okay"))))
+            }
+            .buttonStyle(ButtonPressAnimationStyle())
+            .actionSheet(isPresented: $showThemeOptions) {
+                ActionSheet(
+                    title: Text(Localize.getString("AppTheme")),
+                    buttons: appThemeOptions.map { option in
+                            .default(Text(option)) {
+                                appTheme = option
+                            }
+                    })
+            }
+    }
+    
+    func Contact() -> some View {
+        RectangleWidget(
+            image: "Support",
+            text: "Contact Us",
+            actionText: "Contact") {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
@@ -138,26 +134,74 @@ struct SettingsPage: View {
                 if let url = URL(string: "mailto:\(email)") {
                     UIApplication.shared.open(url)
                 }
-            }, label: {
-                Text("Contact")
-                    .frame(minWidth: 60)
-                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("SettingButtonTextColor"))
-                    .padding(12)
-                    .background(Color("SettingsButtonBackgroundColor"))
-                    .cornerRadius(10)
-            })
-                .buttonStyle(ButtonPressAnimationStyle())
+            }
+    }
+    
+    struct UserSettings: View {
+        @State var image: UIImage?
+        @State var showImagePicker = false
+        @State var fullName = "Name"
+        let textHelper = TextHelper()
+        
+        var body: some View {
+            HStack(alignment: .center) {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .center) {
+                        ZStack {
+                            Image(uiImage: image ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                                .resizable()
+                                .frame(width: 75, height: 75, alignment: .center)
+                                .cornerRadius(100)
+                                .padding(.leastNormalMagnitude)
+                                .onTapGesture {
+                                    showImagePicker = true
+                                }
+                                .sheet(isPresented: $showImagePicker) {
+                                    ImagePicker(image: $image)
+                                }
+                            
+                            Image("Edit Group Icon")
+                                .resizable()
+                                .frame(width: 15, height: 15, alignment: .center)
+                                .background(
+                                    Circle()
+                                        .foregroundColor(Color("EditProfile"))
+                                        .frame(width: 25, height: 25, alignment: .center)
+                                        .offset(x: -1, y: -1)
+                                )
+                                .offset(x: 25, y: -25)
+                        }
+                        
+                        
+                        TextField("", text: $fullName)
+                            .padding()
+                            .frame(minWidth: 200, maxHeight: 50, alignment: .leading)
+                            .background(Color("Panel"))
+                            .cornerRadius(16)
+                            .font(Font.custom("Lexend-Regular", size: 14))
+                            .foregroundColor(Color("Header"))
+                            .padding(.leading)
+                    }
+                    
+                    Button(action: {
+                        print("Remove")
+                        image = UIImage(imageLiteralResourceName: "Default Profile")
+                    }, label: {
+                        textHelper.GetTextByType(key: "Remove", alignment: .center, type: .challengeGroup)
+                    })
+                    .frame(maxWidth: 75)
+                }
+            }
         }
     }
-
+    
     struct RectangleWidget: View {
         let image: String
         let text: String
         let actionText: String
-        let actionView: AnyView
         let textHelper = TextHelper()
-
+        let action: () -> Void
+        
         var body: some View {
             HStack {
                 Image(image)
@@ -165,96 +209,19 @@ struct SettingsPage: View {
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                textHelper.GetTextByType(key: "", alignment: .leading, type: TextType.body, prefix: text)
+                textHelper.GetTextByType(key: "", alignment: .leading, type: .challengeAndSettings, prefix: text)
                     .padding(5)
-                
-                actionView
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
-            .background(Color("ActivityBackgroundColor"))
+            .background(Color("Panel"))
             .cornerRadius(15)
-        }
-    }
-
-    struct DaysAndTime: View {
-        let dateHelper = DateHelper()
-        let viewModel: SettingsViewModel
-
-        @Binding var days: Int
-        @Binding var time: Date
-
-        @State var isPresented = false
-
-        var body: some View {
-            HStack(spacing: 25) {
-                Group {
-                    VStack {
-                        Text("Weekly\nNotifications")
-                            .frame(height: 50)
-                            .multilineTextAlignment(.center)
-                            .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
-                            .foregroundColor(Color("SettingButtonTextColor"))
-                            .offset(y: 10)
-
-                        ZStack {
-                            Picker(selection: $days, label: EmptyView()) {
-                                ForEach(1...7, id: \.self) { number in
-                                    Text(String(number))
-                                }
-                            }
-                            .frame(width: 125, height: 50, alignment: .center)
-                            .labelsHidden()
-                            .onChange(of: days) { _ in
-                                viewModel.scheduleNotifications(settingsChanged: true)
-                            }
-
-                            Text("\(days)")
-                                .font(Font.custom("Gilroy", size: 34, relativeTo: .title2))
-                                .frame(width: 200, height: 50, alignment: .center)
-                                .background(Color("ActivityBackgroundColor"))
-                                .userInteractionDisabled()
-                        }
-                    }
-                    VStack {
-                        Text("Delivery Time")
-                            .font(Font.custom("Gilroy", size: 18, relativeTo: .title3))
-                            .foregroundColor(Color("SettingButtonTextColor"))
-                            .zIndex(1.0)
-
-                        ZStack {
-                            DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
-                                .labelsHidden()
-                                .scaleEffect(1.6)
-                                .frame(width: 125)
-                                .onChange(of: time) { _ in
-                                    viewModel.scheduleNotifications(settingsChanged: true)
-                                }
-
-                            Group {
-                                Text(dateHelper.getHoursAndMinutes(date: time))
-                                    .font(Font.custom("Gilroy", size: 34, relativeTo: .title2)) +
-                                Text(" ") +
-                                Text(dateHelper.getAmPm(date: time))
-                                    .font(Font.custom("Gilroy", size: 22, relativeTo: .title2))
-                            }
-                            .frame(width: 200, height: 200, alignment: .center)
-                            .background(Color("ActivityBackgroundColor"))
-                            .userInteractionDisabled()
-                        }
-                        .background(Color("ActivityBackgroundColor"))
-                        .padding(.top, 1)
-                    }
-                }
-                .frame(height: 75, alignment: .center)
-                .frame(maxWidth: .infinity)
-                .padding(15)
-                .background(Color("ActivityBackgroundColor"))
-                .cornerRadius(15)
+            .onTapGesture {
+                action()
             }
         }
     }
-
+    
     struct AppIcons: View {
         var textHelper = TextHelper()
         
@@ -278,13 +245,13 @@ struct SettingsPage: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
-            .background(Color("ActivityBackgroundColor"))
+            .background(Color("Panel"))
             .cornerRadius(15)
         }
-
+        
         struct AppIcon: View {
             let name: String
-
+            
             var body: some View {
                 Image(name)
                     .resizable()
@@ -301,51 +268,6 @@ struct SettingsPage: View {
                         }
                     }
             }
-        }
-    }
-
-    struct OptionPicker: View {
-        var title: String
-        var options: [String]
-        
-        @Binding var selection: String
-        @State var showingOptions = false
-        
-        var body: some View {
-            Button(action: {
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
-                
-                showingOptions = true
-            }, label: {
-                Text(selection)
-                    .frame(minWidth: 60)
-                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("SettingButtonTextColor"))
-                    .padding(12)
-                    .background(Color("SettingsButtonBackgroundColor"))
-                    .cornerRadius(10)
-            })
-                .buttonStyle(ButtonPressAnimationStyle())
-                .actionSheet(isPresented: $showingOptions) {
-                    ActionSheet(
-                        title: Text(title),
-                        buttons: options.map { option in
-                                .default(Text(option)) {
-                                    selection = option
-                                }
-                        })
-                }
-        }
-    }
-}
-
-
-struct SettingsPage_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            SettingsPage().preferredColorScheme(.dark)
-            SettingsPage().previewDevice("iPhone 13 Pro Max").preferredColorScheme(.light)
         }
     }
 }

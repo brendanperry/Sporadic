@@ -60,6 +60,8 @@
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6A6865C27DD41BC00B607CA /* homeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */; };
+		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
+		C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3C28517B71008C979C /* ImagePicker.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BFEA9D281256D7007A8B87 /* notificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9C281256D7007A8B87 /* notificationTests.swift */; };
@@ -144,6 +146,8 @@
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeViewModelTests.swift; sourceTree = "<group>"; };
+		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
+		C6B2CC3C28517B71008C979C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BFEA9C281256D7007A8B87 /* notificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTests.swift; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
+				C6B2CC3C28517B71008C979C /* ImagePicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				C68378BA2843F43B00ABB6B3 /* Challenges.swift */,
+				C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */,
 			);
 			path = Challenges;
 			sourceTree = "<group>";
@@ -594,6 +600,7 @@
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
+				C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C68378C72844152C00ABB6B3 /* User.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
@@ -614,6 +621,7 @@
 				C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */,
 				C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */,
 				C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */,
+				C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */,
 				C664A943279DC8CA00EE2195 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
