@@ -10,14 +10,12 @@ import CloudKit
 
 struct ChallengeDetail: View {
     let users = [
-        User(recordId: NSObject(), name: "Brendan", photo: ""),
-        User(recordId: NSObject(), name: "Brendan", photo: ""),
-        User(recordId: NSObject(), name: "Brendan", photo: "")
+        User(recordId: NSObject(), usersRecordId: "", name: "Brendan", photo: ""),
+        User(recordId: NSObject(), usersRecordId: "", name: "Brendan", photo: ""),
+        User(recordId: NSObject(), usersRecordId: "", name: "Brendan", photo: "")
     ]
     
     let challenge: Challenge
-    
-    let textHelper = TextHelper()
     
     var body: some View {
         ZStack {
@@ -27,7 +25,7 @@ struct ChallengeDetail: View {
             
             VStack(spacing: 35) {
                 VStack {
-                    textHelper.GetTextByType(key: "CompleteYourChallenge", alignment: .leading, type: .h2)
+                    TextHelper.text(key: "CompleteYourChallenge", alignment: .leading, type: .h2)
                         .padding(.horizontal)
                     ChallengeView(challenge: challenge, showNavigationCarrot: false)
                 }
@@ -41,7 +39,6 @@ struct ChallengeDetail: View {
     }
     
     struct UsersForChallenge: View {
-        let textHelper = TextHelper()
         @State var users: [User]
         
         init(users: [User]) {
@@ -52,7 +49,7 @@ struct ChallengeDetail: View {
         
         var body: some View {
             VStack {
-                textHelper.GetTextByType(key: "PeopleInGroup", alignment: .leading, type: .h2)
+                TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
                 
                 ScrollView(.vertical) {
                     VStack(spacing: 0) {
@@ -64,8 +61,8 @@ struct ChallengeDetail: View {
                                     .cornerRadius(100)
                                 
                                 VStack {
-                                    textHelper.GetTextByType(key: user.name, alignment: .leading, type: .h2)
-                                    textHelper.GetTextByType(key: "NotCompleted", alignment: .leading, type: .challengeGroup)
+                                    TextHelper.text(key: user.name, alignment: .leading, type: .h2)
+                                    TextHelper.text(key: "NotCompleted", alignment: .leading, type: .challengeGroup)
                                 }
                             }
                         }

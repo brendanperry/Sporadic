@@ -10,7 +10,6 @@ import SwiftUI
 struct Complete: View {
     @Environment(\.dismiss) var dismiss
     
-    let textHelper = TextHelper()
     let streak = UserDefaults.standard.integer(forKey: UserPrefs.streak.rawValue)
     let challenge: Challenge
     
@@ -32,7 +31,7 @@ struct Complete: View {
             Spacer()
             
             VStack {
-                textHelper.GetTextByType(key: "GreatWork", alignment: .leading, type: .h1, color: nil)
+                TextHelper.text(key: "GreatWork", alignment: .leading, type: .h1, color: nil)
                 ZStack {
                     Image("GoalButton")
                         .resizable()
@@ -51,17 +50,17 @@ struct Complete: View {
                             }
                             .offset(x: -100, y: -5)
                     
-                    textHelper.GetTextByType(key: "Complete", alignment: .leading, type: .h2, color: .white)
+                    TextHelper.text(key: "Complete", alignment: .leading, type: .h2, color: .white)
                         .offset(x: 25, y: -5)
                 }
                 .padding(.bottom)
                 
-                textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .challengeAndSettings, color: nil)
+                TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .challengeAndSettings, color: nil)
                 
-                textHelper.GetTextByType(key: "days", alignment: .leading, type: .h4, color: nil, prefix: "\(streak) ")
+                TextHelper.text(key: "days", alignment: .leading, type: .h4, color: nil, prefix: "\(streak) ")
                     .padding(.bottom)
                 
-                textHelper.GetTextByType(key: "YourNewTotalIs", alignment: .leading, type: .h4, color: nil)
+                TextHelper.text(key: "YourNewTotalIs", alignment: .leading, type: .h4, color: nil)
 //                
 //                textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, color: Color("CheckGreen"), prefix: "\(challenge.activity?.total ?? 0) ", suffix: "\(challenge.activity?.unit ?? "miles")")
             }

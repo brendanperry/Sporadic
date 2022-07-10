@@ -10,7 +10,6 @@ import SwiftUI
 struct EditActivity: View {
     @Environment(\.dismiss) var dismiss
     
-    let textHelper = TextHelper()
 //    @ObservedObject var viewModel: EditActivityViewModel
     
     @Binding var isAdding: Bool
@@ -48,7 +47,7 @@ struct EditActivity: View {
 //                        .padding(.leading)
 //                        .padding(.top, 100)
                     
-                    textHelper.GetTextByType(key: "EditYourActivity", alignment: .leading, type: .body)
+                    TextHelper.text(key: "EditYourActivity", alignment: .leading, type: .body)
                         .padding([.leading, .bottom])
                     
 //                    textHelper.GetTextByType(key: "Toggle", alignment: .leading, type: .settingsEntryTitle, suffix: " \(viewModel.activity.name ?? "Unkown")")
@@ -58,7 +57,7 @@ struct EditActivity: View {
 //                        .labelsHidden()
 //                        .padding([.leading, .bottom])
                     
-                    textHelper.GetTextByType(key: "SetTheRangeForYourActivity", alignment: .leading, type: .challengeAndSettings)
+                    TextHelper.text(key: "SetTheRangeForYourActivity", alignment: .leading, type: .challengeAndSettings)
                         .padding()
                     
 //                    RangeSlider(lineHeight: 12,

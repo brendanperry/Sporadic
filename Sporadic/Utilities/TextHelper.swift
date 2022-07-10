@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 class TextHelper {
-    func GetTextByType(key: String, alignment: Alignment, type: TextType, color: Color? = nil, prefix: String? = nil, suffix: String? = nil) -> some View {
+    static func text(key: String, alignment: Alignment, type: TextType, color: Color? = nil, prefix: String? = nil, suffix: String? = nil) -> some View {
         switch(type) {
         case .h1:
             return AnyView(GetText(key, alignment, prefix, suffix)
@@ -26,7 +26,7 @@ class TextHelper {
         case .h4:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .title3))
-                .foregroundColor(Color("Header")))
+                .foregroundColor(color == nil ? Color("Header") : color))
         case .body:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
@@ -46,7 +46,7 @@ class TextHelper {
         }
     }
     
-    private func GetText(_ key: String, _ alignment: Alignment, _ prefix: String? = nil, _ suffix: String? = nil) -> some View {
+    private static func GetText(_ key: String, _ alignment: Alignment, _ prefix: String? = nil, _ suffix: String? = nil) -> some View {
         return Text((prefix ?? "") + Localize.getString(key) + (suffix ?? ""))
             .frame(maxWidth: .infinity, alignment: alignment)
     }

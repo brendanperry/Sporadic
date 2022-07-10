@@ -27,6 +27,12 @@ struct HomePage: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 ScrollView(.vertical, showsIndicators: false) {
+                    PullToRefresh(coordinateSpaceName: "HomePage") {
+//                        viewModel.getGroups()
+//                        viewModel.getChallenges()
+                        print("WOW")
+                    }
+                    
                     VStack(spacing: 35) {
                         Welcome()
                         
@@ -40,15 +46,19 @@ struct HomePage: View {
                             Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true)
                         ])
                         
-                        GroupList(groups: [
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "🥑", backgroundColor: .green, name: "Test Group 1", users: []),
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "😘", backgroundColor: .blue, name: "Test Group 2", users: []),
-                            UserGroup(activities: [], challenges: [], daysOfTheWeek: [], deliveryTime: Date(), emoji: "⛄️", backgroundColor: .red, name: "Test Group 3", users: [])
-                        ])
-                        .padding(.bottom, 100)
+                        switch viewModel.loadingStatus {
+                        case .loaded:
+                            GroupList(groups: viewModel.groups ?? [])
+                        case .loading:
+                            ProgressView()
+                        case .failed:
+                            Text("Failed to load groups. Please try again.")
+                        }
                     }
+                    .padding(.bottom, 100)
                 }
                 .padding(.top)
+                .coordinateSpace(name: "HomePage")
                 
                 NavigationBar(viewRouter: viewRouter)
             }
@@ -62,7 +72,6 @@ struct HomePage: View {
             //            GlobalSettings.Env.updateStatus()
         }
         .task {
-            await viewModel.getUser()
             await viewModel.getChallenges()
             await viewModel.getGroups()
         }
@@ -84,7 +93,6 @@ struct WarningMessage: View {
     @ObservedObject var viewModel: HomeViewModel
     @State var showInvalidSettingsPopUp = false
     @State var notificationsAuthorized: Bool?
-    let textHelper = TextHelper()
     
     var body: some View {
         VStack {
@@ -96,7 +104,7 @@ struct WarningMessage: View {
                     .foregroundColor(.red)
                     .padding(.leading)
                 
-                textHelper.GetTextByType(key: "NoChallengesScheduled", alignment: .leading, type: .challengeAndSettings)
+                TextHelper.text(key: "NoChallengesScheduled", alignment: .leading, type: .challengeAndSettings)
                     .padding([.top, .bottom])
             }
             
@@ -137,10 +145,10 @@ struct WarningMessage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .buttonStyle(ButtonPressAnimationStyle())
                     
-                    textHelper.GetTextByType(key: "SomethingIsWrong", alignment: .leading, type: .activityTitle)
+                    TextHelper.text(key: "SomethingIsWrong", alignment: .leading, type: .activityTitle)
                         .padding()
                     
-                    textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .h3)
+                    TextHelper.text(key: "Activities", alignment: .leading, type: .h3)
                         .padding([.leading])
                     
                     //                        if viewModel.getActivityCount() == 0 {
@@ -151,19 +159,19 @@ struct WarningMessage: View {
                     //                                .padding()
                     //                        }
                     
-                    textHelper.GetTextByType(key: "Notifications", alignment: .leading, type: .h3)
+                    TextHelper.text(key: "Notifications", alignment: .leading, type: .h3)
                         .padding([.leading])
                     
                     if let authorized = notificationsAuthorized {
                         if authorized {
-                            textHelper.GetTextByType(key: "NotificationsEnabled", alignment: .leading, type: .body)
+                            TextHelper.text(key: "NotificationsEnabled", alignment: .leading, type: .body)
                                 .padding()
                         } else {
-                            textHelper.GetTextByType(key: "NotificationsDisabled", alignment: .leading, type: .body)
+                            TextHelper.text(key: "NotificationsDisabled", alignment: .leading, type: .body)
                                 .padding()
                         }
                     } else {
-                        textHelper.GetTextByType(key: "Loading", alignment: .leading, type: .body)
+                        TextHelper.text(key: "Loading", alignment: .leading, type: .body)
                             .padding()
                     }
                     
@@ -175,13 +183,11 @@ struct WarningMessage: View {
 }
 
 struct Welcome: View {
-    let textHelper = TextHelper()
-    
     var body: some View {
         HStack {
             VStack {
-                textHelper.GetTextByType(key: "WelcomeBack", alignment: .leading, type: .body, suffix: "Brendan.")
-                textHelper.GetTextByType(key: "YourGoal", alignment: .leading, type: .h1)
+                TextHelper.text(key: "WelcomeBack", alignment: .leading, type: .body, suffix: "Brendan.")
+                TextHelper.text(key: "YourGoal", alignment: .leading, type: .h1)
             }
             
             Image("nic")
@@ -203,8 +209,8 @@ struct Streak: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "CurrentRhythm", alignment: .leading, type: .h4)
-            textHelper.GetTextByType(key: "", alignment: .leading, type: .activityTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
+            TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .h4)
+            TextHelper.text(key: "", alignment: .leading, type: .activityTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
         }
         .padding()
     }

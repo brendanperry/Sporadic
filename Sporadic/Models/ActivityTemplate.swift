@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ActivityTemplate {
+struct ActivityTemplate: Identifiable {
     let id: Int16
     let name: String
     let minValue: Double

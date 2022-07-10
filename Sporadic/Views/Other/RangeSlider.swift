@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RangeSlider: View {
     let lineHeight: Double
@@ -13,15 +14,19 @@ struct RangeSlider: View {
     let lineCornerRadius: Double
     let circleWidth: Double
     let circleShadowRadius: Double
-    let roundToNearest: Double
-    let minRange: Double
-    let minValue: Double
-    let maxValue: Double
+    @State var minValue: Double
+    @State var maxValue: Double
     let circleBorder: Double
-    let circleBorderColor: Color
-    let circleColor: Color
-    let lineColorInRange: Color
+    let leftCircleBorderColor: Color
+    let rightCircleBorderColor: Color
+    let leftCircleColor: Color
+    let rightCircleColor: Color
+    let lineColorInRange: AnyShapeStyle
     let lineColorOutOfRange: Color
+    let unitPublisher: AnyPublisher<ActivityUnit, Never>
+    @State var hasAppeared = false
+    @State var observers = Set<AnyCancellable>()
+    var canclee: AnyCancellable?
 
     @Binding var leftValue: Double
     @Binding var rightValue: Double
@@ -34,109 +39,146 @@ struct RangeSlider: View {
          lineCornerRadius: Double,
          circleWidth: Double,
          circleShadowRadius: Double,
-         roundToNearest: Double,
-         minRange: Double,
          minValue: Double,
          maxValue: Double,
          circleBorder: Double,
-         circleBorderColor: Color,
-         circleColor: Color,
-         lineColorInRange: Color,
+         leftCircleBorderColor: Color,
+         rightCircleBorderColor: Color,
+         leftCircleColor: Color,
+         rightCircleColor: Color,
+         lineColorInRange: AnyShapeStyle,
          lineColorOutOfRange: Color,
          leftValue: Binding<Double>,
-         rightValue: Binding<Double>) {
+         rightValue: Binding<Double>,
+         unitPublisher: AnyPublisher<ActivityUnit, Never>) {
         self.lineHeight = lineHeight
         self.lineWidth = lineWidth
         self.lineCornerRadius = lineCornerRadius
         self.circleWidth = circleWidth
         self.circleShadowRadius = circleShadowRadius
-        self.roundToNearest = roundToNearest
-        self.minRange = minRange
         self.minValue = minValue
         self.maxValue = maxValue
         self._leftValue = leftValue
         self._rightValue = rightValue
         self.circleBorder = circleBorder
-        self.circleBorderColor = circleBorderColor
-        self.circleColor = circleColor
+        self.leftCircleBorderColor = leftCircleBorderColor
+        self.rightCircleBorderColor = rightCircleBorderColor
+        self.leftCircleColor = leftCircleColor
+        self.rightCircleColor = rightCircleColor
         self.lineColorInRange = lineColorInRange
         self.lineColorOutOfRange = lineColorOutOfRange
-
-        self.leftSliderPosition = (leftValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
-        self.rightSliderPosition = (rightValue.wrappedValue - minValue) / (maxValue - minValue) * self.lineWidth
+        self.unitPublisher = unitPublisher
+        
+        self.leftSliderPosition = (leftValue.wrappedValue - minValue) / (maxValue - minValue) * lineWidth
+        self.rightSliderPosition = (rightValue.wrappedValue - minValue) / (maxValue - minValue) * lineWidth
     }
 
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                RoundedRectangle(cornerSize: CGSize(width: self.lineCornerRadius, height: self.lineCornerRadius))
-                    .frame(width: self.lineWidth, height: self.lineHeight, alignment: .center)
-                    .foregroundColor(self.lineColorOutOfRange)
-                RoundedRectangle(cornerSize: CGSize(width: self.lineCornerRadius, height: self.lineCornerRadius))
+                RoundedRectangle(cornerSize: CGSize(width: lineCornerRadius, height: lineCornerRadius))
+                    .frame(width: lineWidth, height: lineHeight, alignment: .center)
+                    .foregroundColor(lineColorOutOfRange)
+                RoundedRectangle(cornerSize: CGSize(width: lineCornerRadius, height: lineCornerRadius))
+                    .fill(AnyShapeStyle(lineColorInRange))
                     .frame(
-                        width: self.rightSliderPosition - self.leftSliderPosition,
-                        height: self.lineHeight,
+                        width: rightSliderPosition - leftSliderPosition,
+                        height: lineHeight,
                         alignment: .center)
                     .position(
-                        x: (self.rightSliderPosition - self.leftSliderPosition) / 2 + leftSliderPosition,
+                        x: (rightSliderPosition - leftSliderPosition) / 2 + leftSliderPosition,
                         y: geo.frame(in: .local).midY)
-                    .foregroundColor(self.lineColorInRange)
-                Circle()
-                    .strokeBorder(self.circleBorderColor, lineWidth: self.circleBorder)
-                    .background(Circle().fill(self.circleColor).shadow(radius: self.circleShadowRadius))
-                    .frame(width: self.circleWidth, height: self.circleWidth, alignment: .center)
-                    .position(x: self.leftSliderPosition, y: geo.frame(in: .local).midY)
-                    .foregroundColor(self.circleColor)
-                    .gesture(dragLeftSlider)
-                Circle()
-                    .strokeBorder(self.circleBorderColor, lineWidth: self.circleBorder)
-                    .background(Circle().fill(self.circleColor).shadow(radius: self.circleShadowRadius))
-                    .frame(width: self.circleWidth, height: self.circleWidth, alignment: .center)
-                    .position(x: self.rightSliderPosition, y: geo.frame(in: .local).midY)
-                    .gesture(dragRightSlider)
+                ZStack {
+                    Circle()
+                        .fill(leftCircleBorderColor)
+                        .frame(width: circleWidth, height: circleWidth, alignment: .center)
+                        .shadow(radius: circleShadowRadius)
+                    Circle()
+                        .fill(leftCircleColor)
+                        .frame(width: circleWidth - circleBorder, height: circleWidth - circleBorder, alignment: .center)
+                }
+                .position(x: leftSliderPosition, y: geo.frame(in: .local).midY)
+                .gesture(dragLeftSlider)
+                
+                ZStack {
+                    Circle()
+                        .fill(rightCircleBorderColor)
+                        .frame(width: circleWidth, height: circleWidth, alignment: .center)
+                        .shadow(radius: circleShadowRadius)
+                    Circle()
+                        .fill(rightCircleColor)
+                        .frame(width: circleWidth - circleBorder, height: circleWidth - circleBorder, alignment: .center)
+                }
+                .position(x: rightSliderPosition, y: geo.frame(in: .local).midY)
+                .gesture(dragRightSlider)
             }
         }
-        .frame(width: self.lineWidth, height: self.circleWidth, alignment: .center)
+        .frame(width: lineWidth, height: circleWidth, alignment: .center)
+        .onAppear {
+            if !hasAppeared {
+                hasAppeared = true
+                
+                DispatchQueue.main.async {
+                    unitPublisher.sink { unit in
+                        minValue = unit.minValue()
+                        maxValue = unit.maxValue()
+                        leftValue = unit.defaultMin()
+                        rightValue = unit.defaultMax()
+                        
+                        leftSliderPosition = (leftValue - minValue) / (maxValue - minValue) * lineWidth
+                        rightSliderPosition = (rightValue - minValue) / (maxValue - minValue) * lineWidth
+                    }.store(in: &observers)
+                }
+            }
+        }
     }
 
     var dragLeftSlider: some Gesture {
         DragGesture()
             .onChanged { value in
-                if value.location.x <= 0 {
-                    self.leftSliderPosition = 0
-                } else if value.location.x <= self.rightSliderPosition - (minRange * (self.lineWidth / (self.maxValue - self.minValue))) {
-                    self.leftSliderPosition = value.location.x
-                } else {
-                    self.leftSliderPosition = self.rightSliderPosition - (minRange * (self.lineWidth / (self.maxValue - self.minValue)))
-                }
-
-                let newValue = round((self.leftSliderPosition / self.lineWidth) * (self.maxValue - self.minValue) + self.minValue, toNearest: self.roundToNearest)
-
-                if newValue != self.leftValue {
-                    self.leftValue = newValue
-                    self.generateHapticFeedback()
-                }
+                updateLeftSlider(value: value)
             }
+    }
+    
+    func updateLeftSlider(value: DragGesture.Value) {
+        if value.location.x <= 0 {
+            leftSliderPosition = 0
+        } else if value.location.x <= rightSliderPosition - (minValue * (lineWidth / (maxValue - minValue))) {
+            leftSliderPosition = value.location.x
+        } else {
+            leftSliderPosition = rightSliderPosition - (minValue * (lineWidth / (maxValue - minValue)))
+        }
+
+        let newValue = round((leftSliderPosition / lineWidth) * (maxValue - minValue) + minValue, toNearest: minValue)
+
+        if newValue != leftValue {
+            leftValue = newValue
+            generateHapticFeedback()
+        }
     }
 
     var dragRightSlider: some Gesture {
         DragGesture()
             .onChanged { value in
-                if value.location.x >= self.lineWidth {
-                    self.rightSliderPosition = self.lineWidth
-                } else if value.location.x >= self.leftSliderPosition + (minRange * (self.lineWidth / (self.maxValue - self.minValue))) {
-                    self.rightSliderPosition = value.location.x
-                } else {
-                    self.rightSliderPosition = self.leftSliderPosition + (minRange * (self.lineWidth / (self.maxValue - self.minValue)))
-                }
-
-                let newValue = round((self.rightSliderPosition / self.lineWidth) * (self.maxValue - self.minValue) + self.minValue, toNearest: self.roundToNearest)
-
-                if newValue != self.rightValue {
-                    self.rightValue = newValue
-                    self.generateHapticFeedback()
-                }
+                updateRightSlider(value: value.location.x)
             }
+    }
+    
+    func updateRightSlider(value: Double) {
+        if value >= lineWidth {
+            rightSliderPosition = lineWidth
+        } else if value >= leftSliderPosition + (minValue * (lineWidth / (maxValue - minValue))) {
+            rightSliderPosition = value
+        } else {
+            rightSliderPosition = leftSliderPosition + (minValue * (lineWidth / (maxValue - minValue)))
+        }
+
+        let newValue = round((rightSliderPosition / lineWidth) * (maxValue - minValue) + minValue, toNearest: minValue)
+
+        if newValue != rightValue {
+            rightValue = newValue
+            generateHapticFeedback()
+        }
     }
 
     func generateHapticFeedback() {

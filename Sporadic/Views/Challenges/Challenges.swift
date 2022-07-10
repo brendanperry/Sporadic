@@ -9,12 +9,11 @@ import SwiftUI
 import CloudKit
 
 struct Challenges: View {
-    let textHelper = TextHelper()
     let challenges: [Challenge]
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Challenges", alignment: .leading, type: .h2, color: .primary)
+            TextHelper.text(key: "Challenges", alignment: .leading, type: .h2, color: .primary)
                 .padding(.horizontal)
             
             VStack {
@@ -30,7 +29,6 @@ struct Challenges: View {
 }
 
 struct ChallengeView: View {
-    let textHelper = TextHelper()
     let challenge: Challenge
     let showNavigationCarrot: Bool
     
@@ -41,22 +39,22 @@ struct ChallengeView: View {
                 inProgressCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "Run 3 Miles", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "Run 3 Miles", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    TextHelper.text(key: "You're trash", alignment: .leading, type: .challengeGroup)
                 }
             case .completed:
                 completedCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "ChallengeCompleted", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    textHelper.GetTextByType(key: "You're trash", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    TextHelper.text(key: "You're trash", alignment: .leading, type: .challengeGroup)
                 }
             case .failed:
                 failedCheckbox()
                 
                 VStack {
-                    textHelper.GetTextByType(key: "ChallengeFailed", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    textHelper.GetTextByType(key: "Avacado Hoes", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .challengeAndSettings, color: .white)
+                    TextHelper.text(key: "Avacado Hoes", alignment: .leading, type: .challengeGroup)
                 }
             }
             

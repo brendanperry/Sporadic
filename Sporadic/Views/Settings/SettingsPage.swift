@@ -21,8 +21,6 @@ struct SettingsPage: View {
     
     @State var showThemeOptions = false
     
-    let textHelper = TextHelper()
-    
     @ObservedObject var viewModel: SettingsViewModel
     
     @Environment(\.scenePhase) var scenePhase
@@ -41,7 +39,7 @@ struct SettingsPage: View {
             
             ScrollView(.vertical, showsIndicators: false, content: {
                 VStack(spacing: 20) {
-                    textHelper.GetTextByType(key: "Settings", alignment: .leading, type: .h1)
+                    TextHelper.text(key: "Settings", alignment: .leading, type: .h1)
                         .padding(.top, 50)
                         .padding(.bottom)
                     
@@ -187,7 +185,7 @@ struct SettingsPage: View {
                         print("Remove")
                         image = UIImage(imageLiteralResourceName: "Default Profile")
                     }, label: {
-                        textHelper.GetTextByType(key: "Remove", alignment: .center, type: .challengeGroup)
+                        TextHelper.text(key: "Remove", alignment: .center, type: .challengeGroup)
                     })
                     .frame(maxWidth: 75)
                 }
@@ -199,7 +197,6 @@ struct SettingsPage: View {
         let image: String
         let text: String
         let actionText: String
-        let textHelper = TextHelper()
         let action: () -> Void
         
         var body: some View {
@@ -209,7 +206,7 @@ struct SettingsPage: View {
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                textHelper.GetTextByType(key: "", alignment: .leading, type: .challengeAndSettings, prefix: text)
+                TextHelper.text(key: "", alignment: .leading, type: .challengeAndSettings, prefix: text)
                     .padding(5)
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -223,8 +220,6 @@ struct SettingsPage: View {
     }
     
     struct AppIcons: View {
-        var textHelper = TextHelper()
-        
         var body: some View {
             VStack {
                 HStack {
@@ -233,7 +228,7 @@ struct SettingsPage: View {
                         .frame(width: 30, height: 30)
                         .padding(.horizontal, 5)
                     
-                    textHelper.GetTextByType(key: "AppIcon", alignment: .leading, type: TextType.body)
+                    TextHelper.text(key: "AppIcon", alignment: .leading, type: TextType.body)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 

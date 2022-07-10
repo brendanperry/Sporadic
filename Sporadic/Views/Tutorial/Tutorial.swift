@@ -11,7 +11,6 @@ struct Tutorial: View {
     @State var selection = 0
     @AppStorage(UserPrefs.daysPerWeek.rawValue)
     var days = 3.0
-    let textHelper = TextHelper()
     
     var body: some View {
         ZStack {
@@ -71,7 +70,7 @@ struct Tutorial: View {
             Image("landing-rotation")
                 .resizable()
                 .frame(height: 350, alignment: .leading)
-            textHelper.GetTextByType(key: "StayActive", alignment: .leading, type: .h2, color: .white)
+            TextHelper.text(key: "StayActive", alignment: .leading, type: .h2, color: .white)
                 .padding()
             Spacer()
         }
@@ -89,10 +88,10 @@ struct Tutorial: View {
                 .frame(maxWidth: .infinity, alignment: .top)
                 .padding(.bottom, -45)
                 .background(Color.blue)
-            textHelper.GetTextByType(key: "GetNotifications", alignment: .leading, type: .h2)
+            TextHelper.text(key: "GetNotifications", alignment: .leading, type: .h2)
                 .padding()
                 .background(Color.red)
-            textHelper.GetTextByType(key: "SetDays", alignment: .leading, type: .body)
+            TextHelper.text(key: "SetDays", alignment: .leading, type: .body)
                 .padding()
             CustomSlider(lineHeight: 12,
                          lineWidth: UIScreen.main.bounds.width - 50,
@@ -111,10 +110,10 @@ struct Tutorial: View {
             .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
             
             HStack {
-                textHelper.GetTextByType(key: "1", alignment: .leading, type: .body)
+                TextHelper.text(key: "1", alignment: .leading, type: .body)
                     .padding(.leading)
 
-                textHelper.GetTextByType(key: "7", alignment: .trailing, type: .h2)
+                TextHelper.text(key: "7", alignment: .trailing, type: .h2)
                     .padding(.trailing)
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -132,9 +131,9 @@ struct Tutorial: View {
                 .scaledToFit()
                 .edgesIgnoringSafeArea(.top)
                 .frame(maxWidth: .infinity, alignment: .top)
-            textHelper.GetTextByType(key: "ScheduleChallenges", alignment: .leading, type: .h2)
+            TextHelper.text(key: "ScheduleChallenges", alignment: .leading, type: .h2)
                 .padding()
-            textHelper.GetTextByType(key: "SetTime", alignment: .leading, type: .body)
+            TextHelper.text(key: "SetTime", alignment: .leading, type: .body)
                 .padding()
             
             Spacer()
@@ -145,15 +144,14 @@ struct Tutorial: View {
     
     func fourthPage() -> some View {
         VStack {
-            textHelper.GetTextByType(key: "ChooseActivities", alignment: .leading, type: .h2)
+            TextHelper.text(key: "ChooseActivities", alignment: .leading, type: .h2)
                 .padding()
-            textHelper.GetTextByType(key: "ChooseRange", alignment: .leading, type: .body)
+            TextHelper.text(key: "ChooseRange", alignment: .leading, type: .body)
                 .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)
     }
-
 }
 
 struct Tutorial_Previews: PreviewProvider {

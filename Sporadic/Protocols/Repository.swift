@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CloudKit
 
 protocol Repository {
 //    func createChallenge(amount: Double, time: Date, isCompleted: Bool, activity: Activity) -> Challenge
@@ -23,5 +24,7 @@ protocol Repository {
     func getGroupsForUser() async throws -> [UserGroup]?
     func getActivitiesForGroup(group: UserGroup) async throws -> [Activity]?
     func getChallengesForUser() async throws -> [Challenge]?
-    func getUserRecord() async throws -> User?
+    func getUsersForGroup(group: UserGroup) async throws -> [User]?
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: String, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void)
+    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, activities: [Activity]) async throws
 }

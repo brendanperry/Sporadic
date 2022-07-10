@@ -14,6 +14,14 @@
 		C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */; };
 		C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */; };
 		C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */; };
+		C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C626259E2862698700E84C79 /* LoadingStatus.swift */; };
+		C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A02867397E00E84C79 /* CreateGroupView.swift */; };
+		C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A228673B3100E84C79 /* CreateGroupViewModel.swift */; };
+		C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */; };
+		C62625A92867418300E84C79 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A82867418300E84C79 /* StringExtensions.swift */; };
+		C62625AB286741AB00E84C79 /* CharacterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625AA286741AB00E84C79 /* CharacterExtensions.swift */; };
+		C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625AC2867493200E84C79 /* GroupBackgroundColor.swift */; };
+		C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625AE2867601400E84C79 /* ActivityUnit.swift */; };
 		C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C630BDF7268C2CB60066D8C3 /* Localizable.strings */; };
 		C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDF9268C313B0066D8C3 /* Localize.swift */; };
 		C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C639448D279DDC4D00B2E62F /* HomeViewModel.swift */; };
@@ -60,6 +68,8 @@
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6A6865C27DD41BC00B607CA /* homeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */; };
+		C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */; };
+		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
 		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
 		C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3C28517B71008C979C /* ImagePicker.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
@@ -98,6 +108,14 @@
 		C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2@3x.png"; sourceTree = "<group>"; };
 		C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@2x.png"; sourceTree = "<group>"; };
 		C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@2x.png"; sourceTree = "<group>"; };
+		C626259E2862698700E84C79 /* LoadingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatus.swift; sourceTree = "<group>"; };
+		C62625A02867397E00E84C79 /* CreateGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupView.swift; sourceTree = "<group>"; };
+		C62625A228673B3100E84C79 /* CreateGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewModel.swift; sourceTree = "<group>"; };
+		C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiKeyboard.swift; sourceTree = "<group>"; };
+		C62625A82867418300E84C79 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		C62625AA286741AB00E84C79 /* CharacterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterExtensions.swift; sourceTree = "<group>"; };
+		C62625AC2867493200E84C79 /* GroupBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBackgroundColor.swift; sourceTree = "<group>"; };
+		C62625AE2867601400E84C79 /* ActivityUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityUnit.swift; sourceTree = "<group>"; };
 		C630BDF6268C2CB60066D8C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C630BDF9268C313B0066D8C3 /* Localize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localize.swift; sourceTree = "<group>"; };
 		C630BE03268D2D230066D8C3 /* SporadicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SporadicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +164,8 @@
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeViewModelTests.swift; sourceTree = "<group>"; };
+		C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefresh.swift; sourceTree = "<group>"; };
+		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
 		C6B2CC3C28517B71008C979C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
@@ -204,6 +224,25 @@
 			path = Icons;
 			sourceTree = "<group>";
 		};
+		C626259D2862697600E84C79 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				C626259E2862698700E84C79 /* LoadingStatus.swift */,
+				C62625AC2867493200E84C79 /* GroupBackgroundColor.swift */,
+				C62625AE2867601400E84C79 /* ActivityUnit.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		C62625A428673B3600E84C79 /* CreateGroup */ = {
+			isa = PBXGroup;
+			children = (
+				C62625A02867397E00E84C79 /* CreateGroupView.swift */,
+				C62625A228673B3100E84C79 /* CreateGroupViewModel.swift */,
+			);
+			path = CreateGroup;
+			sourceTree = "<group>";
+		};
 		C630BDD9268C226A0066D8C3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +279,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C62625A428673B3600E84C79 /* CreateGroup */,
 				C68378B92843F42900ABB6B3 /* Challenges */,
 				C66A3728283F1C9B0096757C /* GroupOverview */,
 				C689616828301AA4008A0C87 /* Tutorial */,
@@ -253,6 +293,8 @@
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
 				C6B2CC3C28517B71008C979C /* ImagePicker.swift */,
+				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
+				C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				C6C960292794A6B700A67AA2 /* Sporadic.entitlements */,
+				C626259D2862697600E84C79 /* Enums */,
 				C6C96010278F908100A67AA2 /* Extensions */,
 				C613CFCE26955C3D0061DC49 /* Icons */,
 				C6B18F40268D4698003A5BAF /* Fonts */,
@@ -389,6 +432,8 @@
 				C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */,
 				C689616B28301EED008A0C87 /* TransitionExtension.swift */,
 				C68378D7284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift */,
+				C62625A82867418300E84C79 /* StringExtensions.swift */,
+				C62625AA286741AB00E84C79 /* CharacterExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -398,6 +443,7 @@
 			children = (
 				C6C96018278FA23500A67AA2 /* TabBarIcon.swift */,
 				C6C96015278FA14200A67AA2 /* NavigationBar.swift */,
+				C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -570,11 +616,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */,
 				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
+				C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */,
 				C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
+				C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */,
 				C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */,
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
+				C62625AB286741AB00E84C79 /* CharacterExtensions.swift in Sources */,
 				C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
@@ -582,6 +632,7 @@
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
 				C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */,
+				C62625A92867418300E84C79 /* StringExtensions.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */,
@@ -595,7 +646,9 @@
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
+				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
+				C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */,
 				C68378C12844140500ABB6B3 /* Challenge.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
@@ -609,10 +662,13 @@
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
+				C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */,
+				C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,
+				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,

@@ -11,7 +11,6 @@ struct ActivityWidget: View {
     @State var activity: Activity
     @State var isEditing = false
     @Binding var isAdding: Bool
-    let textHelper = TextHelper()
 
     var body: some View {
         ZStack {
@@ -27,7 +26,7 @@ struct ActivityWidget: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(Color("ActivityBorderColor"))
             
-                textHelper.GetTextByType(key: "", alignment: .center, type: .h2, prefix: activity.name)
+                TextHelper.text(key: "", alignment: .center, type: .h2, prefix: activity.name)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: 20)

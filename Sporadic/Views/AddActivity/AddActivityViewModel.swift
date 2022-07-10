@@ -6,37 +6,34 @@
 //
 
 import Foundation
+import Combine
 
-class AddActivityViewModel : ObservableObject {
-//    let dataController: DataController
-//    let activityTemplateHelper: ActivityTemplateHelper
+class AddActivityViewModel: ObservableObject {
+    @Published var name = ""
+    @Published var unit = ActivityUnit.miles
+    @Published var minValue = 1.0
+    @Published var maxValue = 3.0
     
-    @Published var activities = [Activity]()
+    let unitPublisher = PassthroughSubject<ActivityUnit, Never>()
+    let notificationHelper = NotificationHelper(cloudKitHelper: CloudKitHelper.shared)
     
-//    init(dataController: DataController,
-//         activityTemplateHelper: ActivityTemplateHelper) {
-//        self.dataController = dataController
-//        self.activityTemplateHelper = activityTemplateHelper
-//
-//        DispatchQueue.main.async { [weak self] in
-//            if let activities = self?.getDisabledActivities() {
-//                self?.activities = activities
-//            }
-//        }
-//    }
+    let group: UserGroup
     
-    func getDisabledActivities() -> [Activity] {
-//        let activities = dataController.fetchInactiveActivities()
-        
-//        if let activities = activities {
-//            if activities.count > 0 {
-//
-//                return activities
-//            }
-//        }
-//
-//        return activityTemplateHelper.getAndCreateDefaultActivities()
-        
-        return []
+    init(group: UserGroup) {
+        self.group = group
+    }
+    
+    func resetSlider(newUnit: ActivityUnit) {
+        unitPublisher.send(newUnit)
+    }
+    
+    func addActivity(completion: @escaping (Error?) -> Void) {
+        CloudKitHelper.shared.addActivityToGroup(groupRecordId: group.recordId, name: name, unit: unit.toAbbreviatedString(), minValue: minValue, maxValue: maxValue) { [weak self] error in
+            if error == nil {
+                self?.notificationHelper.scheduleAllNotifications(settingsChanged: true)
+            }
+            
+            completion(error)
+        }
     }
 }

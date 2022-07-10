@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ActivitiesHome: View {
-    let textHelper = TextHelper()
-    
 //    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
 //    var activities: FetchedResults<Activity>
     
@@ -19,7 +17,7 @@ struct ActivitiesHome: View {
     
     var body: some View {
         VStack {
-            textHelper.GetTextByType(key: "Activities", alignment: .leading, type: .activityTitle)
+            TextHelper.text(key: "Activities", alignment: .leading, type: .activityTitle)
                 .padding([.leading, .top])
             
             LazyVGrid(columns: items, alignment: .center) {

@@ -13,6 +13,7 @@ class HomeViewModel : ObservableObject {
     @Published var challenges: [Challenge]?
     @Published var groups: [UserGroup]?
     @Published var user: User?
+    @Published var loadingStatus = LoadingStatus.loaded
     
     let cloudKitHelper: CloudKitHelper
     let notificationHelper: NotificationHelper
@@ -26,40 +27,44 @@ class HomeViewModel : ObservableObject {
         //notificationHelper.scheduleAllNotifications(settingsChanged: false)
     }
     
-    func getUser() async {
-        do {
-            user = try await cloudKitHelper.getUserRecord()
-        } catch {
-            print("Could not get challenges")
-        }
-    }
-    
     func getChallenges() async {
         do {
             challenges = try await cloudKitHelper.getChallengesForUser()
         } catch {
-            print("Could not get challenges")
+            print(error)
         }
     }
-        
+    
     func getGroups() async {
+        loadingStatus = .loading
+        
         do {
-            groups = try await cloudKitHelper.getGroupsForUser()
-        } catch {
-            print("Could not get challenges")
+            let newGroups = try await cloudKitHelper.getGroupsForUser()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.groups = newGroups
+                self?.loadingStatus = .loaded
+            }
+        }
+        catch {
+            DispatchQueue.main.async { [weak self] in
+                self?.loadingStatus = .failed
+            }
+            
+            print(error)
         }
     }
-    
-    func completeChallenge() {
-//        GlobalSettings.Env.currentChallenge?.activity?.total += GlobalSettings.Env.currentChallenge?.total ?? 0
-//        GlobalSettings.Env.updateStatus()
-    }
-    
+
+func completeChallenge() {
+    //        GlobalSettings.Env.currentChallenge?.activity?.total += GlobalSettings.Env.currentChallenge?.total ?? 0
+    //        GlobalSettings.Env.updateStatus()
+}
+
 //    func getActivityCount() -> Int {
 //        return dataHelper.fetchActiveActivities()?.count ?? 0
 //    }
-    
-    func getNotificationStatus(completion: @escaping(Bool) -> Void) {
-//        notificationHelper.getNotificationStatus(completion: completion)
-    }
+
+func getNotificationStatus(completion: @escaping(Bool) -> Void) {
+    //        notificationHelper.getNotificationStatus(completion: completion)
+}
 }

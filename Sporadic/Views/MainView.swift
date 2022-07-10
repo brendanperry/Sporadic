@@ -24,6 +24,9 @@ struct MainView: View {
             }
         }
         .environmentObject(viewRouter)
+        .onOpenURL { url in
+          print(url.absoluteString)
+        }
     }
 }
 

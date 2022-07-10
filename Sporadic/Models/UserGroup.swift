@@ -9,53 +9,55 @@ import Foundation
 import CloudKit
 import SwiftUI
 
-struct UserGroup: Identifiable {
-    let id = UUID()
-    let activities: [CKRecord.Reference]
-    let challenges: [CKRecord.Reference]
+class UserGroup: Identifiable {
+    let id = 0
+    let groupId: String
+    var activities: [CKRecord.Reference]?
+    let challenges: [CKRecord.Reference]?
     let daysOfTheWeek: [String]
+    let daysPerWeek: Int
     let deliveryTime: Date
     let emoji: String
-    let backgroundColor: GroupBackgroundColor
+    let backgroundColor: Int
     let name: String
-    let users: [CKRecord.Reference]
+    let users: [CKRecord.Reference]?
+    let usersInGroup: [String]
+    let recordId: CKRecord.ID
+    
+    init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, daysOfTheWeek: [String], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, usersInGroup: [String], groupId: String, recordId: CKRecord.ID) {
+        self.activities = activities
+        self.challenges = challenges
+        self.daysOfTheWeek = daysOfTheWeek
+        self.daysPerWeek = daysPerWeek
+        self.deliveryTime = deliveryTime
+        self.emoji = emoji
+        self.backgroundColor = backgroundColor
+        self.name = name
+        self.users = users
+        self.usersInGroup = usersInGroup
+        self.groupId = groupId
+        self.recordId = recordId
+    }
 }
 
-// how to turn references into objects??
 extension UserGroup {
-    init? (from record: CKRecord) {
+    convenience init? (from record: CKRecord) {
         guard
-            let activityReferences = record["activities"] as? [CKRecord.Reference],
-            let challengeReferences = record["challenges"] as? [CKRecord.Reference],
-            let userReferences = record["users"] as? [CKRecord.Reference],
+            let groupId = record["groupId"] as? String,
+            let activityReferences = record["activities"] as? [CKRecord.Reference]?,
+            let challengeReferences = record["challenges"] as? [CKRecord.Reference]?,
+            let userReferences = record["users"] as? [CKRecord.Reference]?,
             let daysOfTheWeek = record["daysOfTheWeek"] as? [String],
             let deliveryTime = record["deliveryTime"] as? Date,
             let emoji = record["emoji"] as? String,
             let color = record["backgroundColor"] as? Int,
-            let name = record["name"] as? String
+            let name = record["name"] as? String,
+            let usersIngroup = record["usersInGroup"] as? [String],
+            let daysPerWeek = record["daysPerWeek"] as? Int
         else {
             return nil
         }
         
-        self.init(activities: activityReferences, challenges: challengeReferences, daysOfTheWeek: daysOfTheWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color) ?? .red, name: name, users: userReferences)
-    }
-}
-
-enum GroupBackgroundColor: Int {
-    case red = 0
-    case green = 1
-    case blue = 2
-}
-
-extension GroupBackgroundColor {
-    func getColor() -> Color {
-        switch self {
-        case .red:
-            return Color.red
-        case .green:
-            return Color.green
-        case .blue:
-            return Color.blue
-        }
+        self.init(activities: activityReferences, challenges: challengeReferences, daysOfTheWeek: daysOfTheWeek, daysPerWeek: daysPerWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, users: userReferences, usersInGroup: usersIngroup, groupId: groupId, recordId: record.recordID)
     }
 }
