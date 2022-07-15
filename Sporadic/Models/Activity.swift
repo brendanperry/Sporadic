@@ -10,13 +10,13 @@ import CloudKit
 
 struct Activity: Identifiable {
     let id: UUID
-    let isEnabled: Bool
-    let maxValue: Double
-    let minValue: Double
-    let minRange: Double
-    let name: String
-    let templateId: Int
-    let unit: String
+    var isEnabled: Bool
+    var maxValue: Double
+    var minValue: Double
+    var minRange: Double
+    var name: String
+    var templateId: Int?
+    var unit: ActivityUnit
 }
 
 extension Activity {
@@ -33,6 +33,6 @@ extension Activity {
             return nil
         }
         
-        self = .init(id: UUID(), isEnabled: isEnabled == 0 ? false : true, maxValue: maxValue, minValue: minValue, minRange: minRange, name: name, templateId: templateId, unit: unit)
+        self = .init(id: UUID(), isEnabled: isEnabled == 0 ? false : true, maxValue: maxValue, minValue: minValue, minRange: minRange, name: name, templateId: templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
     }
 }

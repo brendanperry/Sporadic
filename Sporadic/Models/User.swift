@@ -10,7 +10,7 @@ import CloudKit
 
 struct User: Identifiable {
     let id = UUID()
-    let recordId: NSObject
+    let recordId: CKRecord.ID
     let usersRecordId: String
     let name: String
     let photo: String

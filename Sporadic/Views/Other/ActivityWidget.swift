@@ -50,7 +50,7 @@ struct ActivityWidget: View {
             }
         }
         .fullScreenCover(isPresented: self.$isEditing) {
-            EditActivity(activity: self.activity, isAdding: $isAdding)
+//            EditActivity(activity: self.activity)
         }
     }
 }

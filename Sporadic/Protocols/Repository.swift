@@ -25,6 +25,6 @@ protocol Repository {
     func getActivitiesForGroup(group: UserGroup) async throws -> [Activity]?
     func getChallengesForUser() async throws -> [Challenge]?
     func getUsersForGroup(group: UserGroup) async throws -> [User]?
-    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: String, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void)
-    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, activities: [Activity]) async throws
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void)
+    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws
 }

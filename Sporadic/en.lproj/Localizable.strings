@@ -88,3 +88,6 @@
 "InvalidInput" = "Invalid Input";
 "ActivityNameError" = "Activity name must be between 1 and 18 characters.";
 "CreateGroup" = "Create Group";
+"AddToGroup" = "Add to your group";
+"RemovingActivities" = "Activity progress will be saved";
+"RemoveActivity" = "Remove Activity";

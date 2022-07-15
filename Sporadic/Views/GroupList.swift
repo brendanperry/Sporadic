@@ -12,13 +12,25 @@ struct GroupList: View {
     let groups: [UserGroup]
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     @State var isActive = false
+    let isLoading: Bool
     
     @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         VStack(spacing: 0) {
-            TextHelper.text(key: "Groups", alignment: .leading, type: .h2, color: .primary)
-                .padding(.horizontal)
+            HStack {
+                Text(Localize.getString("Groups"))
+                    .font(.custom("Lexend-SemiBold", size: 14))
+                    .foregroundColor(Color("Header"))
+                    .frame(width: 50, alignment: .leading)
+                
+                if isLoading {
+                    ProgressView()
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal)
             
             LazyVGrid(columns: items, spacing: 0) {
                 ForEach(groups) { group in

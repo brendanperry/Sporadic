@@ -15,6 +15,7 @@ class CloudKitHelper: Repository {
     static let shared = CloudKitHelper()
     let oneSignalHelper = OneSignalHelper()
     
+    // make new user if nothing is found??
     private var cachedUser: User?
     public var currentUser: User? {
         get async throws {
@@ -49,7 +50,7 @@ class CloudKitHelper: Repository {
     
     func getGroupsForUser() async throws -> [UserGroup]? {
         if let user = try await currentUser {
-            let predicate = NSPredicate(format: "usersInGroup CONTAINS %@", user.usersRecordId)
+            let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
             
             let query = CKQuery(recordType: "Group", predicate: predicate)
             
@@ -108,18 +109,35 @@ class CloudKitHelper: Repository {
         return nil
     }
     
-    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, activities: [Activity]) async throws {
-        // normal record id or usersrecordid
-        guard let userRecordId = try? await currentUser?.usersRecordId else {
-            return
+    func deleteGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
+        database.delete(withRecordID: recordId) { record, error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                completion(nil)
+            }
         }
+    }
+    
+    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws {
+        guard let currentUser = try? await currentUser else {
+            throw NSError(domain: "Current user not found", code: 0, userInfo: [:])
+        }
+        
+        let userReference = CKRecord.Reference(record: CKRecord.init(recordType: "User", recordID: currentUser.recordId), action: .none)
         
         let record = CKRecord(recordType: "Group")
         
         record.setValue(name, forKey: "name")
         record.setValue(emoji, forKey: "emoji")
+        record.setValue(days, forKey: "daysPerWeek")
+        record.setValue([], forKey: "daysOfTheWeek")
+        record.setValue(time, forKey: "deliveryTime")
         record.setValue(color.rawValue, forKey: "backgroundColor")
-        record.setValue([userRecordId], forKey: "users")
+        record.setValue([userReference], forKey: "users")
+        record.setValue([], forKey: "challenges")
+        record.setValue([], forKey: "activities")
         
         let group = try await database.save(record)
         
@@ -132,7 +150,7 @@ class CloudKitHelper: Repository {
         }
     }
     
-    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: String, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void) {
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void) {
         let record = CKRecord(recordType: "Activity")
         
         record.setValue(name, forKey: "name")

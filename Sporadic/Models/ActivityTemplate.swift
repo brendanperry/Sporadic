@@ -8,12 +8,12 @@
 import Foundation
 
 struct ActivityTemplate: Identifiable {
-    let id: Int16
+    let id: Int
     let name: String
     let minValue: Double
     let maxValue: Double
     let selectedMin: Double
     let selectedMax: Double
     let minRange: Double
-    let unit: String
+    let unit: ActivityUnit
 }

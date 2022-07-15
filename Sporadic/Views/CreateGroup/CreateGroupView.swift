@@ -19,9 +19,11 @@ struct CreateGroupView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                ScrollView(.vertical, showsIndicators: false, content: {
+                ScrollView(.vertical) {
                     VStack(spacing: 20) {
                         TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
+                            .padding(.horizontal)
+                            .padding(.top, 50)
                         
                         GroupName(name: $viewModel.groupName)
                         
@@ -29,21 +31,24 @@ struct CreateGroupView: View {
                         
                         GroupColor(color: $viewModel.color)
                         
-                        ActivitySelector(selectedActivities: $viewModel.activities, templates: viewModel.getTemplates(), group: viewModel.group)
+                        DaysAndTime(days: $viewModel.days, time: $viewModel.time)
+                        
+                        SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom, 100)
-                })
-                .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-                .padding(.top)
+                }
+            }
+            
+            if viewModel.isLoading {
+                LoadingIndicator()
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Hi")
-//        .navigationBarTitleDisplayMode(.large)
-        .navigationBarItems(leading: BackButton())
+        .navigationTitle(viewModel.groupName)
+        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel))
+        .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
-            UINavigationBar.appearance().barTintColor = .red
+            UINavigationBar.appearance().barTintColor = UIColor(Color("Panel"))
         }
         .alert(isPresented: $viewModel.showError) {
             Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
@@ -63,12 +68,13 @@ struct CreateGroupView: View {
                     .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
                     .cornerRadius(10)
             }
+            .padding(.horizontal)
         }
     }
     
     struct EmojiSelector: View {
         @Binding var emoji: String
-
+        
         var body: some View {
             VStack(alignment: .leading) {
                 TextHelper.text(key: "Emoji", alignment: .leading, type: .h2)
@@ -80,6 +86,7 @@ struct CreateGroupView: View {
                     .cornerRadius(12)
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal)
         }
     }
     
@@ -110,64 +117,144 @@ struct CreateGroupView: View {
                 .cornerRadius(16)
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal)
         }
     }
     
     struct CreateButton: View {
+        @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         let viewModel: CreateGroupViewModel
         
         var body: some View {
             Button(action: {
                 Task {
-                    viewModel.createGroup
+                    let didFinishSuccessfully = await viewModel.createGroup()
+                    
+                    if didFinishSuccessfully {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }, label: {
-                TextHelper.text(key: "CreateGroup", alignment: .center, type: .h2, color: .white)
+                Text(Localize.getString("CreateGroup"))
+                    .font(.custom("Lexend-SemiBold", fixedSize: 10))
                     .padding(10)
+                    .foregroundColor(.white)
                     .background(Color("Purple"))
-                    .cornerRadius(16)
+                    .cornerRadius(12)
             })
+            .buttonStyle(ButtonPressAnimationStyle())
         }
     }
     
     struct ActivitySelector: View {
         @Binding var selectedActivities: [Activity]
-        let templates: [ActivityTemplate]
-        let group: UserGroup
+        @Binding var group: UserGroup
+        @State var showEditMenu = false
         var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
-
+        let templates: [ActivityTemplate]
+        
+        var body: some View {
+            ZStack {
+                Image("BackgroundImage")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack(alignment: .center) {
+                    TextHelper.text(key: "AddANewActivity", alignment: .leading, type: .h1)
+                        .padding(.top, 50)
+                    
+                    LazyVGrid(columns: items, spacing: 10) {
+                        ForEach(templates.filter({ !selectedActivities.map({ $0.templateId }).contains($0.id) })) { template in
+                            NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template)) {
+                                VStack {
+                                    Image(template.name + " Circle")
+                                        .resizable()
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .padding(.top)
+                                    
+                                    TextHelper.text(key: template.name, alignment: .center, type: .activityTitle, color: .white)
+                                        .padding(.top, 5)
+                                        .padding(.bottom)
+                                }
+                                .padding(.vertical)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15).foregroundColor(Color("Activity"))
+                                )
+                                .padding()
+                            }
+                            .buttonStyle(ButtonPressAnimationStyle())
+                        }
+                        
+                        NavigationLink(destination: AddCustomActivityPage(activities: $selectedActivities)) {
+                            Image("Add Activity Full")
+                                .resizable()
+                                .frame(width: 75, height: 75, alignment: .center)
+                        }
+                        .buttonStyle(ButtonPressAnimationStyle())
+                    }
+                    .padding(.top)
+                    
+                    Spacer()
+                }
+                .padding()
+            }
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
+                    BackButton()
+                }
+            }
+        }
+    }
+    
+    struct SelectedActivityList: View {
+        @Binding var selectedActivities: [Activity]
+        @Binding var group: UserGroup
+        @State var showEditMenu = false
+        var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
+        let templates: [ActivityTemplate]
+        
         var body: some View {
             VStack(alignment: .leading) {
-                TextHelper.text(key: "Choose activities", alignment: .leading, type: .h2)
+                TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
                 
                 LazyVGrid(columns: items, spacing: 10) {
-                    ForEach(templates) { template in
-                        ZStack {
-//                            if selectedActivities.contains(where: { $0.id == template.id }) {
+                    ForEach($selectedActivities.filter({ $0.wrappedValue.isEnabled })) { activity in
+                        NavigationLink(destination: EditActivity(activityList: $selectedActivities, activity: activity)) {
+                            ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .fill(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .top, endPoint: .bottom))
-//                            }
-                            
-                            VStack {
-                                Image(template.name + " Circle")
-                                    .resizable()
-                                    .frame(width: 50, height: 50, alignment: .center)
                                 
-                                TextHelper.text(key: template.name, alignment: .center, type: .activityTitle, color: .white)
-                                    .padding(5)
-                                
-                                TextHelper.text(key: "\(template.minValue) - \(template.maxValue) \(template.unit)", alignment: .center, type: .body, color: Color("EditProfile"))
+                                VStack {
+                                    if let _ = activity.wrappedValue.templateId {
+                                        Image(activity.wrappedValue.name + " Circle")
+                                            .resizable()
+                                            .frame(width: 50, height: 50, alignment: .center)
+                                    }
+                                    else {
+                                        Image("Custom Activity Icon")
+                                            .resizable()
+                                            .frame(width: 50, height: 50, alignment: .center)
+                                    }
+                                    
+                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
+                                        .padding(5)
+                                    
+                                    TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue) \(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: Color("EditProfile"))
+                                }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15).foregroundColor(Color("Activity"))
+                                )
+                                .padding(7)
                             }
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 15).foregroundColor(Color("Activity"))
-                            )
-                            .padding(7)
+                            .buttonStyle(ButtonPressAnimationStyle())
                         }
+                        .buttonStyle(ButtonPressAnimationStyle())
                         .padding()
                     }
                     
-                    NavigationLink(destination: AddPage(viewModel: AddActivityViewModel(group: group))) {
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities, group: $group, templates: templates)) {
                         Image("Add Activity Full")
                             .resizable()
                             .frame(width: 75, height: 75, alignment: .center)
@@ -176,6 +263,8 @@ struct CreateGroupView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal)
+            .padding(.bottom, 100)
         }
     }
 }

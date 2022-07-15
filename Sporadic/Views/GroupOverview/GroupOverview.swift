@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GroupOverview: View {
-    let viewModel: GroupOverviewViewModel
+    @ObservedObject var viewModel: GroupOverviewViewModel
     
     let textHelper = TextHelper()
     
@@ -32,16 +32,20 @@ struct GroupOverview: View {
                         
                         YourActivities(activities: viewModel.activities)
                         
-                        DaysAndTime(viewModel: viewModel)
+                        DaysAndTime(days: $viewModel.days, time: $viewModel.time)
                         
                         DaysForChallenges(viewModel: viewModel)
                         
                         UsersInGroup(users: viewModel.users)
                         
-                        DeleteButton()
+                        DeleteButton(viewModel: viewModel)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+            }
+            
+            if viewModel.isLoading {
+                LoadingIndicator()
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -71,6 +75,9 @@ struct GroupOverview: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.top)
+        .alert(isPresented: $viewModel.showError) {
+            Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+        }
     }
 }
 
@@ -129,20 +136,36 @@ struct YourActivities: View {
 }
 
 struct DeleteButton: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State var showDeleteConfirmation = false
+    let viewModel: GroupOverviewViewModel
+    
     var body: some View {
         VStack(alignment: .leading) {
             TextHelper.text(key: "DeletingGroups", alignment: .leading, type: .h2)
             
             Button(action: {
-                print("Delete")
+                showDeleteConfirmation = true
             }, label: {
                 TextHelper.text(key: "DeleteGroup", alignment: .center, type: .h2)
+                    .padding()
+                    .frame(width: 150, height: 40, alignment: .leading)
+                    .background(Color("Delete"))
+                    .cornerRadius(16)
+                    .padding(.bottom)
             })
-            .padding()
-            .frame(width: 150, height: 40, alignment: .leading)
-            .background(Color("Delete"))
-            .cornerRadius(16)
-            .padding(.bottom)
+            .buttonStyle(ButtonPressAnimationStyle())
+            .alert(isPresented: $showDeleteConfirmation) {
+                Alert(title: Text("Delete \(viewModel.group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
+                      primaryButton: .cancel(),
+                      secondaryButton: .destructive(Text("Delete")) {
+                    viewModel.deleteGroup() { didFinishSuccessfully in
+                        if didFinishSuccessfully {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                })
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
@@ -150,7 +173,7 @@ struct DeleteButton: View {
 }
 
 struct UsersInGroup: View {
-    @State var users: [User]
+    let users: [User]
     
     init(users: [User]) {
         self.users = users
@@ -219,79 +242,5 @@ struct DaysForChallenges: View {
             .cornerRadius(16)
             .padding(.horizontal)
         }
-    }
-}
-
-struct DaysAndTime: View {
-    let dateHelper = DateHelper()
-    @ObservedObject var viewModel: GroupOverviewViewModel
-    
-    @State var isPresented = false
-    
-    var body: some View {
-        VStack {
-            TextHelper.text(key: "ChallengeSettings", alignment: .leading, type: .h2)
-            
-            HStack(spacing: 25) {
-                Group {
-                    VStack {
-                        Text(Localize.getString("ChallengesPerWeek"))
-                            .font(Font.custom("Lexend-Regular", size: 16, relativeTo: .title2))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color("Body"))
-                        
-                        ZStack {
-                            Picker(selection: $viewModel.days, label: EmptyView()) {
-                                ForEach(1...7, id: \.self) { number in
-                                    Text(String(number))
-                                }
-                            }
-                            .frame(width: 125, height: 40, alignment: .center)
-                            .scaleEffect(3)
-                            .labelsHidden()
-                            
-                            Text("\(viewModel.days)")
-                                .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2))
-                                .frame(width: 200, height: 50, alignment: .center)
-                                .background(Color("Panel"))
-                                .userInteractionDisabled()
-                        }
-                    }
-                    VStack {
-                        Text(Localize.getString("DeliveryTime"))
-                            .font(Font.custom("Lexend-Regular", size: 16, relativeTo: .title2))
-                            .foregroundColor(Color("Body"))
-                            .zIndex(1.0)
-                        
-                        ZStack {
-                            DatePicker("", selection: $viewModel.time, displayedComponents: .hourAndMinute)
-                                .labelsHidden()
-                                .frame(width: 125)
-                                .scaleEffect(1.6)
-                            
-                            Group {
-                                Text(dateHelper.getHoursAndMinutes(date: viewModel.time))
-                                    .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2)) +
-                                Text(" ") +
-                                Text(dateHelper.getAmPm(date: viewModel.time))
-                                    .font(Font.custom("Lexend-SemiBold", size: 20, relativeTo: .title2))
-                            }
-                            .frame(width: 200, height: 200, alignment: .center)
-                            .background(Color("Panel"))
-                            .userInteractionDisabled()
-                        }
-                        .background(Color("Panel"))
-                    }
-                }
-                .frame(height: 75, alignment: .center)
-                .frame(maxWidth: .infinity)
-                .padding(15)
-                .background(Color("Panel"))
-                .cornerRadius(15)
-            }
-        }
-        .padding(.horizontal)
     }
 }

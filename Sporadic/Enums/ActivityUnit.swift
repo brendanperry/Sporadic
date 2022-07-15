@@ -7,8 +7,13 @@
 
 import Foundation
 
-enum ActivityUnit: CaseIterable {
-    case miles, minutes, seconds, laps, sets, general
+enum ActivityUnit: String, CaseIterable {
+    case miles = "miles"
+    case minutes = "minutes"
+    case seconds = "seconds"
+    case laps = "laps"
+    case sets = "sets"
+    case general = "general"
 }
 
 extension ActivityUnit {

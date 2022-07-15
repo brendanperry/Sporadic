@@ -28,7 +28,9 @@ struct HomePage: View {
                     .edgesIgnoringSafeArea(.all)
                 ScrollView(.vertical, showsIndicators: false) {
                     PullToRefresh(coordinateSpaceName: "HomePage") {
-//                        viewModel.getGroups()
+                        Task {
+                            await viewModel.getGroups()
+                        }
 //                        viewModel.getChallenges()
                         print("WOW")
                     }
@@ -48,9 +50,9 @@ struct HomePage: View {
                         
                         switch viewModel.loadingStatus {
                         case .loaded:
-                            GroupList(groups: viewModel.groups ?? [])
+                            GroupList(groups: viewModel.groups ?? [], isLoading: false)
                         case .loading:
-                            ProgressView()
+                            GroupList(groups: viewModel.groups ?? [], isLoading: true)
                         case .failed:
                             Text("Failed to load groups. Please try again.")
                         }
@@ -70,10 +72,10 @@ struct HomePage: View {
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
             //            GlobalSettings.Env.updateStatus()
-        }
-        .task {
-            await viewModel.getChallenges()
-            await viewModel.getGroups()
+            Task {
+                await viewModel.getChallenges()
+                await viewModel.getGroups()
+            }
         }
 //        .onChange(of: scenePhase) { newPhase in
 //            if newPhase == .active {

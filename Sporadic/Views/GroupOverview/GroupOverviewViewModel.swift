@@ -14,6 +14,9 @@ class GroupOverviewViewModel: ObservableObject {
     @Published var daysInTheWeek = ["Su", "Tu"]
     @Published var activities = [Activity]()
     @Published var users = [User]()
+    @Published var errorMessage = ""
+    @Published var showError = false
+    @Published var isLoading = false
     
     init(group: UserGroup) {
         self.group = group
@@ -29,6 +32,10 @@ class GroupOverviewViewModel: ObservableObject {
         }
         catch {
             print(error)
+            DispatchQueue.main.async {
+                self.errorMessage = "Could not load group activities."
+                self.showError = true
+            }
         }
     }
     
@@ -42,6 +49,29 @@ class GroupOverviewViewModel: ObservableObject {
         }
         catch {
             print(error)
+            DispatchQueue.main.async {
+                self.errorMessage = "Could not load group users."
+                self.showError = true
+            }
+        }
+    }
+    
+    func deleteGroup(completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        
+        CloudKitHelper.shared.deleteGroup(recordId: group.recordId) { [weak self] error in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    self?.errorMessage = "Could not delete group. Please check your connection and try again."
+                    self?.showError = true
+                    completion(false)
+                }
+                else {
+                    completion(true)
+                }
+                
+                self?.isLoading = false
+            }
         }
     }
 }

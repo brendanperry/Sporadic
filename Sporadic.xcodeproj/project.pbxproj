@@ -70,6 +70,9 @@
 		C6A6865C27DD41BC00B607CA /* homeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */; };
 		C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
+		C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */; };
+		C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */; };
+		C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */; };
 		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
 		C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3C28517B71008C979C /* ImagePicker.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
@@ -77,7 +80,7 @@
 		C6BFEA9D281256D7007A8B87 /* notificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9C281256D7007A8B87 /* notificationTests.swift */; };
 		C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */; };
 		C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */; };
-		C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96013278F9F3C00A67AA2 /* AddPage.swift */; };
+		C6C96014278F9F3C00A67AA2 /* AddCustomActivityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */; };
 		C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96015278FA14200A67AA2 /* NavigationBar.swift */; };
 		C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96018278FA23500A67AA2 /* TabBarIcon.swift */; };
 		C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9601D278FA51700A67AA2 /* UIImageExtensions.swift */; };
@@ -166,6 +169,9 @@
 		C6A6865B27DD41BC00B607CA /* homeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeViewModelTests.swift; sourceTree = "<group>"; };
 		C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefresh.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysAndTime.swift; sourceTree = "<group>"; };
+		C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
+		C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
 		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
 		C6B2CC3C28517B71008C979C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
@@ -173,7 +179,7 @@
 		C6BFEA9C281256D7007A8B87 /* notificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTests.swift; sourceTree = "<group>"; };
 		C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		C6C96013278F9F3C00A67AA2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
+		C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomActivityPage.swift; sourceTree = "<group>"; };
 		C6C96015278FA14200A67AA2 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		C6C96018278FA23500A67AA2 /* TabBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIcon.swift; sourceTree = "<group>"; };
 		C6C9601D278FA51700A67AA2 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
@@ -295,6 +301,8 @@
 				C6B2CC3C28517B71008C979C /* ImagePicker.swift */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
 				C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */,
+				C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */,
+				C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -451,8 +459,9 @@
 		C6C9601A278FA47900A67AA2 /* AddActivity */ = {
 			isa = PBXGroup;
 			children = (
-				C6C96013278F9F3C00A67AA2 /* AddPage.swift */,
+				C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */,
 				C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */,
+				C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */,
 			);
 			path = AddActivity;
 			sourceTree = "<group>";
@@ -647,8 +656,10 @@
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
+				C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */,
+				C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */,
 				C68378C12844140500ABB6B3 /* Challenge.swift in Sources */,
 				C6C96020278FA55000A67AA2 /* UIColorExtensions.swift in Sources */,
 				C689616A28301AB3008A0C87 /* Tutorial.swift in Sources */,
@@ -657,7 +668,7 @@
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C68378C72844152C00ABB6B3 /* User.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
-				C6C96014278F9F3C00A67AA2 /* AddPage.swift in Sources */,
+				C6C96014278F9F3C00A67AA2 /* AddCustomActivityPage.swift in Sources */,
 				C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */,
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
@@ -672,6 +683,7 @@
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
+				C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */,
 				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
 				C664A93F279A4D1600EE2195 /* DoubleExtensions.swift in Sources */,
 				C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */,
