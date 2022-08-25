@@ -13,6 +13,7 @@ struct GroupList: View {
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     @State var isActive = false
     let isLoading: Bool
+    let reloadAction: (Bool) -> Void
     
     @EnvironmentObject var viewRouter: ViewRouter
     
@@ -34,21 +35,23 @@ struct GroupList: View {
             
             LazyVGrid(columns: items, spacing: 0) {
                 ForEach(groups) { group in
-                    NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group))) {
+                    NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group), reloadAction: reloadAction)) {
                         GroupWidget(group: group)
                     }
                     .buttonStyle(ButtonPressAnimationStyle())
                 }
                 
-                AddNewGroup()
+                AddNewGroup(reloadAction: reloadAction)
             }
         }
     }
 }
 
 struct AddNewGroup: View {
+    let reloadAction: (Bool) -> Void
+
     var body: some View {
-        NavigationLink(destination: CreateGroupView()) {
+        NavigationLink(destination: CreateGroupView(reloadAction: reloadAction)) {
             Image("Add Activity Icon Circle")
                 .resizable()
                 .frame(width: 50, height: 50, alignment: .center)

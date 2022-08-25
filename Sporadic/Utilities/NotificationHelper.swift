@@ -1,44 +1,37 @@
+////
+////  NotificationHelper.swift
+////  Sporadic
+////
+////  Created by Brendan Perry on 7/1/21.
+////
 //
-//  NotificationHelper.swift
-//  Sporadic
+//import Foundation
+//import UserNotifications
+//import CoreData
 //
-//  Created by Brendan Perry on 7/1/21.
-//
-
-import Foundation
-import UserNotifications
-import CoreData
-
-class NotificationHelper {
-    let cloudKitHelper: CloudKitHelper
-    let defaults = UserDefaults()
-    let notificationCenter = UNUserNotificationCenter.current()
-    let dateFormatter = DateFormatter()
-    let maxNotificationsToSchedule = 90
-    let oneSignalHelper = OneSignalHelper()
-    
-    init(cloudKitHelper: CloudKitHelper) {
-        self.cloudKitHelper = cloudKitHelper
-        dateFormatter.dateFormat = "MM/dd/YYYY HH:mm"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-    }
-    
-    func scheduleAllNotifications(settingsChanged: Bool) {
-//        getNotificationStatus { [weak self] authorized in
-//            if authorized {
-//                DispatchQueue.main.async {
-////                    self?.beginScheduling(settingsChanged)
-//                }
-//            }
-//            
-////            GlobalSettings.Env.updateStatus()
+//class NotificationHelper {
+//    let cloudKitHelper: CloudKitHelper
+//    let defaults = UserDefaults()
+//    let notificationCenter = UNUserNotificationCenter.current()
+//    let dateFormatter = DateFormatter()
+//    let maxNotificationsToSchedule = 90
+//    let oneSignalHelper = OneSignalHelper()
+//    
+//    init(cloudKitHelper: CloudKitHelper) {
+//        self.cloudKitHelper = cloudKitHelper
+//        dateFormatter.dateFormat = "MM/dd/YYYY HH:mm"
+//        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+//    }
+//    
+//    func scheduleAllNotifications(daysPerWeek: Int, time: Date, activities: [Activity], settingsChanged: Bool) {
+//        DispatchQueue.main.async { [weak self] in
+//            self?.beginScheduling(daysPerWeek: daysPerWeek, time: time, activities: activities, settingsChanged: settingsChanged)
 //        }
-    }
-    
-//    internal func beginScheduling(_ settingsChanged: Bool) {
+//    }
+//    
+//    internal func beginScheduling(daysPerWeek: Int, time: Date, activities: [Activity], settingsChanged: Bool) {
 //        var challengesScheduled = [Challenge]()
 //        var notificationIdsToCancel = [String]()
-////        let activities = dataHelper.fetchActiveActivities()
 //
 //        var dateToBeginScheduling = getToday()
 //
@@ -143,23 +136,28 @@ class NotificationHelper {
 //
 //        return rounded == -0 ? 0 : rounded
 //    }
-////
-////    func getNotificationTime(date: Date) -> Date {
-////        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: date))
-////
-////    }
-////
-////    internal func scheduleNotification(title: String, body: String, dateTime: Date, completion: @escaping(String?) -> Void) {
-////        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: dateTime))
-////        var timeString = ""
-////        if let deliveryTime = UserDefaults.standard.object(forKey: UserPrefs.deliveryTime.rawValue) as? Date {
-////            let date = Calendar.current.dateComponents([.hour, .minute], from: deliveryTime)
-////            timeString = "\(date.hour ?? 0) \(date.minute ?? 0)"
-////        }
-////    }
 //
-//    fileprivate func removeOldChallenges() -> [String] {
-//        return dataHelper.removeAllPendingChallenges()
+//    func getNotificationTime(date: Date) -> Date {
+//        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: date))
+//
+//    }
+//
+//    internal func scheduleNotification(title: String, body: String, dateTime: Date, completion: @escaping(String?) -> Void) {
+//        let dateString = dateFormatter.string(from: Calendar.current.startOfDay(for: dateTime))
+//        var timeString = ""
+//        if let deliveryTime = UserDefaults.standard.object(forKey: UserPrefs.deliveryTime.rawValue) as? Date {
+//            let date = Calendar.current.dateComponents([.hour, .minute], from: deliveryTime)
+//            timeString = "\(date.hour ?? 0) \(date.minute ?? 0)"
+//        }
+//    }
+//
+//    fileprivate func removeOldChallenges(group: UserGroup) async -> [String] {
+//        let challenges = try? await cloudKitHelper.getPendingChallengesForGroup(group: group)
+//        
+//        if let challenges = challenges {
+//            <#body#>
+//        }
+//        for challenge in group.challenges
 //    }
 //
 //    internal func getToday() -> Date {
@@ -220,4 +218,3 @@ class NotificationHelper {
 //        }
 //    }
 //}
-}

@@ -27,10 +27,6 @@ struct EditActivity: View {
                 TextHelper.text(key: "AddToGroup", alignment: .leading, type: .h2)
                     .padding([.leading, .top])
                 
-                Toggle("Add to your group", isOn: $activity.isEnabled)
-                    .labelsHidden()
-                    .padding([.leading, .bottom])
-                
                 TextHelper.text(key: "SetTheRangeForYourActivity", alignment: .leading, type: .h2)
                     .padding(.horizontal)
                 

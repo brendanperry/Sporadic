@@ -28,7 +28,7 @@ struct SettingsPage: View {
     @EnvironmentObject var viewRouter: ViewRouter
     
     init() {
-        viewModel = SettingsViewModel(notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
+        viewModel = SettingsViewModel()
     }
     
     var body: some View {

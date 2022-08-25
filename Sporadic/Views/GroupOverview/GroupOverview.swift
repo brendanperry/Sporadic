@@ -11,12 +11,14 @@ struct GroupOverview: View {
     @ObservedObject var viewModel: GroupOverviewViewModel
     
     let textHelper = TextHelper()
+    let reloadAction: (Bool) -> Void
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     
-    init(viewModel: GroupOverviewViewModel) {
+    init(viewModel: GroupOverviewViewModel, reloadAction: @escaping (Bool) -> Void) {
         self.viewModel = viewModel
+        self.reloadAction = reloadAction
     }
     
     var body: some View {
@@ -38,7 +40,7 @@ struct GroupOverview: View {
                         
                         UsersInGroup(users: viewModel.users)
                         
-                        DeleteButton(viewModel: viewModel)
+                        DeleteButton(viewModel: viewModel, reloadAction: reloadAction)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -90,23 +92,23 @@ struct YourActivities: View {
             
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(activities) { activity in
+                    ForEach(activities.filter({ $0.isEnabled})) { activity in
                         VStack(spacing: 0) {
                             ZStack {
                                 Circle()
                                     .frame(width: 50, height: 50, alignment: .center)
                                     .foregroundColor(.white)
                                 
-                                Image("Bike")
+                                Image(activity.templateId == nil ? "Custom Activity Icon Circle" : activity.name + " Circle")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 30, height: 30, alignment: .center)
                             }
                             
-                            TextHelper.text(key: "Run", alignment: .center, type: .activityTitle, color: .white)
+                            TextHelper.text(key: activity.name, alignment: .center, type: .activityTitle, color: .white)
                                 .padding(.bottom)
                             
-                            TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue) mi", alignment: .center, type: .body, color: .white)
+                            TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue) \(activity.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
                                 .opacity(0.75)
                         }
                         .padding()
@@ -139,6 +141,7 @@ struct DeleteButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showDeleteConfirmation = false
     let viewModel: GroupOverviewViewModel
+    let reloadAction: (Bool) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -161,6 +164,7 @@ struct DeleteButton: View {
                       secondaryButton: .destructive(Text("Delete")) {
                     viewModel.deleteGroup() { didFinishSuccessfully in
                         if didFinishSuccessfully {
+                            reloadAction(true)
                             presentationMode.wrappedValue.dismiss()
                         }
                     }

@@ -15,12 +15,21 @@ class CloudKitHelper: Repository {
     static let shared = CloudKitHelper()
     let oneSignalHelper = OneSignalHelper()
     
+    private var currentGroups: [UserGroup]?
+    
     // make new user if nothing is found??
     private var cachedUser: User?
     public var currentUser: User? {
         get async throws {
             if let cachedUser = cachedUser {
                 return cachedUser
+            }
+            
+            do {
+                let userId = (try await container.userRecordID()).recordName
+            }
+            catch {
+               print(error)
             }
             
             let userId = (try await container.userRecordID()).recordName
@@ -48,7 +57,11 @@ class CloudKitHelper: Repository {
         database = container.publicCloudDatabase
     }
     
-    func getGroupsForUser() async throws -> [UserGroup]? {
+    func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]? {
+        if let currentGroups = currentGroups, forceSync == false {
+            return currentGroups
+        }
+        
         if let user = try await currentUser {
             let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
             
@@ -57,7 +70,10 @@ class CloudKitHelper: Repository {
             let result = try await database.records(matching: query)
             let records = try result.matchResults.map { try $0.1.get() }
             
-            return records.compactMap { UserGroup.init(from: $0) }
+            let newGroups = records.compactMap { UserGroup.init(from: $0) }
+            currentGroups = newGroups
+            
+            return newGroups
         }
         
         return nil
@@ -76,6 +92,21 @@ class CloudKitHelper: Repository {
         let records = try result.matchResults.map { try $0.1.get() }
         
         return records.compactMap { User.init(from: $0) }
+    }
+    
+    func getPendingChallengesForGroup(group: UserGroup) async throws -> [Challenge]? {
+        guard let challenges = group.challenges else {
+            return nil
+        }
+        
+        let predicate = NSPredicate(format: "recordID IN %@ AND startTime > %@", challenges, NSDate())
+        
+        let query = CKQuery(recordType: "Challenge", predicate: predicate)
+        
+        let result = try await database.records(matching: query)
+        let records = try result.matchResults.map { try $0.1.get() }
+        
+        return records.compactMap { Challenge.init(from: $0) }
     }
     
     func getActivitiesForGroup(group: UserGroup) async throws -> [Activity]? {
@@ -109,7 +140,7 @@ class CloudKitHelper: Repository {
         return nil
     }
     
-    func deleteGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
+    func deleteRecord(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
         database.delete(withRecordID: recordId) { record, error in
             if let error = error {
                 completion(error)
@@ -142,7 +173,7 @@ class CloudKitHelper: Repository {
         let group = try await database.save(record)
         
         for activity in activities {
-            addActivityToGroup(groupRecordId: group.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue) { error in
+            addActivityToGroup(groupRecordId: group.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { error in
                 if let error = error {
                     print(error)
                 }
@@ -150,11 +181,18 @@ class CloudKitHelper: Repository {
         }
     }
     
-    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void) {
+    func removeAllPendingChallenges(group: UserGroup) {
+//        let challenges = getchalle
+//        database.delete
+    }
+    
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Error?) -> Void) {
         let record = CKRecord(recordType: "Activity")
         
+        record.setValue(templateId, forKey: "templateId")
+        record.setValue(1, forKey: "isEnabled")
         record.setValue(name, forKey: "name")
-        record.setValue(unit, forKey: "unit")
+        record.setValue(unit.rawValue, forKey: "unit")
         record.setValue(minValue, forKey: "minValue")
         record.setValue(maxValue, forKey: "maxValue")
         

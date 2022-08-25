@@ -16,30 +16,45 @@ class HomeViewModel : ObservableObject {
     @Published var loadingStatus = LoadingStatus.loaded
     
     let cloudKitHelper: CloudKitHelper
-    let notificationHelper: NotificationHelper
+//    let notificationHelper: NotificationHelper
     
-    init(cloudKitHelper: CloudKitHelper, notificationHelper: NotificationHelper) {
+    init(cloudKitHelper: CloudKitHelper) {
         self.cloudKitHelper = cloudKitHelper
-        self.notificationHelper = notificationHelper
+//        self.notificationHelper = notificationHelper
         
         //dataHelper.resolveDuplicateActivities()
         
         //notificationHelper.scheduleAllNotifications(settingsChanged: false)
+        
+        loadData(forceSync: false)
     }
     
-    func getChallenges() async {
-        do {
-            challenges = try await cloudKitHelper.getChallengesForUser()
-        } catch {
-            print(error)
+    func loadData(forceSync: Bool) {
+        Task {
+            await getChallenges()
+            await getGroups(forceSync: forceSync)
         }
     }
     
-    func getGroups() async {
-        loadingStatus = .loading
+    func getChallenges() async {
+        DispatchQueue.main.async { [weak self] in
+            Task {
+                do {
+                    self?.challenges = try await self?.cloudKitHelper.getChallengesForUser()
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func getGroups(forceSync: Bool) async {
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingStatus = .loading
+        }
         
         do {
-            let newGroups = try await cloudKitHelper.getGroupsForUser()
+            let newGroups = try await cloudKitHelper.getGroupsForUser(forceSync: forceSync)
             
             DispatchQueue.main.async { [weak self] in
                 self?.groups = newGroups

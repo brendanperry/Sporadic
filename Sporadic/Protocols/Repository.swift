@@ -21,10 +21,10 @@ protocol Repository {
 //    func resolveDuplicateActivities()
 //    func setChallengeNotification(challenge: Challenge, notificationId: String)
     
-    func getGroupsForUser() async throws -> [UserGroup]?
+    func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]?
     func getActivitiesForGroup(group: UserGroup) async throws -> [Activity]?
     func getChallengesForUser() async throws -> [Challenge]?
     func getUsersForGroup(group: UserGroup) async throws -> [User]?
-    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, completion: @escaping (Error?) -> Void)
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Error?) -> Void)
     func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws
 }

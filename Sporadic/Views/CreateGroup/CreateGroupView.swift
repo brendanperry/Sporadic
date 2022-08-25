@@ -12,6 +12,8 @@ import Combine
 struct CreateGroupView: View {
     @ObservedObject var viewModel = CreateGroupViewModel()
     
+    let reloadAction: (Bool) -> Void
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -45,7 +47,7 @@ struct CreateGroupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .navigationBarBackButtonHidden(true)
         .navigationTitle(viewModel.groupName)
-        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel))
+        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel, reloadAction: reloadAction))
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
             UINavigationBar.appearance().barTintColor = UIColor(Color("Panel"))
@@ -124,6 +126,7 @@ struct CreateGroupView: View {
     struct CreateButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         let viewModel: CreateGroupViewModel
+        let reloadAction: (Bool) -> Void
         
         var body: some View {
             Button(action: {
@@ -132,6 +135,7 @@ struct CreateGroupView: View {
                     
                     if didFinishSuccessfully {
                         presentationMode.wrappedValue.dismiss()
+                        reloadAction(true)
                     }
                 }
             }, label: {
@@ -219,7 +223,7 @@ struct CreateGroupView: View {
                 TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
                 
                 LazyVGrid(columns: items, spacing: 10) {
-                    ForEach($selectedActivities.filter({ $0.wrappedValue.isEnabled })) { activity in
+                    ForEach($selectedActivities) { activity in
                         NavigationLink(destination: EditActivity(activityList: $selectedActivities, activity: activity)) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
@@ -266,11 +270,5 @@ struct CreateGroupView: View {
             .padding(.horizontal)
             .padding(.bottom, 100)
         }
-    }
-}
-
-struct CreateGroupView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateGroupView()
     }
 }

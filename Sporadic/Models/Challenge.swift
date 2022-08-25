@@ -28,7 +28,8 @@ extension Challenge {
             let amount = record["amount"] as? Double,
             let endTime = record["endTime"] as? Date,
             let startTime = record["startTime"] as? Date,
-            let isCompleted = record["isCompleted"] as? Int
+            let isCompleted = record["isCompleted"] as? Int,
+            let notificationId = record["notificationId"] as? String
         else {
             return nil
         }

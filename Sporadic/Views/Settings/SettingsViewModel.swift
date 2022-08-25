@@ -8,17 +8,17 @@
 import Foundation
 
 class SettingsViewModel : ObservableObject {
-    let notificationHelper: NotificationHelper
+//    let notificationHelper: NotificationHelper
     @Published var showDisabledAlert = false
     @Published var showEnabledAlert = false
     
-    init(notificationHelper: NotificationHelper) {
-        self.notificationHelper = notificationHelper
-    }
+//    init(notificationHelper: NotificationHelper) {
+//        self.notificationHelper = notificationHelper
+//    }
     
     func scheduleNotifications(settingsChanged: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.notificationHelper.scheduleAllNotifications(settingsChanged: settingsChanged)
+//            self?.notificationHelper.scheduleAllNotifications(settingsChanged: settingsChanged)
         }
     }
 }

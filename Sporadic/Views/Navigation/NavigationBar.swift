@@ -19,37 +19,31 @@ struct NavigationBar: View {
         if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
             _homeIconOn = .init(initialValue: true)
             _statsIconOn = .init(initialValue: false)
-            // swap them in a sec
             _settingsIconOn = .init(initialValue: false)
         }
         else if viewRouter.previousPage == .home && viewRouter.currentPage == .settings {
             _homeIconOn = .init(initialValue: true)
             _settingsIconOn = .init(initialValue: false)
-            // swap them in a sec
             _statsIconOn = .init(initialValue: false)
         }
         else if viewRouter.previousPage == .stats && viewRouter.currentPage == .home {
             _statsIconOn = .init(initialValue: true)
             _homeIconOn = .init(initialValue: false)
-            // swap them in a sec
             _settingsIconOn = .init(initialValue: false)
         }
         else if viewRouter.previousPage == .stats && viewRouter.currentPage == .settings {
             _statsIconOn = .init(initialValue: true)
             _settingsIconOn = .init(initialValue: false)
-            // swap them in a sec
             _homeIconOn = .init(initialValue: false)
         }
         else if viewRouter.previousPage == .settings && viewRouter.currentPage == .home {
             _settingsIconOn = .init(initialValue: true)
             _homeIconOn = .init(initialValue: false)
-            // swap them in a sec
             _statsIconOn = .init(initialValue: false)
         }
         else if viewRouter.previousPage == .settings && viewRouter.currentPage == .stats {
             _settingsIconOn = .init(initialValue: true)
             _statsIconOn = .init(initialValue: false)
-            // swap them in a sec
             _homeIconOn = .init(initialValue: false)
         }
         else {
@@ -57,11 +51,6 @@ struct NavigationBar: View {
             _statsIconOn = .init(initialValue: false)
             _settingsIconOn = .init(initialValue: false)
         }
-    }
-    
-    func runAnimation(anim: @escaping () -> Void) {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: anim)
-        anim()
     }
     
     var body: some View {
@@ -95,40 +84,28 @@ struct NavigationBar: View {
             .offset(y: 10)
             .onAppear {
                 if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
-                    self.runAnimation {
-                        self.homeIconOn = false
-                        self.statsIconOn = true
-                    }
+                    self.homeIconOn = false
+                    self.statsIconOn = true
                 }
                 else if viewRouter.previousPage == .home && viewRouter.currentPage == .settings {
-                    runAnimation {
-                        homeIconOn = false
-                        settingsIconOn = true
-                    }
+                    homeIconOn = false
+                    settingsIconOn = true
                 }
                 else if viewRouter.previousPage == .stats && viewRouter.currentPage == .home {
-                    runAnimation {
-                        statsIconOn = false
-                        homeIconOn = true
-                    }
+                    statsIconOn = false
+                    homeIconOn = true
                 }
                 else if viewRouter.previousPage == .stats && viewRouter.currentPage == .settings {
-                    runAnimation {
-                        statsIconOn = false
-                        settingsIconOn = true
-                    }
+                    statsIconOn = false
+                    settingsIconOn = true
                 }
                 else if viewRouter.previousPage == .settings && viewRouter.currentPage == .home {
-                    runAnimation {
-                        settingsIconOn = false
-                        homeIconOn = true
-                    }
+                    settingsIconOn = false
+                    homeIconOn = true
                 }
                 else if viewRouter.previousPage == .settings && viewRouter.currentPage == .stats {
-                    runAnimation {
-                        settingsIconOn = false
-                        statsIconOn = true
-                    }
+                    settingsIconOn = false
+                    statsIconOn = true
                 }
             }
         }

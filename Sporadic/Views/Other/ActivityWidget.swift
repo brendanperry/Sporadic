@@ -20,7 +20,7 @@ struct ActivityWidget: View {
                 .offset(x: 10, y: 10)
             
             VStack {
-                Image(activity.name ?? "Unkown")
+                Image(activity.name)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 50, height: 50)

@@ -48,7 +48,11 @@ class CreateGroupViewModel: ObservableObject {
         
         do {
             try await CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: color, days: days, time: time, activities: activities)
-            isLoading = false
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoading = false
+            }
+            
             return true
         }
         catch {

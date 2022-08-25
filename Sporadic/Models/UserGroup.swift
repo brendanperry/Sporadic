@@ -21,6 +21,7 @@ class UserGroup: Identifiable {
     let name: String
     let users: [CKRecord.Reference]?
     let recordId: CKRecord.ID
+    var needsSynced = false
     
     init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, daysOfTheWeek: [String], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, recordId: CKRecord.ID) {
         self.activities = activities

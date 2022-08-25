@@ -9,7 +9,7 @@ import SwiftUI
 import CloudKit
 
 struct HomePage: View {
-    @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared, notificationHelper: NotificationHelper(cloudKitHelper: CloudKitHelper.shared))
+    @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
     @ObservedObject var env = GlobalSettings.Env
 //    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var viewRouter: ViewRouter
@@ -28,11 +28,7 @@ struct HomePage: View {
                     .edgesIgnoringSafeArea(.all)
                 ScrollView(.vertical, showsIndicators: false) {
                     PullToRefresh(coordinateSpaceName: "HomePage") {
-                        Task {
-                            await viewModel.getGroups()
-                        }
-//                        viewModel.getChallenges()
-                        print("WOW")
+                        viewModel.loadData(forceSync: true)
                     }
                     
                     VStack(spacing: 35) {
@@ -50,9 +46,13 @@ struct HomePage: View {
                         
                         switch viewModel.loadingStatus {
                         case .loaded:
-                            GroupList(groups: viewModel.groups ?? [], isLoading: false)
+                            GroupList(groups: viewModel.groups ?? [], isLoading: false) { forceReload in
+                                viewModel.loadData(forceSync: forceReload)
+                            }
                         case .loading:
-                            GroupList(groups: viewModel.groups ?? [], isLoading: true)
+                            GroupList(groups: viewModel.groups ?? [], isLoading: true) { forceReload in
+                                viewModel.loadData(forceSync: forceReload)
+                            }
                         case .failed:
                             Text("Failed to load groups. Please try again.")
                         }
@@ -70,13 +70,13 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .onAppear {
-            //            GlobalSettings.Env.updateStatus()
-            Task {
-                await viewModel.getChallenges()
-                await viewModel.getGroups()
-            }
-        }
+//        .onAppear {
+//            //            GlobalSettings.Env.updateStatus()
+//            Task {
+//                await viewModel.getChallenges()
+//                await viewModel.getGroups()
+//            }
+//        }
 //        .onChange(of: scenePhase) { newPhase in
 //            if newPhase == .active {
 //                //                GlobalSettings.Env.scheduleNotificationsIfNoneExist()

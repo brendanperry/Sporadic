@@ -70,7 +70,7 @@ struct AddPage: View {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
-                let newActivity = Activity(id: UUID(), isEnabled: true, maxValue: maxValue, minValue: minValue, minRange: template.minRange, name: template.name, templateId: template.id, unit: template.unit)
+                let newActivity = Activity(id: UUID(), isEnabled: true, maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
                 
                 activityList.append(newActivity)
                 

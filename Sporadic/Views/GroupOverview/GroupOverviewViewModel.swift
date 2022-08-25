@@ -59,7 +59,7 @@ class GroupOverviewViewModel: ObservableObject {
     func deleteGroup(completion: @escaping (Bool) -> Void) {
         isLoading = true
         
-        CloudKitHelper.shared.deleteGroup(recordId: group.recordId) { [weak self] error in
+        CloudKitHelper.shared.deleteRecord(recordId: group.recordId) { [weak self] error in
             DispatchQueue.main.async {
                 if let _ = error {
                     self?.errorMessage = "Could not delete group. Please check your connection and try again."
