@@ -61,9 +61,9 @@ class CreateGroupViewModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 self?.errorMessage = "Could not create group. Please check your connection and try again."
                 self?.showError = true
+                self?.isLoading = false
             }
             
-            isLoading = false
             return false
         }
     }

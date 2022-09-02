@@ -26,7 +26,7 @@ class HomeViewModel : ObservableObject {
         
         //notificationHelper.scheduleAllNotifications(settingsChanged: false)
         
-        loadData(forceSync: false)
+        loadData(forceSync: true)
     }
     
     func loadData(forceSync: Bool) {
@@ -48,7 +48,7 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    func getGroups(forceSync: Bool) async {
+    func getGroups(forceSync: Bool = false) async {
         DispatchQueue.main.async { [weak self] in
             self?.loadingStatus = .loading
         }

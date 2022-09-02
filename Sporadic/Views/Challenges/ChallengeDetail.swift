@@ -10,9 +10,9 @@ import CloudKit
 
 struct ChallengeDetail: View {
     let users = [
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: ""),
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: ""),
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: "")
+        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan"),
+        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan"),
+        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan")
     ]
     
     let challenge: Challenge

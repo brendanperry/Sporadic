@@ -57,7 +57,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                     UserDefaults.standard.set(userID, forKey: UserPrefs.userId.rawValue)
                     
                     // Remove this method to stop OneSignal Debugging
-                    OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+                    OneSignal.setLogLevel(.LL_ERROR, visualLevel: .LL_NONE)
                     OneSignal.initWithLaunchOptions(launchOptions)
                     OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
                      
@@ -73,7 +73,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                     UserDefaults.standard.set(userId, forKey: UserPrefs.userId.rawValue)
                     
                     // Remove this method to stop OneSignal Debugging
-                    OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
+                    OneSignal.setLogLevel(.LL_ERROR, visualLevel: .LL_NONE)
                     OneSignal.initWithLaunchOptions(launchOptions)
                     OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
                      

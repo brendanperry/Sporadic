@@ -134,8 +134,8 @@ struct CreateGroupView: View {
                     let didFinishSuccessfully = await viewModel.createGroup()
                     
                     if didFinishSuccessfully {
+                        reloadAction(false)
                         presentationMode.wrappedValue.dismiss()
-                        reloadAction(true)
                     }
                 }
             }, label: {

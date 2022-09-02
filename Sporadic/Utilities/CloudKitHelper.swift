@@ -25,13 +25,6 @@ class CloudKitHelper: Repository {
                 return cachedUser
             }
             
-            do {
-                let userId = (try await container.userRecordID()).recordName
-            }
-            catch {
-               print(error)
-            }
-            
             let userId = (try await container.userRecordID()).recordName
                         
             let predicate = NSPredicate(format: "usersRecordId = %@", userId)
@@ -47,6 +40,15 @@ class CloudKitHelper: Repository {
                 
                 return cachedUser
             }
+            else {
+                let user = try await createNewUser(usersRecordId: userId)
+                
+                if let user = user {
+                    cachedUser = user
+                    
+                    return cachedUser
+                }
+            }
             
             return nil
         }
@@ -55,6 +57,19 @@ class CloudKitHelper: Repository {
     private init() {
         container = CKContainer(identifier: "iCloud.Sporadic")
         database = container.publicCloudDatabase
+    }
+    
+    func createNewUser(usersRecordId: String) async throws -> User? {
+        let record = CKRecord(recordType: "User")
+        
+        record.setValue("Brendan Perry", forKey: "name")
+        record.setValue(usersRecordId, forKey: "usersRecordId")
+        
+        let userRecord = try await database.save(record)
+        
+        let user = User.init(from: userRecord)
+        
+        return user
     }
     
     func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]? {
@@ -114,7 +129,11 @@ class CloudKitHelper: Repository {
             return nil
         }
         
-        let predicate = NSPredicate(format: "recordID IN %@", activities)
+        if activities.count == 0 {
+            return []
+        }
+        
+        let predicate = NSPredicate(format: "%@ CONTAINS recordID", activities)
         
         let query = CKQuery(recordType: "Activity", predicate: predicate)
         
@@ -138,6 +157,18 @@ class CloudKitHelper: Repository {
 //        }
 //
         return nil
+    }
+    
+    func deleteGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
+        deleteRecord(recordId: recordId) { [weak self] error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                self?.currentGroups?.removeAll(where: { $0.recordId == recordId })
+                completion(nil)
+            }
+        }
     }
     
     func deleteRecord(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
@@ -170,14 +201,23 @@ class CloudKitHelper: Repository {
         record.setValue([], forKey: "challenges")
         record.setValue([], forKey: "activities")
         
-        let group = try await database.save(record)
+        let groupRecord = try await database.save(record)
         
+        var activityReferences = [CKRecord.Reference]()
         for activity in activities {
-            addActivityToGroup(groupRecordId: group.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { error in
-                if let error = error {
-                    print(error)
+            addActivityToGroup(groupRecordId: groupRecord.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { reference in
+                if let reference = reference {
+                    activityReferences.append(reference)
                 }
             }
+        }
+        
+        let group = UserGroup.init(from: groupRecord)
+        
+        if let group = group {
+            group.activities = activityReferences
+            
+            currentGroups?.append(group)
         }
     }
     
@@ -186,7 +226,7 @@ class CloudKitHelper: Repository {
 //        database.delete
     }
     
-    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Error?) -> Void) {
+    func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (CKRecord.Reference?) -> Void) {
         let record = CKRecord(recordType: "Activity")
         
         record.setValue(templateId, forKey: "templateId")
@@ -198,8 +238,8 @@ class CloudKitHelper: Repository {
         
         database.save(record) { [weak self] record, error in
             if let error = error {
-                print("error")
-                completion(error)
+                print(error)
+                completion(nil)
                 return
             }
             
@@ -208,7 +248,8 @@ class CloudKitHelper: Repository {
                 
                 self?.database.fetch(withRecordID: groupRecordId) { record, error in
                     if let error = error {
-                        completion(error)
+                        print(error)
+                        completion(nil)
                         return
                     }
                     
@@ -221,7 +262,11 @@ class CloudKitHelper: Repository {
                             
                             self?.database.save(record) { record, error in
                                 if let error = error {
-                                    completion(error)
+                                    print(error)
+                                    completion(nil)
+                                }
+                                else {
+                                    completion(reference)
                                 }
                             }
                         }

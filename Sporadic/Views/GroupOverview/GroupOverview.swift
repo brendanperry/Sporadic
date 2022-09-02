@@ -164,7 +164,7 @@ struct DeleteButton: View {
                       secondaryButton: .destructive(Text("Delete")) {
                     viewModel.deleteGroup() { didFinishSuccessfully in
                         if didFinishSuccessfully {
-                            reloadAction(true)
+                            reloadAction(false)
                             presentationMode.wrappedValue.dismiss()
                         }
                     }

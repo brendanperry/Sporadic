@@ -8,24 +8,31 @@
 import Foundation
 import CloudKit
 
-struct User: Identifiable {
+class User: Identifiable {
     let id = UUID()
     let recordId: CKRecord.ID
     let usersRecordId: String
     let name: String
-    let photo: String
+//    let photo: String
+    
+    init(recordId: CKRecord.ID, usersRecordId: String, name: String) {
+        self.recordId = recordId
+        self.usersRecordId = usersRecordId
+        self.name = name
+//        self.photo = photo
+    }
 }
 
 extension User {
-    init? (from record: CKRecord) {
+    convenience init? (from record: CKRecord) {
         guard
             let name = record["name"] as? String,
-            let photo = record["photo"] as? CKAsset,
+//            let photo = record["photo"] as? CKAsset,
             let usersRecordId = record["usersRecordId"] as? String
         else {
             return nil
         }
         
-        self.init(recordId: record.recordID, usersRecordId: usersRecordId, name: name, photo: "")
+        self.init(recordId: record.recordID, usersRecordId: usersRecordId, name: name)
     }
 }
