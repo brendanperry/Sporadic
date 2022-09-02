@@ -32,29 +32,27 @@ struct HomePage: View {
                     }
                     
                     VStack(spacing: 35) {
-                        Welcome()
-                        
-                        if env.showWarning {
-                            WarningMessage(viewModel: viewModel)
-                        }
-                        
-                        Challenges(challenges: [
-                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 12, endTime: Date(), startTime: Date(), isCompleted: false),
-                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 9, endTime: Calendar.current.date(byAdding: .hour, value: 5, to: Date()) ?? Date(), startTime: Date(), isCompleted: false),
-                            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true)
-                        ])
-                        
-                        switch viewModel.loadingStatus {
-                        case .loaded:
-                            GroupList(groups: viewModel.groups ?? [], isLoading: false) { forceReload in
-                                viewModel.loadData(forceSync: forceReload)
+                        if !viewModel.areGroupsLoading && !viewModel.isUserLoading && !viewModel.areChallengesLoading {
+                            Welcome(viewModel: viewModel)
+                            
+                            if env.showWarning {
+                                WarningMessage(viewModel: viewModel)
                             }
-                        case .loading:
-                            GroupList(groups: viewModel.groups ?? [], isLoading: true) { forceReload in
-                                viewModel.loadData(forceSync: forceReload)
+                        
+                            Challenges(challenges: viewModel.challenges)
+                            
+                            switch viewModel.loadingStatus {
+                            case .loaded:
+                                GroupList(groups: viewModel.groups, isLoading: false) { forceReload in
+                                    viewModel.loadData(forceSync: forceReload)
+                                }
+                            case .loading:
+                                GroupList(groups: viewModel.groups, isLoading: true) { forceReload in
+                                    viewModel.loadData(forceSync: forceReload)
+                                }
+                            case .failed:
+                                Text("Failed to load groups. Please try again.")
                             }
-                        case .failed:
-                            Text("Failed to load groups. Please try again.")
                         }
                     }
                     .padding(.bottom, 100)
@@ -185,15 +183,18 @@ struct WarningMessage: View {
 }
 
 struct Welcome: View {
+    @ObservedObject var viewModel: HomeViewModel
+    
     var body: some View {
         HStack {
             VStack {
-                TextHelper.text(key: "WelcomeBack", alignment: .leading, type: .body, suffix: "Brendan.")
+                TextHelper.text(key: "WelcomeBack", alignment: .leading, type: .body, suffix: viewModel.user.name + ".")
                 TextHelper.text(key: "YourGoal", alignment: .leading, type: .h1)
             }
             
-            Image("nic")
+            Image(uiImage: viewModel.user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                 .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
                 .padding()

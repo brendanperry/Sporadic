@@ -8,12 +8,16 @@
 import Foundation
 import CoreData
 import SwiftUI
+import CloudKit
 
 class HomeViewModel : ObservableObject {
-    @Published var challenges: [Challenge]?
-    @Published var groups: [UserGroup]?
-    @Published var user: User?
+    @Published var challenges = [Challenge]()
+    @Published var groups = [UserGroup]()
+    @Published var user = User(recordId: CKRecord(recordType: "User").recordID, usersRecordId: "", name: "challenger", photo: nil)
     @Published var loadingStatus = LoadingStatus.loaded
+    @Published var isUserLoading = true
+    @Published var areChallengesLoading = true
+    @Published var areGroupsLoading = true
     
     let cloudKitHelper: CloudKitHelper
 //    let notificationHelper: NotificationHelper
@@ -31,16 +35,29 @@ class HomeViewModel : ObservableObject {
     
     func loadData(forceSync: Bool) {
         Task {
-            await getChallenges()
+            await getUser()
+            await getChallenges(forceSync: forceSync)
             await getGroups(forceSync: forceSync)
         }
     }
     
-    func getChallenges() async {
+    func getUser() async {
+        DispatchQueue.main.async { [weak self] in
+            Task {
+                if let user = try? await self?.cloudKitHelper.currentUser {
+                    self?.user = user
+                    self?.isUserLoading = false
+                }
+            }
+        }
+    }
+    
+    func getChallenges(forceSync: Bool = false) async {
         DispatchQueue.main.async { [weak self] in
             Task {
                 do {
-                    self?.challenges = try await self?.cloudKitHelper.getChallengesForUser()
+                    self?.challenges = try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []
+                    self?.areChallengesLoading = false
                 } catch {
                     print(error)
                 }
@@ -57,13 +74,15 @@ class HomeViewModel : ObservableObject {
             let newGroups = try await cloudKitHelper.getGroupsForUser(forceSync: forceSync)
             
             DispatchQueue.main.async { [weak self] in
-                self?.groups = newGroups
+                self?.groups = newGroups ?? []
                 self?.loadingStatus = .loaded
+                self?.areGroupsLoading = false
             }
         }
         catch {
             DispatchQueue.main.async { [weak self] in
                 self?.loadingStatus = .failed
+                self?.areGroupsLoading = false
             }
             
             print(error)

@@ -77,10 +77,4 @@ struct ChallengeDetail: View {
             .padding(.horizontal)
         }
     }
-    
-    struct ChallengeDetail_Previews: PreviewProvider {
-        static var previews: some View {
-            ChallengeDetail(challenge: Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true))
-        }
-    }
 }

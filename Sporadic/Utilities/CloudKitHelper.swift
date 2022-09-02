@@ -16,6 +16,7 @@ class CloudKitHelper: Repository {
     let oneSignalHelper = OneSignalHelper()
     
     private var currentGroups: [UserGroup]?
+    private var currentChallenges: [Challenge]?
     
     // make new user if nothing is found??
     private var cachedUser: User?
@@ -193,18 +194,28 @@ class CloudKitHelper: Repository {
     }
         
     // need the record id of the current user to get the reference to work?
-    func getChallengesForUser() async throws -> [Challenge]? {
-//        if let user = try await currentUser {
-//            let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
-//
-//            let query = CKQuery(recordType: "Challenge", predicate: predicate)
-//
-//            let result = try await database.records(matching: query)
-//            let records = try result.matchResults.map { try $0.1.get() }
-//
-//            return records.compactMap { Challenge.init(from: $0) }
-//        }
-//
+    func getChallengesForUser(forceSync: Bool = false) async throws -> [Challenge]? {
+        if let currentChallenges = currentChallenges, forceSync == false {
+            return currentChallenges
+        }
+        
+        if let user = try await currentUser {
+            let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
+            
+            let predicate = NSPredicate(format: "users CONTAINS %@", reference)
+
+            let query = CKQuery(recordType: "Challenge", predicate: predicate)
+
+            let result = try await database.records(matching: query)
+            let records = try result.matchResults.map { try $0.1.get() }
+
+            let challenges = records.compactMap { Challenge.init(from: $0) }
+            
+            currentChallenges = challenges
+            
+            return currentChallenges
+        }
+
         return nil
     }
     

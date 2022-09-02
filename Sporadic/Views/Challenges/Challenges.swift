@@ -16,14 +16,19 @@ struct Challenges: View {
             TextHelper.text(key: "Challenges", alignment: .leading, type: .h2, color: .primary)
                 .padding(.horizontal)
             
-            VStack {
-                ForEach(challenges) { challenge in
-                    NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
-                        ChallengeView(challenge: challenge, showNavigationCarrot: true)
+            ScrollView(.vertical) {
+                VStack {
+                    ForEach(challenges) { challenge in
+                        NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
+                            ChallengeView(challenge: challenge, showNavigationCarrot: true)
+                        }
+                        .buttonStyle(ButtonPressAnimationStyle())
                     }
-                    .buttonStyle(ButtonPressAnimationStyle())
+                    
+                    Spacer()
                 }
             }
+            .frame(height: 150)
         }
     }
 }
@@ -104,15 +109,5 @@ struct ChallengeView: View {
             .foregroundColor(.white)
             .frame(width: 35, height: 35, alignment: .center)
             .padding(.trailing, 5)
-    }
-}
-
-struct Challenges_Previews: PreviewProvider {
-    static var previews: some View {
-        Challenges(challenges: [
-            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 12, endTime: Date(), startTime: Date(), isCompleted: false),
-            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 9, endTime: Calendar.current.date(byAdding: .hour, value: 5, to: Date()) ?? Date(), startTime: Date(), isCompleted: false),
-            Challenge(id: UUID(), activity: CKRecord.Reference(record: CKRecord(recordType: "Challenge"), action: .deleteSelf), amount: 5, endTime: Date(), startTime: Date(), isCompleted: true)
-        ])
     }
 }

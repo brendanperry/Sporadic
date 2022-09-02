@@ -23,7 +23,7 @@ protocol Repository {
     
     func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]?
     func getActivitiesForGroup(group: UserGroup) async throws -> [Activity]?
-    func getChallengesForUser() async throws -> [Challenge]?
+    func getChallengesForUser(forceSync: Bool) async throws -> [Challenge]?
     func getUsersForGroup(group: UserGroup) async throws -> [User]?
     func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (CKRecord.Reference?) -> Void)
     func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws
