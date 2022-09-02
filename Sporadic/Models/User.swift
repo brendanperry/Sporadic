@@ -12,7 +12,7 @@ class User: Identifiable {
     let id = UUID()
     let recordId: CKRecord.ID
     let usersRecordId: String
-    let name: String
+    var name: String
 //    let photo: String
     
     init(recordId: CKRecord.ID, usersRecordId: String, name: String) {

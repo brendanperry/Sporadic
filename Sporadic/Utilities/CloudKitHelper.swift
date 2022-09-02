@@ -72,6 +72,28 @@ class CloudKitHelper: Repository {
         return user
     }
     
+    func updateUser(user: User, completion: @escaping (Error?) -> Void) {
+        database.fetch(withRecordID: user.recordId) { [weak self] record, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            if let record = record {
+                record["name"] = user.name
+                
+                self?.database.save(record) { record, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
+            }
+        }
+    }
+    
     func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]? {
         if let currentGroups = currentGroups, forceSync == false {
             return currentGroups

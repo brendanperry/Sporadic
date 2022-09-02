@@ -43,7 +43,7 @@ struct SettingsPage: View {
                         .padding(.top, 50)
                         .padding(.bottom)
                     
-                    UserSettings()
+                    UserSettings(viewModel: viewModel)
                     NotificationWidget()
                     AppTheme()
                     AppIcons()
@@ -138,7 +138,7 @@ struct SettingsPage: View {
     struct UserSettings: View {
         @State var image: UIImage?
         @State var showImagePicker = false
-        @State var fullName = "Name"
+        @ObservedObject var viewModel: SettingsViewModel
         let textHelper = TextHelper()
         
         var body: some View {
@@ -171,7 +171,7 @@ struct SettingsPage: View {
                         }
                         
                         
-                        TextField("", text: $fullName)
+                        TextField("", text: $viewModel.user.name)
                             .padding()
                             .frame(minWidth: 200, maxHeight: 50, alignment: .leading)
                             .background(Color("Panel"))
@@ -179,6 +179,9 @@ struct SettingsPage: View {
                             .font(Font.custom("Lexend-Regular", size: 14))
                             .foregroundColor(Color("Header"))
                             .padding(.leading)
+                            .onSubmit {
+                                viewModel.updateUser()
+                            }
                     }
                     
                     Button(action: {
@@ -189,6 +192,9 @@ struct SettingsPage: View {
                     })
                     .frame(maxWidth: 75)
                 }
+            }
+            .alert(isPresented: $viewModel.showError) {
+                Alert(title: Text("Uh-Oh!"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
             }
         }
     }
