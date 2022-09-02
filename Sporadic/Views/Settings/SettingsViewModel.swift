@@ -7,15 +7,18 @@
 
 import Foundation
 import CloudKit
+import UIKit
 
 class SettingsViewModel : ObservableObject {
 //    let notificationHelper: NotificationHelper
     @Published var showDisabledAlert = false
     @Published var showEnabledAlert = false
-    @Published var user = User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "")
+    @Published var photo: UIImage?
+    @Published var name = ""
     @Published var showError = false
     
     var errorMessage = ""
+    var user: User? = nil
 
     
 //    init(notificationHelper: NotificationHelper) {
@@ -25,7 +28,10 @@ class SettingsViewModel : ObservableObject {
     init() {
         Task {
             do {
-                user = try await CloudKitHelper.shared.currentUser ?? user
+                user = try await CloudKitHelper.shared.currentUser
+                
+                photo = user?.photo
+                name = user?.name ?? ""
             }
             catch {
                 print(error)
@@ -33,8 +39,28 @@ class SettingsViewModel : ObservableObject {
         }
     }
     
-    func updateUser() {
-        CloudKitHelper.shared.updateUser(user: user) { [weak self] error in
+    func updateUserName() {
+        guard let user = user else {
+            return
+        }
+        
+        user.name = name
+
+        CloudKitHelper.shared.updateUserName(user: user) { [weak self] error in
+            if let _ = error {
+                self?.errorMessage = "We could not save the changes to your user profile. Please check your connection and try again."
+            }
+        }
+    }
+    
+    func updateUserImage() {
+        guard let user = user else {
+            return
+        }
+        
+        user.photo = photo
+        
+        CloudKitHelper.shared.updateUserImage(user: user) { [weak self] error in
             if let _ = error {
                 self?.errorMessage = "We could not save the changes to your user profile. Please check your connection and try again."
             }

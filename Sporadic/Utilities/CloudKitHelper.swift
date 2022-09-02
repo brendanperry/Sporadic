@@ -72,7 +72,7 @@ class CloudKitHelper: Repository {
         return user
     }
     
-    func updateUser(user: User, completion: @escaping (Error?) -> Void) {
+    func updateUserName(user: User, completion: @escaping (Error?) -> Void) {
         database.fetch(withRecordID: user.recordId) { [weak self] record, error in
             if let error = error {
                 completion(error)
@@ -81,6 +81,33 @@ class CloudKitHelper: Repository {
             
             if let record = record {
                 record["name"] = user.name
+                
+                self?.database.save(record) { record, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateUserImage(user: User, completion: @escaping (Error?) -> Void) {
+        database.fetch(withRecordID: user.recordId) { [weak self] record, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            if let record = record {
+                var asset: CKAsset? = nil
+                if let photo = user.photo?.toCKAsset() {
+                    asset = photo
+                }
+                
+                record["photo"] = asset
                 
                 self?.database.save(record) { record, error in
                     if let error = error {

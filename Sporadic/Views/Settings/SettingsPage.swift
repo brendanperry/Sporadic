@@ -43,7 +43,7 @@ struct SettingsPage: View {
                         .padding(.top, 50)
                         .padding(.bottom)
                     
-                    UserSettings(viewModel: viewModel)
+                    UserSettings(viewModel: viewModel, name: $viewModel.name, photo: $viewModel.photo)
                     NotificationWidget()
                     AppTheme()
                     AppIcons()
@@ -136,9 +136,10 @@ struct SettingsPage: View {
     }
     
     struct UserSettings: View {
-        @State var image: UIImage?
         @State var showImagePicker = false
         @ObservedObject var viewModel: SettingsViewModel
+        @Binding var name: String
+        @Binding var photo: UIImage?
         let textHelper = TextHelper()
         
         var body: some View {
@@ -146,17 +147,12 @@ struct SettingsPage: View {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
                         ZStack {
-                            Image(uiImage: image ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                            Image(uiImage: photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                 .resizable()
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 75, height: 75, alignment: .center)
                                 .cornerRadius(100)
                                 .padding(.leastNormalMagnitude)
-                                .onTapGesture {
-                                    showImagePicker = true
-                                }
-                                .sheet(isPresented: $showImagePicker) {
-                                    ImagePicker(image: $image)
-                                }
                             
                             Image("Edit Group Icon")
                                 .resizable()
@@ -168,10 +164,18 @@ struct SettingsPage: View {
                                         .offset(x: -1, y: -1)
                                 )
                                 .offset(x: 25, y: -25)
+                                .onTapGesture {
+                                    showImagePicker = true
+                                }
+                                .sheet(isPresented: $showImagePicker) {
+                                    ImagePicker(image: $photo)
+                                }
+                                .onChange(of: photo) { _ in
+                                    viewModel.updateUserImage()
+                                }
                         }
                         
-                        
-                        TextField("", text: $viewModel.user.name)
+                        TextField("", text: $name)
                             .padding()
                             .frame(minWidth: 200, maxHeight: 50, alignment: .leading)
                             .background(Color("Panel"))
@@ -180,17 +184,18 @@ struct SettingsPage: View {
                             .foregroundColor(Color("Header"))
                             .padding(.leading)
                             .onSubmit {
-                                viewModel.updateUser()
+                                viewModel.updateUserName()
                             }
                     }
                     
                     Button(action: {
                         print("Remove")
-                        image = UIImage(imageLiteralResourceName: "Default Profile")
+                        photo = nil
+                        viewModel.updateUserImage()
                     }, label: {
                         TextHelper.text(key: "Remove", alignment: .center, type: .challengeGroup)
                     })
-                    .frame(maxWidth: 75)
+                    .frame(maxWidth: 75, maxHeight: 25)
                 }
             }
             .alert(isPresented: $viewModel.showError) {

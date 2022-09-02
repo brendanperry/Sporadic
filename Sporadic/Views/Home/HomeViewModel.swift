@@ -26,7 +26,7 @@ class HomeViewModel : ObservableObject {
         
         //notificationHelper.scheduleAllNotifications(settingsChanged: false)
         
-        loadData(forceSync: true)
+        loadData(forceSync: false)
     }
     
     func loadData(forceSync: Bool) {

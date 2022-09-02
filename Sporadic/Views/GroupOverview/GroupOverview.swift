@@ -192,8 +192,9 @@ struct UsersInGroup: View {
             VStack(spacing: 0) {
                 ForEach(users) { user in
                     HStack {
-                        Image("nic")
+                        Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 50, height: 50, alignment: .leading)
                             .cornerRadius(100)
                         
