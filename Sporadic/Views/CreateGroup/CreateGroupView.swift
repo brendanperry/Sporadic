@@ -31,7 +31,7 @@ struct CreateGroupView: View {
                         
                         EmojiSelector(emoji: $viewModel.emoji)
                         
-                        GroupColor(color: $viewModel.color)
+                        GroupColor(selected: $viewModel.color)
                         
                         DaysAndTime(days: $viewModel.days, time: $viewModel.time)
                         
@@ -93,8 +93,7 @@ struct CreateGroupView: View {
     }
     
     struct GroupColor: View {
-        @Binding var color: GroupBackgroundColor
-        @State var selected = GroupBackgroundColor.one
+        @Binding var selected: GroupBackgroundColor
         var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 4)
         
         var body: some View {
