@@ -51,8 +51,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         appearance.backgroundColor = .white
         UINavigationBar.appearance().isHidden = true
         
-        UserDefaults.standard.set(false, forKey: "hasInitializedData")
-        
         iCloudUserIDAsync { (recordID: CKRecord.ID?, error: NSError?) in
             if let userID = recordID?.recordName {
                 DispatchQueue.main.async {

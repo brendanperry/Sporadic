@@ -58,8 +58,19 @@ class HomeViewModel : ObservableObject {
                 do {
                     self?.challenges = try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []
                     self?.areChallengesLoading = false
+                    self?.loadChallengeData()
                 } catch {
                     print(error)
+                }
+            }
+        }
+    }
+    
+    func loadChallengeData() {
+        for i in 0..<challenges.count {
+            cloudKitHelper.getActivityFromChallenge(challenge: challenges[i]) { [weak self] activity in
+                DispatchQueue.main.async {
+                    self?.challenges[i].activity = activity
                 }
             }
         }

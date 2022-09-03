@@ -219,6 +219,28 @@ class CloudKitHelper: Repository {
         return nil
     }
     
+    func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
+        database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
+            if let error = error {
+                print(error)
+                completion(nil)
+            }
+            else {
+                if let record = activityRecord {
+                    if let activity = Activity.init(from: record) {
+                        completion(activity)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
+                else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
     func deleteGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
         deleteRecord(recordId: recordId) { [weak self] error in
             if let error = error {
