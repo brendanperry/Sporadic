@@ -9,12 +9,6 @@ import SwiftUI
 import CloudKit
 
 struct ChallengeDetail: View {
-    let users = [
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: nil),
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: nil),
-        User(recordId: CKRecord.init(recordType: "User").recordID, usersRecordId: "", name: "Brendan", photo: nil)
-    ]
-    
     let challenge: Challenge
     
     var body: some View {
@@ -31,7 +25,7 @@ struct ChallengeDetail: View {
                 }
                 .padding(.top, 50)
                 
-                UsersForChallenge(users: users)
+                UsersForChallenge(users: challenge.users)
                 
                 Spacer()
             }
@@ -55,7 +49,7 @@ struct ChallengeDetail: View {
                     VStack(spacing: 0) {
                         ForEach(users) { user in
                             HStack {
-                                Image("nic")
+                                Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                     .resizable()
                                     .frame(width: 50, height: 50, alignment: .leading)
                                     .cornerRadius(100)

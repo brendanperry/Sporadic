@@ -219,6 +219,57 @@ class CloudKitHelper: Repository {
         return nil
     }
     
+    func getGroupFromChallenge(challenge: Challenge, completion: @escaping (UserGroup?) -> Void) {
+        database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
+            if let error = error {
+                print(error)
+                completion(nil)
+            }
+            else {
+                if let record = groupRecord {
+                    if let group = UserGroup.init(from: record) {
+                        completion(group)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
+                else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
+    func getUsersFromChallenge(challenge: Challenge, completion: @escaping ([User]) -> Void) {
+        database.fetch(withRecordIDs: challenge.userRecords.map { $0.recordID }) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                completion([])
+            case .success(let responseDict):
+                var users = [User]()
+                
+                for response in responseDict.values {
+                    switch response {
+                    case .failure(let error):
+                        print(error)
+                        completion([])
+                        return
+                    case .success(let record):
+                        let user = User.init(from: record)
+                        
+                        if let user = user {
+                            users.append(user)
+                        }
+                    }
+                }
+                
+                completion(users)
+            }
+        }
+    }
+    
     func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
         database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
             if let error = error {

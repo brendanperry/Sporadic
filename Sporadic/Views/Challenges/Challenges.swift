@@ -45,21 +45,21 @@ struct ChallengeView: View {
                 
                 VStack {
                     TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
                 }
             case .completed:
                 completedCheckbox()
                 
                 VStack {
                     TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "You're trash", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
                 }
             case .failed:
                 failedCheckbox()
                 
                 VStack {
                     TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "Avacado Hoes", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
                 }
             }
             

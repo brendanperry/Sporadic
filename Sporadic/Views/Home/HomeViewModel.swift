@@ -73,6 +73,18 @@ class HomeViewModel : ObservableObject {
                     self?.challenges[i].activity = activity
                 }
             }
+            
+            cloudKitHelper.getGroupFromChallenge(challenge: challenges[i]) { [weak self] group in
+                DispatchQueue.main.async {
+                    self?.challenges[i].group = group
+                }
+            }
+            
+            cloudKitHelper.getUsersFromChallenge(challenge: challenges[i]) { [weak self] users in
+                DispatchQueue.main.async {
+                    self?.challenges[i].users = users
+                }
+            }
         }
     }
     
