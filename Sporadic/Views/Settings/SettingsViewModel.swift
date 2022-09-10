@@ -28,7 +28,7 @@ class SettingsViewModel : ObservableObject {
     init() {
         Task {
             do {
-                user = try await CloudKitHelper.shared.currentUser
+                user = try await CloudKitHelper.shared.getCurrentUser(forceSync: false)
                 
                 photo = user?.photo
                 name = user?.name ?? ""

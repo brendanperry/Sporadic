@@ -20,31 +20,25 @@ class HomeViewModel : ObservableObject {
     @Published var areGroupsLoading = true
     
     let cloudKitHelper: CloudKitHelper
-//    let notificationHelper: NotificationHelper
     
     init(cloudKitHelper: CloudKitHelper) {
         self.cloudKitHelper = cloudKitHelper
-//        self.notificationHelper = notificationHelper
-        
-        //dataHelper.resolveDuplicateActivities()
-        
-        //notificationHelper.scheduleAllNotifications(settingsChanged: false)
         
         loadData(forceSync: false)
     }
     
     func loadData(forceSync: Bool) {
         Task {
-            await getUser()
+            await getUser(forceSync: forceSync)
             await getChallenges(forceSync: forceSync)
             await getGroups(forceSync: forceSync)
         }
     }
     
-    func getUser() async {
+    func getUser(forceSync: Bool) async {
         DispatchQueue.main.async { [weak self] in
             Task {
-                if let user = try? await self?.cloudKitHelper.currentUser {
+                if let user = try? await self?.cloudKitHelper.getCurrentUser(forceSync: forceSync) {
                     self?.user = user
                     self?.isUserLoading = false
                 }
@@ -58,7 +52,7 @@ class HomeViewModel : ObservableObject {
                 do {
                     self?.challenges = try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []
                     self?.areChallengesLoading = false
-                    self?.loadChallengeData()
+                    self?.loadChallengeData(forceSync: forceSync)
                 } catch {
                     print(error)
                 }
@@ -66,21 +60,21 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    func loadChallengeData() {
+    func loadChallengeData(forceSync: Bool) {
         for i in 0..<challenges.count {
-            cloudKitHelper.getActivityFromChallenge(challenge: challenges[i]) { [weak self] activity in
+            cloudKitHelper.getActivityFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] activity in
                 DispatchQueue.main.async {
                     self?.challenges[i].activity = activity
                 }
             }
             
-            cloudKitHelper.getGroupFromChallenge(challenge: challenges[i]) { [weak self] group in
+            cloudKitHelper.getGroupFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] group in
                 DispatchQueue.main.async {
                     self?.challenges[i].group = group
                 }
             }
             
-            cloudKitHelper.getUsersFromChallenge(challenge: challenges[i]) { [weak self] users in
+            cloudKitHelper.getUsersFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] users in
                 DispatchQueue.main.async {
                     self?.challenges[i].users = users
                 }

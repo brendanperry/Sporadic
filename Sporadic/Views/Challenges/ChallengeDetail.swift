@@ -33,7 +33,7 @@ struct ChallengeDetail: View {
     }
     
     struct UsersForChallenge: View {
-        @State var users: [User]
+        let users: [User]
         
         init(users: [User]) {
             self.users = users
@@ -51,6 +51,7 @@ struct ChallengeDetail: View {
                             HStack {
                                 Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                     .resizable()
+                                    .aspectRatio(contentMode: .fill)
                                     .frame(width: 50, height: 50, alignment: .leading)
                                     .cornerRadius(100)
                                 
@@ -63,7 +64,7 @@ struct ChallengeDetail: View {
                         .padding(12)
                     }
                 }
-                .frame(height: 250)
+                .frame(maxWidth: .infinity, maxHeight: 250)
                 .padding(12)
                 .background(Color("Panel"))
                 .cornerRadius(16)

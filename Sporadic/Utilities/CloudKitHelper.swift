@@ -16,48 +16,46 @@ class CloudKitHelper: Repository {
     let oneSignalHelper = OneSignalHelper()
     
     private var currentGroups: [UserGroup]?
-    private var currentChallenges: [Challenge]?
     
-    // make new user if nothing is found??
-    private var cachedUser: User?
-    public var currentUser: User? {
-        get async throws {
-            if let cachedUser = cachedUser {
-                return cachedUser
-            }
-            
-            let userId = (try await container.userRecordID()).recordName
-                        
-            let predicate = NSPredicate(format: "usersRecordId = %@", userId)
-            
-            let query = CKQuery(recordType: "User", predicate: predicate)
-            
-            let result = try await database.records(matching: query)
-            
-            let records = try result.matchResults.map { try $0.1.get() }
-            
-            if let record = records.first {
-                cachedUser = User.init(from: record)
-                
-                return cachedUser
-            }
-            else {
-                let user = try await createNewUser(usersRecordId: userId)
-                
-                if let user = user {
-                    cachedUser = user
-                    
-                    return cachedUser
-                }
-            }
-            
-            return nil
-        }
-    }
-
     private init() {
         container = CKContainer(identifier: "iCloud.Sporadic")
         database = container.publicCloudDatabase
+    }
+    
+    private var cachedUser: User?
+    func getCurrentUser(forceSync: Bool) async throws -> User? {
+        if !forceSync {
+            if let cachedUser = cachedUser {
+                return cachedUser
+            }
+        }
+        
+        let userId = (try await container.userRecordID()).recordName
+                    
+        let predicate = NSPredicate(format: "usersRecordId = %@", userId)
+        
+        let query = CKQuery(recordType: "User", predicate: predicate)
+        
+        let result = try await database.records(matching: query)
+        
+        let records = try result.matchResults.map { try $0.1.get() }
+        
+        if let record = records.first {
+            cachedUser = User.init(from: record)
+            
+            return cachedUser
+        }
+        else {
+            let user = try await createNewUser(usersRecordId: userId)
+            
+            if let user = user {
+                cachedUser = user
+                
+                return cachedUser
+            }
+        }
+        
+        return nil
     }
     
     func createNewUser(usersRecordId: String) async throws -> User? {
@@ -127,7 +125,7 @@ class CloudKitHelper: Repository {
             return currentGroups
         }
         
-        if let user = try await currentUser {
+        if let user = try await getCurrentUser(forceSync: forceSync) {
             let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
             
             let query = CKQuery(recordType: "Group", predicate: predicate)
@@ -193,13 +191,13 @@ class CloudKitHelper: Repository {
         return records.compactMap { Activity.init(from: $0) }
     }
         
-    // need the record id of the current user to get the reference to work?
+    private var currentChallenges: [Challenge]?
     func getChallengesForUser(forceSync: Bool = false) async throws -> [Challenge]? {
         if let currentChallenges = currentChallenges, forceSync == false {
             return currentChallenges
         }
         
-        if let user = try await currentUser {
+        if let user = try await getCurrentUser(forceSync: forceSync) {
             let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
             
             let predicate = NSPredicate(format: "users CONTAINS %@", reference)
@@ -219,8 +217,16 @@ class CloudKitHelper: Repository {
         return nil
     }
     
-    func getGroupFromChallenge(challenge: Challenge, completion: @escaping (UserGroup?) -> Void) {
-        database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
+    private var challengeToGroup = [UUID: UserGroup]()
+    func getGroupFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping (UserGroup?) -> Void) {
+        if !forceSync {
+            if let group = challengeToGroup[challenge.id] {
+                completion(group)
+                return
+            }
+        }
+        
+        database.fetch(withRecordID: challenge.groupRecord.recordID) { [weak self] groupRecord, error in
             if let error = error {
                 print(error)
                 completion(nil)
@@ -228,6 +234,7 @@ class CloudKitHelper: Repository {
             else {
                 if let record = groupRecord {
                     if let group = UserGroup.init(from: record) {
+                        self?.challengeToGroup[challenge.id] = group
                         completion(group)
                     }
                     else {
@@ -241,8 +248,16 @@ class CloudKitHelper: Repository {
         }
     }
     
-    func getUsersFromChallenge(challenge: Challenge, completion: @escaping ([User]) -> Void) {
-        database.fetch(withRecordIDs: challenge.userRecords.map { $0.recordID }) { result in
+    private var challengeToUsers = [UUID: [User]]()
+    func getUsersFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping ([User]) -> Void) {
+        if !forceSync {
+            if let users = challengeToUsers[challenge.id] {
+                completion(users)
+                return
+            }
+        }
+        
+        database.fetch(withRecordIDs: challenge.userRecords.map { $0.recordID }) { [weak self] result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -265,13 +280,22 @@ class CloudKitHelper: Repository {
                     }
                 }
                 
+                self?.challengeToUsers[challenge.id] = users
                 completion(users)
             }
         }
     }
     
-    func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
-        database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
+    private var challengeToActivity = [UUID: Activity]()
+    func getActivityFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping (Activity?) -> Void) {
+        if !forceSync {
+            if let activity = challengeToActivity[challenge.id] {
+                completion(activity)
+                return
+            }
+        }
+        
+        database.fetch(withRecordID: challenge.activityRecord.recordID) { [weak self] activityRecord, error in
             if let error = error {
                 print(error)
                 completion(nil)
@@ -279,6 +303,7 @@ class CloudKitHelper: Repository {
             else {
                 if let record = activityRecord {
                     if let activity = Activity.init(from: record) {
+                        self?.challengeToActivity[challenge.id] = activity
                         completion(activity)
                     }
                     else {
@@ -316,7 +341,7 @@ class CloudKitHelper: Repository {
     }
     
     func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws {
-        guard let currentUser = try? await currentUser else {
+        guard let currentUser = try? await getCurrentUser(forceSync: false) else {
             throw NSError(domain: "Current user not found", code: 0, userInfo: [:])
         }
         
