@@ -13,13 +13,13 @@ class UserGroup: Identifiable {
     var id = UUID()
     var activities: [CKRecord.Reference]?
     let challenges: [CKRecord.Reference]?
-    let daysOfTheWeek: [String]
-    let daysPerWeek: Int
-    let deliveryTime: Date
-    let emoji: String
-    let backgroundColor: Int
-    let name: String
-    let users: [CKRecord.Reference]?
+    var daysOfTheWeek: [String]
+    var daysPerWeek: Int
+    var deliveryTime: Date
+    var emoji: String
+    var backgroundColor: Int
+    var name: String
+    var users: [CKRecord.Reference]?
     let recordId: CKRecord.ID
     var needsSynced = false
     

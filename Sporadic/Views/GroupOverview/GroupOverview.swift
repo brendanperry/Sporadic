@@ -15,6 +15,7 @@ struct GroupOverview: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
+    @Environment(\.isPresented) var isPresented
     
     init(viewModel: GroupOverviewViewModel, reloadAction: @escaping (Bool) -> Void) {
         self.viewModel = viewModel
@@ -30,13 +31,13 @@ struct GroupOverview: View {
             VStack {
                 ScrollView(.vertical) {
                     VStack(spacing: 35) {
-                        groupHeader()
+                        GroupHeader(name: $viewModel.group.name, emoji: $viewModel.emoji, color: $viewModel.group.backgroundColor)
                         
-                        YourActivities(activities: viewModel.activities)
+                        YourActivities(viewModel: viewModel)
                         
-                        DaysAndTime(days: $viewModel.days, time: $viewModel.time)
+                        DaysAndTime(days: $viewModel.group.daysPerWeek, time: $viewModel.group.deliveryTime)
                         
-                        DaysForChallenges(viewModel: viewModel)
+                        DaysForChallenges(daysOfTheWeek: $viewModel.group.daysOfTheWeek)
                         
                         UsersInGroup(users: viewModel.users)
                         
@@ -45,6 +46,9 @@ struct GroupOverview: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
+            .alert(isPresented: $viewModel.showError) {
+                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+            }
             
             if viewModel.isLoading {
                 LoadingIndicator()
@@ -52,81 +56,148 @@ struct GroupOverview: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("\(viewModel.group.name)")
-        .navigationBarItems(leading: BackButton())
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+               BackButton()
+            }
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
             UINavigationBar.appearance().barTintColor = UIColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor() ?? .red)
         }
-        .task {
-            await viewModel.getActivities()
-            await viewModel.getUsers()
+        .onChange(of: isPresented) { newValue in
+            if newValue == false {
+                saveIfThereAreChanges()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification), perform: { output in
+            saveIfThereAreChanges()
+         })
+    }
+    
+    func saveIfThereAreChanges() {
+        viewModel.saveGroup()
+    }
+    
+    struct EditGroupHeader: View {
+        @Binding var name: String
+        @Binding var emoji: String
+        @Binding var color: Int
+        
+        var body: some View {
+            ZStack {
+                Image("BackgroundImage")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                
+                ScrollView(.vertical) {
+                    VStack(spacing: 35) {
+                        GroupName(name: $name)
+                        
+                        EmojiSelector(emoji: $emoji)
+                        
+                        GroupColor(selected: $color)
+                    }
+                    .padding(.top, 50)
+                }
+            }
         }
     }
     
-    func groupHeader() -> some View {
-        VStack {
-            ZStack {
-                Circle()
-                    .frame(width: 75, height: 75, alignment: .leading)
-                    .foregroundColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor())
-                
-                Text(viewModel.group.emoji)
-                    .font(.system(size: 40))
+    struct GroupHeader: View {
+        @Binding var name: String
+        @Binding var emoji: String
+        @Binding var color: Int
+        
+        var body: some View {
+            VStack {
+                NavigationLink(destination: EditGroupHeader(name: $name, emoji: $emoji, color: $color)) {
+                    ZStack {
+                        Circle()
+                            .frame(width: 75, height: 75, alignment: .leading)
+                            .foregroundColor(GroupBackgroundColor.init(rawValue: color)?.getColor())
+                        
+                        Text(emoji)
+                            .font(.system(size: 40))
+                        
+                        Image("Edit Group Icon")
+                            .resizable()
+                            .frame(width: 15, height: 15, alignment: .center)
+                            .background(
+                                Circle()
+                                    .foregroundColor(Color("EditProfile"))
+                                    .frame(width: 25, height: 25, alignment: .center)
+                                    .offset(x: -1, y: -1)
+                            )
+                            .offset(x: 25, y: -25)
+                    }
+                }
+                .buttonStyle(ButtonPressAnimationStyle())
             }
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .padding(.top)
-        .alert(isPresented: $viewModel.showError) {
-            Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.top)
         }
     }
 }
 
 struct YourActivities: View {
-    let activities: [Activity]
+    @ObservedObject var viewModel: GroupOverviewViewModel
     
     var body: some View {
         VStack {
             TextHelper.text(key: "GroupActivities", alignment: .leading, type: .h2)
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(activities.filter({ $0.isEnabled})) { activity in
-                        VStack(spacing: 0) {
-                            ZStack {
-                                Circle()
-                                    .frame(width: 50, height: 50, alignment: .center)
-                                    .foregroundColor(.white)
+                    ForEach($viewModel.activities.filter({ $0.wrappedValue.isEnabled})) { activity in
+                        NavigationLink(destination: EditActivity(activityList: $viewModel.activities, activity: activity)) {
+                            VStack(spacing: 0) {
+                                ZStack {
+                                    Circle()
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .foregroundColor(.white)
+                                    
+                                    Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30, alignment: .center)
+                                }
                                 
-                                Image(activity.templateId == nil ? "Custom Activity Icon Circle" : activity.name + " Circle")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30, alignment: .center)
+                                TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
+                                    .padding(.bottom)
+                                
+                                TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
+                                    .frame(width: 60)
+                                    .opacity(0.75)
+                                
+                                TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
+                                    .opacity(0.75)
                             }
-                            
-                            TextHelper.text(key: activity.name, alignment: .center, type: .activityTitle, color: .white)
-                                .padding(.bottom)
-                            
-                            TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue) \(activity.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
-                                .opacity(0.75)
+                            .padding(.horizontal, 25)
+                            .padding(.vertical, 10)
+                            .background(Color.purple)
+                            .cornerRadius(16)
+                            .shadow(radius: 3)
+                            .padding(.leading)
                         }
-                        .padding()
-                        .background(Color.purple)
-                        .cornerRadius(16)
-                        .padding()
                     }
-                    .padding(10)
+                    .padding(.vertical, 1)
                     
-                    Image("Custom Plus")
-                        .resizable()
-                        .frame(width: 20, height: 20, alignment: .center)
-                        .foregroundColor(.blue)
-                        .padding(5)
-                        .background(Circle().foregroundColor(.white))
-                        .padding(15)
-                        .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
-                        .padding()
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.activities, showEditMenu: true, afterAddAction: {
+                        viewModel.saveActivities()
+                    }), label: {
+                        Image("Custom Plus")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .foregroundColor(.blue)
+                            .padding(5)
+                            .background(Circle().foregroundColor(.white))
+                            .padding(15)
+                            .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
+                            .shadow(radius: 3)
+                            .padding()
+                    })
                 }
                 .frame(minHeight: 175)
             }
@@ -197,6 +268,7 @@ struct UsersInGroup: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 50, height: 50, alignment: .leading)
                             .cornerRadius(100)
+                            .shadow(radius: 3)
                         
                         TextHelper.text(key: user.name, alignment: .leading, type: .h2)
                     }
@@ -212,31 +284,31 @@ struct UsersInGroup: View {
 }
 
 struct DaysForChallenges: View {
-    @ObservedObject var viewModel: GroupOverviewViewModel
-    let daysInTheWeek = ["Su", "Mo", "Tu", "Th", "We", "Fr", "Sa"]
+    @Binding var daysOfTheWeek: [String]
+    let daysInTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
     
     var body: some View {
         VStack {
             TextHelper.text(key: "PotentialDays", alignment: .leading, type: .h2)
                 .padding(.horizontal)
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(daysInTheWeek, id: \.self) { day in
                         Button(action: {
-                            if viewModel.daysInTheWeek.contains(day) {
-                                viewModel.daysInTheWeek.removeAll(where: { $0 == day })
+                            if daysOfTheWeek.contains(day) {
+                                daysOfTheWeek.removeAll(where: { $0 == day })
                             }
                             else {
-                                viewModel.daysInTheWeek.append(day)
+                                daysOfTheWeek.append(day)
                             }
-                            
-                            print(viewModel.daysInTheWeek)
                         }, label: {
                             TextHelper.text(key: day, alignment: .center, type: .h2, color: .white)
                                 .padding()
                                 .background(Circle().foregroundColor(Color("DaySelection")))
-                                .opacity(viewModel.daysInTheWeek.contains(day) ? 1 : 0.25)
+                                .opacity(daysOfTheWeek.contains(day) ? 1 : 0.25)
+                                .foregroundColor(daysOfTheWeek.contains([day]) ? .red : .blue)
+                                .shadow(radius: 3)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
                     }

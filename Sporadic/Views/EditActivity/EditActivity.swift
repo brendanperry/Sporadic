@@ -10,6 +10,9 @@ import SwiftUI
 struct EditActivity: View {
     @Binding var activityList: [Activity]
     @Binding var activity: Activity
+    @Environment(\.isPresented) var isPresented
+    @State var currentMin = 0.0
+    @State var currentMax = 0.0
     
     let viewModel = AddActivityViewModel()
     
@@ -33,7 +36,9 @@ struct EditActivity: View {
                 RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
                     .padding([.horizontal, .bottom])
                 
-                DeleteButton(activityList: $activityList, activity: $activity)
+                DeleteButton(activityList: $activityList, activity: $activity) {
+                    viewModel.updateActivity(activity: activity)
+                }
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -44,6 +49,17 @@ struct EditActivity: View {
                 BackButton()
             }
         }
+        .onAppear {
+            currentMin = activity.minValue
+            currentMax = activity.maxValue
+        }
+        .onChange(of: isPresented) { newValue in
+            if newValue == false {
+                if currentMin != activity.minValue || currentMax != activity.maxValue {
+                    viewModel.updateActivity(activity: activity)
+                }
+            }
+        }
     }
     
     struct DeleteButton: View {
@@ -51,6 +67,7 @@ struct EditActivity: View {
         @State var showDeleteConfirmation = false
         @Binding var activityList: [Activity]
         @Binding var activity: Activity
+        let saveAction: () -> Void
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -72,6 +89,8 @@ struct EditActivity: View {
                           primaryButton: .cancel(),
                           secondaryButton: .destructive(Text("Remove")) {
                         activity.isEnabled = false
+                        saveAction()
+                        
                         presentationMode.wrappedValue.dismiss()
                     })
                 }

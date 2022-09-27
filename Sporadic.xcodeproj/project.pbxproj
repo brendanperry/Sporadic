@@ -25,6 +25,9 @@
 		C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C630BDF7268C2CB60066D8C3 /* Localizable.strings */; };
 		C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C630BDF9268C313B0066D8C3 /* Localize.swift */; };
 		C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C639448D279DDC4D00B2E62F /* HomeViewModel.swift */; };
+		C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2228E29FFA0096E002 /* GroupName.swift */; };
+		C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2428E2A0030096E002 /* EmojiSelector.swift */; };
+		C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2628E2A00D0096E002 /* GroupColor.swift */; };
 		C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
@@ -91,6 +94,7 @@
 		C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602D2794AFAB00A67AA2 /* DataController.swift */; };
 		C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C9602F2795042C00A67AA2 /* CloudKit.framework */; };
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
+		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +129,9 @@
 		C630BE03268D2D230066D8C3 /* SporadicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SporadicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C630BE07268D2D230066D8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C639448D279DDC4D00B2E62F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		C6401E2228E29FFA0096E002 /* GroupName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupName.swift; sourceTree = "<group>"; };
+		C6401E2428E2A0030096E002 /* EmojiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelector.swift; sourceTree = "<group>"; };
+		C6401E2628E2A00D0096E002 /* GroupColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupColor.swift; sourceTree = "<group>"; };
 		C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesHome.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
@@ -192,6 +199,7 @@
 		C6C9602D2794AFAB00A67AA2 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		C6C9602F2795042C00A67AA2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
+		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
 		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		D3615B60E2826011191C92B7 /* Pods_Sporadic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sporadic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BF5D6AC3D46CAD21129F05 /* Pods_SporadicTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SporadicTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -383,6 +391,9 @@
 				C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */,
 				C66424CF27B856A700B574D7 /* Complete.swift */,
 				C689616D28303572008A0C87 /* CustomSlider.swift */,
+				C6401E2228E29FFA0096E002 /* GroupName.swift */,
+				C6401E2428E2A0030096E002 /* EmojiSelector.swift */,
+				C6401E2628E2A00D0096E002 /* GroupColor.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -465,6 +476,7 @@
 				C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */,
 				C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */,
 				C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */,
+				C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */,
 			);
 			path = AddActivity;
 			sourceTree = "<group>";
@@ -632,6 +644,7 @@
 				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
 				C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */,
 				C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */,
+				C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */,
 				C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */,
@@ -657,6 +670,7 @@
 				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
+				C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */,
 				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
 				C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */,
@@ -682,6 +696,7 @@
 				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,
+				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
@@ -695,6 +710,7 @@
 				C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */,
 				C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */,
 				C664A943279DC8CA00EE2195 /* SettingsViewModel.swift in Sources */,
+				C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,7 +909,7 @@
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -917,7 +933,7 @@
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

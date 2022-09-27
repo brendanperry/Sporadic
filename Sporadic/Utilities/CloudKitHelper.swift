@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-class CloudKitHelper: Repository {
+class CloudKitHelper {
     let container: CKContainer
     let database: CKDatabase
 
@@ -181,7 +181,7 @@ class CloudKitHelper: Repository {
             return []
         }
         
-        let predicate = NSPredicate(format: "%@ CONTAINS recordID", activities)
+        let predicate = NSPredicate(format: "%@ CONTAINS recordID AND isEnabled = 1", activities)
         
         let query = CKQuery(recordType: "Activity", predicate: predicate)
         
@@ -340,6 +340,31 @@ class CloudKitHelper: Repository {
         }
     }
     
+    // TODO - Allow deleting users
+    
+    // we should add the new activities, update the others to keep references up to date. Don't delete just set isEnabled
+    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, daysOfTheWeek: [String], completion: @escaping (Error?) -> Void) {
+        database.fetch(withRecordID: group.recordId) { [weak self] groupRecord, error in
+            if let groupRecord = groupRecord {
+                groupRecord.setValue(name, forKey: "name")
+                groupRecord.setValue(emoji, forKey: "emoji")
+                groupRecord.setValue(days, forKey: "daysPerWeek")
+                groupRecord.setValue(daysOfTheWeek, forKey: "daysOfTheWeek")
+                groupRecord.setValue(time, forKey: "deliveryTime")
+                groupRecord.setValue(color.rawValue, forKey: "backgroundColor")
+                
+                self?.database.save(groupRecord) { record, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
+            }
+        }
+    }
+    
     func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, activities: [Activity]) async throws {
         guard let currentUser = try? await getCurrentUser(forceSync: false) else {
             throw NSError(domain: "Current user not found", code: 0, userInfo: [:])
@@ -379,9 +404,30 @@ class CloudKitHelper: Repository {
         }
     }
     
-    func removeAllPendingChallenges(group: UserGroup) {
-//        let challenges = getchalle
-//        database.delete
+    func updateActivity(activity: Activity, completion: @escaping (Error?) -> Void) {
+        if let recordId = activity.recordId {
+            database.fetch(withRecordID: recordId) { [weak self] record, error in
+                if let error = error {
+                    completion(error)
+                }
+                else {
+                    if let record = record {
+                        record.setValue(activity.maxValue, forKey: "maxValue")
+                        record.setValue(activity.minValue, forKey: "minValue")
+                        record.setValue(activity.isEnabled ? 1 : 0, forKey: "isEnabled")
+                        
+                        self?.database.save(record) { record, error in
+                            if let error = error {
+                                completion(error)
+                            }
+                            else {
+                                completion(nil)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (CKRecord.Reference?) -> Void) {

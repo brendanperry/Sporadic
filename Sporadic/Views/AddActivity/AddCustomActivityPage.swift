@@ -68,7 +68,7 @@ struct AddCustomActivityPage: View {
                         maxValue: viewModel.maxValue,
                         minValue: viewModel.minValue,
                         name: viewModel.name,
-                        templateId: -1,
+                        templateId: nil,
                         unit: viewModel.unit))
                 
                 dismiss()

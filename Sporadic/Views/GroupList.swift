@@ -71,14 +71,14 @@ struct GroupWidget: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            ZStack {
+            ZStack(alignment: .center) {
                 Circle()
-                    .frame(minWidth: 40, maxWidth: 50, minHeight: 40, maxHeight: 75, alignment: .leading)
                     .foregroundColor(GroupBackgroundColor.init(rawValue: group.backgroundColor)?.getColor())
                 
                 Text(group.emoji)
                     .font(.system(size: 25))
             }
+            .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 75, alignment: .leading)
             .padding([.horizontal, .top])
             
             TextHelper.text(key: "", alignment: .leading, type: .h3, prefix: group.name)

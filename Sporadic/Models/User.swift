@@ -9,7 +9,7 @@ import Foundation
 import CloudKit
 import UIKit
 
-class User: Identifiable {
+class User: Identifiable, Equatable {
     let id = UUID()
     let recordId: CKRecord.ID
     let usersRecordId: String
@@ -21,6 +21,10 @@ class User: Identifiable {
         self.usersRecordId = usersRecordId
         self.name = name
         self.photo = photo
+    }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

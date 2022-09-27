@@ -11,7 +11,6 @@ import CloudKit
 struct HomePage: View {
     @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
     @ObservedObject var env = GlobalSettings.Env
-//    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var viewRouter: ViewRouter
     
     init() {
@@ -26,6 +25,7 @@ struct HomePage: View {
                 Image("BackgroundImage")
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
+                
                 ScrollView(.vertical, showsIndicators: false) {
                     PullToRefresh(coordinateSpaceName: "HomePage") {
                         viewModel.loadData(forceSync: true)
@@ -68,24 +68,6 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-//        .onAppear {
-//            //            GlobalSettings.Env.updateStatus()
-//            Task {
-//                await viewModel.getChallenges()
-//                await viewModel.getGroups()
-//            }
-//        }
-//        .onChange(of: scenePhase) { newPhase in
-//            if newPhase == .active {
-//                //                GlobalSettings.Env.scheduleNotificationsIfNoneExist()
-//
-//                UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
-//                    for notification in notifications {
-//                        print("NOT: \(notification)")
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
@@ -197,6 +179,7 @@ struct Welcome: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
+                .shadow(radius: 3)
                 .padding()
         }
         .padding(.horizontal)

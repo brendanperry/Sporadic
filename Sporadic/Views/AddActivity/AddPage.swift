@@ -14,13 +14,15 @@ struct AddPage: View {
     
     let viewModel = AddActivityViewModel()
     let template: ActivityTemplate
+    let afterAddAction: () -> Void
     
-    init(activityList: Binding<[Activity]>, template: ActivityTemplate) {
+    init(activityList: Binding<[Activity]>, template: ActivityTemplate, afterAddAction: @escaping () -> Void) {
         self._activityList = activityList
         self.template = template
         
         self._minValue = State(initialValue: template.unit.defaultMin())
         self._maxValue = State(initialValue: template.unit.defaultMax())
+        self.afterAddAction = afterAddAction
     }
     
     var body: some View {
@@ -44,7 +46,7 @@ struct AddPage: View {
                 RangeSelection(selectedMin: $minValue, selectedMax: $maxValue, minValue: template.minValue, maxValue: template.maxValue, unit: template.unit, viewModel: viewModel)
                     .padding(.horizontal)
                 
-                AddButton(activityList: $activityList, minValue: minValue, maxValue: maxValue, template: template)
+                AddButton(activityList: $activityList, minValue: minValue, maxValue: maxValue, template: template, afterAddAction: afterAddAction)
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -64,6 +66,7 @@ struct AddPage: View {
         let minValue: Double
         let maxValue: Double
         let template: ActivityTemplate
+        let afterAddAction: () -> Void
         
         var body: some View {
             Button(action: {
@@ -73,6 +76,8 @@ struct AddPage: View {
                 let newActivity = Activity(id: UUID(), isEnabled: true, maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
                 
                 activityList.append(newActivity)
+                
+                afterAddAction()
                 
                 dismiss()
             }) {

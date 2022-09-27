@@ -20,7 +20,7 @@ class CreateGroupViewModel: ObservableObject {
     }
     @Published var days = 3
     @Published var time = Date()
-    @Published var color: GroupBackgroundColor = .one
+    @Published var color = 1
     @Published var activities = [Activity]()
     @Published var errorMessage = ""
     @Published var showError = false
@@ -34,7 +34,9 @@ class CreateGroupViewModel: ObservableObject {
     }
     
     func createGroup() async -> Bool {
-        isLoading = true
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoading = true
+        }
         
         if groupName == "" {
             DispatchQueue.main.async { [weak self] in
@@ -47,7 +49,7 @@ class CreateGroupViewModel: ObservableObject {
         }
         
         do {
-            try await CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: color, days: days, time: time, activities: activities)
+            try await CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time, activities: activities)
             
             DispatchQueue.main.async { [weak self] in
                 self?.isLoading = false
@@ -56,8 +58,6 @@ class CreateGroupViewModel: ObservableObject {
             return true
         }
         catch {
-            print(error)
-            
             DispatchQueue.main.async { [weak self] in
                 self?.errorMessage = "Could not create group. Please check your connection and try again."
                 self?.showError = true
