@@ -37,7 +37,7 @@ struct GroupOverview: View {
                         
                         DaysAndTime(days: $viewModel.group.daysPerWeek, time: $viewModel.group.deliveryTime)
                         
-                        DaysForChallenges(daysOfTheWeek: $viewModel.group.daysOfTheWeek)
+                        DaysForChallenges(availableDays: $viewModel.group.availableDays)
                         
                         UsersInGroup(users: viewModel.users)
                         
@@ -284,7 +284,7 @@ struct UsersInGroup: View {
 }
 
 struct DaysForChallenges: View {
-    @Binding var daysOfTheWeek: [String]
+    @Binding var availableDays: [Int]
     let daysInTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
     
     var body: some View {
@@ -296,18 +296,18 @@ struct DaysForChallenges: View {
                 HStack {
                     ForEach(daysInTheWeek, id: \.self) { day in
                         Button(action: {
-                            if daysOfTheWeek.contains(day) {
-                                daysOfTheWeek.removeAll(where: { $0 == day })
+                            if availableDays.contains(dayToInt(day)) {
+                                availableDays.removeAll(where: { $0 == dayToInt(day) })
                             }
                             else {
-                                daysOfTheWeek.append(day)
+                                availableDays.append(dayToInt(day))
                             }
                         }, label: {
                             TextHelper.text(key: day, alignment: .center, type: .h2, color: .white)
                                 .padding()
                                 .background(Circle().foregroundColor(Color("DaySelection")))
-                                .opacity(daysOfTheWeek.contains(day) ? 1 : 0.25)
-                                .foregroundColor(daysOfTheWeek.contains([day]) ? .red : .blue)
+                                .opacity(availableDays.contains(dayToInt(day)) ? 1 : 0.25)
+                                .foregroundColor(availableDays.contains(dayToInt(day)) ? .red : .blue)
                                 .shadow(radius: 3)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
@@ -318,6 +318,19 @@ struct DaysForChallenges: View {
             .background(Color("Panel"))
             .cornerRadius(16)
             .padding(.horizontal)
+        }
+    }
+    
+    func dayToInt(_ day: String) -> Int {
+        switch day {
+        case "Su": return 0
+        case "Mo": return 1
+        case "Tu": return 2
+        case "We": return 3
+        case "Th": return 4
+        case "Fr": return 5
+        case "Sa": return 6
+        default: return -1
         }
     }
 }

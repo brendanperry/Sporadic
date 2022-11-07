@@ -13,7 +13,6 @@ struct Challenge: Identifiable {
     let activityRecord: CKRecord.Reference
     var activity: Activity? = nil
     let amount: Double
-    let endTime: Date
     let startTime: Date
     let isCompleted: Bool
     let userRecords: [CKRecord.Reference]
@@ -21,11 +20,10 @@ struct Challenge: Identifiable {
     let groupRecord: CKRecord.Reference
     var group: UserGroup? = nil
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, endTime: Date, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
-        self.endTime = endTime
         self.startTime = startTime
         self.isCompleted = isCompleted
         self.userRecords = userRecords
@@ -42,7 +40,6 @@ extension Challenge {
         guard
             let activityReference = record["activity"] as? CKRecord.Reference,
             let amount = record["amount"] as? Double,
-            let endTime = record["endTime"] as? Date,
             let startTime = record["startTime"] as? Date,
             let isCompleted = record["isCompleted"] as? Int,
             let users = record["users"] as? [CKRecord.Reference],
@@ -51,7 +48,7 @@ extension Challenge {
             return nil
         }
         
-        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, endTime: endTime, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group)
+        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group)
     }
     
     func getStatus() -> ChallengeStatus {
@@ -59,7 +56,7 @@ extension Challenge {
             return .completed
         }
         
-        if !self.isCompleted && Date() < self.endTime {
+        if !self.isCompleted && Date() < Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime {
             return .inProgress
         }
         

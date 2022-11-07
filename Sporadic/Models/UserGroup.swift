@@ -13,7 +13,7 @@ class UserGroup: Identifiable {
     var id = UUID()
     var activities: [CKRecord.Reference]?
     let challenges: [CKRecord.Reference]?
-    var daysOfTheWeek: [String]
+    var availableDays: [Int]
     var daysPerWeek: Int
     var deliveryTime: Date
     var emoji: String
@@ -23,10 +23,10 @@ class UserGroup: Identifiable {
     let recordId: CKRecord.ID
     var needsSynced = false
     
-    init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, daysOfTheWeek: [String], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, recordId: CKRecord.ID) {
+    init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, availableDays: [Int], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, recordId: CKRecord.ID) {
         self.activities = activities
         self.challenges = challenges
-        self.daysOfTheWeek = daysOfTheWeek
+        self.availableDays = availableDays
         self.daysPerWeek = daysPerWeek
         self.deliveryTime = deliveryTime
         self.emoji = emoji
@@ -43,7 +43,7 @@ extension UserGroup {
             let activityReferences = record["activities"] as? [CKRecord.Reference]?,
             let challengeReferences = record["challenges"] as? [CKRecord.Reference]?,
             let userReferences = record["users"] as? [CKRecord.Reference]?,
-            let daysOfTheWeek = record["daysOfTheWeek"] as? [String],
+            let availableDays = record["availableDays"] as? [Int]?,
             let deliveryTime = record["deliveryTime"] as? Date,
             let emoji = record["emoji"] as? String,
             let color = record["backgroundColor"] as? Int,
@@ -53,6 +53,6 @@ extension UserGroup {
             return nil
         }
         
-        self.init(activities: activityReferences, challenges: challengeReferences, daysOfTheWeek: daysOfTheWeek, daysPerWeek: daysPerWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, users: userReferences, recordId: record.recordID)
+        self.init(activities: activityReferences, challenges: challengeReferences, availableDays: availableDays ?? [], daysPerWeek: daysPerWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, users: userReferences, recordId: record.recordID)
     }
 }

@@ -24,7 +24,7 @@ class GroupOverviewViewModel: ObservableObject {
     
     var currentDaysPerWeek = 0
     var currentDeliveryTime = Date()
-    var currentChallengeDays = [String]()
+    var currentChallengeDays = [Int]()
     var currentName = ""
     var currentEmoji = ""
     var currentColor = 1
@@ -35,7 +35,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         currentDaysPerWeek = group.daysPerWeek
         currentDeliveryTime = group.deliveryTime
-        currentChallengeDays = group.daysOfTheWeek
+        currentChallengeDays = group.availableDays
         currentName = group.name
         currentEmoji = group.emoji
         currentColor = group.backgroundColor
@@ -105,10 +105,10 @@ class GroupOverviewViewModel: ObservableObject {
             || currentColor != group.backgroundColor
             || currentDeliveryTime != group.deliveryTime
             || currentDaysPerWeek != group.daysPerWeek
-            || currentChallengeDays != group.daysOfTheWeek
+            || currentChallengeDays != group.availableDays
             || currentActivities != activities {
             
-            CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one, days: group.daysPerWeek, time: group.deliveryTime, daysOfTheWeek: group.daysOfTheWeek) { [weak self] error in
+            CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one, days: group.daysPerWeek, time: group.deliveryTime, availableDays: group.availableDays) { [weak self] error in
                 if error != nil {
                     
                     DispatchQueue.main.async {

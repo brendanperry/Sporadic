@@ -31,6 +31,8 @@ class CloudKitHelper {
         }
         
         let userId = (try await container.userRecordID()).recordName
+        
+        print(userId)
                     
         let predicate = NSPredicate(format: "usersRecordId = %@", userId)
         
@@ -200,6 +202,8 @@ class CloudKitHelper {
         if let user = try await getCurrentUser(forceSync: forceSync) {
             let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
             
+            print(reference)
+            
             let predicate = NSPredicate(format: "users CONTAINS %@", reference)
 
             let query = CKQuery(recordType: "Challenge", predicate: predicate)
@@ -343,13 +347,13 @@ class CloudKitHelper {
     // TODO - Allow deleting users
     
     // we should add the new activities, update the others to keep references up to date. Don't delete just set isEnabled
-    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, daysOfTheWeek: [String], completion: @escaping (Error?) -> Void) {
+    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, availableDays: [Int], completion: @escaping (Error?) -> Void) {
         database.fetch(withRecordID: group.recordId) { [weak self] groupRecord, error in
             if let groupRecord = groupRecord {
                 groupRecord.setValue(name, forKey: "name")
                 groupRecord.setValue(emoji, forKey: "emoji")
                 groupRecord.setValue(days, forKey: "daysPerWeek")
-                groupRecord.setValue(daysOfTheWeek, forKey: "daysOfTheWeek")
+                groupRecord.setValue(availableDays, forKey: "availableDays")
                 groupRecord.setValue(time, forKey: "deliveryTime")
                 groupRecord.setValue(color.rawValue, forKey: "backgroundColor")
                 

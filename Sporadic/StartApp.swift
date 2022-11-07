@@ -31,7 +31,7 @@ struct StartApp: App {
 
 /// async gets iCloud record ID object of logged-in iCloud user
 func iCloudUserIDAsync(complete: @escaping (_ instance: CKRecord.ID?, _ error: NSError?) -> ()) {
-    let container = CKContainer.default()
+    let container = CKContainer(identifier: "iCloud.Sporadic")
     container.fetchUserRecordID() {
         recordID, error in
         if error != nil {
