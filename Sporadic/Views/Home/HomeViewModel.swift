@@ -50,7 +50,7 @@ class HomeViewModel : ObservableObject {
         DispatchQueue.main.async { [weak self] in
             Task {
                 do {
-                    self?.challenges = try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []
+                    self?.challenges = (try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []).sorted(by: { $0.startTime > $1.startTime })
                     self?.areChallengesLoading = false
                     self?.loadChallengeData(forceSync: forceSync)
                 } catch {

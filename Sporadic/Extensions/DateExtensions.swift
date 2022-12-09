@@ -17,4 +17,10 @@ extension Date: RawRepresentable {
     public init?(rawValue: String) {
         self = Date.formatter.date(from: rawValue) ?? Date()
     }
+    
+    func toGlobalTime() -> Date {
+        let timezone = TimeZone.current
+        let seconds = -TimeInterval(timezone.secondsFromGMT(for: self))
+        return Date(timeInterval: seconds, since: self)
+    }
 }

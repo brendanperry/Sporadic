@@ -25,7 +25,7 @@ class CreateGroupViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var showError = false
     
-    var group = UserGroup.init(activities: nil, challenges: nil, availableDays: [], daysPerWeek: 0, deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", users: nil, recordId: CKRecord(recordType: "Group").recordID)
+    var group = UserGroup.init(activities: nil, challenges: nil, displayedDays: [], daysPerWeek: 0, deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", users: nil, recordId: CKRecord(recordType: "Group").recordID)
     
     let activityTemplateHelper = ActivityTemplateHelper()
     

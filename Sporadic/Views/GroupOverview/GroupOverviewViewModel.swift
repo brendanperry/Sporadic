@@ -35,7 +35,8 @@ class GroupOverviewViewModel: ObservableObject {
         
         currentDaysPerWeek = group.daysPerWeek
         currentDeliveryTime = group.deliveryTime
-        currentChallengeDays = group.availableDays
+        currentDeliveryTime = group.deliveryTime
+        currentChallengeDays = group.displayedDays
         currentName = group.name
         currentEmoji = group.emoji
         currentColor = group.backgroundColor
@@ -45,6 +46,14 @@ class GroupOverviewViewModel: ObservableObject {
             await getActivities()
             await getUsers()
         }
+    }
+    
+    // the problem is that when we set the time it sets it to whatever date the group was created on, we need to set it to the current date
+    
+    func getTodayAtTimeOf(date: Date) -> Date {
+        let hour = Calendar.current.component(.hour, from: date)
+        let minute = Calendar.current.component(.minute, from: date)
+        return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
     }
     
     func getActivities() async {
@@ -100,15 +109,16 @@ class GroupOverviewViewModel: ObservableObject {
     }
     
     func saveGroup() {
-        if currentName != group.name
-            || currentEmoji != emoji
-            || currentColor != group.backgroundColor
-            || currentDeliveryTime != group.deliveryTime
-            || currentDaysPerWeek != group.daysPerWeek
-            || currentChallengeDays != group.availableDays
-            || currentActivities != activities {
+//        if currentName != group.name
+//            || currentEmoji != emoji
+//            || currentColor != group.backgroundColor
+//            || currentDeliveryTime != group.deliveryTime
+//            || currentDaysPerWeek != group.daysPerWeek
+//            || currentChallengeDays != group.displayedDays
+//            || currentActivities != activities {
             
-            CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one, days: group.daysPerWeek, time: group.deliveryTime, availableDays: group.availableDays) { [weak self] error in
+            // TODO - don't need to pass all these
+            CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
                 if error != nil {
                     
                     DispatchQueue.main.async {
@@ -117,7 +127,7 @@ class GroupOverviewViewModel: ObservableObject {
                     }
                 }
             }
-        }
+//        }
     }
     
     func saveActivities() {

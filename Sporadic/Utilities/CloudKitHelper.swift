@@ -32,8 +32,6 @@ class CloudKitHelper {
         
         let userId = (try await container.userRecordID()).recordName
         
-        print(userId)
-                    
         let predicate = NSPredicate(format: "usersRecordId = %@", userId)
         
         let query = CKQuery(recordType: "User", predicate: predicate)
@@ -202,8 +200,6 @@ class CloudKitHelper {
         if let user = try await getCurrentUser(forceSync: forceSync) {
             let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
             
-            print(reference)
-            
             let predicate = NSPredicate(format: "users CONTAINS %@", reference)
 
             let query = CKQuery(recordType: "Challenge", predicate: predicate)
@@ -346,16 +342,28 @@ class CloudKitHelper {
     
     // TODO - Allow deleting users
     
+    // the problem is that when we set the time it sets it to whatever date the group was created on, we need to set it to the current date
+    
+    func getTodayAtTimeOf(date: Date) -> Date {
+        let hour = Calendar.current.component(.hour, from: date)
+        let minute = Calendar.current.component(.minute, from: date)
+        return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
+    }
+    
     // we should add the new activities, update the others to keep references up to date. Don't delete just set isEnabled
-    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, availableDays: [Int], completion: @escaping (Error?) -> Void) {
+    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, completion: @escaping (Error?) -> Void) {
+        print(group.availableDays)
+        print(UserGroup.getDeliveryTimeInt(date: group.deliveryTime))
         database.fetch(withRecordID: group.recordId) { [weak self] groupRecord, error in
             if let groupRecord = groupRecord {
                 groupRecord.setValue(name, forKey: "name")
                 groupRecord.setValue(emoji, forKey: "emoji")
-                groupRecord.setValue(days, forKey: "daysPerWeek")
-                groupRecord.setValue(availableDays, forKey: "availableDays")
-                groupRecord.setValue(time, forKey: "deliveryTime")
+                groupRecord.setValue(group.daysPerWeek, forKey: "daysPerWeek")
+                groupRecord.setValue(group.availableDays, forKey: "availableDays")
+                groupRecord.setValue(group.displayedDays, forKey: "displayedDays")
+                groupRecord.setValue(self?.getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
                 groupRecord.setValue(color.rawValue, forKey: "backgroundColor")
+                groupRecord.setValue(UserGroup.getDeliveryTimeInt(date: group.deliveryTime), forKey: "deliveryTimeInt")
                 
                 self?.database.save(groupRecord) { record, error in
                     if let error = error {
@@ -387,6 +395,7 @@ class CloudKitHelper {
         record.setValue([userReference], forKey: "users")
         record.setValue([], forKey: "challenges")
         record.setValue([], forKey: "activities")
+        record.setValue(UserGroup.getDeliveryTimeInt(date: time), forKey: "deliveryTimeInt")
         
         let groupRecord = try await database.save(record)
         

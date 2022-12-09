@@ -16,7 +16,7 @@ struct Challenges: View {
             TextHelper.text(key: "Challenges", alignment: .leading, type: .h2, color: .primary)
                 .padding(.horizontal)
             
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     ForEach(challenges) { challenge in
                         NavigationLink(destination: ChallengeDetail(challenge: challenge)) {

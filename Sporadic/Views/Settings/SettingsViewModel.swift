@@ -10,21 +10,19 @@ import CloudKit
 import UIKit
 
 class SettingsViewModel : ObservableObject {
-//    let notificationHelper: NotificationHelper
     @Published var showDisabledAlert = false
     @Published var showEnabledAlert = false
-    @Published var photo: UIImage?
+    @Published var photo: UIImage? {
+        didSet {
+            updateUserImage()
+        }
+    }
     @Published var name = ""
     @Published var showError = false
     
     var errorMessage = ""
     var user: User? = nil
 
-    
-//    init(notificationHelper: NotificationHelper) {
-//        self.notificationHelper = notificationHelper
-//    }
-    
     init() {
         Task {
             do {

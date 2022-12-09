@@ -37,7 +37,7 @@ struct GroupOverview: View {
                         
                         DaysAndTime(days: $viewModel.group.daysPerWeek, time: $viewModel.group.deliveryTime)
                         
-                        DaysForChallenges(availableDays: $viewModel.group.availableDays)
+                        DaysForChallenges(availableDays: $viewModel.group.displayedDays)
                         
                         UsersInGroup(users: viewModel.users)
                         
@@ -323,13 +323,13 @@ struct DaysForChallenges: View {
     
     func dayToInt(_ day: String) -> Int {
         switch day {
-        case "Su": return 0
-        case "Mo": return 1
-        case "Tu": return 2
-        case "We": return 3
-        case "Th": return 4
-        case "Fr": return 5
-        case "Sa": return 6
+        case "Su": return 1
+        case "Mo": return 2
+        case "Tu": return 3
+        case "We": return 4
+        case "Th": return 5
+        case "Fr": return 6
+        case "Sa": return 7
         default: return -1
         }
     }

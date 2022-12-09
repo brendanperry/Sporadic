@@ -56,6 +56,9 @@ struct DaysAndTime: View {
                                 .labelsHidden()
                                 .frame(width: 125)
                                 .scaleEffect(1.6)
+                                .onAppear {
+                                    UIDatePicker.appearance().minuteInterval = 15
+                                }
                             
                             Group {
                                 Text(dateHelper.getHoursAndMinutes(date: time))
