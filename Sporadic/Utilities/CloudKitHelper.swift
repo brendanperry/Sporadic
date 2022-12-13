@@ -7,13 +7,14 @@
 
 import Foundation
 import CloudKit
+import OneSignal
+
 
 class CloudKitHelper {
     let container: CKContainer
     let database: CKDatabase
 
     static let shared = CloudKitHelper()
-    let oneSignalHelper = OneSignalHelper()
     
     private var currentGroups: [UserGroup]?
     
@@ -31,6 +32,10 @@ class CloudKitHelper {
         }
         
         let userId = (try await container.userRecordID()).recordName
+        
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            OneSignal.setExternalUserId(userId)
+        })
         
         let predicate = NSPredicate(format: "usersRecordId = %@", userId)
         
@@ -120,12 +125,8 @@ class CloudKitHelper {
         }
     }
     
-    func getGroupsForUser(forceSync: Bool) async throws -> [UserGroup]? {
-        if let currentGroups = currentGroups, forceSync == false {
-            return currentGroups
-        }
-        
-        if let user = try await getCurrentUser(forceSync: forceSync) {
+    func getGroupsForUser() async throws -> [UserGroup]? {
+        if let user = try await getCurrentUser(forceSync: false) {
             let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
             
             let query = CKQuery(recordType: "Group", predicate: predicate)
@@ -133,10 +134,7 @@ class CloudKitHelper {
             let result = try await database.records(matching: query)
             let records = try result.matchResults.map { try $0.1.get() }
             
-            let newGroups = records.compactMap { UserGroup.init(from: $0) }
-            currentGroups = newGroups
-            
-            return newGroups
+            return records.compactMap { UserGroup.init(from: $0) }
         }
         
         return nil
@@ -191,13 +189,8 @@ class CloudKitHelper {
         return records.compactMap { Activity.init(from: $0) }
     }
         
-    private var currentChallenges: [Challenge]?
-    func getChallengesForUser(forceSync: Bool = false) async throws -> [Challenge]? {
-        if let currentChallenges = currentChallenges, forceSync == false {
-            return currentChallenges
-        }
-        
-        if let user = try await getCurrentUser(forceSync: forceSync) {
+    func getChallengesForUser() async throws -> [Challenge]? {
+        if let user = try await getCurrentUser(forceSync: false) {
             let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
             
             let predicate = NSPredicate(format: "users CONTAINS %@", reference)
@@ -207,26 +200,16 @@ class CloudKitHelper {
             let result = try await database.records(matching: query)
             let records = try result.matchResults.map { try $0.1.get() }
 
-            let challenges = records.compactMap { Challenge.init(from: $0) }
-            
-            currentChallenges = challenges
-            
-            return currentChallenges
+            return records
+                    .compactMap({ Challenge.init(from: $0) })
+                    .sorted(by: { $0.startTime > $1.startTime })
         }
 
         return nil
     }
     
-    private var challengeToGroup = [UUID: UserGroup]()
-    func getGroupFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping (UserGroup?) -> Void) {
-        if !forceSync {
-            if let group = challengeToGroup[challenge.id] {
-                completion(group)
-                return
-            }
-        }
-        
-        database.fetch(withRecordID: challenge.groupRecord.recordID) { [weak self] groupRecord, error in
+    func getGroupFromChallenge(challenge: Challenge, completion: @escaping (UserGroup?) -> Void) {
+        database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
             if let error = error {
                 print(error)
                 completion(nil)
@@ -234,7 +217,6 @@ class CloudKitHelper {
             else {
                 if let record = groupRecord {
                     if let group = UserGroup.init(from: record) {
-                        self?.challengeToGroup[challenge.id] = group
                         completion(group)
                     }
                     else {
@@ -248,16 +230,8 @@ class CloudKitHelper {
         }
     }
     
-    private var challengeToUsers = [UUID: [User]]()
-    func getUsersFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping ([User]) -> Void) {
-        if !forceSync {
-            if let users = challengeToUsers[challenge.id] {
-                completion(users)
-                return
-            }
-        }
-        
-        database.fetch(withRecordIDs: challenge.userRecords.map { $0.recordID }) { [weak self] result in
+    func getUsersFromChallenge(challenge: Challenge, completion: @escaping ([User]) -> Void) {
+        database.fetch(withRecordIDs: challenge.userRecords.map { $0.recordID }) { result in
             switch result {
             case .failure(let error):
                 print(error)
@@ -280,22 +254,13 @@ class CloudKitHelper {
                     }
                 }
                 
-                self?.challengeToUsers[challenge.id] = users
                 completion(users)
             }
         }
     }
     
-    private var challengeToActivity = [UUID: Activity]()
-    func getActivityFromChallenge(forceSync: Bool, challenge: Challenge, completion: @escaping (Activity?) -> Void) {
-        if !forceSync {
-            if let activity = challengeToActivity[challenge.id] {
-                completion(activity)
-                return
-            }
-        }
-        
-        database.fetch(withRecordID: challenge.activityRecord.recordID) { [weak self] activityRecord, error in
+    func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
+        database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
             if let error = error {
                 print(error)
                 completion(nil)
@@ -303,7 +268,6 @@ class CloudKitHelper {
             else {
                 if let record = activityRecord {
                     if let activity = Activity.init(from: record) {
-                        self?.challengeToActivity[challenge.id] = activity
                         completion(activity)
                     }
                     else {
@@ -350,10 +314,7 @@ class CloudKitHelper {
         return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
     }
     
-    // we should add the new activities, update the others to keep references up to date. Don't delete just set isEnabled
     func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, completion: @escaping (Error?) -> Void) {
-        print(group.availableDays)
-        print(UserGroup.getDeliveryTimeInt(date: group.deliveryTime))
         database.fetch(withRecordID: group.recordId) { [weak self] groupRecord, error in
             if let groupRecord = groupRecord {
                 groupRecord.setValue(name, forKey: "name")
@@ -427,7 +388,6 @@ class CloudKitHelper {
                     if let record = record {
                         record.setValue(activity.maxValue, forKey: "maxValue")
                         record.setValue(activity.minValue, forKey: "minValue")
-                        record.setValue(activity.isEnabled ? 1 : 0, forKey: "isEnabled")
                         
                         self?.database.save(record) { record, error in
                             if let error = error {

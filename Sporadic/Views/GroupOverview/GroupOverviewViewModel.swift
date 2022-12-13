@@ -15,40 +15,29 @@ class GroupOverviewViewModel: ObservableObject {
             if !emoji.isSingleEmoji && !emoji.isEmpty {
                 emoji = oldValue
             }
+            
+            group.emoji = emoji
         }
     }
     @Published var users = [User]()
     @Published var errorMessage = ""
     @Published var showError = false
     @Published var isLoading = false
+    @Published var itemsCompleted = 0
     
-    var currentDaysPerWeek = 0
-    var currentDeliveryTime = Date()
-    var currentChallengeDays = [Int]()
-    var currentName = ""
-    var currentEmoji = ""
-    var currentColor = 1
-    var currentActivities = [Activity]()
+    let totalItemsToCompleted = 4
     
     init(group: UserGroup) {
         self.group = group
-        
-        currentDaysPerWeek = group.daysPerWeek
-        currentDeliveryTime = group.deliveryTime
-        currentDeliveryTime = group.deliveryTime
-        currentChallengeDays = group.displayedDays
-        currentName = group.name
-        currentEmoji = group.emoji
-        currentColor = group.backgroundColor
         emoji = group.emoji
         
         Task {
-            await getActivities()
-            await getUsers()
+            async let activities: () = getActivities()
+            async let users: () = getUsers()
+            
+            let _ = await (activities, users)
         }
     }
-    
-    // the problem is that when we set the time it sets it to whatever date the group was created on, we need to set it to the current date
     
     func getTodayAtTimeOf(date: Date) -> Date {
         let hour = Calendar.current.component(.hour, from: date)
@@ -61,7 +50,6 @@ class GroupOverviewViewModel: ObservableObject {
             let activities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
             
             DispatchQueue.main.async {
-                self.currentActivities = activities
                 self.activities = activities
             }
         }
@@ -89,6 +77,55 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
+    // make this happen on the ui side, start loading dialog, end and exit once 4 items complete, close and stay if error is shown
+    func save(completion: @escaping (Bool) -> Void) {
+        itemsCompleted = 0
+        
+        saveGroup { [weak self] didComplete in
+            if didComplete == false {
+                completion(false)
+            }
+            else {
+                DispatchQueue.main.async {
+                    self?.itemsCompleted += 1
+                }
+            }
+        }
+        
+        updateEditedActivities { [weak self] didComplete in
+            if didComplete == false {
+                completion(false)
+            }
+            else {
+                DispatchQueue.main.async {
+                    self?.itemsCompleted += 1
+                }
+            }
+        }
+        
+        createNewActivities { [weak self] didComplete in
+            if didComplete == false {
+                completion(false)
+            }
+            else {
+                DispatchQueue.main.async {
+                    self?.itemsCompleted += 1
+                }
+            }
+        }
+        
+        deleteActivities { [weak self] didComplete in
+            if didComplete == false {
+                completion(false)
+            }
+            else {
+                DispatchQueue.main.async {
+                    self?.itemsCompleted += 1
+                }
+            }
+        }
+    }
+    
     func deleteGroup(completion: @escaping (Bool) -> Void) {
         isLoading = true
         
@@ -108,44 +145,73 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func saveGroup() {
-//        if currentName != group.name
-//            || currentEmoji != emoji
-//            || currentColor != group.backgroundColor
-//            || currentDeliveryTime != group.deliveryTime
-//            || currentDaysPerWeek != group.daysPerWeek
-//            || currentChallengeDays != group.displayedDays
-//            || currentActivities != activities {
-            
-            // TODO - don't need to pass all these
-            CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
-                if error != nil {
-                    
-                    DispatchQueue.main.async {
-                        self?.errorMessage = "Could not save group changes. Please check your connection and try again."
-                        self?.showError = true
-                    }
+    func saveGroup(completion: @escaping (Bool) -> Void) {
+        CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
+            if error != nil {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Could not save group changes. Please check your connection and try again."
+                    self?.showError = true
+                    completion(false)
                 }
             }
-//        }
+            else {
+                completion(true)
+            }
+        }
     }
     
-    func saveActivities() {
-        let currentActivityIds = currentActivities.map { $0.id }
-        let newActivities = activities.filter({ !currentActivityIds.contains($0.id) })
-        
+    func createNewActivities(completion: @escaping (Bool) -> Void) {
+        let newActivities = activities.filter({ $0.isNew })
+
         for activity in newActivities {
             CloudKitHelper.shared.addActivityToGroup(groupRecordId: group.recordId, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] reference in
                 if reference == nil {
-                    
                     DispatchQueue.main.async {
                         self?.errorMessage = "Could not save activity. Please check your connection and try again."
                         self?.showError = true
+                        completion(false)
+                    }
+                }
+                else {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    func updateEditedActivities(completion: @escaping (Bool) -> Void) {
+        let editedActivities = activities.filter({ $0.wasEdited })
+
+        for activity in editedActivities {
+            CloudKitHelper.shared.updateActivity(activity: activity) { [weak self] error in
+                if let _ = error {
+                    self?.errorMessage = "Could not update activity. Please check your connection and try again."
+                    self?.showError = true
+                    completion(false)
+                }
+                else {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    func deleteActivities(completion: @escaping (Bool) -> Void) {
+        let deletedActivities = activities.filter({ $0.wasDeleted })
+
+        for activity in deletedActivities {
+            if let recordId = activity.recordId {
+                CloudKitHelper.shared.deleteRecord(recordId: recordId) { [weak self] error in
+                    if let _ = error {
+                        self?.errorMessage = "Could not update activity. Please check your connection and try again."
+                        self?.showError = true
+                        completion(false)
+                    }
+                    else {
+                        completion(true)
                     }
                 }
             }
         }
-        
-        currentActivities = activities
     }
 }

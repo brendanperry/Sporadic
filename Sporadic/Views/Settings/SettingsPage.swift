@@ -82,7 +82,6 @@ struct SettingsPage: View {
                             DispatchQueue.main.async {
                                 if settings.authorizationStatus == .authorized {
                                     viewModel.showEnabledAlert = true
-                                    viewModel.scheduleNotifications(settingsChanged: false)
                                 } else {
                                     viewModel.showDisabledAlert = true
                                 }

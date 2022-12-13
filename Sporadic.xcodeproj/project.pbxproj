@@ -41,13 +41,11 @@
 		C664A93F279A4D1600EE2195 /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */; };
 		C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */; };
 		C664A943279DC8CA00EE2195 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A942279DC8CA00EE2195 /* SettingsViewModel.swift */; };
-		C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CD8268EAAF500991913 /* NotificationHelper.swift */; };
 		C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDE268F77D600991913 /* SettingsPage.swift */; };
 		C6667CE5268F8B7E00991913 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE4268F8B7E00991913 /* MainView.swift */; };
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
 		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
-		C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67B52192831FDFE00C99356 /* OneSignalHelper.swift */; };
 		C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C67B521C2831FFDA00C99356 /* Alamofire */; };
 		C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BA2843F43B00ABB6B3 /* Challenges.swift */; };
 		C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BC28440FF700ABB6B3 /* Activity.swift */; };
@@ -81,7 +79,6 @@
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BFEA9D281256D7007A8B87 /* notificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9C281256D7007A8B87 /* notificationTests.swift */; };
-		C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */; };
 		C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */; };
 		C6C96014278F9F3C00A67AA2 /* AddCustomActivityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */; };
 		C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96015278FA14200A67AA2 /* NavigationBar.swift */; };
@@ -91,7 +88,6 @@
 		C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96021278FA64F00A67AA2 /* DateExtensions.swift */; };
 		C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */; };
 		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
-		C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C9602D2794AFAB00A67AA2 /* DataController.swift */; };
 		C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C9602F2795042C00A67AA2 /* CloudKit.framework */; };
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
 		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
@@ -148,13 +144,11 @@
 		C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
 		C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityViewModel.swift; sourceTree = "<group>"; };
 		C664A942279DC8CA00EE2195 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		C6667CD8268EAAF500991913 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		C6667CDE268F77D600991913 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		C6667CE4268F8B7E00991913 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C66A3729283F1CB50096757C /* GroupOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverview.swift; sourceTree = "<group>"; };
 		C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverviewViewModel.swift; sourceTree = "<group>"; };
-		C67B52192831FDFE00C99356 /* OneSignalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalHelper.swift; sourceTree = "<group>"; };
 		C68378BA2843F43B00ABB6B3 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
 		C68378BC28440FF700ABB6B3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
@@ -185,7 +179,6 @@
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BFEA9C281256D7007A8B87 /* notificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationTests.swift; sourceTree = "<group>"; };
-		C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C6C96013278F9F3C00A67AA2 /* AddCustomActivityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomActivityPage.swift; sourceTree = "<group>"; };
 		C6C96015278FA14200A67AA2 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
@@ -196,7 +189,6 @@
 		C6C96023278FAC2300A67AA2 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeHelper.swift; sourceTree = "<group>"; };
 		C6C960292794A6B700A67AA2 /* Sporadic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sporadic.entitlements; sourceTree = "<group>"; };
-		C6C9602D2794AFAB00A67AA2 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		C6C9602F2795042C00A67AA2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
 		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
@@ -263,17 +255,13 @@
 			isa = PBXGroup;
 			children = (
 				C630BDF9268C313B0066D8C3 /* Localize.swift */,
-				C6667CD8268EAAF500991913 /* NotificationHelper.swift */,
 				C6667D2D2690FB5D00991913 /* UserPrefs.swift */,
 				C613CFCC269559C70061DC49 /* EmailHelper.swift */,
 				C69395B026ADC267005BAD98 /* ViewRouter.swift */,
 				C69395B226B24BB3005BAD98 /* DateHelper.swift */,
 				C6BCB2112766B0CD00D9677D /* TextHelper.swift */,
 				C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */,
-				C6C9602D2794AFAB00A67AA2 /* DataController.swift */,
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
-				C6BFEA9E2824E449007A8B87 /* GlobalSettings.swift */,
-				C67B52192831FDFE00C99356 /* OneSignalHelper.swift */,
 				C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */,
 			);
 			path = Utilities;
@@ -656,7 +644,6 @@
 				C66424D027B856A700B574D7 /* Complete.swift in Sources */,
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
-				C6BFEA9F2824E449007A8B87 /* GlobalSettings.swift in Sources */,
 				C62625A92867418300E84C79 /* StringExtensions.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
@@ -666,12 +653,10 @@
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
-				C6C9602E2794AFAB00A67AA2 /* DataController.swift in Sources */,
 				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */,
-				C6667CD9268EAAF500991913 /* NotificationHelper.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
 				C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
@@ -693,7 +678,6 @@
 				C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */,
 				C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
-				C67B521A2831FDFE00C99356 /* OneSignalHelper.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
 				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,
 				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
@@ -904,16 +888,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sporadic;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -928,16 +915,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sporadic/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sporadic;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

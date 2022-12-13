@@ -131,7 +131,7 @@ struct CreateGroupView: View {
                         .padding()
                     }
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities, afterAddAction: { })) {
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
                         Image("Add Activity Full")
                             .resizable()
                             .frame(width: 75, height: 75, alignment: .center)

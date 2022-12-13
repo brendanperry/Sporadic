@@ -24,59 +24,62 @@ class HomeViewModel : ObservableObject {
     init(cloudKitHelper: CloudKitHelper) {
         self.cloudKitHelper = cloudKitHelper
         
-        loadData(forceSync: false)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.loadData(forceSync: false)
+        }
     }
     
     func loadData(forceSync: Bool) {
         Task {
-            await getUser(forceSync: forceSync)
-            await getChallenges(forceSync: forceSync)
-            await getGroups(forceSync: forceSync)
+            await getUser()
+            
+            async let challenges: () = getChallenges(forceSync: forceSync)
+            async let groups: () = getGroups(forceSync: forceSync)
+            
+            let _ = await (challenges, groups)
         }
     }
     
-    func getUser(forceSync: Bool) async {
-        DispatchQueue.main.async { [weak self] in
-            Task {
-                if let user = try? await self?.cloudKitHelper.getCurrentUser(forceSync: forceSync) {
-                    self?.user = user
-                    self?.isUserLoading = false
-                }
+    func getUser() async {
+        if let user = try? await cloudKitHelper.getCurrentUser(forceSync: true) {
+            DispatchQueue.main.async {
+                self.user = user
+                self.isUserLoading = false
             }
         }
     }
     
     func getChallenges(forceSync: Bool = false) async {
-        DispatchQueue.main.async { [weak self] in
-            Task {
-                do {
-                    self?.challenges = (try await self?.cloudKitHelper.getChallengesForUser(forceSync: forceSync) ?? []).sorted(by: { $0.startTime > $1.startTime })
-                    self?.areChallengesLoading = false
-                    self?.loadChallengeData(forceSync: forceSync)
-                } catch {
-                    print(error)
-                }
+        do {
+            let challenges = try await cloudKitHelper.getChallengesForUser() ?? []
+            
+            DispatchQueue.main.async {
+                self.challenges = challenges
+                self.areChallengesLoading = false
+                self.loadChallengeData()
             }
+        } catch {
+            print(error)
         }
     }
     
-    func loadChallengeData(forceSync: Bool) {
-        for i in 0..<challenges.count {
-            cloudKitHelper.getActivityFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] activity in
+    func loadChallengeData() {
+        DispatchQueue.concurrentPerform(iterations: challenges.count) { index in
+            cloudKitHelper.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
                 DispatchQueue.main.async {
-                    self?.challenges[i].activity = activity
+                    self?.challenges[index].activity = activity
                 }
             }
             
-            cloudKitHelper.getGroupFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] group in
+            cloudKitHelper.getGroupFromChallenge(challenge: challenges[index]) { [weak self] group in
                 DispatchQueue.main.async {
-                    self?.challenges[i].group = group
+                    self?.challenges[index].group = group
                 }
             }
             
-            cloudKitHelper.getUsersFromChallenge(forceSync: forceSync, challenge: challenges[i]) { [weak self] users in
+            cloudKitHelper.getUsersFromChallenge(challenge: challenges[index]) { [weak self] users in
                 DispatchQueue.main.async {
-                    self?.challenges[i].users = users
+                    self?.challenges[index].users = users
                 }
             }
         }
@@ -88,7 +91,7 @@ class HomeViewModel : ObservableObject {
         }
         
         do {
-            let newGroups = try await cloudKitHelper.getGroupsForUser(forceSync: forceSync)
+            let newGroups = try await cloudKitHelper.getGroupsForUser()
             
             DispatchQueue.main.async { [weak self] in
                 self?.groups = newGroups ?? []
@@ -105,17 +108,4 @@ class HomeViewModel : ObservableObject {
             print(error)
         }
     }
-
-func completeChallenge() {
-    //        GlobalSettings.Env.currentChallenge?.activity?.total += GlobalSettings.Env.currentChallenge?.total ?? 0
-    //        GlobalSettings.Env.updateStatus()
-}
-
-//    func getActivityCount() -> Int {
-//        return dataHelper.fetchActiveActivities()?.count ?? 0
-//    }
-
-func getNotificationStatus(completion: @escaping(Bool) -> Void) {
-    //        notificationHelper.getNotificationStatus(completion: completion)
-}
 }

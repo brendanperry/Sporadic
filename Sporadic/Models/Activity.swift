@@ -11,19 +11,19 @@ import CloudKit
 struct Activity: Identifiable, Equatable {
     let id: UUID
     var recordId: CKRecord.ID? = nil
-    var isEnabled: Bool
     var maxValue: Double
     var minValue: Double
     var name: String
     var templateId: Int?
     var unit: ActivityUnit
-    var needsSynced = false
+    var wasEdited = false
+    var wasDeleted = false
+    var isNew = false
 }
 
 extension Activity {
     init? (from record: CKRecord) {
         guard
-            let isEnabled = record["isEnabled"] as? Int,
             let maxValue = record["maxValue"] as? Double,
             let minValue = record["minValue"] as? Double,
             let name = record["name"] as? String,
@@ -33,6 +33,6 @@ extension Activity {
             return nil
         }
         
-        self = .init(id: UUID(), recordId: record.recordID, isEnabled: isEnabled == 0 ? false : true, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
+        self = .init(id: UUID(), recordId: record.recordID, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
     }
 }

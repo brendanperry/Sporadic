@@ -12,7 +12,6 @@ struct ActivitySelector: View {
     @State var showEditMenu = false
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     let templates = ActivityTemplateHelper().getActivityTemplates()
-    let afterAddAction: () -> Void
     
     var body: some View {
         ZStack {
@@ -26,7 +25,7 @@ struct ActivitySelector: View {
                 
                 LazyVGrid(columns: items, spacing: 10) {
                     ForEach(templates.filter({ !selectedActivities.map({ $0.templateId }).contains($0.id) })) { template in
-                        NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template, afterAddAction: afterAddAction)) {
+                        NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template)) {
                             VStack {
                                 Image(template.name + " Circle")
                                     .resizable()

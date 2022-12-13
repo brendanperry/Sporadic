@@ -36,9 +36,7 @@ struct EditActivity: View {
                 RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
                     .padding([.horizontal, .bottom])
                 
-                DeleteButton(activityList: $activityList, activity: $activity) {
-                    viewModel.updateActivity(activity: activity)
-                }
+                DeleteButton(activityList: $activityList, activity: $activity)
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -56,7 +54,7 @@ struct EditActivity: View {
         .onChange(of: isPresented) { newValue in
             if newValue == false {
                 if currentMin != activity.minValue || currentMax != activity.maxValue {
-                    viewModel.updateActivity(activity: activity)
+                    activity.wasEdited = true
                 }
             }
         }
@@ -67,7 +65,6 @@ struct EditActivity: View {
         @State var showDeleteConfirmation = false
         @Binding var activityList: [Activity]
         @Binding var activity: Activity
-        let saveAction: () -> Void
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -88,8 +85,7 @@ struct EditActivity: View {
                     Alert(title: Text("Remove \(activity.name)?"), message: Text("Add back an activity with the same name later to pick up where you left off."),
                           primaryButton: .cancel(),
                           secondaryButton: .destructive(Text("Remove")) {
-                        activity.isEnabled = false
-                        saveAction()
+                        activity.wasDeleted = true
                         
                         presentationMode.wrappedValue.dismiss()
                     })

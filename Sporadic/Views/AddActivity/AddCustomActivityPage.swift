@@ -64,7 +64,6 @@ struct AddCustomActivityPage: View {
                 activities.append(
                     Activity(
                         id: UUID(),
-                        isEnabled: true,
                         maxValue: viewModel.maxValue,
                         minValue: viewModel.minValue,
                         name: viewModel.name,

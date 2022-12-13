@@ -8,9 +8,11 @@
 import SwiftUI
 import CloudKit
 
+
+let homeViewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
+
 struct HomePage: View {
-    @ObservedObject var viewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
-    @ObservedObject var env = GlobalSettings.Env
+    @StateObject var viewModel = homeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
     
     init() {
@@ -32,27 +34,21 @@ struct HomePage: View {
                     }
                     
                     VStack(spacing: 35) {
-                        if !viewModel.areGroupsLoading && !viewModel.isUserLoading && !viewModel.areChallengesLoading {
-                            Welcome(viewModel: viewModel)
-                            
-                            if env.showWarning {
-                                WarningMessage(viewModel: viewModel)
-                            }
+                        Welcome(viewModel: viewModel)
+                    
+                        Challenges(challenges: viewModel.challenges)
                         
-                            Challenges(challenges: viewModel.challenges)
-                            
-                            switch viewModel.loadingStatus {
-                            case .loaded:
-                                GroupList(groups: viewModel.groups, isLoading: false) { forceReload in
-                                    viewModel.loadData(forceSync: forceReload)
-                                }
-                            case .loading:
-                                GroupList(groups: viewModel.groups, isLoading: true) { forceReload in
-                                    viewModel.loadData(forceSync: forceReload)
-                                }
-                            case .failed:
-                                Text("Failed to load groups. Please try again.")
+                        switch viewModel.loadingStatus {
+                        case .loaded:
+                            GroupList(groups: viewModel.groups, isLoading: false) { forceReload in
+                                viewModel.loadData(forceSync: forceReload)
                             }
+                        case .loading:
+                            GroupList(groups: viewModel.groups, isLoading: true) { forceReload in
+                                viewModel.loadData(forceSync: forceReload)
+                            }
+                        case .failed:
+                            Text("Failed to load groups. Please try again.")
                         }
                     }
                     .padding(.bottom, 100)
@@ -68,99 +64,6 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-    }
-}
-
-struct WarningMessage: View {
-    @ObservedObject var viewModel: HomeViewModel
-    @State var showInvalidSettingsPopUp = false
-    @State var notificationsAuthorized: Bool?
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Image(systemName: "exclamationmark.circle.fill")
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .leading)
-                    .offset(y: -1)
-                    .foregroundColor(.red)
-                    .padding(.leading)
-                
-                TextHelper.text(key: "NoChallengesScheduled", alignment: .leading, type: .challengeAndSettings)
-                    .padding([.top, .bottom])
-            }
-            
-            Button(action: {
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
-                
-                showInvalidSettingsPopUp = true
-                
-                viewModel.getNotificationStatus { isAuthorized in
-                    notificationsAuthorized = isAuthorized
-                }
-            }, label: {
-                Text("Schedule")
-                    .frame(minWidth: 60)
-                    .font(Font.custom("Gilroy-Medium", size: 14, relativeTo: .body))
-                    .foregroundColor(Color("SettingButtonTextColor"))
-                    .padding(12)
-                    .background(Color("SettingsButtonBackgroundColor"))
-                    .cornerRadius(10)
-            })
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.leading, .bottom])
-            .buttonStyle(ButtonPressAnimationStyle())
-            .fullScreenCover(isPresented: $showInvalidSettingsPopUp) {
-                VStack {
-                    Button(action: {
-                        let impact = UIImpactFeedbackGenerator(style: .light)
-                        impact.impactOccurred()
-                        
-                        showInvalidSettingsPopUp = false
-                    }) {
-                        Image("CloseButton")
-                            .resizable()
-                            .frame(width: 40, height: 40, alignment: .leading)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .buttonStyle(ButtonPressAnimationStyle())
-                    
-                    TextHelper.text(key: "SomethingIsWrong", alignment: .leading, type: .activityTitle)
-                        .padding()
-                    
-                    TextHelper.text(key: "Activities", alignment: .leading, type: .h3)
-                        .padding([.leading])
-                    
-                    //                        if viewModel.getActivityCount() == 0 {
-                    //                            textHelper.GetTextByType(key: "NoActivities", alignment: .leading, type: .body)
-                    //                                .padding()
-                    //                        } else {
-                    //                            textHelper.GetTextByType(key: "SomeActivities", alignment: .leading, type: .body)
-                    //                                .padding()
-                    //                        }
-                    
-                    TextHelper.text(key: "Notifications", alignment: .leading, type: .h3)
-                        .padding([.leading])
-                    
-                    if let authorized = notificationsAuthorized {
-                        if authorized {
-                            TextHelper.text(key: "NotificationsEnabled", alignment: .leading, type: .body)
-                                .padding()
-                        } else {
-                            TextHelper.text(key: "NotificationsDisabled", alignment: .leading, type: .body)
-                                .padding()
-                        }
-                    } else {
-                        TextHelper.text(key: "Loading", alignment: .leading, type: .body)
-                            .padding()
-                    }
-                    
-                    Spacer()
-                }
-            }
-        }
     }
 }
 

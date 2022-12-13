@@ -46,24 +46,12 @@ class UserGroup: Identifiable {
         var days = [Int]()
         for day in displayedDays {
             let components = DateComponents(calendar: .current, hour: hour, minute: minute, weekday: day)
-            
             let localDate = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: .nextTime) ?? Date()
-//            let localDate = Calendar.current.date(from: components) ?? Date()
-            
-            print(localDate)
-            
-            let localWeekDay = Calendar.current.component(.weekday, from: localDate)
-            
             let gmtDate = localDate.toGlobalTime()
-            
-            print(gmtDate)
-            
             let adjustedWeekDay = Calendar.current.component(.weekday, from: gmtDate)
             
             days.append(adjustedWeekDay)
         }
-        
-        print(days)
         
         return days
     }

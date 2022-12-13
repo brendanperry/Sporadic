@@ -56,28 +56,19 @@ struct GroupOverview: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("\(viewModel.group.name)")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-               BackButton()
-            }
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
             UINavigationBar.appearance().barTintColor = UIColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor() ?? .red)
         }
-        .onChange(of: isPresented) { newValue in
-            if newValue == false {
-                saveIfThereAreChanges()
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification), perform: { output in
-            saveIfThereAreChanges()
-         })
     }
     
-    func saveIfThereAreChanges() {
-        viewModel.saveGroup()
+    func saveAndExit() {
+        viewModel.save { didComplete in
+            if didComplete == false {
+                
+            }
+        }
     }
     
     struct EditGroupHeader: View {
@@ -150,7 +141,7 @@ struct YourActivities: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach($viewModel.activities.filter({ $0.wrappedValue.isEnabled})) { activity in
+                    ForEach($viewModel.activities) { activity in
                         NavigationLink(destination: EditActivity(activityList: $viewModel.activities, activity: activity)) {
                             VStack(spacing: 0) {
                                 ZStack {
@@ -184,9 +175,7 @@ struct YourActivities: View {
                     }
                     .padding(.vertical, 1)
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.activities, showEditMenu: true, afterAddAction: {
-                        viewModel.saveActivities()
-                    }), label: {
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.activities, showEditMenu: true), label: {
                         Image("Custom Plus")
                             .resizable()
                             .frame(width: 20, height: 20, alignment: .center)
@@ -321,6 +310,7 @@ struct DaysForChallenges: View {
         }
     }
     
+    // TODO: Move this elsewhere
     func dayToInt(_ day: String) -> Int {
         switch day {
         case "Su": return 1
