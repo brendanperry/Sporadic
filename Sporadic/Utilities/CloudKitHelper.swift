@@ -125,6 +125,31 @@ class CloudKitHelper {
         }
     }
     
+    func getGroup(byId id: CKRecord.ID, completion: @escaping (Result<UserGroup, CustomError>) -> Void) {
+        database.fetch(withRecordID: id) { [weak self] record, error in
+            if let _ = error {
+                completion(.failure(.connectionError))
+                return
+            }
+            
+            if let groupRecord = record {
+                if let group = UserGroup.init(from: groupRecord) {
+                    if let users = group.users {
+                        if users.contains(where: ({ $0.recordID == self?.cachedUser?.recordId })) {
+                            completion(.failure(.alreadyInGroup))
+                        }
+                        else {
+                            completion(.success(group))
+                        }
+                    }
+                }
+            }
+            else {
+                completion(.failure(.groupNotFound))
+            }
+        }
+    }
+    
     func getGroupsForUser() async throws -> [UserGroup]? {
         if let user = try await getCurrentUser(forceSync: false) {
             let predicate = NSPredicate(format: "users CONTAINS %@", user.recordId)
@@ -306,8 +331,6 @@ class CloudKitHelper {
     
     // TODO - Allow deleting users
     
-    // the problem is that when we set the time it sets it to whatever date the group was created on, we need to set it to the current date
-    
     func getTodayAtTimeOf(date: Date) -> Date {
         let hour = Calendar.current.component(.hour, from: date)
         let minute = Calendar.current.component(.minute, from: date)
@@ -403,6 +426,54 @@ class CloudKitHelper {
         }
     }
     
+    func addUserToGroup(group: UserGroup, completion: @escaping (UserGroup?) -> Void) {
+        guard let user = cachedUser else {
+            return
+        }
+        
+        database.fetch(withRecordID: group.recordId) { record, error in
+            if let error = error {
+                print(error)
+                completion(nil)
+                return
+            }
+            
+            if let record = record {
+                if let users = record["users"] as? [CKRecord.Reference] {
+                    let reference = CKRecord.Reference(recordID: user.recordId, action: .none)
+                    
+                    var newUserList = users
+                    newUserList.append(reference)
+                    
+                    record.setValue(newUserList, forKey: "users")
+                    
+                    self.database.save(record) { record, error in
+                        if let error = error {
+                            print(error)
+                            completion(nil)
+                            return
+                        }
+                        else {
+                            if let record = record {
+                                completion(UserGroup.init(from: record))
+                                return
+                            }
+                            else {
+                                completion(nil)
+                            }
+                        }
+                    }
+                }
+                else {
+                    completion(nil)
+                }
+            }
+            else {
+                completion(nil)
+            }
+        }
+    }
+    
     func addActivityToGroup(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (CKRecord.Reference?) -> Void) {
         let record = CKRecord(recordType: "Activity")
         
@@ -453,4 +524,3 @@ class CloudKitHelper {
         }
     }
 }
-

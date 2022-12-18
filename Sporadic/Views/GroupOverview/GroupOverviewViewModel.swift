@@ -23,9 +23,7 @@ class GroupOverviewViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var showError = false
     @Published var isLoading = false
-    @Published var itemsCompleted = 0
-    
-    let totalItemsToCompleted = 4
+    @Published var itemsCompleted = 4
     
     init(group: UserGroup) {
         self.group = group
@@ -77,12 +75,12 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    // make this happen on the ui side, start loading dialog, end and exit once 4 items complete, close and stay if error is shown
     func save(completion: @escaping (Bool) -> Void) {
         itemsCompleted = 0
         
         saveGroup { [weak self] didComplete in
             if didComplete == false {
+                self?.itemsCompleted = 4
                 completion(false)
             }
             else {
@@ -94,6 +92,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         updateEditedActivities { [weak self] didComplete in
             if didComplete == false {
+                self?.itemsCompleted = 4
                 completion(false)
             }
             else {
@@ -105,6 +104,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         createNewActivities { [weak self] didComplete in
             if didComplete == false {
+                self?.itemsCompleted = 4
                 completion(false)
             }
             else {
@@ -116,6 +116,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         deleteActivities { [weak self] didComplete in
             if didComplete == false {
+                self?.itemsCompleted = 4
                 completion(false)
             }
             else {
@@ -145,7 +146,7 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func saveGroup(completion: @escaping (Bool) -> Void) {
+    private func saveGroup(completion: @escaping (Bool) -> Void) {
         CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
             if error != nil {
                 DispatchQueue.main.async {
@@ -160,8 +161,13 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func createNewActivities(completion: @escaping (Bool) -> Void) {
+    private func createNewActivities(completion: @escaping (Bool) -> Void) {
         let newActivities = activities.filter({ $0.isNew })
+        
+        if newActivities.isEmpty {
+            completion(true)
+            return
+        }
 
         for activity in newActivities {
             CloudKitHelper.shared.addActivityToGroup(groupRecordId: group.recordId, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] reference in
@@ -179,8 +185,13 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func updateEditedActivities(completion: @escaping (Bool) -> Void) {
+    private func updateEditedActivities(completion: @escaping (Bool) -> Void) {
         let editedActivities = activities.filter({ $0.wasEdited })
+        
+        if editedActivities.isEmpty {
+            completion(true)
+            return
+        }
 
         for activity in editedActivities {
             CloudKitHelper.shared.updateActivity(activity: activity) { [weak self] error in
@@ -196,8 +207,13 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func deleteActivities(completion: @escaping (Bool) -> Void) {
+    private func deleteActivities(completion: @escaping (Bool) -> Void) {
         let deletedActivities = activities.filter({ $0.wasDeleted })
+        
+        if deletedActivities.isEmpty {
+            completion(true)
+            return
+        }
 
         for activity in deletedActivities {
             if let recordId = activity.recordId {

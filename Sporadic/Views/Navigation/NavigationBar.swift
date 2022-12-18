@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NavigationBar: View {
-    let viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     @State var homeIconOn: Bool
     @State var statsIconOn: Bool
     @State var settingsIconOn: Bool
@@ -83,37 +83,40 @@ struct NavigationBar: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
             .offset(y: 10)
             .onAppear {
-                if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
-                    self.homeIconOn = false
-                    self.statsIconOn = true
-                }
-                else if viewRouter.previousPage == .home && viewRouter.currentPage == .settings {
-                    homeIconOn = false
-                    settingsIconOn = true
-                }
-                else if viewRouter.previousPage == .stats && viewRouter.currentPage == .home {
-                    statsIconOn = false
-                    homeIconOn = true
-                }
-                else if viewRouter.previousPage == .stats && viewRouter.currentPage == .settings {
-                    statsIconOn = false
-                    settingsIconOn = true
-                }
-                else if viewRouter.previousPage == .settings && viewRouter.currentPage == .home {
-                    settingsIconOn = false
-                    homeIconOn = true
-                }
-                else if viewRouter.previousPage == .settings && viewRouter.currentPage == .stats {
-                    settingsIconOn = false
-                    statsIconOn = true
+                withAnimation {
+                    if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
+                        self.homeIconOn = false
+                        self.statsIconOn = true
+                    }
+                    else if viewRouter.previousPage == .home && viewRouter.currentPage == .settings {
+                        homeIconOn = false
+                        settingsIconOn = true
+                    }
+                    else if viewRouter.previousPage == .stats && viewRouter.currentPage == .home {
+                        statsIconOn = false
+                        homeIconOn = true
+                    }
+                    else if viewRouter.previousPage == .stats && viewRouter.currentPage == .settings {
+                        statsIconOn = false
+                        settingsIconOn = true
+                    }
+                    else if viewRouter.previousPage == .settings && viewRouter.currentPage == .home {
+                        settingsIconOn = false
+                        homeIconOn = true
+                    }
+                    else if viewRouter.previousPage == .settings && viewRouter.currentPage == .stats {
+                        settingsIconOn = false
+                        statsIconOn = true
+                    }
                 }
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
 struct HomeIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {
@@ -136,7 +139,7 @@ struct HomeIcon: View {
  }
 
 struct StatsIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {
@@ -159,7 +162,7 @@ struct StatsIcon: View {
  }
 
 struct SettingsIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {

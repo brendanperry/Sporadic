@@ -10,8 +10,6 @@ import SwiftUI
 struct LoadingIndicator: View {
     var body: some View {
         ZStack {
-            
-            
             VStack {
                 ProgressView()
             }

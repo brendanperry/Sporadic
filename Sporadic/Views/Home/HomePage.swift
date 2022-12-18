@@ -9,13 +9,13 @@ import SwiftUI
 import CloudKit
 
 
-let homeViewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
 
 struct HomePage: View {
-    @StateObject var viewModel = homeViewModel
+    @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
     
-    init() {
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Header"))]

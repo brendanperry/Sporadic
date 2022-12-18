@@ -16,6 +16,8 @@ struct GroupOverview: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
+    @Environment(\.dismiss) var dismiss
+
     
     init(viewModel: GroupOverviewViewModel, reloadAction: @escaping (Bool) -> Void) {
         self.viewModel = viewModel
@@ -28,7 +30,7 @@ struct GroupOverview: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            ZStack {
                 ScrollView(.vertical) {
                     VStack(spacing: 35) {
                         GroupHeader(name: $viewModel.group.name, emoji: $viewModel.emoji, color: $viewModel.group.backgroundColor)
@@ -39,18 +41,61 @@ struct GroupOverview: View {
                         
                         DaysForChallenges(availableDays: $viewModel.group.displayedDays)
                         
-                        UsersInGroup(users: viewModel.users)
+                        UsersInGroup(users: viewModel.users, group: viewModel.group)
                         
                         DeleteButton(viewModel: viewModel, reloadAction: reloadAction)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button(action: {
+                            dismiss()
+                        }, label: {
+                            TextHelper.text(key: "Cancel", alignment: .center, type: .h2)
+                                .padding()
+                                .frame(width: 150, height: 40, alignment: .leading)
+                                .background(Color("Delete"))
+                                .cornerRadius(16)
+                        })
+                        .buttonStyle(ButtonPressAnimationStyle())
+                        .padding()
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.save { _ in }
+                        }, label: {
+                            TextHelper.text(key: "Save", alignment: .center, type: .h2, color: .white)
+                                .padding()
+                                .frame(width: 150, height: 40, alignment: .leading)
+                                .background(Color("Primary"))
+                                .cornerRadius(16)
+                        })
+                        .buttonStyle(ButtonPressAnimationStyle())
+                        .padding()
+                        .onChange(of: viewModel.itemsCompleted) { newValue in
+                            if newValue == 4 {
+                                dismiss()
+                            }
+                        }
+                        
+                        Spacer()
+                    }
+                    .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: 3))
+                    .ignoresSafeArea(.all, edges: .bottom)
                 }
             }
             .alert(isPresented: $viewModel.showError) {
                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
             }
             
-            if viewModel.isLoading {
+            if viewModel.itemsCompleted != 4 || viewModel.isLoading  {
                 LoadingIndicator()
             }
         }
@@ -60,14 +105,6 @@ struct GroupOverview: View {
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .onAppear {
             UINavigationBar.appearance().barTintColor = UIColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor() ?? .red)
-        }
-    }
-    
-    func saveAndExit() {
-        viewModel.save { didComplete in
-            if didComplete == false {
-                
-            }
         }
     }
     
@@ -215,7 +252,7 @@ struct DeleteButton: View {
                     .frame(width: 150, height: 40, alignment: .leading)
                     .background(Color("Delete"))
                     .cornerRadius(16)
-                    .padding(.bottom)
+                    .padding(.bottom, 100)
             })
             .buttonStyle(ButtonPressAnimationStyle())
             .alert(isPresented: $showDeleteConfirmation) {
@@ -238,9 +275,11 @@ struct DeleteButton: View {
 
 struct UsersInGroup: View {
     let users: [User]
+    let group: UserGroup
     
-    init(users: [User]) {
+    init(users: [User], group: UserGroup) {
         self.users = users
+        self.group = group
         
         UITableView.appearance().backgroundColor = .clear
     }
@@ -250,6 +289,18 @@ struct UsersInGroup: View {
             TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
             
             VStack(spacing: 0) {
+                if users.isEmpty {
+                    HStack {
+                        Circle()
+                            .frame(width: 50, height: 50, alignment: .leading)
+                            .foregroundColor(.white)
+                            .shadow(radius: 3)
+                        
+                        TextHelper.text(key: "", alignment: .leading, type: .h2)
+                    }
+                    .padding(12)
+                }
+                
                 ForEach(users) { user in
                     HStack {
                         Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
@@ -263,6 +314,16 @@ struct UsersInGroup: View {
                     }
                 }
                 .padding(12)
+                
+                ShareLink(item: "https://sporadic.app/?group=\(group.recordId.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
+                    Text("Invite New Members")
+                        .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
+                        .padding()
+                        .background(Color("Primary"))
+                        .cornerRadius(16)
+                        .padding()
+                })
+                    .buttonStyle(ButtonPressAnimationStyle())
             }
             .padding(12)
             .background(Color("Panel"))

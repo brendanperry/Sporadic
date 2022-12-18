@@ -53,11 +53,6 @@ struct SettingsPage: View {
                 .padding(.bottom, 100)
             })
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
-                    //                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
-                }
-            }
             .padding(.top)
             
             NavigationBar(viewRouter: viewRouter)
