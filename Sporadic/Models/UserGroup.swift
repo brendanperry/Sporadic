@@ -17,16 +17,16 @@ class UserGroup: Identifiable {
     var emoji: String
     var backgroundColor: Int
     var name: String
-    let recordId: CKRecord.ID
+    var record: CKRecord
     
-    init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, displayedDays: [Int], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, recordId: CKRecord.ID) {
+    init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, displayedDays: [Int], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, record: CKRecord) {
         self.displayedDays = displayedDays
         self.daysPerWeek = daysPerWeek
         self.deliveryTime = deliveryTime
         self.emoji = emoji
         self.backgroundColor = backgroundColor
         self.name = name
-        self.recordId = recordId
+        self.record = record
     }
     
     // UTC adjusted days of the week
@@ -49,7 +49,7 @@ class UserGroup: Identifiable {
         return days
     }
     
-    // TODO - convert to property
+    // TODO: convert to property
     /// Converts the local delivery time to UTC and then converts that to an int based on how many 15 minute intervals it contains
     static func getDeliveryTimeInt(date: Date) -> Int {
         var calendar = Calendar.current
@@ -89,6 +89,6 @@ extension UserGroup {
             return nil
         }
         
-        self.init(activities: activityReferences, challenges: challengeReferences, displayedDays: displayedDays ?? [], daysPerWeek: daysPerWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, users: userReferences, recordId: record.recordID)
+        self.init(activities: activityReferences, challenges: challengeReferences, displayedDays: displayedDays ?? [], daysPerWeek: daysPerWeek, deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, users: userReferences, record: record)
     }
 }

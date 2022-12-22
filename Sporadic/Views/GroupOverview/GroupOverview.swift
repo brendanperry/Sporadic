@@ -318,9 +318,8 @@ struct UsersInGroup: View {
                 }
                 .padding(12)
                 
-                ShareLink(item: "https://sporadic.app/?group=\(group.recordId.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
-                    Text("Invite New Members")
-                        .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
+                ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
+                    TextHelper.text(key: "Invite New Members", alignment: .center, type: .h2, color: .white)
                         .padding()
                         .background(Color("Primary"))
                         .cornerRadius(16)
