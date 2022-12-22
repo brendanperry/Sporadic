@@ -16,6 +16,7 @@ struct Activity: Identifiable, Equatable {
     var name: String
     var templateId: Int?
     var unit: ActivityUnit
+    var group: CKRecord.Reference?
     var wasEdited = false
     var wasDeleted = false
     var isNew = false
@@ -28,11 +29,12 @@ extension Activity {
             let minValue = record["minValue"] as? Double,
             let name = record["name"] as? String,
             let templateId = record["templateId"] as? Int,
-            let unit = record["unit"] as? String
+            let unit = record["unit"] as? String,
+            let group = record["group"] as? CKRecord.Reference
         else {
             return nil
         }
         
-        self = .init(id: UUID(), recordId: record.recordID, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
+        self = .init(id: UUID(), recordId: record.recordID, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles, group: group)
     }
 }

@@ -6,31 +6,22 @@
 //
 
 import SwiftUI
+import PhotosUI
+
+private let settingsViewModel = SettingsViewModel()
 
 struct SettingsPage: View {
-    @AppStorage(UserPrefs.measurement.rawValue)
-    var measurement = "Imperial"
-    
     @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
-    
-    @AppStorage(UserPrefs.deliveryTime.rawValue)
-    var time = Date()
     
     let appThemeOptions = ["System", "Light", "Dark"]
     
     @State var showThemeOptions = false
     
-    @ObservedObject var viewModel: SettingsViewModel
-    
-    @Environment(\.scenePhase) var scenePhase
+    @StateObject var viewModel = settingsViewModel
     
     @EnvironmentObject var viewRouter: ViewRouter
-    
-    init() {
-        viewModel = SettingsViewModel()
-    }
-    
+
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -134,7 +125,10 @@ struct SettingsPage: View {
         @ObservedObject var viewModel: SettingsViewModel
         @Binding var name: String
         @Binding var photo: UIImage?
+        @FocusState var textFieldFocus: Bool
         let textHelper = TextHelper()
+        
+        @State var selectedphoto: PhotosPickerItem?
         
         var body: some View {
             HStack(alignment: .center) {
@@ -161,22 +155,31 @@ struct SettingsPage: View {
                                 .onTapGesture {
                                     showImagePicker = true
                                 }
-                                .sheet(isPresented: $showImagePicker) {
-                                    ImagePicker(image: $photo)
-                                }
-                                .onChange(of: photo) { _ in
-                                    viewModel.updateUserImage()
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
+                                .onChange(of: selectedphoto) { newValue in
+                                    Task {
+                                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                            DispatchQueue.main.async {
+                                                photo = UIImage(data: data)
+                                                viewModel.updateUserImage()
+                                            }
+                                        }
+                                    }
                                 }
                         }
                         
                         TextField("", text: $name)
                             .padding()
-                            .frame(minWidth: 200, maxHeight: 50, alignment: .leading)
+                            .frame(minWidth: 200, alignment: .leading)
                             .background(Color("Panel"))
                             .cornerRadius(16)
                             .font(Font.custom("Lexend-Regular", size: 14))
                             .foregroundColor(Color("Header"))
                             .padding(.leading)
+                            .focused($textFieldFocus)
+                            .onTapGesture {
+                                textFieldFocus = true
+                            }
                             .onSubmit {
                                 viewModel.updateUserName()
                             }

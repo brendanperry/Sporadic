@@ -33,38 +33,31 @@ class CreateGroupViewModel: ObservableObject {
         return activityTemplateHelper.getActivityTemplates()
     }
     
-    func createGroup() async -> Bool {
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoading = true
+    func createGroup(completion: @escaping (Bool) -> Void) {
+        if groupName.isEmpty {
+            DispatchQueue.main.async {
+                self.errorMessage = "Group name cannot be empty."
+                self.showError = true
+                completion(false)
+            }
         }
         
-        if groupName == "" {
-            DispatchQueue.main.async { [weak self] in
-                self?.errorMessage = "Group name cannot be empty."
-                self?.showError = true
-            }
-            
-            isLoading = false
-            return false
+        DispatchQueue.main.async {
+            self.isLoading = true
         }
         
-        do {
-            try await CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time, activities: activities)
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoading = false
+        CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time) { error in
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Could not create group. Please check your connection and try again."
+                    self.showError = true
+                    self.isLoading = false
+                    completion(false)
+                }
             }
-            
-            return true
-        }
-        catch {
-            DispatchQueue.main.async { [weak self] in
-                self?.errorMessage = "Could not create group. Please check your connection and try again."
-                self?.showError = true
-                self?.isLoading = false
+            else {
+                completion(true)
             }
-            
-            return false
         }
     }
 }

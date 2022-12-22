@@ -64,12 +64,12 @@ struct CreateGroupView: View {
         
         var body: some View {
             Button(action: {
-                Task {
-                    let didFinishSuccessfully = await viewModel.createGroup()
-                    
-                    if didFinishSuccessfully {
-                        reloadAction(false)
-                        presentationMode.wrappedValue.dismiss()
+                viewModel.createGroup { wasSuccessful in
+                    if wasSuccessful {
+                        DispatchQueue.main.async {
+                            reloadAction(false)
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
             }, label: {

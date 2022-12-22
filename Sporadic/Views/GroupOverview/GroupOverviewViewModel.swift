@@ -80,7 +80,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         saveGroup { [weak self] didComplete in
             if didComplete == false {
-                self?.itemsCompleted = 4
+                self?.isLoading = false
                 completion(false)
             }
             else {
@@ -92,7 +92,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         updateEditedActivities { [weak self] didComplete in
             if didComplete == false {
-                self?.itemsCompleted = 4
+                self?.isLoading = false
                 completion(false)
             }
             else {
@@ -104,7 +104,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         createNewActivities { [weak self] didComplete in
             if didComplete == false {
-                self?.itemsCompleted = 4
+                self?.isLoading = false
                 completion(false)
             }
             else {
@@ -116,7 +116,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         deleteActivities { [weak self] didComplete in
             if didComplete == false {
-                self?.itemsCompleted = 4
+                self?.isLoading = false
                 completion(false)
             }
             else {
@@ -170,13 +170,11 @@ class GroupOverviewViewModel: ObservableObject {
         }
 
         for activity in newActivities {
-            CloudKitHelper.shared.addActivityToGroup(groupRecordId: group.recordId, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] reference in
-                if reference == nil {
-                    DispatchQueue.main.async {
-                        self?.errorMessage = "Could not save activity. Please check your connection and try again."
-                        self?.showError = true
-                        completion(false)
-                    }
+            CloudKitHelper.shared.createActivity(groupRecordId: group.recordId, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] error in
+                if let _ = error {
+                    self?.errorMessage = "Could not save activity. Please check your connection and try again."
+                    self?.showError = true
+                    completion(false)
                 }
                 else {
                     completion(true)

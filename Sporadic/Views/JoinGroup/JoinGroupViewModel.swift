@@ -29,15 +29,15 @@ class JoinGroupViewModel: ObservableObject {
         isLoading = true
         
         if let group = group {
-            CloudKitHelper.shared.addUserToGroup(group: group) { [weak self] updatedGroup in
+            CloudKitHelper.shared.addUserToGroup(group: group) { [weak self] error in
                 DispatchQueue.main.async {
-                    if let updatedGroup = updatedGroup {
-                        self?.homeViewModel.groups.append(updatedGroup)
-                        completion(true)
-                    }
-                    else {
+                    if let _ = error {
                         self?.errorMessage = "Failed to join group. Please check your connection and try again."
                         self?.showError = true
+                    }
+                    else {
+                        self?.homeViewModel.loadData(forceSync: true)
+                        completion(true)
                     }
                     
                     self?.isLoading = false

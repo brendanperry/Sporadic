@@ -42,6 +42,9 @@ struct GroupOverview: View {
                         DaysForChallenges(availableDays: $viewModel.group.displayedDays)
                         
                         UsersInGroup(users: viewModel.users, group: viewModel.group)
+                            .alert(isPresented: $viewModel.showError) {
+                                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+                            }
                         
                         DeleteButton(viewModel: viewModel, reloadAction: reloadAction)
                     }
@@ -81,6 +84,7 @@ struct GroupOverview: View {
                         .padding()
                         .onChange(of: viewModel.itemsCompleted) { newValue in
                             if newValue == 4 {
+                                viewModel.isLoading = false
                                 dismiss()
                             }
                         }
@@ -91,11 +95,8 @@ struct GroupOverview: View {
                     .ignoresSafeArea(.all, edges: .bottom)
                 }
             }
-            .alert(isPresented: $viewModel.showError) {
-                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
-            }
             
-            if viewModel.itemsCompleted != 4 || viewModel.isLoading  {
+            if viewModel.isLoading  {
                 LoadingIndicator()
             }
         }
@@ -245,7 +246,9 @@ struct DeleteButton: View {
             TextHelper.text(key: "DeletingGroups", alignment: .leading, type: .h2)
             
             Button(action: {
-                showDeleteConfirmation = true
+                DispatchQueue.main.async {
+                    showDeleteConfirmation = true
+                }
             }, label: {
                 TextHelper.text(key: "DeleteGroup", alignment: .center, type: .h2)
                     .padding()

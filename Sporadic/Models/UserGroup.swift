@@ -11,28 +11,21 @@ import SwiftUI
 
 class UserGroup: Identifiable {
     var id = UUID()
-    var activities: [CKRecord.Reference]?
-    let challenges: [CKRecord.Reference]?
     var displayedDays: [Int]
     var daysPerWeek: Int
     var deliveryTime: Date
     var emoji: String
     var backgroundColor: Int
     var name: String
-    var users: [CKRecord.Reference]?
     let recordId: CKRecord.ID
-    var needsSynced = false
     
     init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, displayedDays: [Int], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, recordId: CKRecord.ID) {
-        self.activities = activities
-        self.challenges = challenges
         self.displayedDays = displayedDays
         self.daysPerWeek = daysPerWeek
         self.deliveryTime = deliveryTime
         self.emoji = emoji
         self.backgroundColor = backgroundColor
         self.name = name
-        self.users = users
         self.recordId = recordId
     }
     

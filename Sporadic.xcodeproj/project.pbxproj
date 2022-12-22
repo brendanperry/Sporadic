@@ -28,7 +28,6 @@
 		C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2228E29FFA0096E002 /* GroupName.swift */; };
 		C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2428E2A0030096E002 /* EmojiSelector.swift */; };
 		C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2628E2A00D0096E002 /* GroupColor.swift */; };
-		C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
@@ -46,12 +45,10 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
 		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
-		C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C67B521C2831FFDA00C99356 /* Alamofire */; };
 		C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BA2843F43B00ABB6B3 /* Challenges.swift */; };
 		C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BC28440FF700ABB6B3 /* Activity.swift */; };
 		C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */; };
 		C68378C12844140500ABB6B3 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C02844140500ABB6B3 /* Challenge.swift */; };
-		C68378C32844144B00ABB6B3 /* Invite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C22844144B00ABB6B3 /* Invite.swift */; };
 		C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C42844148400ABB6B3 /* UserGroup.swift */; };
 		C68378C72844152C00ABB6B3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C62844152C00ABB6B3 /* User.swift */; };
 		C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378C8284542D500ABB6B3 /* GroupList.swift */; };
@@ -74,7 +71,6 @@
 		C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */; };
 		C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */; };
 		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
-		C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3C28517B71008C979C /* ImagePicker.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */; };
@@ -129,7 +125,6 @@
 		C6401E2228E29FFA0096E002 /* GroupName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupName.swift; sourceTree = "<group>"; };
 		C6401E2428E2A0030096E002 /* EmojiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelector.swift; sourceTree = "<group>"; };
 		C6401E2628E2A00D0096E002 /* GroupColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupColor.swift; sourceTree = "<group>"; };
-		C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesHome.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
 		C65A01FF26870098007A5B2F /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
@@ -154,7 +149,6 @@
 		C68378BC28440FF700ABB6B3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		C68378C02844140500ABB6B3 /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
-		C68378C22844144B00ABB6B3 /* Invite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
 		C68378C42844148400ABB6B3 /* UserGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
 		C68378C62844152C00ABB6B3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C68378C8284542D500ABB6B3 /* GroupList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupList.swift; sourceTree = "<group>"; };
@@ -175,7 +169,6 @@
 		C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
 		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
-		C6B2CC3C28517B71008C979C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6C96011278F90AC00A67AA2 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
@@ -211,7 +204,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C67B521D2831FFDA00C99356 /* Alamofire in Frameworks */,
 				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
 				C68961712831AA26008A0C87 /* OneSignal in Frameworks */,
 				C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */,
@@ -275,7 +267,6 @@
 				C664A936279A156400EE2195 /* ActivityTemplate.swift */,
 				C68378BC28440FF700ABB6B3 /* Activity.swift */,
 				C68378C02844140500ABB6B3 /* Challenge.swift */,
-				C68378C22844144B00ABB6B3 /* Invite.swift */,
 				C68378C42844148400ABB6B3 /* UserGroup.swift */,
 				C68378C62844152C00ABB6B3 /* User.swift */,
 				C6F3113B294ED1C50096F09D /* CustomError.swift */,
@@ -300,7 +291,6 @@
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
-				C6B2CC3C28517B71008C979C /* ImagePicker.swift */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
 				C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */,
 				C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */,
@@ -483,7 +473,6 @@
 		C6C9601C278FA4D000A67AA2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C641F2EF271FAACA00D55291 /* ActivitiesHome.swift */,
 				C65A01FF26870098007A5B2F /* HomePage.swift */,
 				C639448D279DDC4D00B2E62F /* HomeViewModel.swift */,
 			);
@@ -547,7 +536,6 @@
 			packageProductDependencies = (
 				C68961702831AA26008A0C87 /* OneSignal */,
 				C68961722831AA26008A0C87 /* OneSignalExtension */,
-				C67B521C2831FFDA00C99356 /* Alamofire */,
 			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
@@ -584,7 +572,6 @@
 			mainGroup = C65A01F126870098007A5B2F;
 			packageReferences = (
 				C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
-				C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
@@ -640,7 +627,6 @@
 				C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */,
 				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
 				C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */,
-				C641F2F0271FAACA00D55291 /* ActivitiesHome.swift in Sources */,
 				C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */,
@@ -691,7 +677,6 @@
 				C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C6A6865A27DD40D400B607CA /* Repository.swift in Sources */,
-				C68378C32844144B00ABB6B3 /* Invite.swift in Sources */,
 				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
@@ -704,7 +689,6 @@
 				C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */,
 				C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */,
 				C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */,
-				C6B2CC3D28517B71008C979C /* ImagePicker.swift in Sources */,
 				C664A943279DC8CA00EE2195 /* SettingsViewModel.swift in Sources */,
 				C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */,
 			);
@@ -980,14 +964,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework";
@@ -999,11 +975,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C67B521C2831FFDA00C99356 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C67B521B2831FFDA00C99356 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		C68961702831AA26008A0C87 /* OneSignal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;

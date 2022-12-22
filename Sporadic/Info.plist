@@ -55,6 +55,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to load profile pictures.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lexend-SemiBold.ttf</string>

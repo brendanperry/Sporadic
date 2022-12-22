@@ -30,8 +30,11 @@ struct JoinGroup: View {
                 TextHelper.text(key: viewModel.group?.name ?? "", alignment: .center, type: .h1)
                 
                 VStack {
-                    TextHelper.text(key: "You've been invited to join a group!", alignment: .center, type: .h2)
-                    TextHelper.text(key: "Would you like to join?", alignment: .center, type: .h2)
+                    VStack {
+                        TextHelper.text(key: "You've been invited to join a group!", alignment: .center, type: .h2)
+                        TextHelper.text(key: "Would you like to join?", alignment: .center, type: .h2)
+                    }
+                    .padding(.top)
                     
                     HStack {
                         Spacer()
@@ -39,9 +42,8 @@ struct JoinGroup: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            TextHelper.text(key: "Don't Join", alignment: .center, type: .h2)
+                            TextHelper.text(key: "Don't Join", alignment: .center, type: .h2, color: .white)
                                 .padding()
-                                .frame(width: 150, height: 40, alignment: .leading)
                                 .background(Color("Delete"))
                                 .cornerRadius(16)
                         })
@@ -59,7 +61,6 @@ struct JoinGroup: View {
                         }, label: {
                             TextHelper.text(key: "Join Group", alignment: .center, type: .h2, color: .white)
                                 .padding()
-                                .frame(width: 150, height: 40, alignment: .leading)
                                 .background(Color("Primary"))
                                 .cornerRadius(16)
                         })
@@ -69,7 +70,8 @@ struct JoinGroup: View {
                         Spacer()
                     }
                 }
-                .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: 3))
+                .background(Color("Panel"))
+                .cornerRadius(16)
                 .padding()
                 
                 // oof

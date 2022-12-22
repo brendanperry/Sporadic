@@ -13,7 +13,7 @@ import CloudKit
 class HomeViewModel : ObservableObject {
     @Published var challenges = [Challenge]()
     @Published var groups = [UserGroup]()
-    @Published var user = User(recordId: CKRecord(recordType: "User").recordID, usersRecordId: "", name: "challenger", photo: nil)
+    @Published var user = User(record: CKRecord(recordType: "User"), usersRecordId: "", name: "challenger", photo: nil, groups: [])
     @Published var loadingStatus = LoadingStatus.loaded
     @Published var isUserLoading = true
     @Published var areChallengesLoading = true
@@ -90,22 +90,20 @@ class HomeViewModel : ObservableObject {
             self?.loadingStatus = .loading
         }
         
-        do {
-            let newGroups = try await cloudKitHelper.getGroupsForUser()
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.groups = newGroups ?? []
-                self?.loadingStatus = .loaded
-                self?.areGroupsLoading = false
+        cloudKitHelper.getGroupsForUser { groups in
+            if let groups = groups {
+                DispatchQueue.main.async {
+                    self.groups = groups
+                    self.loadingStatus = .loaded
+                    self.areGroupsLoading = false
+                }
             }
-        }
-        catch {
-            DispatchQueue.main.async { [weak self] in
-                self?.loadingStatus = .failed
-                self?.areGroupsLoading = false
+            else {
+                DispatchQueue.main.async {
+                    self.loadingStatus = .failed
+                    self.areGroupsLoading = false
+                }
             }
-            
-            print(error)
         }
     }
 }
