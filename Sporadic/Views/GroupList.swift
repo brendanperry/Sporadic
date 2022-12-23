@@ -13,7 +13,7 @@ struct GroupList: View {
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     @State var isActive = false
     let isLoading: Bool
-    let reloadAction: (Bool) -> Void
+    let reloadAction: () -> Void
     
     @EnvironmentObject var viewRouter: ViewRouter
     
@@ -25,7 +25,7 @@ struct GroupList: View {
                     .foregroundColor(Color("Header"))
                     .frame(width: 50, alignment: .leading)
                 
-                if isLoading {
+                if isLoading && !groups.isEmpty {
                     ProgressView()
                 }
                 
@@ -34,21 +34,26 @@ struct GroupList: View {
             .padding(.horizontal)
             
             LazyVGrid(columns: items, spacing: 0) {
-                ForEach(groups) { group in
-                    NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group), reloadAction: reloadAction)) {
-                        GroupWidget(group: group)
-                    }
-                    .buttonStyle(ButtonPressAnimationStyle())
+                if isLoading && groups.isEmpty {
+                    GroupLoadingWidget()
                 }
-                
-                AddNewGroup(reloadAction: reloadAction)
+                else {
+                    ForEach(groups) { group in
+                        NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group), reloadAction: reloadAction)) {
+                            GroupWidget(group: group)
+                        }
+                        .buttonStyle(ButtonPressAnimationStyle())
+                    }
+                    
+                    AddNewGroup(reloadAction: reloadAction)
+                }
             }
         }
     }
 }
 
 struct AddNewGroup: View {
-    let reloadAction: (Bool) -> Void
+    let reloadAction: () -> Void
 
     var body: some View {
         NavigationLink(destination: CreateGroupView(reloadAction: reloadAction)) {
@@ -57,6 +62,27 @@ struct AddNewGroup: View {
                 .frame(width: 50, height: 50, alignment: .center)
         }
         .buttonStyle(ButtonPressAnimationStyle())
+        .cornerRadius(10)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .aspectRatio(1, contentMode: .fit)
+        .shadow(radius: 3)
+        .padding()
+    }
+}
+
+struct GroupLoadingWidget: View {
+    @State var isAnimating = false
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Circle()
+                .foregroundColor(GroupBackgroundColor.six.getColor())
+                .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 75, alignment: .leading)
+                .padding([.horizontal, .top])
+            
+            LoadingBar()
+        }
+        .background(Color("Panel"))
         .cornerRadius(10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .aspectRatio(1, contentMode: .fit)

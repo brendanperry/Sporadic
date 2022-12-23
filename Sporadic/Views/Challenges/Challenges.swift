@@ -10,6 +10,7 @@ import CloudKit
 
 struct Challenges: View {
     let challenges: [Challenge]
+    let isLoading: Bool
     
     var body: some View {
         VStack {
@@ -17,16 +18,43 @@ struct Challenges: View {
                 .padding(.horizontal)
             
             VStack {
-                ForEach(challenges) { challenge in
-                    NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
-                        ChallengeView(challenge: challenge, showNavigationCarrot: true)
+                if isLoading && challenges.isEmpty {
+                    ChallengeLoading()
+                }
+                else {
+                    ForEach(challenges) { challenge in
+                        NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
+                            ChallengeView(challenge: challenge, showNavigationCarrot: true)
+                        }
+                        .buttonStyle(ButtonPressAnimationStyle())
                     }
-                    .buttonStyle(ButtonPressAnimationStyle())
                 }
                 
                 Spacer()
             }
         }
+    }
+}
+
+struct ChallengeLoading: View {
+    @State var isAnimating = false
+    
+    var body: some View {
+        HStack {
+            Circle()
+                .foregroundColor(.white)
+                .frame(width: 35, alignment: .center)
+                .padding(.trailing, 5)
+            
+            LoadingBar()
+        }
+        .padding()
+        .frame(height: 75, alignment: .center)
+        .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
+        .cornerRadius(10)
+        .shadow(radius: 3)
+        .padding(.horizontal)
+        .padding(.top, 5)
     }
 }
 

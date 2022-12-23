@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var homeViewModel = HomeViewModel(cloudKitHelper: CloudKitHelper.shared)
+    @StateObject var homeViewModel = HomeViewModel()
     @StateObject var viewRouter = ViewRouter()
     @State var showJoinGroup = false
     @State var groupId = ""

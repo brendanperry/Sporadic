@@ -14,34 +14,39 @@ class HomeViewModel : ObservableObject {
     @Published var challenges = [Challenge]()
     @Published var groups = [UserGroup]()
     @Published var user = User(record: CKRecord(recordType: "User"), usersRecordId: "", name: "challenger", photo: nil, groups: [])
-    @Published var loadingStatus = LoadingStatus.loaded
     @Published var isUserLoading = true
     @Published var areChallengesLoading = true
     @Published var areGroupsLoading = true
     
-    let cloudKitHelper: CloudKitHelper
+    var timer = Timer()
     
-    init(cloudKitHelper: CloudKitHelper) {
-        self.cloudKitHelper = cloudKitHelper
-        
+    init() {
         DispatchQueue.global(qos: .userInitiated).async {
-            self.loadData(forceSync: false)
+            self.loadData()
         }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { _ in
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.loadData()
+            }
+        })
     }
     
-    func loadData(forceSync: Bool) {
+    func loadData() {
         Task {
-            await getUser()
+            if !CloudKitHelper.shared.hasUser() {
+                await getUser()
+            }
             
-            async let challenges: () = getChallenges(forceSync: forceSync)
-            async let groups: () = getGroups(forceSync: forceSync)
+            async let challenges: () = getChallenges()
+            async let groups: () = getGroups()
             
             let _ = await (challenges, groups)
         }
     }
     
     func getUser() async {
-        if let user = try? await cloudKitHelper.getCurrentUser(forceSync: true) {
+        if let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: true) {
             DispatchQueue.main.async {
                 self.user = user
                 self.isUserLoading = false
@@ -49,9 +54,9 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    func getChallenges(forceSync: Bool = false) async {
+    func getChallenges() async {
         do {
-            let challenges = try await cloudKitHelper.getChallengesForUser() ?? []
+            let challenges = try await CloudKitHelper.shared.getChallengesForUser(currentChallenges: challenges) ?? []
             
             DispatchQueue.main.async {
                 self.challenges = challenges
@@ -63,21 +68,60 @@ class HomeViewModel : ObservableObject {
         }
     }
     
+    For Friday: add dummy loading indicator to group activities, this may suck because we will have to manually track when they have been loaded since we h
+    can't save them as null before hand
+    
+    Then you need to let people complete challenges and poll for updates on that as well
+    
+    func loadGroupData() {
+        DispatchQueue.concurrentPerform(iterations: groups.count) { index in
+            Task {
+                async let users: () = getUsersForGroup(group: groups[index])
+                async let activities: () = getActivitiesForGroup(group: groups[index])
+                
+                let _ = await [users, activities]
+            }
+        }
+    }
+    
+    func getActivitiesForGroup(group: UserGroup) async {
+        do {
+            group.activities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
+        }
+        catch {
+            print(error)
+        }
+    }
+    
+    func getUsersForGroup(group: UserGroup) async {
+        do {
+            group.users = try await CloudKitHelper.shared.getUsersForGroup(group: group) ?? []
+        }
+        catch {
+            print(error)
+        }
+    }
+    
     func loadChallengeData() {
+        // TODO: split this up because we will want to constantly check for new people to have completed challenges
+        if challenges.allSatisfy({ $0.activity != nil && $0.group != nil && !$0.users.isEmpty }) {
+            return
+        }
+        
         DispatchQueue.concurrentPerform(iterations: challenges.count) { index in
-            cloudKitHelper.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
+            CloudKitHelper.shared.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
                 DispatchQueue.main.async {
                     self?.challenges[index].activity = activity
                 }
             }
             
-            cloudKitHelper.getGroupFromChallenge(challenge: challenges[index]) { [weak self] group in
+            CloudKitHelper.shared.getGroupFromChallenge(challenge: challenges[index]) { [weak self] group in
                 DispatchQueue.main.async {
                     self?.challenges[index].group = group
                 }
             }
             
-            cloudKitHelper.getUsersFromChallenge(challenge: challenges[index]) { [weak self] users in
+            CloudKitHelper.shared.getUsersFromChallenge(challenge: challenges[index]) { [weak self] users in
                 DispatchQueue.main.async {
                     self?.challenges[index].users = users
                 }
@@ -85,23 +129,13 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    func getGroups(forceSync: Bool = false) async {
-        DispatchQueue.main.async { [weak self] in
-            self?.loadingStatus = .loading
-        }
-        
-        cloudKitHelper.getGroupsForUser { groups in
+    func getGroups() {
+        CloudKitHelper.shared.getGroupsForUser(currentGroups: groups) { [weak self] groups in
             if let groups = groups {
                 DispatchQueue.main.async {
-                    self.groups = groups
-                    self.loadingStatus = .loaded
-                    self.areGroupsLoading = false
-                }
-            }
-            else {
-                DispatchQueue.main.async {
-                    self.loadingStatus = .failed
-                    self.areGroupsLoading = false
+                    self?.groups = groups
+                    self?.areGroupsLoading = false
+                    self?.loadGroupData()
                 }
             }
         }

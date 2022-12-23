@@ -29,26 +29,13 @@ struct HomePage: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    PullToRefresh(coordinateSpaceName: "HomePage") {
-                        viewModel.loadData(forceSync: true)
-                    }
-                    
                     VStack(spacing: 35) {
                         Welcome(viewModel: viewModel)
                     
-                        Challenges(challenges: viewModel.challenges)
+                        Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading)
                         
-                        switch viewModel.loadingStatus {
-                        case .loaded:
-                            GroupList(groups: viewModel.groups, isLoading: false) { forceReload in
-                                viewModel.loadData(forceSync: forceReload)
-                            }
-                        case .loading:
-                            GroupList(groups: viewModel.groups, isLoading: true) { forceReload in
-                                viewModel.loadData(forceSync: forceReload)
-                            }
-                        case .failed:
-                            Text("Failed to load groups. Please try again.")
+                        GroupList(groups: viewModel.groups, isLoading: viewModel.areGroupsLoading) {
+                            viewModel.loadData()
                         }
                     }
                     .padding(.bottom, 100)

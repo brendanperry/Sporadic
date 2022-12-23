@@ -12,7 +12,7 @@ import Combine
 struct CreateGroupView: View {
     @ObservedObject var viewModel = CreateGroupViewModel()
     
-    let reloadAction: (Bool) -> Void
+    let reloadAction: () -> Void
     
     var body: some View {
         ZStack {
@@ -60,14 +60,14 @@ struct CreateGroupView: View {
     struct CreateButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         let viewModel: CreateGroupViewModel
-        let reloadAction: (Bool) -> Void
+        let reloadAction: () -> Void
         
         var body: some View {
             Button(action: {
                 viewModel.createGroup { wasSuccessful in
                     if wasSuccessful {
                         DispatchQueue.main.async {
-                            reloadAction(false)
+                            reloadAction()
                             presentationMode.wrappedValue.dismiss()
                         }
                     }

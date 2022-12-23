@@ -63,6 +63,10 @@ class CloudKitHelper {
         return nil
     }
     
+    func hasUser() -> Bool {
+        return cachedUser != nil
+    }
+    
     func createNewUser(usersRecordId: String) async throws -> User? {
         let record = CKRecord(recordType: "User")
         
@@ -140,32 +144,42 @@ class CloudKitHelper {
         }
     }
     
-    func getGroupsForUser(completion: @escaping ([UserGroup]?) -> Void) {
+    func getGroupsForUser(currentGroups: [UserGroup], completion: @escaping ([UserGroup]?) -> Void) {
         guard let user = cachedUser else {
             completion(nil)
             return
         }
         
+        let currentGroupIds = currentGroups.map { $0.record.recordID }
         let groupIds = user.groups.map { $0.recordID }
         
         let predicate = NSPredicate(format: "recordID in %@", groupIds)
         let query = CKQuery(recordType: "Group", predicate: predicate)
         
-        database.fetch(withQuery: query) { result in
+        database.fetch(withQuery: query) { [weak self] result in
             switch result {
             case .success(let (matches,_)):
-                var groups = [UserGroup]()
+                var groupsToAdd = [UserGroup]()
                 
                 for match in matches {
                     switch match.1 {
                     case .success(let record):
+                        if currentGroupIds.contains(where: { $0 == record.recordID }) {
+                           continue
+                        }
+                        
                         if let group = UserGroup.init(from: record) {
-                            groups.append(group)
+                            groupsToAdd.append(group)
                         }
                     case .failure(_):
                         completion(nil)
                     }
                 }
+                
+                var groups = currentGroups
+                groups.append(contentsOf: groupsToAdd)
+                
+                self?.currentGroups = groups
                 
                 completion(groups)
             case .failure(_):
@@ -211,7 +225,7 @@ class CloudKitHelper {
         return records.compactMap { Activity.init(from: $0) }
     }
         
-    func getChallengesForUser() async throws -> [Challenge]? {
+    func getChallengesForUser(currentChallenges: [Challenge]) async throws -> [Challenge]? {
         if let user = try await getCurrentUser(forceSync: false) {
             let predicate = NSPredicate(format: "users CONTAINS %@", user.record)
 
@@ -219,10 +233,26 @@ class CloudKitHelper {
 
             let result = try await database.records(matching: query)
             let records = try result.matchResults.map { try $0.1.get() }
-
-            return records
-                    .compactMap({ Challenge.init(from: $0) })
-                    .sorted(by: { $0.startTime > $1.startTime })
+            
+            let newChallenges = records
+                .compactMap({ Challenge.init(from: $0) })
+                .sorted(by: { $0.startTime > $1.startTime })
+            
+            if currentChallenges.elementsEqual(newChallenges, by: { $0.recordId == $1.recordId }) {
+                return currentChallenges
+            }
+            else {
+                var challenges = currentChallenges
+                let currentIds = currentChallenges.map { $0.recordId }
+                
+                for challenge in newChallenges {
+                    if !currentIds.contains(challenge.recordId) {
+                        challenges.append(challenge)
+                    }
+                }
+                
+                return challenges
+            }
         }
 
         return nil
@@ -286,7 +316,6 @@ class CloudKitHelper {
     }
     
     func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
-        // TODO: Remove this call
         database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
             if let error = error {
                 print(error)

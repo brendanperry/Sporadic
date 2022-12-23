@@ -28,6 +28,7 @@
 		C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2228E29FFA0096E002 /* GroupName.swift */; };
 		C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2428E2A0030096E002 /* EmojiSelector.swift */; };
 		C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2628E2A00D0096E002 /* GroupColor.swift */; };
+		C640EEF82954FDEF00C4058B /* LoadingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640EEF72954FDEF00C4058B /* LoadingBar.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
@@ -65,7 +66,6 @@
 		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
-		C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
 		C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */; };
 		C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */; };
@@ -125,6 +125,7 @@
 		C6401E2228E29FFA0096E002 /* GroupName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupName.swift; sourceTree = "<group>"; };
 		C6401E2428E2A0030096E002 /* EmojiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelector.swift; sourceTree = "<group>"; };
 		C6401E2628E2A00D0096E002 /* GroupColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupColor.swift; sourceTree = "<group>"; };
+		C640EEF72954FDEF00C4058B /* LoadingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBar.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
 		C65A01FF26870098007A5B2F /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
@@ -163,7 +164,6 @@
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefresh.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysAndTime.swift; sourceTree = "<group>"; };
 		C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
@@ -292,7 +292,6 @@
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
-				C6B0D6C328735BDD00EC6EE2 /* PullToRefresh.swift */,
 				C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */,
 				C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */,
 			);
@@ -374,6 +373,7 @@
 				C6401E2228E29FFA0096E002 /* GroupName.swift */,
 				C6401E2428E2A0030096E002 /* EmojiSelector.swift */,
 				C6401E2628E2A00D0096E002 /* GroupColor.swift */,
+				C640EEF72954FDEF00C4058B /* LoadingBar.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -666,13 +666,13 @@
 				C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C68378C72844152C00ABB6B3 /* User.swift in Sources */,
+				C640EEF82954FDEF00C4058B /* LoadingBar.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
 				C6C96014278F9F3C00A67AA2 /* AddCustomActivityPage.swift in Sources */,
 				C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */,
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
-				C6B0D6C428735BDE00EC6EE2 /* PullToRefresh.swift in Sources */,
 				C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */,
 				C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,

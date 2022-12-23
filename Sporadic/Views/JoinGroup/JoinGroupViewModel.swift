@@ -36,7 +36,7 @@ class JoinGroupViewModel: ObservableObject {
                         self?.showError = true
                     }
                     else {
-                        self?.homeViewModel.loadData(forceSync: true)
+                        self?.homeViewModel.loadData()
                         completion(true)
                     }
                     

@@ -19,8 +19,9 @@ struct Challenge: Identifiable {
     var users = [User]()
     let groupRecord: CKRecord.Reference
     var group: UserGroup? = nil
+    let recordId: CKRecord.ID
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
@@ -28,6 +29,7 @@ struct Challenge: Identifiable {
         self.isCompleted = isCompleted
         self.userRecords = userRecords
         self.groupRecord = groupRecord
+        self.recordId = recordId
     }
 }
 
@@ -48,7 +50,7 @@ extension Challenge {
             return nil
         }
         
-        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group)
+        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group, recordId: record.recordID)
     }
     
     func getStatus() -> ChallengeStatus {

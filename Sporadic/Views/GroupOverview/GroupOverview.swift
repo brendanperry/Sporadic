@@ -11,15 +11,15 @@ struct GroupOverview: View {
     @ObservedObject var viewModel: GroupOverviewViewModel
     
     let textHelper = TextHelper()
-    let reloadAction: (Bool) -> Void
+    let reloadAction: () -> Void
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
     @Environment(\.dismiss) var dismiss
-
     
-    init(viewModel: GroupOverviewViewModel, reloadAction: @escaping (Bool) -> Void) {
+    
+    init(viewModel: GroupOverviewViewModel, reloadAction: @escaping () -> Void) {
         self.viewModel = viewModel
         self.reloadAction = reloadAction
     }
@@ -41,7 +41,7 @@ struct GroupOverview: View {
                         
                         DaysForChallenges(availableDays: $viewModel.group.displayedDays)
                         
-                        UsersInGroup(users: viewModel.users, group: viewModel.group)
+                        UsersInGroup(users: viewModel.group.users, group: viewModel.group)
                             .alert(isPresented: $viewModel.showError) {
                                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                             }
@@ -179,8 +179,8 @@ struct YourActivities: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach($viewModel.activities) { activity in
-                        NavigationLink(destination: EditActivity(activityList: $viewModel.activities, activity: activity)) {
+                    ForEach($viewModel.group.activities) { activity in
+                        NavigationLink(destination: EditActivity(activityList: $viewModel.group.activities, activity: activity)) {
                             VStack(spacing: 0) {
                                 ZStack {
                                     Circle()
@@ -213,7 +213,7 @@ struct YourActivities: View {
                     }
                     .padding(.vertical, 1)
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.activities, showEditMenu: true), label: {
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.group.activities, showEditMenu: true), label: {
                         Image("Custom Plus")
                             .resizable()
                             .frame(width: 20, height: 20, alignment: .center)
@@ -239,7 +239,7 @@ struct DeleteButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showDeleteConfirmation = false
     let viewModel: GroupOverviewViewModel
-    let reloadAction: (Bool) -> Void
+    let reloadAction: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -264,7 +264,7 @@ struct DeleteButton: View {
                       secondaryButton: .destructive(Text("Delete")) {
                     viewModel.deleteGroup() { didFinishSuccessfully in
                         if didFinishSuccessfully {
-                            reloadAction(false)
+                            reloadAction()
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
@@ -277,10 +277,10 @@ struct DeleteButton: View {
 }
 
 struct UsersInGroup: View {
-    let users: [User]
+    let users: [User]?
     let group: UserGroup
     
-    init(users: [User], group: UserGroup) {
+    init(users: [User]?, group: UserGroup) {
         self.users = users
         self.group = group
         
@@ -292,31 +292,32 @@ struct UsersInGroup: View {
             TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
             
             VStack(spacing: 0) {
-                if users.isEmpty {
+                if let users = users {
+                    ForEach(users) { user in
+                        HStack {
+                            Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50, alignment: .leading)
+                                .cornerRadius(100)
+                                .shadow(radius: 3)
+                            
+                            TextHelper.text(key: user.name, alignment: .leading, type: .h2)
+                        }
+                    }
+                    .padding(12)
+                }
+                else {
                     HStack {
                         Circle()
                             .frame(width: 50, height: 50, alignment: .leading)
                             .foregroundColor(.white)
                             .shadow(radius: 3)
                         
-                        TextHelper.text(key: "", alignment: .leading, type: .h2)
+                        LoadingBar()
                     }
                     .padding(12)
                 }
-                
-                ForEach(users) { user in
-                    HStack {
-                        Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50, alignment: .leading)
-                            .cornerRadius(100)
-                            .shadow(radius: 3)
-                        
-                        TextHelper.text(key: user.name, alignment: .leading, type: .h2)
-                    }
-                }
-                .padding(12)
                 
                 ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
                     TextHelper.text(key: "Invite New Members", alignment: .center, type: .h2, color: .white)
@@ -325,7 +326,7 @@ struct UsersInGroup: View {
                         .cornerRadius(16)
                         .padding()
                 })
-                    .buttonStyle(ButtonPressAnimationStyle())
+                .buttonStyle(ButtonPressAnimationStyle())
             }
             .padding(12)
             .background(Color("Panel"))
