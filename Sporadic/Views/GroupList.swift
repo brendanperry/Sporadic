@@ -81,6 +81,8 @@ struct GroupLoadingWidget: View {
                 .padding([.horizontal, .top])
             
             LoadingBar()
+                .frame(height: 20)
+                .padding()
         }
         .background(Color("Panel"))
         .cornerRadius(10)

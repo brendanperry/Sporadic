@@ -20,6 +20,8 @@ class UserGroup: Identifiable {
     var record: CKRecord
     var activities = [Activity]()
     var users = [User]()
+    var areActivitiesLoading = true
+    var areUsersLoading = true
     
     init(activities: [CKRecord.Reference]?, challenges: [CKRecord.Reference]?, displayedDays: [Int], daysPerWeek: Int, deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, users: [CKRecord.Reference]?, record: CKRecord) {
         self.displayedDays = displayedDays

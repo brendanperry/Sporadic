@@ -47,25 +47,38 @@ struct ChallengeDetail: View {
                 
                 ScrollView(.vertical) {
                     VStack(spacing: 0) {
-                        ForEach(users) { user in
+                        if users.isEmpty {
                             HStack {
-                                Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
+                                Circle()
                                     .frame(width: 50, height: 50, alignment: .leading)
+                                    .foregroundColor(Color.gray)
                                     .cornerRadius(100)
                                 
-                                VStack {
-                                    TextHelper.text(key: user.name, alignment: .leading, type: .h2)
-                                    TextHelper.text(key: "NotCompleted", alignment: .leading, type: .challengeGroup)
+                                LoadingBar()
+                                    .frame(height: 20)
+                            }
+                            .padding()
+                        }
+                        else {
+                            ForEach(users) { user in
+                                HStack {
+                                    Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 50, height: 50, alignment: .leading)
+                                        .cornerRadius(100)
+                                    
+                                    VStack {
+                                        TextHelper.text(key: user.name, alignment: .leading, type: .h2)
+                                        TextHelper.text(key: "NotCompleted", alignment: .leading, type: .challengeGroup)
+                                    }
                                 }
+                                .padding()
                             }
                         }
-                        .padding(12)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: 250)
-                .padding(12)
                 .background(Color("Panel"))
                 .cornerRadius(16)
             }

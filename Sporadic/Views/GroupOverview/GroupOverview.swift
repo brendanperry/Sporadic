@@ -41,7 +41,7 @@ struct GroupOverview: View {
                         
                         DaysForChallenges(availableDays: $viewModel.group.displayedDays)
                         
-                        UsersInGroup(users: viewModel.group.users, group: viewModel.group)
+                        UsersInGroup(viewModel: viewModel)
                             .alert(isPresented: $viewModel.showError) {
                                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                             }
@@ -179,39 +179,59 @@ struct YourActivities: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach($viewModel.group.activities) { activity in
-                        NavigationLink(destination: EditActivity(activityList: $viewModel.group.activities, activity: activity)) {
-                            VStack(spacing: 0) {
-                                ZStack {
-                                    Circle()
-                                        .frame(width: 50, height: 50, alignment: .center)
-                                        .foregroundColor(.white)
-                                    
-                                    Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30, alignment: .center)
-                                }
-                                
-                                TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
-                                    .padding(.bottom)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
-                                    .frame(width: 60)
-                                    .opacity(0.75)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
-                                    .opacity(0.75)
-                            }
-                            .padding(.horizontal, 25)
-                            .padding(.vertical, 10)
-                            .background(Color.purple)
-                            .cornerRadius(16)
-                            .shadow(radius: 3)
-                            .padding(.leading)
+                    if viewModel.group.areActivitiesLoading {
+                        VStack(spacing: 0) {
+                            Circle()
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .foregroundColor(.white)
+                            
+                            LoadingBar()
+                                .frame(height: 15)
+                                .padding(.vertical)
                         }
+                        .frame(height: 125)
+                        .padding(.horizontal, 25)
+                        .padding(.vertical, 10)
+                        .background(Color.purple)
+                        .cornerRadius(16)
+                        .shadow(radius: 3)
+                        .padding(.leading)
                     }
-                    .padding(.vertical, 1)
+                    else {
+                        ForEach($viewModel.group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
+                            NavigationLink(destination: EditActivity(activityList: $viewModel.group.activities, activity: activity)) {
+                                VStack(spacing: 0) {
+                                    ZStack {
+                                        Circle()
+                                            .frame(width: 50, height: 50, alignment: .center)
+                                            .foregroundColor(.white)
+                                        
+                                        Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 30, height: 30, alignment: .center)
+                                    }
+                                    
+                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
+                                        .padding(.bottom)
+                                    
+                                    TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
+                                        .frame(width: 60)
+                                        .opacity(0.75)
+                                    
+                                    TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
+                                        .opacity(0.75)
+                                }
+                                .padding(.horizontal, 25)
+                                .padding(.vertical, 10)
+                                .background(Color.purple)
+                                .cornerRadius(16)
+                                .shadow(radius: 3)
+                                .padding(.leading)
+                            }
+                        }
+                        .padding(.vertical, 1)
+                    }
                     
                     NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.group.activities, showEditMenu: true), label: {
                         Image("Custom Plus")
@@ -277,23 +297,15 @@ struct DeleteButton: View {
 }
 
 struct UsersInGroup: View {
-    let users: [User]?
-    let group: UserGroup
-    
-    init(users: [User]?, group: UserGroup) {
-        self.users = users
-        self.group = group
-        
-        UITableView.appearance().backgroundColor = .clear
-    }
+    @ObservedObject var viewModel: GroupOverviewViewModel
     
     var body: some View {
         VStack {
             TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
             
             VStack(spacing: 0) {
-                if let users = users {
-                    ForEach(users) { user in
+                if !viewModel.group.areUsersLoading {
+                    ForEach(viewModel.group.users) { user in
                         HStack {
                             Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                 .resizable()
@@ -315,11 +327,12 @@ struct UsersInGroup: View {
                             .shadow(radius: 3)
                         
                         LoadingBar()
+                            .frame(height: 20)
                     }
                     .padding(12)
                 }
                 
-                ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
+                ShareLink(item: "https://sporadic.app/?group=\(viewModel.group.record.recordID.recordName)", message: Text("Join \(viewModel.group.name) on Sporadic!"), label: {
                     TextHelper.text(key: "Invite New Members", alignment: .center, type: .h2, color: .white)
                         .padding()
                         .background(Color("Primary"))

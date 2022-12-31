@@ -68,11 +68,6 @@ class HomeViewModel : ObservableObject {
         }
     }
     
-    For Friday: add dummy loading indicator to group activities, this may suck because we will have to manually track when they have been loaded since we h
-    can't save them as null before hand
-    
-    Then you need to let people complete challenges and poll for updates on that as well
-    
     func loadGroupData() {
         DispatchQueue.concurrentPerform(iterations: groups.count) { index in
             Task {
@@ -87,6 +82,7 @@ class HomeViewModel : ObservableObject {
     func getActivitiesForGroup(group: UserGroup) async {
         do {
             group.activities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
+            group.areActivitiesLoading = false
         }
         catch {
             print(error)
@@ -96,6 +92,7 @@ class HomeViewModel : ObservableObject {
     func getUsersForGroup(group: UserGroup) async {
         do {
             group.users = try await CloudKitHelper.shared.getUsersForGroup(group: group) ?? []
+            group.areUsersLoading = false
         }
         catch {
             print(error)

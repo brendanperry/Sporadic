@@ -47,6 +47,7 @@ struct ChallengeLoading: View {
                 .padding(.trailing, 5)
             
             LoadingBar()
+                .frame(height: 20)
         }
         .padding()
         .frame(height: 75, alignment: .center)

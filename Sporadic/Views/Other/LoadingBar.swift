@@ -14,10 +14,11 @@ struct LoadingBar: View {
         LinearGradient(colors: [Color("GroupOption3"), Color("GroupOption5")], startPoint: isAnimating ? .trailing : .leading, endPoint: .trailing)
             .mask {
                 RoundedRectangle(cornerRadius: 16)
-                    .padding()
-                    .frame(height: 50)
+                    .padding(1)
             }
             .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: isAnimating)
+            .rotationEffect(.degrees(180))
+            .padding(1)
             .onAppear {
                 withAnimation {
                     isAnimating = true
