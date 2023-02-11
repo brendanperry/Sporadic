@@ -22,7 +22,7 @@ struct HomePage: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Image("BackgroundImage")
                     .resizable()
@@ -34,9 +34,7 @@ struct HomePage: View {
                     
                         Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading)
                         
-                        GroupList(groups: viewModel.groups, isLoading: viewModel.areGroupsLoading) {
-                            viewModel.loadData()
-                        }
+                        GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading)
                     }
                     .padding(.bottom, 100)
                 }

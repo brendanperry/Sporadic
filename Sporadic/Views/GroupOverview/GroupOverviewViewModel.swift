@@ -6,38 +6,45 @@
 //
 
 import Foundation
+import SwiftUI
 
 class GroupOverviewViewModel: ObservableObject {
-    @Published var group: UserGroup
     @Published var emoji = "" {
         didSet {
             if !emoji.isSingleEmoji && !emoji.isEmpty {
                 emoji = oldValue
             }
-            
-            group.emoji = emoji
         }
     }
     @Published var errorMessage = ""
     @Published var showError = false
     @Published var isLoading = false
     @Published var itemsCompleted = 4
+    @Published var isOwner = true
+    @Published var toolbarColor = Color("Panel")
     
-    init(group: UserGroup) {
-        self.group = group
-        emoji = group.emoji
+    func updateToolbarColor(color: GroupBackgroundColor) {
+        toolbarColor = color.getColor()
     }
     
+    func checkOwnership(group: UserGroup) async {
+        if let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) {
+            DispatchQueue.main.async {
+                self.isOwner = user.record.recordID == group.owner.recordID
+            }
+        }
+    }
+        
     func getTodayAtTimeOf(date: Date) -> Date {
         let hour = Calendar.current.component(.hour, from: date)
         let minute = Calendar.current.component(.minute, from: date)
         return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
     }
     
-    func save(completion: @escaping (Bool) -> Void) {
+    func save(group: UserGroup, completion: @escaping (Bool) -> Void) {
         itemsCompleted = 0
         
-        saveGroup { [weak self] didComplete in
+        saveGroup(group: group) { [weak self] didComplete in
             if didComplete == false {
                 self?.isLoading = false
                 completion(false)
@@ -49,7 +56,7 @@ class GroupOverviewViewModel: ObservableObject {
             }
         }
         
-        updateEditedActivities { [weak self] didComplete in
+        updateEditedActivities(group: group) { [weak self] didComplete in
             if didComplete == false {
                 self?.isLoading = false
                 completion(false)
@@ -61,7 +68,7 @@ class GroupOverviewViewModel: ObservableObject {
             }
         }
         
-        createNewActivities { [weak self] didComplete in
+        createNewActivities(group: group) { [weak self] didComplete in
             if didComplete == false {
                 self?.isLoading = false
                 completion(false)
@@ -73,7 +80,7 @@ class GroupOverviewViewModel: ObservableObject {
             }
         }
         
-        deleteActivities { [weak self] didComplete in
+        deleteActivities(group: group) { [weak self] didComplete in
             if didComplete == false {
                 self?.isLoading = false
                 completion(false)
@@ -86,7 +93,7 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    func deleteGroup(completion: @escaping (Bool) -> Void) {
+    func deleteGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
         isLoading = true
         
         CloudKitHelper.shared.deleteGroup(recordId: group.record.recordID) { [weak self] error in
@@ -97,6 +104,8 @@ class GroupOverviewViewModel: ObservableObject {
                     completion(false)
                 }
                 else {
+                    print("Group deleted")
+                    group.wasDeleted = true
                     completion(true)
                 }
                 
@@ -105,7 +114,7 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    private func saveGroup(completion: @escaping (Bool) -> Void) {
+    private func saveGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
         CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
             if let error = error {
                 print(error)
@@ -122,7 +131,7 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    private func createNewActivities(completion: @escaping (Bool) -> Void) {
+    private func createNewActivities(group: UserGroup, completion: @escaping (Bool) -> Void) {
         let newActivities = group.activities.filter({ $0.isNew })
         if newActivities.isEmpty {
             completion(true)
@@ -130,29 +139,29 @@ class GroupOverviewViewModel: ObservableObject {
         }
         
         for activity in newActivities {
-            CloudKitHelper.shared.createActivity(groupRecordId: group.record.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] error in
-                if let _ = error {
+            CloudKitHelper.shared.createActivity(groupRecordId: group.record.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] result in
+                
+                switch result {
+                case .success(_):
+                    var activity = activity
+                    activity.isNew = false
+//
+//                    DispatchQueue.main.async {
+//                        self?.group.activities.removeAll(where: { $0.id == activity.id })
+//                        self?.group.activities.append(activity)
+//                    }
+                    
+                    completion(true)
+                case .failure(_):
                     self?.errorMessage = "Could not save activity. Please check your connection and try again."
                     self?.showError = true
                     completion(false)
                 }
-                else {
-                    var activity = activity
-                    activity.isNew = false
-                    
-                    DispatchQueue.main.async {
-                        self?.group.activities.removeAll(where: { $0.id == activity.id })
-                        self?.group.activities.append(activity)
-                    }
-                    
-                    completion(true)
-                }
             }
-            
         }
     }
     
-    private func updateEditedActivities(completion: @escaping (Bool) -> Void) {
+    private func updateEditedActivities(group: UserGroup, completion: @escaping (Bool) -> Void) {
         let editedActivities = group.activities.filter({ $0.wasEdited })
         if editedActivities.isEmpty {
             completion(true)
@@ -173,7 +182,7 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    private func deleteActivities(completion: @escaping (Bool) -> Void) {
+    private func deleteActivities(group: UserGroup, completion: @escaping (Bool) -> Void) {
         let deletedActivities = group.activities.filter({ $0.wasDeleted })
         
         if deletedActivities.isEmpty {

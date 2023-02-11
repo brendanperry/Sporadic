@@ -24,12 +24,12 @@ class HomeViewModel : ObservableObject {
         DispatchQueue.global(qos: .userInitiated).async {
             self.loadData()
         }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { _ in
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.loadData()
-            }
-        })
+//
+//        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { _ in
+//            DispatchQueue.global(qos: .userInitiated).async {
+//                self.loadData()
+//            }
+//        })
     }
     
     func loadData() {
@@ -38,10 +38,11 @@ class HomeViewModel : ObservableObject {
                 await getUser()
             }
             
+            async let user: () = getUser()
             async let challenges: () = getChallenges()
             async let groups: () = getGroups()
             
-            let _ = await (challenges, groups)
+            let _ = await (user, challenges, groups)
         }
     }
     

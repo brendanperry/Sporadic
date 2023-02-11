@@ -7,14 +7,14 @@
 
 import SwiftUI
 
+
 struct EditActivity: View {
-    @Binding var activityList: [Activity]
     @Binding var activity: Activity
     @Environment(\.isPresented) var isPresented
     @State var currentMin = 0.0
     @State var currentMax = 0.0
-    
-    let viewModel = AddActivityViewModel()
+
+    @StateObject var viewModel = AddActivityViewModel()
     
     var body: some View {
         ZStack {
@@ -26,17 +26,17 @@ struct EditActivity: View {
                 TextHelper.text(key: "EditYourActivity", alignment: .leading, type: .h1)
                     .padding(.horizontal)
                     .padding(.top, 50)
-                
+
                 TextHelper.text(key: "AddToGroup", alignment: .leading, type: .h2)
                     .padding([.leading, .top])
-                
+
                 TextHelper.text(key: "SetTheRangeForYourActivity", alignment: .leading, type: .h2)
                     .padding(.horizontal)
                 
                 RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
                     .padding([.horizontal, .bottom])
-                
-                DeleteButton(activityList: $activityList, activity: $activity)
+
+                DeleteButton(activity: $activity)
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -58,12 +58,14 @@ struct EditActivity: View {
                 }
             }
         }
+        .alert(isPresented: $viewModel.showError) {
+            Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+        }
     }
     
     struct DeleteButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         @State var showDeleteConfirmation = false
-        @Binding var activityList: [Activity]
         @Binding var activity: Activity
         
         var body: some View {
@@ -129,7 +131,7 @@ struct EditActivity: View {
                     
                     TextHelper.text(key: "-", alignment: .center, type: .h2)
                 }
-                
+
                 RangeSlider(
                     lineHeight: 13,
                     lineWidth: UIScreen.main.bounds.width - 100,

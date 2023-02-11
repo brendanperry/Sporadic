@@ -67,7 +67,7 @@
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
-		C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */; };
+		C6B0D6C8287B7E8D00EC6EE2 /* StreakAndTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */; };
 		C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */; };
 		C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */; };
 		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
@@ -165,7 +165,7 @@
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
-		C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysAndTime.swift; sourceTree = "<group>"; };
+		C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakAndTime.swift; sourceTree = "<group>"; };
 		C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
 		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
-				C6B0D6C7287B7E8C00EC6EE2 /* DaysAndTime.swift */,
+				C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */,
 				C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */,
 			);
 			path = Views;
@@ -654,7 +654,7 @@
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
-				C6B0D6C8287B7E8D00EC6EE2 /* DaysAndTime.swift in Sources */,
+				C6B0D6C8287B7E8D00EC6EE2 /* StreakAndTime.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */,
 				C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */,

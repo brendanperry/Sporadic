@@ -1,5 +1,5 @@
 //
-//  DaysAndTime.swift
+//  StreakAndTime.swift
 //  Sporadic
 //
 //  Created by Brendan Perry on 7/10/22.
@@ -7,43 +7,32 @@
 
 import SwiftUI
 
-struct DaysAndTime: View {
+struct StreakAndTime: View {
     let dateHelper = DateHelper()
+    let isOwner: Bool
     
-    @Binding var days: Int
     @Binding var time: Date
     @State var isPresented = false
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "ChallengeSettings", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Challenges", alignment: .leading, type: .h2)
             
             HStack(spacing: 25) {
                 Group {
                     VStack {
-                        Text(Localize.getString("ChallengesPerWeek"))
+                        Text("Streak")
                             .font(Font.custom("Lexend-Regular", size: 16, relativeTo: .title2))
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color("Body"))
                         
-                        ZStack {
-                            Picker(selection: $days, label: EmptyView()) {
-                                ForEach(1...7, id: \.self) { number in
-                                    Text(String(number))
-                                }
-                            }
-                            .frame(width: 125, height: 40, alignment: .center)
-                            .scaleEffect(3)
-                            .labelsHidden()
-                            
-                            Text("\(days)")
-                                .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2))
-                                .frame(width: 200, height: 50, alignment: .center)
-                                .background(Color("Panel"))
-                                .userInteractionDisabled()
-                        }
+                        Text("0")
+                            .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2))
+                            .frame(width: 200, height: 50, alignment: .center)
+                            .background(Color("Panel"))
+                            .userInteractionDisabled()
                     }
                     VStack {
                         Text(Localize.getString("DeliveryTime"))
@@ -56,6 +45,7 @@ struct DaysAndTime: View {
                                 .labelsHidden()
                                 .frame(width: 125)
                                 .scaleEffect(1.6)
+                                .disabled(!isOwner)
                                 .onAppear {
                                     UIDatePicker.appearance().minuteInterval = 15
                                 }

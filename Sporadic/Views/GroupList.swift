@@ -9,13 +9,10 @@ import SwiftUI
 import CloudKit
 
 struct GroupList: View {
-    let groups: [UserGroup]
+    @Binding var groups: [UserGroup]
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     @State var isActive = false
     let isLoading: Bool
-    let reloadAction: () -> Void
-    
-    @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         VStack(spacing: 0) {
@@ -38,14 +35,14 @@ struct GroupList: View {
                     GroupLoadingWidget()
                 }
                 else {
-                    ForEach(groups) { group in
-                        NavigationLink(destination: GroupOverview(viewModel: GroupOverviewViewModel(group: group), reloadAction: reloadAction)) {
-                            GroupWidget(group: group)
+                    ForEach($groups) { group in
+                        NavigationLink(destination: GroupOverview(group: group)) {
+                            GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
                     
-                    AddNewGroup(reloadAction: reloadAction)
+                    AddNewGroup()
                 }
             }
         }
@@ -53,10 +50,8 @@ struct GroupList: View {
 }
 
 struct AddNewGroup: View {
-    let reloadAction: () -> Void
-
     var body: some View {
-        NavigationLink(destination: CreateGroupView(reloadAction: reloadAction)) {
+        NavigationLink(destination: CreateGroupView()) {
             Image("Add Activity Icon Circle")
                 .resizable()
                 .frame(width: 50, height: 50, alignment: .center)
@@ -95,7 +90,6 @@ struct GroupLoadingWidget: View {
 
 struct GroupWidget: View {
     let group: UserGroup
-    @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         VStack(alignment: .leading) {

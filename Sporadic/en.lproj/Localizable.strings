@@ -67,8 +67,8 @@
 "ChallengesPerWeek" = "Weekly Challenges";
 "DeliveryTime" = "Delivery Time";
 "ChallengeSettings" = "Challenge Settings";
-"PotentialDays" = "Potential days to receive a challenge";
-"PeopleInGroup" = "People In Group";
+"DaysToGetChallenge" = "Days to receive a challenge";
+"PeopleInGroup" = "Members";
 "DeletingGroups" = "Deleting Groups Can't Be Undone";
 "DeleteGroup" = "Delete Group";
 "CompleteYourChallenge" = "Complete Your Challenge";

@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct AddCustomActivityPage: View {
-    @ObservedObject var viewModel = AddActivityViewModel()
+    @StateObject var viewModel = AddActivityViewModel()
     @Binding var activities: [Activity]
     @State var showNetworkError = false
     @State var showNameError = false

@@ -130,7 +130,7 @@ struct HomeIcon: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 25, height: 25, alignment: .center)
-                .offset(y: isOn ? -2 : 0)
+                .scaleEffect(isOn ? 1.1 : 1)
         }
         .onTapGesture {
             viewRouter.navigateTo(.home)

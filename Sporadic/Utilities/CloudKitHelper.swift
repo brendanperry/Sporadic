@@ -67,6 +67,10 @@ class CloudKitHelper {
         return cachedUser != nil
     }
     
+    func getCachedUser() -> User? {
+        return cachedUser
+    }
+    
     func createNewUser(usersRecordId: String) async throws -> User? {
         let record = CKRecord(recordType: "User")
         
@@ -150,7 +154,6 @@ class CloudKitHelper {
             return
         }
         
-        let currentGroupIds = currentGroups.map { $0.record.recordID }
         let groupIds = user.groups.map { $0.recordID }
         
         let predicate = NSPredicate(format: "recordID in %@", groupIds)
@@ -164,10 +167,6 @@ class CloudKitHelper {
                 for match in matches {
                     switch match.1 {
                     case .success(let record):
-                        if currentGroupIds.contains(where: { $0 == record.recordID }) {
-                           continue
-                        }
-                        
                         if let group = UserGroup.init(from: record) {
                             groupsToAdd.append(group)
                         }
@@ -176,12 +175,9 @@ class CloudKitHelper {
                     }
                 }
                 
-                var groups = currentGroups
-                groups.append(contentsOf: groupsToAdd)
+                self?.currentGroups = groupsToAdd
                 
-                self?.currentGroups = groups
-                
-                completion(groups)
+                completion(groupsToAdd)
             case .failure(_):
                 completion(nil)
             }
@@ -262,7 +258,7 @@ class CloudKitHelper {
         database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
             if let error = error {
                 if error.localizedDescription.contains("not found") {
-                    let group = UserGroup(activities: nil, challenges: nil, displayedDays: [], daysPerWeek: 0, deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", users: nil, record: CKRecord(recordType: "Group"))
+                    let group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))
                     
                     completion(group)
                 }
@@ -344,7 +340,14 @@ class CloudKitHelper {
             }
             else {
                 self?.currentGroups?.removeAll(where: { $0.record.recordID == recordId })
-                completion(nil)
+                self?.removeUserFromGroup(recordId: recordId) { error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    else {
+                        completion(nil)
+                    }
+                }
             }
         }
     }
@@ -371,8 +374,7 @@ class CloudKitHelper {
         
         record.setValue(name, forKey: "name")
         record.setValue(emoji, forKey: "emoji")
-        record.setValue(group.daysPerWeek, forKey: "daysPerWeek")
-        record.setValue(group.availableDays, forKey: "availableDays")
+        record.setValue(UserGroup.availableDays(deliveryTime: group.deliveryTime, displayedDays: group.displayedDays), forKey: "availableDays")
         record.setValue(group.displayedDays, forKey: "displayedDays")
         record.setValue(getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
         record.setValue(color.rawValue, forKey: "backgroundColor")
@@ -388,33 +390,60 @@ class CloudKitHelper {
         }
     }
     
-    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: Int, time: Date, completion: @escaping (Error?) -> Void) {
+    func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: [Int], time: Date, activities: [Activity], completion: @escaping (Result<UserGroup, Error>) -> Void) {
+        guard let user = cachedUser else {
+            completion(.failure(NSError(domain: "User not found", code: 0)))
+            return
+        }
+        
+        let userReference = CKRecord.Reference(record: user.record, action: .none)
         let record = CKRecord(recordType: "Group")
         
+        record.setValue(userReference, forKey: "owner")
         record.setValue(name, forKey: "name")
         record.setValue(emoji, forKey: "emoji")
-        record.setValue(days, forKey: "daysPerWeek")
-        record.setValue([], forKey: "daysOfTheWeek")
+        record.setValue(days, forKey: "displayedDays")
+        record.setValue(UserGroup.availableDays(deliveryTime: time, displayedDays: days), forKey: "availableDays")
         record.setValue(time, forKey: "deliveryTime")
         record.setValue(color.rawValue, forKey: "backgroundColor")
         record.setValue(UserGroup.getDeliveryTimeInt(date: time), forKey: "deliveryTimeInt")
         
         database.save(record) { [weak self] record, error in
             if let error = error {
-                completion(error)
+                completion(.failure(error))
                 return
             }
             
             if let record = record {
                 if let group = UserGroup.init(from: record) {
+                    var createdActivities = [Activity]()
+                    
+                    for activity in activities {
+                        self?.createActivity(groupRecordId: group.record.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { result in
+                            
+                            switch result {
+                            case .success(let activity):
+                                if let activity = activity {
+                                    createdActivities.append(activity)
+                                }
+                            case .failure(let error):
+                                completion(.failure(error))
+                                return
+                            }
+                        }
+                    }
+                    
+                    group.activities = createdActivities
+                    group.users = [user]
+                    
                     self?.addUserToGroup(group: group) { error in
                         if let error = error {
-                            completion(error)
+                            completion(.failure(error))
                             return
                         }
                         
                         self?.currentGroups?.append(group)
-                        completion(nil)
+                        completion(.success(group))
                     }
                 }
             }
@@ -438,18 +467,16 @@ class CloudKitHelper {
         }
     }
     
-    func addUserToGroup(group: UserGroup, completion: @escaping (Error?) -> Void) {
+    func removeUserFromGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
         guard let user = cachedUser else {
             completion(NSError(domain: "User not found", code: 0))
             return
         }
         
         var groups = user.groups
-        let newGroupReference = CKRecord.Reference(recordID: group.record.recordID, action: .none)
-        groups.append(newGroupReference)
+        groups.removeAll(where: { recordId == $0.recordID })
         
         let record = user.record
-        
         record.setValue(groups, forKey: "groups")
         
         database.save(record) { record, error in
@@ -463,7 +490,31 @@ class CloudKitHelper {
         }
     }
     
-    func createActivity(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Error?) -> Void) {
+    func addUserToGroup(group: UserGroup, completion: @escaping (Error?) -> Void) {
+        guard let user = cachedUser else {
+            completion(NSError(domain: "User not found", code: 0))
+            return
+        }
+        
+        var groups = user.groups
+        let newGroupReference = CKRecord.Reference(recordID: group.record.recordID, action: .none)
+        groups.append(newGroupReference)
+        
+        let record = user.record
+        record.setValue(groups, forKey: "groups")
+        
+        database.save(record) { record, error in
+            if let error = error {
+                print(error)
+                completion(error)
+                return
+            }
+            
+            completion(nil)
+        }
+    }
+    
+    func createActivity(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Result<Activity?, Error>) -> Void) {
         let record = CKRecord(recordType: "Activity")
         
         let groupReference = CKRecord.Reference(recordID: groupRecordId, action: .none)
@@ -477,13 +528,19 @@ class CloudKitHelper {
         record.setValue(groupReference, forKey: "group")
         
         database.save(record) { record, error in
+            if let record = record {
+                if let activity = Activity.init(from: record) {
+                    completion(.success(activity))
+                }
+            }
+            
             if let error = error {
                 print(error)
-                completion(error)
+                completion(.failure(error))
                 return
             }
             
-            completion(nil)
+            completion(.success(nil))
         }
     }
 }

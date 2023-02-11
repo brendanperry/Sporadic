@@ -10,9 +10,7 @@ import UIKit
 import Combine
 
 struct CreateGroupView: View {
-    @ObservedObject var viewModel = CreateGroupViewModel()
-    
-    let reloadAction: () -> Void
+    @StateObject var viewModel = CreateGroupViewModel()
     
     var body: some View {
         ZStack {
@@ -33,7 +31,9 @@ struct CreateGroupView: View {
                         
                         GroupColor(selected: $viewModel.color)
                         
-                        DaysAndTime(days: $viewModel.days, time: $viewModel.time)
+                        StreakAndTime(isOwner: true, time: $viewModel.time)
+                        
+//                        DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
                         
                         SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                     }
@@ -47,11 +47,9 @@ struct CreateGroupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .navigationBarBackButtonHidden(true)
         .navigationTitle(viewModel.groupName)
-        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel, reloadAction: reloadAction))
+        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel))
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .onAppear {
-            UINavigationBar.appearance().barTintColor = UIColor(Color("Panel"))
-        }
+        .toolbarBackground(viewModel.toolbarBackground, for: .navigationBar)
         .alert(isPresented: $viewModel.showError) {
             Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
         }
@@ -60,20 +58,18 @@ struct CreateGroupView: View {
     struct CreateButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         let viewModel: CreateGroupViewModel
-        let reloadAction: () -> Void
         
         var body: some View {
             Button(action: {
-                viewModel.createGroup { wasSuccessful in
-                    if wasSuccessful {
+                viewModel.createGroup { group in
+                    if let _ = group {
                         DispatchQueue.main.async {
-                            reloadAction()
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
                 }
             }, label: {
-                Text(Localize.getString("CreateGroup"))
+                Text(Localize.getString("Create"))
                     .font(.custom("Lexend-SemiBold", fixedSize: 10))
                     .padding(10)
                     .foregroundColor(.white)
@@ -97,7 +93,7 @@ struct CreateGroupView: View {
                 
                 LazyVGrid(columns: items, spacing: 10) {
                     ForEach($selectedActivities) { activity in
-                        NavigationLink(destination: EditActivity(activityList: $selectedActivities, activity: activity)) {
+                        NavigationLink(destination: EditActivity(activity: activity)) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .fill(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .top, endPoint: .bottom))
@@ -137,6 +133,7 @@ struct CreateGroupView: View {
                             .frame(width: 75, height: 75, alignment: .center)
                     }
                     .buttonStyle(ButtonPressAnimationStyle())
+                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
                 }
             }
             .frame(maxWidth: .infinity)

@@ -35,17 +35,23 @@ class UIEmojiTextField: UITextField {
 }
 
 struct EmojiTextField: UIViewRepresentable {
-    @Binding var text: String
+    @Binding var text: String {
+        didSet {
+            print(text)
+        }
+    }
+    var focused: FocusState<Bool>.Binding
     var placeholder: String = ""
+    let textField = UIEmojiTextField()
     
     func makeUIView(context: Context) -> UIEmojiTextField {
-        let emojiTextField = UIEmojiTextField()
-        emojiTextField.placeholder = placeholder
-        emojiTextField.text = text
-        emojiTextField.font = emojiTextField.font?.withSize(30)
-        emojiTextField.textAlignment = .center
-        emojiTextField.delegate = context.coordinator
-        return emojiTextField
+        textField.placeholder = placeholder
+        textField.text = text
+        textField.font = textField.font?.withSize(30)
+        textField.textAlignment = .center
+        textField.delegate = context.coordinator
+        
+        return textField
     }
     
     func updateUIView(_ uiView: UIEmojiTextField, context: Context) {
@@ -61,12 +67,25 @@ struct EmojiTextField: UIViewRepresentable {
         
         init(parent: EmojiTextField) {
             self.parent = parent
+            
+            super.init()
+            
+            let bar = UIToolbar()
+            let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneTapped))
+            bar.items = [done]
+            bar.sizeToFit()
+            parent.textField.inputAccessoryView = bar
         }
         
         func textFieldDidChangeSelection(_ textField: UITextField) {
             DispatchQueue.main.async { [weak self] in
                 self?.parent.text = textField.text ?? ""
             }
+        }
+        
+        @objc
+        func doneTapped() {
+            parent.focused.wrappedValue = false
         }
     }
 }

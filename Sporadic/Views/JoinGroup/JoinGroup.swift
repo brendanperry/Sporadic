@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct JoinGroup: View {
-    @StateObject var viewModel: JoinGroupViewModel
+    @ObservedObject var viewModel: JoinGroupViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

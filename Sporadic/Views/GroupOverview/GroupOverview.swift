@@ -8,21 +8,13 @@
 import SwiftUI
 
 struct GroupOverview: View {
-    @ObservedObject var viewModel: GroupOverviewViewModel
-    
-    let textHelper = TextHelper()
-    let reloadAction: () -> Void
+    @StateObject var viewModel = GroupOverviewViewModel()
+    @Binding var group: UserGroup
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
     @Environment(\.dismiss) var dismiss
-    
-    
-    init(viewModel: GroupOverviewViewModel, reloadAction: @escaping () -> Void) {
-        self.viewModel = viewModel
-        self.reloadAction = reloadAction
-    }
     
     var body: some View {
         ZStack {
@@ -31,68 +23,31 @@ struct GroupOverview: View {
                 .edgesIgnoringSafeArea(.all)
             
             ZStack {
-                ScrollView(.vertical) {
+                ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 35) {
-                        GroupHeader(name: $viewModel.group.name, emoji: $viewModel.emoji, color: $viewModel.group.backgroundColor)
+                        GroupHeader(name: $group.name, emoji: $viewModel.emoji, color: $group.backgroundColor, isOwner: viewModel.isOwner)
                         
-                        YourActivities(viewModel: viewModel)
-                        
-                        DaysAndTime(days: $viewModel.group.daysPerWeek, time: $viewModel.group.deliveryTime)
-                        
-                        DaysForChallenges(availableDays: $viewModel.group.displayedDays)
-                        
-                        UsersInGroup(viewModel: viewModel)
+                        YourActivities(group: $group, viewModel: viewModel)
+
+                        StreakAndTime(isOwner: viewModel.isOwner, time: $group.deliveryTime)
+
+                        DaysForChallenges(availableDays: $group.displayedDays, isOwner: viewModel.isOwner)
+
+                        UsersInGroup(viewModel: viewModel, group: $group)
                             .alert(isPresented: $viewModel.showError) {
                                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                             }
-                        
-                        DeleteButton(viewModel: viewModel, reloadAction: reloadAction)
+
+                        if viewModel.isOwner {
+                            DeleteButton(group: $group, viewModel: viewModel)
+                        }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.bottom, viewModel.isOwner ? 100 : 20)
                 }
                 
-                VStack {
-                    Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Button(action: {
-                            dismiss()
-                        }, label: {
-                            TextHelper.text(key: "Cancel", alignment: .center, type: .h2)
-                                .padding()
-                                .frame(width: 150, height: 40, alignment: .leading)
-                                .background(Color("Delete"))
-                                .cornerRadius(16)
-                        })
-                        .buttonStyle(ButtonPressAnimationStyle())
-                        .padding()
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            viewModel.save { _ in }
-                        }, label: {
-                            TextHelper.text(key: "Save", alignment: .center, type: .h2, color: .white)
-                                .padding()
-                                .frame(width: 150, height: 40, alignment: .leading)
-                                .background(Color("Primary"))
-                                .cornerRadius(16)
-                        })
-                        .buttonStyle(ButtonPressAnimationStyle())
-                        .padding()
-                        .onChange(of: viewModel.itemsCompleted) { newValue in
-                            if newValue == 4 {
-                                viewModel.isLoading = false
-                                dismiss()
-                            }
-                        }
-                        
-                        Spacer()
-                    }
-                    .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: 3))
-                    .ignoresSafeArea(.all, edges: .bottom)
+                if viewModel.isOwner {
+                    saveBar()
                 }
             }
             
@@ -101,11 +56,64 @@ struct GroupOverview: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("\(viewModel.group.name)")
+        .navigationBarItems(leading: BackButton())
+        .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
+        .navigationTitle("\(group.name)")
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .onAppear {
-            UINavigationBar.appearance().barTintColor = UIColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor() ?? .red)
+        .onChange(of: group.backgroundColor) { _ in
+            viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
+        }
+        .task {
+            viewModel.emoji = group.emoji
+            viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
+            await viewModel.checkOwnership(group: group)
+        }
+    }
+    
+    func saveBar() -> VStack<TupleView<(Spacer, some View)>> {
+        return VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    TextHelper.text(key: "Cancel", alignment: .center, type: .h2)
+                        .padding()
+                        .frame(width: 150, height: 40, alignment: .leading)
+                        .background(Color("Delete"))
+                        .cornerRadius(16)
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
+                
+                Spacer()
+                
+                Button(action: {
+                    viewModel.save(group: group) { _ in }
+                }, label: {
+                    TextHelper.text(key: "Save", alignment: .center, type: .h2, color: .white)
+                        .padding()
+                        .frame(width: 150, height: 40, alignment: .leading)
+                        .background(Color("Primary"))
+                        .cornerRadius(16)
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
+                .onChange(of: viewModel.itemsCompleted) { newValue in
+                    if newValue == 4 {
+                        viewModel.isLoading = false
+                        dismiss()
+                    }
+                }
+                
+                Spacer()
+            }
+            .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: 3))
+            .ignoresSafeArea(.all, edges: .bottom)
         }
     }
     
@@ -138,18 +146,20 @@ struct GroupOverview: View {
         @Binding var name: String
         @Binding var emoji: String
         @Binding var color: Int
+        @State var showEdit = false
+        let isOwner: Bool
         
         var body: some View {
             VStack {
-                NavigationLink(destination: EditGroupHeader(name: $name, emoji: $emoji, color: $color)) {
-                    ZStack {
-                        Circle()
-                            .frame(width: 75, height: 75, alignment: .leading)
-                            .foregroundColor(GroupBackgroundColor.init(rawValue: color)?.getColor())
-                        
-                        Text(emoji)
-                            .font(.system(size: 40))
-                        
+                ZStack {
+                    Circle()
+                        .frame(width: 75, height: 75, alignment: .leading)
+                        .foregroundColor(GroupBackgroundColor.init(rawValue: color)?.getColor())
+                    
+                    Text(emoji)
+                        .font(.system(size: 40))
+                    
+                    if isOwner {
                         Image("Edit Group Icon")
                             .resizable()
                             .frame(width: 15, height: 15, alignment: .center)
@@ -163,6 +173,13 @@ struct GroupOverview: View {
                     }
                 }
                 .buttonStyle(ButtonPressAnimationStyle())
+                .disabled(!isOwner)
+                .onTapGesture {
+                    showEdit = true
+                }
+                .popover(isPresented: $showEdit) {
+                    EditGroupHeader(name: $name, emoji: $emoji, color: $color)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top)
@@ -171,20 +188,23 @@ struct GroupOverview: View {
 }
 
 struct YourActivities: View {
+    @Binding var group: UserGroup
     @ObservedObject var viewModel: GroupOverviewViewModel
+    
+    @State var showEdit = false
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "GroupActivities", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    if viewModel.group.areActivitiesLoading {
+                    if group.areActivitiesLoading {
                         VStack(spacing: 0) {
                             Circle()
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .foregroundColor(.white)
-                            
+
                             LoadingBar()
                                 .frame(height: 15)
                                 .padding(.vertical)
@@ -198,27 +218,27 @@ struct YourActivities: View {
                         .padding(.leading)
                     }
                     else {
-                        ForEach($viewModel.group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
-                            NavigationLink(destination: EditActivity(activityList: $viewModel.group.activities, activity: activity)) {
+                        ForEach($group.activities) { activity in
+                            NavigationLink(destination: EditActivity(activity: activity)) {
                                 VStack(spacing: 0) {
                                     ZStack {
                                         Circle()
                                             .frame(width: 50, height: 50, alignment: .center)
                                             .foregroundColor(.white)
-                                        
+
                                         Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .frame(width: 30, height: 30, alignment: .center)
                                     }
-                                    
+
                                     TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
                                         .padding(.bottom)
-                                    
+
                                     TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
                                         .frame(width: 60)
                                         .opacity(0.75)
-                                    
+
                                     TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
                                         .opacity(0.75)
                                 }
@@ -229,22 +249,25 @@ struct YourActivities: View {
                                 .shadow(radius: 3)
                                 .padding(.leading)
                             }
+                            .disabled(!viewModel.isOwner)
                         }
                         .padding(.vertical, 1)
                     }
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.group.activities, showEditMenu: true), label: {
-                        Image("Custom Plus")
-                            .resizable()
-                            .frame(width: 20, height: 20, alignment: .center)
-                            .foregroundColor(.blue)
-                            .padding(5)
-                            .background(Circle().foregroundColor(.white))
-                            .padding(15)
-                            .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
-                            .shadow(radius: 3)
-                            .padding()
-                    })
+                    if viewModel.isOwner {
+                        NavigationLink(destination: ActivitySelector(selectedActivities: $group.activities, showEditMenu: true), label: {
+                            Image("Custom Plus")
+                                .resizable()
+                                .frame(width: 20, height: 20, alignment: .center)
+                                .foregroundColor(.blue)
+                                .padding(5)
+                                .background(Circle().foregroundColor(.white))
+                                .padding(15)
+                                .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
+                                .shadow(radius: 3)
+                                .padding()
+                        })
+                    }
                 }
                 .frame(minHeight: 175)
             }
@@ -258,8 +281,8 @@ struct YourActivities: View {
 struct DeleteButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showDeleteConfirmation = false
+    @Binding var group: UserGroup
     let viewModel: GroupOverviewViewModel
-    let reloadAction: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -275,18 +298,14 @@ struct DeleteButton: View {
                     .frame(width: 150, height: 40, alignment: .leading)
                     .background(Color("Delete"))
                     .cornerRadius(16)
-                    .padding(.bottom, 100)
             })
             .buttonStyle(ButtonPressAnimationStyle())
             .alert(isPresented: $showDeleteConfirmation) {
-                Alert(title: Text("Delete \(viewModel.group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
+                Alert(title: Text("Delete \(group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
                       primaryButton: .cancel(),
                       secondaryButton: .destructive(Text("Delete")) {
-                    viewModel.deleteGroup() { didFinishSuccessfully in
-                        if didFinishSuccessfully {
-                            reloadAction()
-                            presentationMode.wrappedValue.dismiss()
-                        }
+                    viewModel.deleteGroup(group: group) {
+                        print("Delete Group Finished With Status: \($0)")
                     }
                 })
             }
@@ -298,14 +317,15 @@ struct DeleteButton: View {
 
 struct UsersInGroup: View {
     @ObservedObject var viewModel: GroupOverviewViewModel
+    @Binding var group: UserGroup
     
     var body: some View {
         VStack {
             TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
             
             VStack(spacing: 0) {
-                if !viewModel.group.areUsersLoading {
-                    ForEach(viewModel.group.users) { user in
+                if !group.areUsersLoading {
+                    ForEach(group.users) { user in
                         HStack {
                             Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                 .resizable()
@@ -332,7 +352,7 @@ struct UsersInGroup: View {
                     .padding(12)
                 }
                 
-                ShareLink(item: "https://sporadic.app/?group=\(viewModel.group.record.recordID.recordName)", message: Text("Join \(viewModel.group.name) on Sporadic!"), label: {
+                ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
                     TextHelper.text(key: "Invite New Members", alignment: .center, type: .h2, color: .white)
                         .padding()
                         .background(Color("Primary"))
@@ -352,10 +372,11 @@ struct UsersInGroup: View {
 struct DaysForChallenges: View {
     @Binding var availableDays: [Int]
     let daysInTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+    let isOwner: Bool
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "PotentialDays", alignment: .leading, type: .h2)
+            TextHelper.text(key: "DaysToGetChallenge", alignment: .leading, type: .h2)
                 .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
@@ -377,6 +398,7 @@ struct DaysForChallenges: View {
                                 .shadow(radius: 3)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
+                        .disabled(!isOwner)
                     }
                 }
                 .padding()
