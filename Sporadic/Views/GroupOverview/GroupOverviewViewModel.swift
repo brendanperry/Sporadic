@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CloudKit
 
 class GroupOverviewViewModel: ObservableObject {
     @Published var emoji = "" {
@@ -42,55 +43,112 @@ class GroupOverviewViewModel: ObservableObject {
     }
     
     func save(group: UserGroup, completion: @escaping (Bool) -> Void) {
-        itemsCompleted = 0
+        var recordsToSave = [CKRecord]()
         
-        saveGroup(group: group) { [weak self] didComplete in
-            if didComplete == false {
-                self?.isLoading = false
-                completion(false)
-            }
-            else {
-                DispatchQueue.main.async {
-                    self?.itemsCompleted += 1
-                }
+        let groupRecord = group.record
+        
+        groupRecord.setValue(group.name, forKey: "name")
+        groupRecord.setValue(emoji, forKey: "emoji")
+        groupRecord.setValue(UserGroup.availableDays(deliveryTime: group.deliveryTime, displayedDays: group.displayedDays), forKey: "availableDays")
+        groupRecord.setValue(group.displayedDays, forKey: "displayedDays")
+        groupRecord.setValue(getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
+        groupRecord.setValue(group.backgroundColor, forKey: "backgroundColor")
+        groupRecord.setValue(UserGroup.getDeliveryTimeInt(date: group.deliveryTime), forKey: "deliveryTimeInt")
+        
+        recordsToSave.append(groupRecord)
+        
+        let editedActivities = group.activities.filter({ $0.wasEdited })
+        
+        for activity in editedActivities {
+            if let recordId = activity.recordId {
+                let record = CKRecord(recordType: "Activity", recordID: recordId)
+                record.setValue(activity.maxValue, forKey: "maxValue")
+                record.setValue(activity.minValue, forKey: "minValue")
+                
+                recordsToSave.append(record)
             }
         }
         
-        updateEditedActivities(group: group) { [weak self] didComplete in
-            if didComplete == false {
-                self?.isLoading = false
+        let newActivities = group.activities.filter({ $0.isNew })
+        
+        for activity in newActivities {
+            let record = CKRecord(recordType: "Activity")
+            
+            let groupReference = CKRecord.Reference(recordID: groupRecord.recordID, action: .none)
+            
+            record.setValue(activity.templateId, forKey: "templateId")
+            record.setValue(1, forKey: "isEnabled")
+            record.setValue(activity.name, forKey: "name")
+            record.setValue(activity.unit.rawValue, forKey: "unit")
+            record.setValue(activity.minValue, forKey: "minValue")
+            record.setValue(activity.maxValue, forKey: "maxValue")
+            record.setValue(groupReference, forKey: "group")
+            
+            recordsToSave.append(record)
+        }
+        
+        let deletedActivities = group.activities.filter({ $0.wasDeleted }).compactMap({ $0.recordId })
+        
+        CloudKitHelper.shared.database.modifyRecords(saving: recordsToSave, deleting: deletedActivities) { response in
+            switch response {
+            case .success(let results):
+                print(results)
+                completion(true)
+            case .failure(let error):
+                print(error)
                 completion(false)
-            }
-            else {
-                DispatchQueue.main.async {
-                    self?.itemsCompleted += 1
-                }
             }
         }
         
-        createNewActivities(group: group) { [weak self] didComplete in
-            if didComplete == false {
-                self?.isLoading = false
-                completion(false)
-            }
-            else {
-                DispatchQueue.main.async {
-                    self?.itemsCompleted += 1
-                }
-            }
-        }
+//        saveGroup(group: group) { [weak self] didComplete in
+//            if didComplete == false {
+//                self?.isLoading = false
+//                completion(false)
+//            }
+//            else {
+//                DispatchQueue.main.async {
+//                    self?.itemsCompleted += 1
+//                }
+//            }
+//        }
+//
+//        updateEditedActivities(group: group) { [weak self] didComplete in
+//            if didComplete == false {
+//                self?.isLoading = false
+//                completion(false)
+//            }
+//            else {
+//                DispatchQueue.main.async {
+//                    self?.itemsCompleted += 1
+//                }
+//            }
+//        }
         
-        deleteActivities(group: group) { [weak self] didComplete in
-            if didComplete == false {
-                self?.isLoading = false
-                completion(false)
-            }
-            else {
-                DispatchQueue.main.async {
-                    self?.itemsCompleted += 1
-                }
-            }
-        }
+        // need to call these directly from the view so that we can update the binding groups
+        
+//        createNewActivities(group: group) { [weak self] didComplete in
+//            if didComplete == false {
+//                self?.isLoading = false
+//                completion(false)
+//            }
+//            else {
+//                DispatchQueue.main.async {
+//                    self?.itemsCompleted += 1
+//                }
+//            }
+//        }
+//
+//        deleteActivities(group: group) { [weak self] didComplete in
+//            if didComplete == false {
+//                self?.isLoading = false
+//                completion(false)
+//            }
+//            else {
+//                DispatchQueue.main.async {
+//                    self?.itemsCompleted += 1
+//                }
+//            }
+//        }
     }
     
     func deleteGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
@@ -131,32 +189,21 @@ class GroupOverviewViewModel: ObservableObject {
         }
     }
     
-    private func createNewActivities(group: UserGroup, completion: @escaping (Bool) -> Void) {
+    private func createNewActivities(group: UserGroup, completion: @escaping ([Activity]?) -> Void) {
         let newActivities = group.activities.filter({ $0.isNew })
         if newActivities.isEmpty {
-            completion(true)
+            completion([])
             return
         }
         
-        for activity in newActivities {
-            CloudKitHelper.shared.createActivity(groupRecordId: group.record.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { [weak self] result in
-                
-                switch result {
-                case .success(_):
-                    var activity = activity
-                    activity.isNew = false
-//
-//                    DispatchQueue.main.async {
-//                        self?.group.activities.removeAll(where: { $0.id == activity.id })
-//                        self?.group.activities.append(activity)
-//                    }
-                    
-                    completion(true)
-                case .failure(_):
-                    self?.errorMessage = "Could not save activity. Please check your connection and try again."
-                    self?.showError = true
-                    completion(false)
-                }
+        CloudKitHelper.shared.createActivities(groupRecordId: group.record.recordID, activities: newActivities) { [weak self] result in
+            switch result {
+            case .success(let activities):
+                completion(activities)
+            case .failure(_):
+                self?.errorMessage = "Could not save activity. Please check your connection and try again."
+                self?.showError = true
+                completion(nil)
             }
         }
     }

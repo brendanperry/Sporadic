@@ -36,13 +36,13 @@ struct GroupList: View {
                 }
                 else {
                     ForEach($groups) { group in
-                        NavigationLink(destination: GroupOverview(group: group)) {
+                        NavigationLink(destination: GroupOverview(group: group, groups: $groups)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
                     
-                    AddNewGroup()
+                    AddNewGroup(groups: $groups)
                 }
             }
         }
@@ -50,8 +50,10 @@ struct GroupList: View {
 }
 
 struct AddNewGroup: View {
+    @Binding var groups: [UserGroup]
+    
     var body: some View {
-        NavigationLink(destination: CreateGroupView()) {
+        NavigationLink(destination: CreateGroupView(groups: $groups)) {
             Image("Add Activity Icon Circle")
                 .resizable()
                 .frame(width: 50, height: 50, alignment: .center)

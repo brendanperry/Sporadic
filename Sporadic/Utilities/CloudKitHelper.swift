@@ -416,34 +416,25 @@ class CloudKitHelper {
             
             if let record = record {
                 if let group = UserGroup.init(from: record) {
-                    var createdActivities = [Activity]()
-                    
-                    for activity in activities {
-                        self?.createActivity(groupRecordId: group.record.recordID, name: activity.name, unit: activity.unit, minValue: activity.minValue, maxValue: activity.maxValue, templateId: activity.templateId ?? -1) { result in
+                    CloudKitHelper.shared.createActivities(groupRecordId: record.recordID, activities: activities) { result in
+                        switch result {
+                        case .success(let activities):
+                            group.activities = activities
+                            group.users = [user]
                             
-                            switch result {
-                            case .success(let activity):
-                                if let activity = activity {
-                                    createdActivities.append(activity)
+                            self?.addUserToGroup(group: group) { error in
+                                if let error = error {
+                                    completion(.failure(error))
+                                    return
                                 }
-                            case .failure(let error):
-                                completion(.failure(error))
-                                return
+                                
+                                self?.currentGroups?.append(group)
+                                completion(.success(group))
                             }
-                        }
-                    }
-                    
-                    group.activities = createdActivities
-                    group.users = [user]
-                    
-                    self?.addUserToGroup(group: group) { error in
-                        if let error = error {
+                        case .failure(let error):
                             completion(.failure(error))
                             return
                         }
-                        
-                        self?.currentGroups?.append(group)
-                        completion(.success(group))
                     }
                 }
             }
@@ -514,33 +505,49 @@ class CloudKitHelper {
         }
     }
     
-    func createActivity(groupRecordId: CKRecord.ID, name: String, unit: ActivityUnit, minValue: Double, maxValue: Double, templateId: Int, completion: @escaping (Result<Activity?, Error>) -> Void) {
-        let record = CKRecord(recordType: "Activity")
+    func createActivities(groupRecordId: CKRecord.ID, activities: [Activity], completion: @escaping (Result<[Activity], Error>) -> Void) {
+        var records = [CKRecord]()
         
-        let groupReference = CKRecord.Reference(recordID: groupRecordId, action: .none)
-        
-        record.setValue(templateId, forKey: "templateId")
-        record.setValue(1, forKey: "isEnabled")
-        record.setValue(name, forKey: "name")
-        record.setValue(unit.rawValue, forKey: "unit")
-        record.setValue(minValue, forKey: "minValue")
-        record.setValue(maxValue, forKey: "maxValue")
-        record.setValue(groupReference, forKey: "group")
-        
-        database.save(record) { record, error in
-            if let record = record {
-                if let activity = Activity.init(from: record) {
-                    completion(.success(activity))
-                }
-            }
+        for activity in activities {
+            let record = CKRecord(recordType: "Activity")
             
-            if let error = error {
+            let groupReference = CKRecord.Reference(recordID: groupRecordId, action: .none)
+            
+            record.setValue(activity.templateId, forKey: "templateId")
+            record.setValue(1, forKey: "isEnabled")
+            record.setValue(activity.name, forKey: "name")
+            record.setValue(activity.unit.rawValue, forKey: "unit")
+            record.setValue(activity.minValue, forKey: "minValue")
+            record.setValue(activity.maxValue, forKey: "maxValue")
+            record.setValue(groupReference, forKey: "group")
+            
+            records.append(record)
+        }
+        
+        database.modifyRecords(saving: records, deleting: []) { response in
+            switch response {
+            case .success(let results):
+                var activities = [Activity]()
+                
+                for save in results.saveResults {
+                    switch save.value {
+                    case .success(let record):
+                        if let activity = Activity.init(from: record) {
+                            activities.append(activity)
+                        }
+                    case .failure(let error):
+                        print(error)
+                        completion(.failure(error))
+                        return
+                    }
+                }
+                
+                completion(.success(activities))
+            case .failure(let error):
                 print(error)
                 completion(.failure(error))
                 return
             }
-            
-            completion(.success(nil))
         }
     }
 }

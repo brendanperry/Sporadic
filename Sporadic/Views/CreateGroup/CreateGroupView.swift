@@ -11,6 +11,7 @@ import Combine
 
 struct CreateGroupView: View {
     @StateObject var viewModel = CreateGroupViewModel()
+    @Binding var groups: [UserGroup]
     
     var body: some View {
         ZStack {
@@ -33,7 +34,7 @@ struct CreateGroupView: View {
                         
                         StreakAndTime(isOwner: true, time: $viewModel.time)
                         
-//                        DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
+                        DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
                         
                         SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                     }
@@ -47,7 +48,7 @@ struct CreateGroupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .navigationBarBackButtonHidden(true)
         .navigationTitle(viewModel.groupName)
-        .navigationBarItems(leading: BackButton(), trailing: CreateButton(viewModel: viewModel))
+        .navigationBarItems(leading: BackButton(), trailing: CreateButton(groups: $groups, viewModel: viewModel))
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .toolbarBackground(viewModel.toolbarBackground, for: .navigationBar)
         .alert(isPresented: $viewModel.showError) {
@@ -57,13 +58,17 @@ struct CreateGroupView: View {
     
     struct CreateButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+        @Binding var groups: [UserGroup]
         let viewModel: CreateGroupViewModel
         
         var body: some View {
             Button(action: {
                 viewModel.createGroup { group in
-                    if let _ = group {
+                    if let group = group {
                         DispatchQueue.main.async {
+                            groups.append(group)
+                            groups.sort(by: { $0.name < $1.name })
+                            
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
