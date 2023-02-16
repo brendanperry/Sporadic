@@ -223,9 +223,12 @@ class CloudKitHelper {
         
     func getChallengesForUser(currentChallenges: [Challenge]) async throws -> [Challenge]? {
         if let user = try await getCurrentUser(forceSync: false) {
-            let predicate = NSPredicate(format: "users CONTAINS %@", user.record)
-
-            let query = CKQuery(recordType: "Challenge", predicate: predicate)
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [
+                NSPredicate(format: "users CONTAINS %@", user.record),
+                NSPredicate(format: "startTime > %@", (Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()) as NSDate)
+            ])
+            
+            let query = CKQuery(recordType: "Challenge", predicate: compoundPredicate)
 
             let result = try await database.records(matching: query)
             let records = try result.matchResults.map { try $0.1.get() }
@@ -437,6 +440,20 @@ class CloudKitHelper {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    func completeChallenge(challenge: Challenge, completion: @escaping (Error?) -> Void) {
+        let record = CKRecord(recordType: "Challenge", recordID: challenge.recordId)
+        record.setValue(true, forKey: "isCompleted")
+        
+        database.save(record) { record, error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                completion(nil)
             }
         }
     }

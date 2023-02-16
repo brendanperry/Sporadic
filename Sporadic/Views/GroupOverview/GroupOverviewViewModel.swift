@@ -89,66 +89,17 @@ class GroupOverviewViewModel: ObservableObject {
         
         let deletedActivities = group.activities.filter({ $0.wasDeleted }).compactMap({ $0.recordId })
         
-        CloudKitHelper.shared.database.modifyRecords(saving: recordsToSave, deleting: deletedActivities) { response in
+        CloudKitHelper.shared.database.modifyRecords(saving: recordsToSave, deleting: deletedActivities) { [weak self] response in
             switch response {
             case .success(let results):
                 print(results)
                 completion(true)
             case .failure(let error):
                 print(error)
+                self?.errorMessage = "Failed to save changes. Please check your connection and try again."
                 completion(false)
             }
         }
-        
-//        saveGroup(group: group) { [weak self] didComplete in
-//            if didComplete == false {
-//                self?.isLoading = false
-//                completion(false)
-//            }
-//            else {
-//                DispatchQueue.main.async {
-//                    self?.itemsCompleted += 1
-//                }
-//            }
-//        }
-//
-//        updateEditedActivities(group: group) { [weak self] didComplete in
-//            if didComplete == false {
-//                self?.isLoading = false
-//                completion(false)
-//            }
-//            else {
-//                DispatchQueue.main.async {
-//                    self?.itemsCompleted += 1
-//                }
-//            }
-//        }
-        
-        // need to call these directly from the view so that we can update the binding groups
-        
-//        createNewActivities(group: group) { [weak self] didComplete in
-//            if didComplete == false {
-//                self?.isLoading = false
-//                completion(false)
-//            }
-//            else {
-//                DispatchQueue.main.async {
-//                    self?.itemsCompleted += 1
-//                }
-//            }
-//        }
-//
-//        deleteActivities(group: group) { [weak self] didComplete in
-//            if didComplete == false {
-//                self?.isLoading = false
-//                completion(false)
-//            }
-//            else {
-//                DispatchQueue.main.async {
-//                    self?.itemsCompleted += 1
-//                }
-//            }
-//        }
     }
     
     func deleteGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {

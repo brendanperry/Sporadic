@@ -89,6 +89,7 @@
 		C6F31137294E66A40096F09D /* JoinGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F31136294E66A40096F09D /* JoinGroup.swift */; };
 		C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F31139294E66C00096F09D /* JoinGroupViewModel.swift */; };
 		C6F3113C294ED1C50096F09D /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F3113B294ED1C50096F09D /* CustomError.swift */; };
+		C6F4569F299DDE0B003DD2F4 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = C6F4569E299DDE0B003DD2F4 /* ConfettiSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,6 +207,7 @@
 			files = (
 				C6C960302795042C00A67AA2 /* CloudKit.framework in Frameworks */,
 				C68961712831AA26008A0C87 /* OneSignal in Frameworks */,
+				C6F4569F299DDE0B003DD2F4 /* ConfettiSwiftUI in Frameworks */,
 				C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,6 +538,7 @@
 			packageProductDependencies = (
 				C68961702831AA26008A0C87 /* OneSignal */,
 				C68961722831AA26008A0C87 /* OneSignalExtension */,
+				C6F4569E299DDE0B003DD2F4 /* ConfettiSwiftUI */,
 			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
@@ -572,6 +575,7 @@
 			mainGroup = C65A01F126870098007A5B2F;
 			packageReferences = (
 				C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+				C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
@@ -972,6 +976,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -984,6 +996,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C689616F2831AA26008A0C87 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
 			productName = OneSignalExtension;
+		};
+		C6F4569E299DDE0B003DD2F4 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

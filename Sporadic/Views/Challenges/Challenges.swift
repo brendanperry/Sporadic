@@ -7,9 +7,10 @@
 
 import SwiftUI
 import CloudKit
+import ConfettiSwiftUI
 
 struct Challenges: View {
-    let challenges: [Challenge]
+    @Binding var challenges: [Challenge]
     let isLoading: Bool
     
     var body: some View {
@@ -22,11 +23,14 @@ struct Challenges: View {
                     ChallengeLoading()
                 }
                 else {
-                    ForEach(challenges) { challenge in
-                        NavigationLink(destination: ChallengeDetail(challenge: challenge)) {
-                            ChallengeView(challenge: challenge, showNavigationCarrot: true)
+                    if challenges.isEmpty {
+                        TextHelper.text(key: "No challenges yet today!", alignment: .center, type: .body)
+                            .padding(.top)
+                    }
+                    else {
+                        ForEach($challenges) { challenge in
+                            ChallengeView(challenge: challenge, showNavigationCarrot: false)
                         }
-                        .buttonStyle(ButtonPressAnimationStyle())
                     }
                 }
                 
@@ -60,7 +64,9 @@ struct ChallengeLoading: View {
 }
 
 struct ChallengeView: View {
-    let challenge: Challenge
+    @Binding var challenge: Challenge
+    @State var showError = false
+    @State var confetti = 0
     let showNavigationCarrot: Bool
     
     var body: some View {
@@ -104,11 +110,26 @@ struct ChallengeView: View {
         .shadow(radius: 3)
         .padding(.horizontal)
         .padding(.top, 5)
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Connection Failed"), message: Text("Could not complete exercise."))
+        }
     }
     
     func inProgressCheckbox() -> some View {
         Button(action: {
-            print("COMPLETE")
+            let status = challenge.getStatus()
+            
+            if status == .inProgress {
+                challenge.isCompleted = true
+                confetti += 1
+            }
+            
+            CloudKitHelper.shared.completeChallenge(challenge: challenge) { error in
+                if let error = error {
+                    print(error)
+                    showError = true
+                }
+            }
         }, label: {
             Image("Unmarked Challenge Icon")
                 .resizable()
@@ -117,6 +138,7 @@ struct ChallengeView: View {
                 .frame(width: 35, height: 35, alignment: .center)
         })
         .padding(.trailing, 5)
+        .confettiCannon(counter: $confetti, num: 50, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 15), radius: 300)
     }
     
     func completedCheckbox() -> some View {

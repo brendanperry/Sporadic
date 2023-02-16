@@ -17,19 +17,11 @@ class HomeViewModel : ObservableObject {
     @Published var isUserLoading = true
     @Published var areChallengesLoading = true
     @Published var areGroupsLoading = true
-    
-    var timer = Timer()
-    
+        
     init() {
         DispatchQueue.global(qos: .userInitiated).async {
             self.loadData()
         }
-//
-//        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { _ in
-//            DispatchQueue.global(qos: .userInitiated).async {
-//                self.loadData()
-//            }
-//        })
     }
     
     func loadData() {
@@ -101,7 +93,6 @@ class HomeViewModel : ObservableObject {
     }
     
     func loadChallengeData() {
-        // TODO: split this up because we will want to constantly check for new people to have completed challenges
         if challenges.allSatisfy({ $0.activity != nil && $0.group != nil && !$0.users.isEmpty }) {
             return
         }

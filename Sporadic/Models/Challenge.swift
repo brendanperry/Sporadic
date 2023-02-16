@@ -14,7 +14,7 @@ struct Challenge: Identifiable {
     var activity: Activity? = nil
     let amount: Double
     let startTime: Date
-    let isCompleted: Bool
+    var isCompleted: Bool
     let userRecords: [CKRecord.Reference]
     var users = [User]()
     let groupRecord: CKRecord.Reference
@@ -53,12 +53,16 @@ extension Challenge {
         self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group, recordId: record.recordID)
     }
     
+    func isChallengeFailed() -> Bool {
+        return Date() > Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime
+    }
+    
     func getStatus() -> ChallengeStatus {
         if self.isCompleted {
             return .completed
         }
         
-        if !self.isCompleted && Date() < Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime {
+        if !self.isCompleted && !isChallengeFailed() {
             return .inProgress
         }
         

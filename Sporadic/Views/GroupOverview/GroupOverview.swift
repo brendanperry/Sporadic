@@ -93,22 +93,12 @@ struct GroupOverview: View {
                 
                 Spacer()
                 
-                
-                // for next time: you learned now you can save different records all at the same time
-                // this helps simplify the group creating and editing process
-                // move any edits to this new standard
-                // add back manual refresh
-                // flesh out the group editing error messages
-                
                 Button(action: {
                     viewModel.save(group: group) { didComplete in
                         if didComplete {
                             DispatchQueue.main.async {
                                 presentationMode.wrappedValue.dismiss()
                             }
-                        }
-                        else {
-                            // show error
                         }
                     }
                 }, label: {
