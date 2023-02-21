@@ -71,6 +71,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         let newActivities = group.activities.filter({ $0.isNew })
         
+        // TODO: Refactor, this duplicates logic in CloudKitHelper.createActivities
         for activity in newActivities {
             let record = CKRecord(recordType: "Activity")
             
@@ -82,6 +83,7 @@ class GroupOverviewViewModel: ObservableObject {
             record.setValue(activity.unit.rawValue, forKey: "unit")
             record.setValue(activity.minValue, forKey: "minValue")
             record.setValue(activity.maxValue, forKey: "maxValue")
+            record.setValue(activity.unit.minValue(), forKey: "minRange")
             record.setValue(groupReference, forKey: "group")
             
             recordsToSave.append(record)

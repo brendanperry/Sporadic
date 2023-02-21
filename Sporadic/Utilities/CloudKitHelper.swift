@@ -534,6 +534,7 @@ class CloudKitHelper {
             record.setValue(1, forKey: "isEnabled")
             record.setValue(activity.name, forKey: "name")
             record.setValue(activity.unit.rawValue, forKey: "unit")
+            record.setValue(activity.unit.minValue(), forKey: "minRange")
             record.setValue(activity.minValue, forKey: "minValue")
             record.setValue(activity.maxValue, forKey: "maxValue")
             record.setValue(groupReference, forKey: "group")
