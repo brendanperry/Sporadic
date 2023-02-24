@@ -504,12 +504,11 @@ class CloudKitHelper {
             return
         }
         
-        var groups = user.groups
         let newGroupReference = CKRecord.Reference(recordID: group.record.recordID, action: .none)
-        groups.append(newGroupReference)
+        user.groups.append(newGroupReference)
         
         let record = user.record
-        record.setValue(groups, forKey: "groups")
+        record.setValue(user.groups, forKey: "groups")
         
         database.save(record) { record, error in
             if let error = error {

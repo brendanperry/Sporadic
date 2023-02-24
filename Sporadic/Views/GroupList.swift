@@ -35,7 +35,7 @@ struct GroupList: View {
                     GroupLoadingWidget()
                 }
                 else {
-                    ForEach($groups) { group in
+                    ForEach($groups.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name })) { group in
                         NavigationLink(destination: GroupOverview(group: group, groups: $groups)) {
                             GroupWidget(group: group.wrappedValue)
                         }
