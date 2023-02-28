@@ -74,8 +74,29 @@ class HomeViewModel : ObservableObject {
     
     func getActivitiesForGroup(group: UserGroup) async {
         do {
-            group.activities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
-            group.areActivitiesLoading = false
+            if group.name == "Bark 1" {
+                let currentActivities = group.activities
+                let newActivities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
+                
+                if currentActivities.count != newActivities.count {
+                    let newActivityIds = newActivities.compactMap { $0.recordId }
+                    
+                    print(newActivityIds)
+                    
+                    let activitiesOnDeviceOnly = currentActivities.filter({ !newActivityIds.contains($0.recordId ?? CKRecord.ID(recordName: "Activity")) })
+                    
+                    let newlyCreatedActivitiesOnDevice = activitiesOnDeviceOnly.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
+                    
+                    // there is a delay in pulling down newly created cloudkit records.
+                    // this keeps them from disappearing temporarily
+                    group.activities = newActivities + newlyCreatedActivitiesOnDevice
+                }
+                else {
+                    group.activities = newActivities
+                }
+                
+                group.areActivitiesLoading = false
+            }
         }
         catch {
             print(error)
@@ -119,9 +140,19 @@ class HomeViewModel : ObservableObject {
     }
     
     func getGroups() {
-        CloudKitHelper.shared.getGroupsForUser(currentGroups: groups) { [weak self] groups in
-            if let groups = groups {
+        CloudKitHelper.shared.getGroupsForUser(currentGroups: groups) { [weak self] newGroups in
+            if let newGroups = newGroups {
                 DispatchQueue.main.async {
+                    let currentGroups = self?.groups
+                    
+                    // This keeps activities from blanking out while the new values are loaded
+                    var groups = newGroups
+                    groups.forEach { group in
+                        if let currentActivities = currentGroups?.first(where: { $0.record.recordID == group.record.recordID })?.activities {
+                            group.activities = currentActivities
+                        }
+                    }
+                    
                     self?.groups = groups
                     self?.areGroupsLoading = false
                     self?.loadGroupData()

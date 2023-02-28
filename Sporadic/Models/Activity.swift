@@ -20,6 +20,7 @@ struct Activity: Identifiable, Equatable {
     var wasEdited = false
     var wasDeleted = false
     var isNew = false
+    var createdAt = Date()
 }
 
 extension Activity {
