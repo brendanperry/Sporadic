@@ -23,6 +23,7 @@ class UserGroup: Identifiable {
     var areUsersLoading = true
     var owner: CKRecord.Reference
     var wasDeleted = false
+    var createdAt = Date()
     
     init(displayedDays: [Int], deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, owner: CKRecord.Reference, record: CKRecord) {
         self.displayedDays = displayedDays

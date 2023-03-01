@@ -74,29 +74,25 @@ class HomeViewModel : ObservableObject {
     
     func getActivitiesForGroup(group: UserGroup) async {
         do {
-            if group.name == "Bark 1" {
-                let currentActivities = group.activities
-                let newActivities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
+            let currentActivities = group.activities
+            let newActivities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
+            
+            if currentActivities.count != newActivities.count {
+                let newActivityIds = newActivities.compactMap { $0.recordId }
+                                
+                let activitiesOnDeviceOnly = currentActivities.filter({ !newActivityIds.contains($0.recordId ?? CKRecord.ID(recordName: "Activity")) })
                 
-                if currentActivities.count != newActivities.count {
-                    let newActivityIds = newActivities.compactMap { $0.recordId }
-                    
-                    print(newActivityIds)
-                    
-                    let activitiesOnDeviceOnly = currentActivities.filter({ !newActivityIds.contains($0.recordId ?? CKRecord.ID(recordName: "Activity")) })
-                    
-                    let newlyCreatedActivitiesOnDevice = activitiesOnDeviceOnly.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
-                    
-                    // there is a delay in pulling down newly created cloudkit records.
-                    // this keeps them from disappearing temporarily
-                    group.activities = newActivities + newlyCreatedActivitiesOnDevice
-                }
-                else {
-                    group.activities = newActivities
-                }
+                let newlyCreatedActivitiesOnDevice = activitiesOnDeviceOnly.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
                 
-                group.areActivitiesLoading = false
+                // there is a delay in pulling down newly created cloudkit records.
+                // this keeps them from disappearing temporarily
+                group.activities = newActivities + newlyCreatedActivitiesOnDevice
             }
+            else {
+                group.activities = newActivities
+            }
+            
+            group.areActivitiesLoading = false
         }
         catch {
             print(error)
@@ -105,7 +101,24 @@ class HomeViewModel : ObservableObject {
     
     func getUsersForGroup(group: UserGroup) async {
         do {
-            group.users = try await CloudKitHelper.shared.getUsersForGroup(group: group) ?? []
+            let currentUsers = group.users
+            let newUsers = try await CloudKitHelper.shared.getUsersForGroup(group: group) ?? []
+            
+            if currentUsers.count != newUsers.count {
+                let newUserIds = newUsers.compactMap { $0.usersRecordId }
+                                
+                let usersOnDeviceOnly = currentUsers.filter({ !newUserIds.contains($0.usersRecordId) })
+                
+                let newlyCreatedUsersOnDevice = usersOnDeviceOnly.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
+                
+                // there is a delay in pulling down newly created cloudkit records.
+                // this keeps them from disappearing temporarily
+                group.users = newUsers + newlyCreatedUsersOnDevice
+            }
+            else {
+                group.users = newUsers
+            }
+            
             group.areUsersLoading = false
         }
         catch {
@@ -143,17 +156,29 @@ class HomeViewModel : ObservableObject {
         CloudKitHelper.shared.getGroupsForUser(currentGroups: groups) { [weak self] newGroups in
             if let newGroups = newGroups {
                 DispatchQueue.main.async {
-                    let currentGroups = self?.groups
-                    
-                    // This keeps activities from blanking out while the new values are loaded
-                    var groups = newGroups
-                    groups.forEach { group in
-                        if let currentActivities = currentGroups?.first(where: { $0.record.recordID == group.record.recordID })?.activities {
+                    // This keeps details from blanking out while the new values are loaded
+                    newGroups.forEach { group in
+                        if let currentActivities = self?.groups.first(where: { $0.record.recordID == group.record.recordID })?.activities {
                             group.activities = currentActivities
                         }
+                        
+                        if let currentUsers = self?.groups.first(where: { $0.record.recordID == group.record.recordID })?.users {
+                            group.users = currentUsers
+                        }
+                    }
+                                        
+                    if self?.groups.count != newGroups.count {
+                        let newGroupIds = newGroups.compactMap { $0.record.recordID }
+                        let groupsOnDeviceOnly = self?.groups.filter({ !newGroupIds.contains($0.record.recordID) })
+
+                        let newlyCreatedGroupsOnDevice = groupsOnDeviceOnly?.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
+
+                        self?.groups = newGroups + (newlyCreatedGroupsOnDevice ?? [])
+                    }
+                    else {
+                        self?.groups = newGroups
                     }
                     
-                    self?.groups = groups
                     self?.areGroupsLoading = false
                     self?.loadGroupData()
                 }

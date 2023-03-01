@@ -16,6 +16,7 @@ class User: Identifiable, Equatable {
     var name: String
     var photo: UIImage?
     var groups: [CKRecord.Reference]
+    var createdAt = Date()
     
     init(record: CKRecord, usersRecordId: String, name: String, photo: UIImage?, groups: [CKRecord.Reference]) {
         self.record = record
