@@ -61,6 +61,11 @@ struct ActivitySelector: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            // this is used as a swift ui bug where the keyboard space is eaten up despite it being
+            // dropped after navigating away
+            UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
+        }
         .toolbar {
             ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
                 BackButton()

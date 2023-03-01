@@ -17,6 +17,7 @@ struct LoadingIndicator: View {
             .background(Color("Panel"))
             .cornerRadius(16)
         }
+        .ignoresSafeArea()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("LoadingBackground"))
     }

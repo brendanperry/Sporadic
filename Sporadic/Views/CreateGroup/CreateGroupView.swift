@@ -19,25 +19,23 @@ struct CreateGroupView: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
-                ScrollView(.vertical) {
-                    VStack(spacing: 20) {
-                        TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
-                            .padding(.horizontal)
-                            .padding(.top, 50)
-                        
-                        GroupName(name: $viewModel.groupName)
-                        
-                        EmojiSelector(emoji: $viewModel.emoji)
-                        
-                        GroupColor(selected: $viewModel.color)
-                        
-                        StreakAndTime(isOwner: true, time: $viewModel.time)
-                        
-                        DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
-                        
-                        SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
-                    }
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) {
+                    TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
+                        .padding(.horizontal)
+                        .padding(.top, 50)
+                    
+                    GroupName(name: $viewModel.groupName)
+                    
+                    EmojiSelector(emoji: $viewModel.emoji)
+                    
+                    GroupColor(selected: $viewModel.color)
+                    
+                    StreakAndTime(isOwner: true, time: $viewModel.time)
+                    
+                    DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
+                    
+                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                 }
             }
             
