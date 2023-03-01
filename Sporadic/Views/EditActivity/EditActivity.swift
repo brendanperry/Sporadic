@@ -35,6 +35,9 @@ struct EditActivity: View {
                 
                 RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
                     .padding([.horizontal, .bottom])
+                    .alert(isPresented: $viewModel.showError) {
+                        Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+                    }
 
                 DeleteButton(activity: $activity)
             }
@@ -57,9 +60,6 @@ struct EditActivity: View {
                     activity.wasEdited = true
                 }
             }
-        }
-        .alert(isPresented: $viewModel.showError) {
-            Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
         }
     }
     
