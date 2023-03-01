@@ -10,41 +10,32 @@ import CloudKit
 
 struct GroupList: View {
     @Binding var groups: [UserGroup]
-    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
+    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 2)
     @State var isActive = false
     let isLoading: Bool
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text(Localize.getString("Groups"))
-                    .font(.custom("Lexend-SemiBold", size: 14))
-                    .foregroundColor(Color("Header"))
-                    .frame(width: 50, alignment: .leading)
-                
-                if isLoading && !groups.isEmpty {
-                    ProgressView()
-                }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            LazyVGrid(columns: items, spacing: 0) {
+            TextHelper.text(key: "Groups", alignment: .leading, type: .challengeAndSettings, color: .primary)
+                .padding(.horizontal)
+                .padding(.bottom)
+
+            LazyVGrid(columns: items, spacing: 17) {
                 if isLoading && groups.isEmpty {
                     GroupLoadingWidget()
                 }
                 else {
-                    ForEach($groups.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name })) { group in
-                        NavigationLink(destination: GroupOverview(group: group, groups: $groups)) {
+                    ForEach($groups) { group in
+                        NavigationLink(destination: GroupOverview(group: group)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
-                    
+
                     AddNewGroup(groups: $groups)
                 }
             }
+            .padding(.horizontal)
         }
     }
 }
@@ -54,9 +45,17 @@ struct AddNewGroup: View {
     
     var body: some View {
         NavigationLink(destination: CreateGroupView(groups: $groups)) {
-            Image("Add Activity Icon Circle")
-                .resizable()
-                .frame(width: 50, height: 50, alignment: .center)
+            ZStack {
+                Rectangle()
+                    .frame(width: 50, height: 50, alignment: .center)
+                    .foregroundColor(Color("Panel"))
+                    .shadow(radius: 3)
+                    .cornerRadius(10)
+                
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 15, height: 15, alignment: .center)
+            }
         }
         .buttonStyle(ButtonPressAnimationStyle())
         .cornerRadius(10)
@@ -94,7 +93,7 @@ struct GroupWidget: View {
     let group: UserGroup
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .center) {
                 Circle()
                     .foregroundColor(GroupBackgroundColor.init(rawValue: group.backgroundColor)?.getColor())
@@ -102,17 +101,24 @@ struct GroupWidget: View {
                 Text(group.emoji)
                     .font(.system(size: 25))
             }
-            .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 75, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 50, alignment: .leading)
             .padding([.horizontal, .top])
             
-            TextHelper.text(key: "", alignment: .leading, type: .h3, prefix: group.name)
+            Text(group.name)
+                .font(.custom("Lexend-SemiBold", size: 20))
                 .padding(.horizontal)
                 .frame(height: 50)
                 .lineLimit(2)
             
             HStack(alignment: .bottom, spacing: 0) {
-                TextHelper.text(key: "EditGroup", alignment: .leading, type: .challengeGroup)
-                    .frame(width: 70)
+                if group.activities.count == 1 {
+                    TextHelper.text(key: "1 exercise", alignment: .leading, type: .challengeGroup)
+                        .frame(width: 70)
+                }
+                else {
+                    TextHelper.text(key: "\(group.activities.count) exercises", alignment: .leading, type: .challengeGroup)
+                        .frame(width: 70)
+                }
                 
                 VStack {
                     Spacer()
@@ -124,14 +130,11 @@ struct GroupWidget: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .frame(height: 18)
+            .frame(height: 15)
             .padding([.horizontal, .bottom])
         }
         .background(Color("Panel"))
         .cornerRadius(10)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
         .shadow(radius: 3)
-        .padding()
     }
 }

@@ -6,13 +6,29 @@
 //
 
 import SwiftUI
+import Charts
 
 struct Stats: View {
     @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         ZStack {
-            Text("Stats")
+            Image("BackgroundImage")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+            
+            ScrollView(.vertical, showsIndicators: false, content: {
+                VStack(spacing: 20) {
+                    TextHelper.text(key: "Analytics", alignment: .leading, type: .h1)
+                        .padding(.top, 50)
+                        .padding(.bottom)
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 100)
+            })
+            .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+            .padding(.top)
+            
             NavigationBar(viewRouter: viewRouter)
         }
     }

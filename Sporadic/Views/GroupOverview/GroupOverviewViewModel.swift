@@ -116,7 +116,6 @@ class GroupOverviewViewModel: ObservableObject {
                 }
                 else {
                     print("Group deleted")
-                    group.wasDeleted = true
                     completion(true)
                 }
                 

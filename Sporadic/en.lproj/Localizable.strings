@@ -6,8 +6,8 @@
   
 */
 
-"WelcomeBack" = "Welcome back, ";
-"YourGoal" = "Let's keep things sporadic!";
+"WelcomeBack" = "Welcome, ";
+"YourGoal" = "Dashboard";
 "CurrentRhythm" = "Current Rhythm";
 "Activities" = "Activities";
 "RandomNotificationDelivery" = "Random Notification Delivery";

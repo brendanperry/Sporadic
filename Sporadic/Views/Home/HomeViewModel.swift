@@ -13,7 +13,7 @@ import CloudKit
 class HomeViewModel : ObservableObject {
     @Published var challenges = [Challenge]()
     @Published var groups = [UserGroup]()
-    @Published var user = User(record: CKRecord(recordType: "User"), usersRecordId: "", name: "challenger", photo: nil, groups: [])
+    @Published var user = User(record: CKRecord(recordType: "User"), usersRecordId: "", name: "", photo: nil, groups: [])
     @Published var isUserLoading = true
     @Published var areChallengesLoading = true
     @Published var areGroupsLoading = true

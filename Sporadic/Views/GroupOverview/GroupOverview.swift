@@ -10,12 +10,13 @@ import SwiftUI
 struct GroupOverview: View {
     @StateObject var viewModel = GroupOverviewViewModel()
     @Binding var group: UserGroup
-    @Binding var groups: [UserGroup]
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
     @Environment(\.dismiss) var dismiss
+    
+    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
     
     var body: some View {
         ZStack {
@@ -40,7 +41,7 @@ struct GroupOverview: View {
                             }
 
                         if viewModel.isOwner {
-                            DeleteButton(group: $group, groups: $groups, viewModel: viewModel)
+                            DeleteButton(group: $group, viewModel: viewModel)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -57,7 +58,6 @@ struct GroupOverview: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: BackButton())
         .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
         .navigationTitle("\(group.name)")
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -290,7 +290,6 @@ struct DeleteButton: View {
     @State var showDeleteConfirmation = false
     @State var showDeleteFailure = false
     @Binding var group: UserGroup
-    @Binding var groups: [UserGroup]
     let viewModel: GroupOverviewViewModel
     
     var body: some View {
@@ -318,7 +317,7 @@ struct DeleteButton: View {
                       secondaryButton: .destructive(Text("Delete")) {
                     viewModel.deleteGroup(group: group) {
                         if $0 == true {
-                            groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                            group.wasDeleted = true
                             presentationMode.wrappedValue.dismiss()
                         }
                         else {

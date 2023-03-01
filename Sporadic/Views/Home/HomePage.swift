@@ -61,7 +61,13 @@ struct Welcome: View {
     var body: some View {
         HStack {
             VStack {
-                TextHelper.text(key: "WelcomeBack", alignment: .leading, type: .body, suffix: viewModel.user.name + ".")
+                if viewModel.user.name != "" {
+                    TextHelper.text(key: "WelcomeBack", alignment: .leading, type: .body, suffix: viewModel.user.name + ".")
+                }
+                else {
+                    TextHelper.text(key: "", alignment: .leading, type: .body)
+                }
+                
                 TextHelper.text(key: "YourGoal", alignment: .leading, type: .h1)
             }
             
