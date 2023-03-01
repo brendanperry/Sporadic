@@ -90,7 +90,7 @@ struct GroupLoadingWidget: View {
 }
 
 struct GroupWidget: View {
-    let group: UserGroup
+    @ObservedObject var group: UserGroup
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

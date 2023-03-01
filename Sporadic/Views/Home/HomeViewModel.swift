@@ -76,7 +76,7 @@ class HomeViewModel : ObservableObject {
         do {
             let currentActivities = group.activities
             let newActivities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
-            
+                        
             if currentActivities.count != newActivities.count {
                 let newActivityIds = newActivities.compactMap { $0.recordId }
                                 
@@ -86,13 +86,19 @@ class HomeViewModel : ObservableObject {
                 
                 // there is a delay in pulling down newly created cloudkit records.
                 // this keeps them from disappearing temporarily
-                group.activities = newActivities + newlyCreatedActivitiesOnDevice
+                DispatchQueue.main.async {
+                    group.activities = newActivities + newlyCreatedActivitiesOnDevice
+                }
             }
             else {
-                group.activities = newActivities
+                DispatchQueue.main.async {
+                    group.activities = newActivities
+                }
             }
             
-            group.areActivitiesLoading = false
+            DispatchQueue.main.async {
+                group.areActivitiesLoading = false
+            }
         }
         catch {
             print(error)
@@ -113,13 +119,20 @@ class HomeViewModel : ObservableObject {
                 
                 // there is a delay in pulling down newly created cloudkit records.
                 // this keeps them from disappearing temporarily
-                group.users = newUsers + newlyCreatedUsersOnDevice
+                
+                DispatchQueue.main.async {
+                    group.users = newUsers + newlyCreatedUsersOnDevice
+                }
             }
             else {
-                group.users = newUsers
+                DispatchQueue.main.async {
+                    group.users = newUsers
+                }
             }
             
-            group.areUsersLoading = false
+            DispatchQueue.main.async {
+                group.areUsersLoading = false
+            }
         }
         catch {
             print(error)

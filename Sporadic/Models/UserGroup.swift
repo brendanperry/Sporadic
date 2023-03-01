@@ -9,20 +9,20 @@ import Foundation
 import CloudKit
 import SwiftUI
 
-class UserGroup: Identifiable {
+class UserGroup: Identifiable, ObservableObject {
     var id = UUID()
-    var displayedDays: [Int]
-    var deliveryTime: Date
-    var emoji: String
-    var backgroundColor: Int
-    var name: String
+    @Published var displayedDays: [Int]
+    @Published var deliveryTime: Date
+    @Published var emoji: String
+    @Published var backgroundColor: Int
+    @Published var name: String
     var record: CKRecord
-    var activities = [Activity]()
-    var users = [User]()
-    var areActivitiesLoading = true
-    var areUsersLoading = true
-    var owner: CKRecord.Reference
-    var wasDeleted = false
+    @Published var activities = [Activity]()
+    @Published var users = [User]()
+    @Published var areActivitiesLoading = true
+    @Published var areUsersLoading = true
+    @Published var owner: CKRecord.Reference
+    @Published var wasDeleted = false
     var createdAt = Date()
     
     init(displayedDays: [Int], deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, owner: CKRecord.Reference, record: CKRecord) {
