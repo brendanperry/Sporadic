@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct Challenge: Identifiable {
+class Challenge: Identifiable {
     let id: UUID
     let activityRecord: CKRecord.Reference
     var activity: Activity? = nil
@@ -38,7 +38,7 @@ enum ChallengeStatus {
 }
 
 extension Challenge {
-    init? (from record: CKRecord) {
+    convenience init? (from record: CKRecord) {
         guard
             let activityReference = record["activity"] as? CKRecord.Reference,
             let amount = record["amount"] as? Double,
@@ -50,7 +50,7 @@ extension Challenge {
             return nil
         }
         
-        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group, recordId: record.recordID)
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group, recordId: record.recordID)
     }
     
     func isChallengeFailed() -> Bool {

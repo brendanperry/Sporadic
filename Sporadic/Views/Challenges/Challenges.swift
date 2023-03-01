@@ -128,6 +128,7 @@ struct ChallengeView: View {
                 if let error = error {
                     print(error)
                     showError = true
+                    challenge.isCompleted = false
                 }
             }
         }, label: {

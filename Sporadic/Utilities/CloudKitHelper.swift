@@ -237,6 +237,10 @@ class CloudKitHelper {
                 .compactMap({ Challenge.init(from: $0) })
                 .sorted(by: { $0.startTime > $1.startTime })
             
+            for challenge in newChallenges {
+                challenge.isCompleted = try await isChallengeCompleted(challenge: challenge, user: user)
+            }
+            
             if currentChallenges.elementsEqual(newChallenges, by: { $0.recordId == $1.recordId }) {
                 return currentChallenges
             }
@@ -444,20 +448,6 @@ class CloudKitHelper {
         }
     }
     
-    func completeChallenge(challenge: Challenge, completion: @escaping (Error?) -> Void) {
-        let record = CKRecord(recordType: "Challenge", recordID: challenge.recordId)
-        record.setValue(true, forKey: "isCompleted")
-        
-        database.save(record) { record, error in
-            if let error = error {
-                completion(error)
-            }
-            else {
-                completion(nil)
-            }
-        }
-    }
-    
     func updateActivity(activity: Activity, completion: @escaping (Error?) -> Void) {
         if let recordId = activity.recordId {
             let record = CKRecord(recordType: "Activity", recordID: recordId)
@@ -566,5 +556,48 @@ class CloudKitHelper {
                 return
             }
         }
+    }
+    
+    func completeChallenge(challenge: Challenge, completion: @escaping (Error?) -> Void) {
+        guard let user = cachedUser else {
+            completion(NSError(domain: "Could not load user data", code: 0))
+            return
+        }
+        
+        let record = CKRecord(recordType: "CompletedChallenge")
+        record.setValue(challenge.recordId, forKey: "challenge")
+        record.setValue(challenge.groupRecord, forKey: "group")
+        record.setValue(user.record, forKey: "user")
+        record.setValue(challenge.amount, forKey: "amount")
+        record.setValue(challenge.activity?.name ?? "", forKey: "activityName")
+        record.setValue(challenge.activity?.unit ?? "", forKey: "unit")
+        
+        database.save(record) { record, error in
+            if let error = error {
+                completion(error)
+            }
+        }
+    }
+    
+    func isChallengeCompleted(challenge: Challenge, user: User) async throws -> Bool {
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [
+            NSPredicate(format: "challenge = %@", challenge.recordId),
+            NSPredicate(format: "user = %@", user.record)
+        ])
+        
+        let query = CKQuery(recordType: "CompletedChallenge", predicate: compoundPredicate)
+        
+        let response = try await database.records(matching: query)
+            
+        if let result = response.matchResults.first?.1 {
+            switch result {
+            case .success(_):
+                return true
+            case .failure(let error):
+                throw error
+            }
+        }
+        
+        return false
     }
 }
