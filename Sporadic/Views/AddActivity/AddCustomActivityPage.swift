@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import CloudKit
 
 struct AddCustomActivityPage: View {
     @StateObject var viewModel = AddActivityViewModel()
@@ -63,7 +64,7 @@ struct AddCustomActivityPage: View {
             else {
                 activities.append(
                     Activity(
-                        id: UUID(),
+                        record: CKRecord(recordType: "Activity"),
                         maxValue: viewModel.maxValue,
                         minValue: viewModel.minValue,
                         name: viewModel.name,

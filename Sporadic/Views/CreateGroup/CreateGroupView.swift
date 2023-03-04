@@ -95,7 +95,7 @@ struct CreateGroupView: View {
                 TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
                 
                 LazyVGrid(columns: items, spacing: 10) {
-                    ForEach($selectedActivities) { activity in
+                    ForEach($selectedActivities, id: \.record.recordID) { activity in
                         NavigationLink(destination: EditActivity(activity: activity)) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct AddPage: View {
     @Binding var activityList: [Activity]
@@ -70,7 +71,7 @@ struct AddPage: View {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
-                var newActivity = Activity(id: UUID(), recordId: nil, maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
+                var newActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
                 newActivity.isNew = true
                 
                 activityList.append(newActivity)

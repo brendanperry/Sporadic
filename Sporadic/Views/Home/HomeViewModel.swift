@@ -78,9 +78,9 @@ class HomeViewModel : ObservableObject {
             let newActivities = try await CloudKitHelper.shared.getActivitiesForGroup(group: group) ?? []
                         
             if currentActivities.count != newActivities.count {
-                let newActivityIds = newActivities.compactMap { $0.recordId }
+                let newActivityIds = newActivities.compactMap { $0.record.recordID }
                                 
-                let activitiesOnDeviceOnly = currentActivities.filter({ !newActivityIds.contains($0.recordId ?? CKRecord.ID(recordName: "Activity")) })
+                let activitiesOnDeviceOnly = currentActivities.filter({ !newActivityIds.contains($0.record.recordID) })
                 
                 let newlyCreatedActivitiesOnDevice = activitiesOnDeviceOnly.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
                 

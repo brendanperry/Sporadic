@@ -449,18 +449,16 @@ class CloudKitHelper {
     }
     
     func updateActivity(activity: Activity, completion: @escaping (Error?) -> Void) {
-        if let recordId = activity.recordId {
-            let record = CKRecord(recordType: "Activity", recordID: recordId)
-            record.setValue(activity.maxValue, forKey: "maxValue")
-            record.setValue(activity.minValue, forKey: "minValue")
-            
-            database.save(record) { record, error in
-                if let error = error {
-                    completion(error)
-                }
-                else {
-                    completion(nil)
-                }
+        let record = activity.record
+        record.setValue(activity.maxValue, forKey: "maxValue")
+        record.setValue(activity.minValue, forKey: "minValue")
+        
+        database.save(record) { record, error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                completion(nil)
             }
         }
     }

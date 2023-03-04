@@ -10,13 +10,12 @@ import SwiftUI
 struct GroupOverview: View {
     @StateObject var viewModel = GroupOverviewViewModel()
     @Binding var group: UserGroup
+    @Binding var groups: [UserGroup]
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
     @Environment(\.dismiss) var dismiss
-    
-    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
     
     var body: some View {
         ZStack {
@@ -41,7 +40,7 @@ struct GroupOverview: View {
                             }
 
                         if viewModel.isOwner {
-                            DeleteButton(group: $group, viewModel: viewModel)
+                            DeleteButton(group: $group, groups: $groups, viewModel: viewModel)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -197,15 +196,15 @@ struct GroupOverview: View {
 struct YourActivities: View {
     @Binding var group: UserGroup
     @ObservedObject var viewModel: GroupOverviewViewModel
-    
+    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
+
     @State var showEdit = false
     
     var body: some View {
         VStack {
             TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+            LazyVGrid(columns: items, spacing: 17) {
                     if group.areActivitiesLoading {
                         VStack(spacing: 0) {
                             Circle()
@@ -225,7 +224,7 @@ struct YourActivities: View {
                         .padding(.leading)
                     }
                     else {
-                        ForEach($group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
+                        ForEach($group.activities, id: \.wrappedValue.record.recordID) { activity in
                             NavigationLink(destination: EditActivity(activity: activity)) {
                                 VStack(spacing: 0) {
                                     ZStack {
@@ -249,13 +248,12 @@ struct YourActivities: View {
                                     TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
                                         .opacity(0.75)
                                 }
-                                .padding(.horizontal, 25)
-                                .padding(.vertical, 10)
-                                .background(Color.purple)
-                                .cornerRadius(16)
+                                .padding()
+                                .background(Color("Panel"))
+                                .cornerRadius(10)
                                 .shadow(radius: 3)
-                                .padding(.leading)
                             }
+                            .id(UUID())
                             .disabled(!viewModel.isOwner)
                         }
                         .padding(.vertical, 1)
@@ -274,12 +272,9 @@ struct YourActivities: View {
                                 .shadow(radius: 3)
                                 .padding()
                         })
+                        .id(UUID())
                     }
-                }
-                .frame(minHeight: 175)
             }
-            .background(Color("Panel"))
-            .cornerRadius(16)
         }
         .padding(.horizontal)
     }
@@ -290,6 +285,7 @@ struct DeleteButton: View {
     @State var showDeleteConfirmation = false
     @State var showDeleteFailure = false
     @Binding var group: UserGroup
+    @Binding var groups: [UserGroup]
     let viewModel: GroupOverviewViewModel
     
     var body: some View {
@@ -318,6 +314,7 @@ struct DeleteButton: View {
                     viewModel.deleteGroup(group: group) {
                         if $0 == true {
                             group.wasDeleted = true
+                            groups.removeAll(where: { $0.record.recordID == group.record.recordID })
                             presentationMode.wrappedValue.dismiss()
                         }
                         else {

@@ -60,13 +60,11 @@ class GroupOverviewViewModel: ObservableObject {
         let editedActivities = group.activities.filter({ $0.wasEdited })
         
         for activity in editedActivities {
-            if let recordId = activity.recordId {
-                let record = CKRecord(recordType: "Activity", recordID: recordId)
-                record.setValue(activity.maxValue, forKey: "maxValue")
-                record.setValue(activity.minValue, forKey: "minValue")
-                
-                recordsToSave.append(record)
-            }
+            let record = activity.record
+            record.setValue(activity.maxValue, forKey: "maxValue")
+            record.setValue(activity.minValue, forKey: "minValue")
+            
+            recordsToSave.append(record)
         }
         
         let newActivities = group.activities.filter({ $0.isNew })
@@ -89,7 +87,7 @@ class GroupOverviewViewModel: ObservableObject {
             recordsToSave.append(record)
         }
         
-        let deletedActivities = group.activities.filter({ $0.wasDeleted }).compactMap({ $0.recordId })
+        let deletedActivities = group.activities.filter({ $0.wasDeleted }).compactMap({ $0.record.recordID })
         
         CloudKitHelper.shared.database.modifyRecords(saving: recordsToSave, deleting: deletedActivities) { [weak self] response in
             switch response {
@@ -190,16 +188,14 @@ class GroupOverviewViewModel: ObservableObject {
         }
         
         for activity in deletedActivities {
-            if let recordId = activity.recordId {
-                CloudKitHelper.shared.deleteRecord(recordId: recordId) { [weak self] error in
-                    if let _ = error {
-                        self?.errorMessage = "Could not update activity. Please check your connection and try again."
-                        self?.showError = true
-                        completion(false)
-                    }
-                    else {
-                        completion(true)
-                    }
+            CloudKitHelper.shared.deleteRecord(recordId: activity.record.recordID) { [weak self] error in
+                if let _ = error {
+                    self?.errorMessage = "Could not update activity. Please check your connection and try again."
+                    self?.showError = true
+                    completion(false)
+                }
+                else {
+                    completion(true)
                 }
             }
         }

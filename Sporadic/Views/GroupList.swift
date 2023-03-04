@@ -25,8 +25,8 @@ struct GroupList: View {
                     GroupLoadingWidget()
                 }
                 else {
-                    ForEach($groups) { group in
-                        NavigationLink(destination: GroupOverview(group: group)) {
+                    ForEach($groups.filter({ !$0.wrappedValue.wasDeleted })) { group in
+                        NavigationLink(destination: GroupOverview(group: group, groups: $groups)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())

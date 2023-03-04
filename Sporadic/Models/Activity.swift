@@ -8,23 +8,40 @@
 import Foundation
 import CloudKit
 
-struct Activity: Identifiable, Equatable {
-    let id: UUID
-    var recordId: CKRecord.ID? = nil
-    var maxValue: Double
-    var minValue: Double
+class Activity: Equatable, ObservableObject {
+    static func == (lhs: Activity, rhs: Activity) -> Bool {
+        return lhs.record.recordID == rhs.record.recordID
+    }
+    
+    let record: CKRecord
+    @Published var maxValue: Double
+    @Published var minValue: Double
     var name: String
     var templateId: Int?
     var unit: ActivityUnit
     var group: CKRecord.Reference?
-    var wasEdited = false
-    var wasDeleted = false
+    @Published var wasEdited = false
+    @Published var wasDeleted = false
     var isNew = false
     var createdAt = Date()
+    
+    internal init(record: CKRecord, maxValue: Double, minValue: Double, name: String, templateId: Int? = nil, unit: ActivityUnit, group: CKRecord.Reference? = nil, wasEdited: Bool = false, wasDeleted: Bool = false, isNew: Bool = false, createdAt: Date = Date()) {
+        self.record = record
+        self.maxValue = maxValue
+        self.minValue = minValue
+        self.name = name
+        self.templateId = templateId
+        self.unit = unit
+        self.group = group
+        self.wasEdited = wasEdited
+        self.wasDeleted = wasDeleted
+        self.isNew = isNew
+        self.createdAt = createdAt
+    }
 }
 
 extension Activity {
-    init? (from record: CKRecord) {
+    convenience init? (from record: CKRecord) {
         guard
             let maxValue = record["maxValue"] as? Double,
             let minValue = record["minValue"] as? Double,
@@ -36,6 +53,6 @@ extension Activity {
             return nil
         }
         
-        self = .init(id: UUID(), recordId: record.recordID, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles, group: group)
+        self.init(record: record, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles, group: group)
     }
 }
