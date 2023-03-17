@@ -35,7 +35,7 @@
 "Sets" = "sets";
 "Laps" = "laps";
 "General" = "units";
-"AddANewActivity" = "Add a new activity";
+"AddANewActivity" = "Add exercises";
 "SelectANewActivity" = "Select a new activity to be challenged with.";
 "StayActive" = "Stay active throughout your week with Sporadic.";
 "GetNotifications" = "Get sporadic notifications.";
@@ -87,7 +87,6 @@
 "Okay" = "Okay";
 "InvalidInput" = "Invalid Input";
 "ActivityNameError" = "Activity name must be between 1 and 18 characters.";
-"CreateGroup" = "Create Group";
 "AddToGroup" = "Add to your group";
 "RemovingActivities" = "Activity progress will be saved";
 "RemoveActivity" = "Remove Activity";

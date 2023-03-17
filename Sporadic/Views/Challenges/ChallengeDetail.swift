@@ -70,7 +70,7 @@ struct ChallengeDetail: View {
                                     
                                     VStack {
                                         TextHelper.text(key: user.name, alignment: .leading, type: .h2)
-                                        TextHelper.text(key: "NotCompleted", alignment: .leading, type: .challengeGroup)
+                                        TextHelper.text(key: "NotCompleted", alignment: .leading, type: .h4)
                                     }
                                 }
                                 .padding()

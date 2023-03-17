@@ -55,7 +55,7 @@ struct Complete: View {
                 }
                 .padding(.bottom)
                 
-                TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .challengeAndSettings, color: nil)
+                TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .h4, color: nil)
                 
                 TextHelper.text(key: "days", alignment: .leading, type: .h4, color: nil, prefix: "\(streak) ")
                     .padding(.bottom)

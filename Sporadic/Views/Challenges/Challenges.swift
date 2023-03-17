@@ -15,7 +15,7 @@ struct Challenges: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Challenges", alignment: .leading, type: .challengeAndSettings, color: .primary)
+            TextHelper.text(key: "Challenges", alignment: .leading, type: .h4, color: .primary)
                 .padding(.horizontal)
             
             VStack {
@@ -76,22 +76,22 @@ struct ChallengeView: View {
                 inProgressCheckbox()
                 
                 VStack {
-                    TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h4, color: .white)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
                 }
             case .completed:
                 completedCheckbox()
                 
                 VStack {
-                    TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .h4, color: .white)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
                 }
             case .failed:
                 failedCheckbox()
                 
                 VStack {
-                    TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .challengeAndSettings, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .h4, color: .white)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
                 }
             }
             

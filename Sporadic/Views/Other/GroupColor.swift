@@ -13,7 +13,7 @@ struct GroupColor: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextHelper.text(key: "Color", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Color", alignment: .leading, type: .h4)
             
             LazyVGrid(columns: items, spacing: 20) {
                 ForEach(GroupBackgroundColor.allCases, id: \.self) { color in
@@ -34,6 +34,5 @@ struct GroupColor: View {
             .cornerRadius(16)
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal)
     }
 }

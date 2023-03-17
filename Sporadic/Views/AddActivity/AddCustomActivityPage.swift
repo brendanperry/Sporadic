@@ -94,7 +94,7 @@ struct AddCustomActivityPage: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(ActivityUnit.allCases, id: \.self) { unit in
-                            TextHelper.text(key: unit.toString(), alignment: .center, type: .h4, color: selected == unit ? .white : Color("Header"))
+                            TextHelper.text(key: unit.toString(), alignment: .center, type: .h4, color: selected == unit ? .white : Color("Gray300"))
                                 .padding()
                                 .background(selected == unit ? Color("Purple") : Color("Panel"))
                                 .cornerRadius(16)
@@ -117,7 +117,7 @@ struct AddCustomActivityPage: View {
                 HStack {
                     TextHelper.text(key: "ActivityName", alignment: .leading, type: .h2)
                     
-                    TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .challengeGroup)
+                    TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .h4)
                 }
                 
                 TextField("", text: $name)

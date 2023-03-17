@@ -18,7 +18,7 @@ struct HomePage: View {
         self.viewModel = viewModel
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Header"))]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Gray300"))]
     }
     
     var body: some View {
@@ -93,7 +93,7 @@ struct Streak: View {
     var body: some View {
         VStack {
             TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .h4)
-            TextHelper.text(key: "", alignment: .leading, type: .activityTitle, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
+            TextHelper.text(key: "", alignment: .leading, type: .h2, prefix: "\(streak) ", suffix: streak == 1 ? Localize.getString("day") : Localize.getString("days"))
         }
         .padding()
     }

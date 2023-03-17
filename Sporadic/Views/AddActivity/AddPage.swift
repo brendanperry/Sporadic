@@ -30,23 +30,17 @@ struct AddPage: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(alignment: .center) {
-                
-                TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)
+            VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                TextHelper.text(key: "Add exercise", alignment: .leading, type: .h1)
                     .padding(.top, 50)
-                    .padding()
                 
                 TextHelper.text(key: template.name, alignment: .leading, type: .h2)
-                    .padding([.horizontal, .top])
                 
-                TextHelper.text(key: "SetTheRangeForYourActivity", alignment: .leading, type: .h2)
-                    .padding([.horizontal, .top])
-                
-                RangeSelection(selectedMin: $minValue, selectedMax: $maxValue, minValue: template.minValue, maxValue: template.maxValue, unit: template.unit, viewModel: viewModel)
-                    .padding(.horizontal)
+                RangeSelection(minValue: $minValue, maxValue: $maxValue, unit: template.unit, viewModel: viewModel)
                 
                 AddButton(activityList: $activityList, minValue: minValue, maxValue: maxValue, template: template)
             }
+            .padding(.horizontal)
             .frame(maxHeight: .infinity, alignment: .top)
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
@@ -67,86 +61,33 @@ struct AddPage: View {
         let template: ActivityTemplate
         
         var body: some View {
-            Button(action: {
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
-                
-                var newActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
-                newActivity.isNew = true
-                
-                activityList.append(newActivity)
-                
-                dismiss()
-            }) {
-                TextHelper.text(key: "AddToList", alignment: .center, type: .h2, color: .white)
-                    .padding()
-                    .frame(width: 200)
-                    .background(Color("Purple"))
-                    .cornerRadius(16)
-            }
-            .buttonStyle(ButtonPressAnimationStyle())
-            .padding()
-        }
-    }
-    
-    struct RangeSelection: View {
-        @Binding var selectedMin: Double
-        @Binding var selectedMax: Double
-        let minValue: Double
-        let maxValue: Double
-        let unit: ActivityUnit
-        let viewModel: AddActivityViewModel
-        
-        var body: some View {
-            VStack {
-                ZStack {
-                    HStack {
-                        HStack(alignment: .bottom, spacing: 1) {
-                            Text("\(selectedMin, specifier: "%.2f")")
-                                .font(Font.custom("Lexend-SemiBold", size: 17))
-                            Text(unit.toAbbreviatedString())
-                                .font(Font.custom("Lexend-SemiBold", size: 12.5))
-                                .offset(y: -1)
-                        }
-                        .padding(.leading, 50)
-                        
-                        Spacer()
-
-                        HStack(alignment: .bottom, spacing: 1) {
-                            Text("\(selectedMax, specifier: "%.2f")")
-                                .font(Font.custom("Lexend-SemiBold", size: 17))
-                            Text(unit.toAbbreviatedString())
-                                .font(Font.custom("Lexend-SemiBold", size: 12.5))
-                                .offset(y: -1)
-                        }
-                        .padding(.trailing, 50)
+            HStack {
+                Button(action: {
+                    let impact = UIImpactFeedbackGenerator(style: .light)
+                    impact.impactOccurred()
+                    
+                    let newActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: maxValue, minValue: minValue, name: template.name, templateId: template.id, unit: template.unit)
+                    newActivity.isNew = true
+                    
+                    DispatchQueue.main.async {
+                        activityList.append(newActivity)
                     }
                     
-                    TextHelper.text(key: "-", alignment: .center, type: .h2)
+                    dismiss()
+                }) {
+                    Text("Add to group")
+                        .foregroundColor(.white)
+                        .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title3))
+                        .padding()
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                        .padding(.bottom)
                 }
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
                 
-                RangeSlider(
-                    lineHeight: 13,
-                    lineWidth: UIScreen.main.bounds.width - 100,
-                    lineCornerRadius: 16,
-                    circleWidth: 35,
-                    circleShadowRadius: 1,
-                    minValue: minValue,
-                    maxValue: maxValue,
-                    circleBorder: 10,
-                    leftCircleBorderColor: Color("RangeGradient1"),
-                    rightCircleBorderColor: Color("Purple"),
-                    leftCircleColor: .white,
-                    rightCircleColor: .white,
-                    lineColorInRange: AnyShapeStyle(LinearGradient(gradient: Gradient(colors: [Color("RangeGradient1"), Color("Purple")]), startPoint: .leading, endPoint: .trailing)),
-                    lineColorOutOfRange: Color("RangeUnselected"),
-                    leftValue: $selectedMin,
-                    rightValue: $selectedMax,
-                    unitPublisher: viewModel.unitPublisher.eraseToAnyPublisher())
+                Spacer()
             }
-            .padding()
-            .background(Color("Panel"))
-            .cornerRadius(16)
         }
     }
 }

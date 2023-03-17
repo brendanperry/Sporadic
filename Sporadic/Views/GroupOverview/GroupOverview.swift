@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GroupOverview: View {
     @StateObject var viewModel = GroupOverviewViewModel()
-    @Binding var group: UserGroup
+    @ObservedObject var group: UserGroup
     @Binding var groups: [UserGroup]
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -25,24 +25,25 @@ struct GroupOverview: View {
             
             ZStack {
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 35) {
+                    VStack(spacing: GlobalSettings.shared.controlSpacing) {
                         GroupHeader(name: $group.name, emoji: $viewModel.emoji, color: $group.backgroundColor, isOwner: viewModel.isOwner)
                         
-                        YourActivities(group: $group, viewModel: viewModel)
-
-                        StreakAndTime(isOwner: viewModel.isOwner, time: $group.deliveryTime)
-
-                        DaysForChallenges(availableDays: $group.displayedDays, isOwner: viewModel.isOwner)
-
-                        UsersInGroup(viewModel: viewModel, group: $group)
+                        YourActivities(group: group, viewModel: viewModel)
+                        
+                        UsersInGroup(viewModel: viewModel, group: group)
                             .alert(isPresented: $viewModel.showError) {
                                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                             }
+                                                
+                        DaysForChallenges(availableDays: $group.displayedDays, isOwner: viewModel.isOwner)
+                        
+                        DeliveryTime(isOwner: viewModel.isOwner, time: $group.deliveryTime)
 
                         if viewModel.isOwner {
-                            DeleteButton(group: $group, groups: $groups, viewModel: viewModel)
+                            DeleteButton(group: group, groups: $groups, viewModel: viewModel)
                         }
                     }
+                    .padding(.horizontal)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.bottom, viewModel.isOwner ? 100 : 20)
                 }
@@ -81,11 +82,10 @@ struct GroupOverview: View {
                 Button(action: {
                     dismiss()
                 }, label: {
-                    TextHelper.text(key: "Cancel", alignment: .center, type: .h2)
+                    TextHelper.text(key: "Cancel", alignment: .center, type: .h5, color: .white)
                         .padding()
-                        .frame(width: 150, height: 40, alignment: .leading)
-                        .background(Color("Delete"))
-                        .cornerRadius(16)
+                        .background(Color("Failed"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                 })
                 .buttonStyle(ButtonPressAnimationStyle())
                 .padding()
@@ -101,11 +101,10 @@ struct GroupOverview: View {
                         }
                     }
                 }, label: {
-                    TextHelper.text(key: "Save", alignment: .center, type: .h2, color: .white)
+                    TextHelper.text(key: "Save", alignment: .center, type: .h5, color: .white)
                         .padding()
-                        .frame(width: 150, height: 40, alignment: .leading)
-                        .background(Color("Primary"))
-                        .cornerRadius(16)
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                 })
                 .buttonStyle(ButtonPressAnimationStyle())
                 .padding()
@@ -118,7 +117,7 @@ struct GroupOverview: View {
                 
                 Spacer()
             }
-            .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: 3))
+            .background(Rectangle().foregroundColor(Color("Panel")).shadow(radius: GlobalSettings.shared.shadowRadius))
             .ignoresSafeArea(.all, edges: .bottom)
         }
     }
@@ -166,15 +165,7 @@ struct GroupOverview: View {
                         .font(.system(size: 40))
                     
                     if isOwner {
-                        Image("Edit Group Icon")
-                            .resizable()
-                            .frame(width: 15, height: 15, alignment: .center)
-                            .background(
-                                Circle()
-                                    .foregroundColor(Color("EditProfile"))
-                                    .frame(width: 25, height: 25, alignment: .center)
-                                    .offset(x: -1, y: -1)
-                            )
+                        EditIcon()
                             .offset(x: 25, y: -25)
                     }
                 }
@@ -194,89 +185,85 @@ struct GroupOverview: View {
 }
 
 struct YourActivities: View {
-    @Binding var group: UserGroup
+    @ObservedObject var group: UserGroup
     @ObservedObject var viewModel: GroupOverviewViewModel
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
-
-    @State var showEdit = false
+    @State var showAddView = false
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Exercises", alignment: .leading, type: .h4)
             
             LazyVGrid(columns: items, spacing: 17) {
-                    if group.areActivitiesLoading {
-                        VStack(spacing: 0) {
-                            Circle()
-                                .frame(width: 50, height: 50, alignment: .center)
-                                .foregroundColor(.white)
-
-                            LoadingBar()
-                                .frame(height: 15)
-                                .padding(.vertical)
-                        }
-                        .frame(height: 125)
-                        .padding(.horizontal, 25)
-                        .padding(.vertical, 10)
-                        .background(Color.purple)
-                        .cornerRadius(16)
-                        .shadow(radius: 3)
-                        .padding(.leading)
+                if group.areActivitiesLoading {
+                    VStack(spacing: 0) {
+                        Circle()
+                            .frame(width: 50, height: 50, alignment: .center)
+                            .foregroundColor(.white)
+                        
+                        LoadingBar()
+                            .frame(height: 15)
+                            .padding(.vertical)
                     }
-                    else {
-                        ForEach($group.activities, id: \.wrappedValue.record.recordID) { activity in
-                            NavigationLink(destination: EditActivity(activity: activity)) {
-                                VStack(spacing: 0) {
-                                    ZStack {
-                                        Circle()
-                                            .frame(width: 50, height: 50, alignment: .center)
-                                            .foregroundColor(.white)
-
-                                        Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 30, height: 30, alignment: .center)
-                                    }
-
-                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
-                                        .padding(.bottom)
-
-                                    TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
-                                        .frame(width: 60)
-                                        .opacity(0.75)
-
-                                    TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
-                                        .opacity(0.75)
+                    .frame(height: 125)
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 10)
+                    .background(Color.purple)
+                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                    .shadow(radius: GlobalSettings.shared.shadowRadius)
+                    .padding(.leading)
+                }
+                else {
+                    ForEach($group.activities) { activity in
+                        NavigationLink(destination: EditActivity(activity: activity)) {
+                            VStack(spacing: 0) {
+                                ZStack {
+                                    Circle()
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .foregroundColor(.white)
+                                    
+                                    Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30, alignment: .center)
                                 }
-                                .padding()
-                                .background(Color("Panel"))
-                                .cornerRadius(10)
-                                .shadow(radius: 3)
+                                
+                                TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .h3)
+                                    .padding(.bottom)
+                                
+                                TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body)
+                                    .frame(width: 60)
+                                    .opacity(0.75)
+                                
+                                TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body)
+                                    .opacity(0.75)
                             }
-                            .id(UUID())
-                            .disabled(!viewModel.isOwner)
+                            .padding()
+                            .background(Color("Panel"))
+                            .cornerRadius(10)
+                            .shadow(radius: GlobalSettings.shared.shadowRadius)
                         }
-                        .padding(.vertical, 1)
-                    }
-                    
-                    if viewModel.isOwner {
-                        NavigationLink(destination: ActivitySelector(selectedActivities: $group.activities, showEditMenu: true), label: {
-                            Image("Custom Plus")
-                                .resizable()
-                                .frame(width: 20, height: 20, alignment: .center)
-                                .foregroundColor(.blue)
-                                .padding(5)
-                                .background(Circle().foregroundColor(.white))
-                                .padding(15)
-                                .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
-                                .shadow(radius: 3)
-                                .padding()
-                        })
                         .id(UUID())
+                        .disabled(!viewModel.isOwner)
                     }
+                    .padding(.vertical, 1)
+                }
+                
+                if viewModel.isOwner {
+                    Button(action: {
+                        showAddView = true
+                    }, label: {
+                        PlusButton()
+                    })
+                    .buttonStyle(ButtonPressAnimationStyle())
+                }
             }
         }
-        .padding(.horizontal)
+        .popover(isPresented: $showAddView) {
+            NavigationStack {
+                ActivitySelector(selectedActivities: $group.activities)
+            }
+        }
     }
 }
 
@@ -284,13 +271,13 @@ struct DeleteButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showDeleteConfirmation = false
     @State var showDeleteFailure = false
-    @Binding var group: UserGroup
+    @ObservedObject var group: UserGroup
     @Binding var groups: [UserGroup]
     let viewModel: GroupOverviewViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextHelper.text(key: "DeletingGroups", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Delete Group", alignment: .leading, type: .h4)
                 .alert(isPresented: $showDeleteFailure) {
                     Alert(title: Text("Network Error"), message: Text("Could not delete group. Please check your connection and try again!"))
                 }
@@ -300,11 +287,17 @@ struct DeleteButton: View {
                     showDeleteConfirmation = true
                 }
             }, label: {
-                TextHelper.text(key: "DeleteGroup", alignment: .center, type: .h2)
-                    .padding()
-                    .frame(width: 150, height: 40, alignment: .leading)
-                    .background(Color("Delete"))
-                    .cornerRadius(16)
+                HStack {
+                    Text("Delete")
+                        .foregroundColor(.white)
+                        .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
+                        .padding()
+                        .padding(.horizontal)
+                        .background(Color("Failed"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                    
+                    Spacer()
+                }
             })
             .buttonStyle(ButtonPressAnimationStyle())
             .alert(isPresented: $showDeleteConfirmation) {
@@ -326,18 +319,16 @@ struct DeleteButton: View {
                 })
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal)
     }
 }
 
 struct UsersInGroup: View {
     @ObservedObject var viewModel: GroupOverviewViewModel
-    @Binding var group: UserGroup
+    @ObservedObject var group: UserGroup
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
+            TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h4)
             
             VStack(spacing: 0) {
                 if !group.areUsersLoading {
@@ -348,9 +339,9 @@ struct UsersInGroup: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 50, height: 50, alignment: .leading)
                                 .cornerRadius(100)
-                                .shadow(radius: 3)
+                                .shadow(radius: GlobalSettings.shared.shadowRadius)
                             
-                            TextHelper.text(key: user.name, alignment: .leading, type: .h2)
+                            TextHelper.text(key: user.name, alignment: .leading, type: .h5)
                         }
                     }
                     .padding(12)
@@ -360,7 +351,7 @@ struct UsersInGroup: View {
                         Circle()
                             .frame(width: 50, height: 50, alignment: .leading)
                             .foregroundColor(.white)
-                            .shadow(radius: 3)
+                            .shadow(radius: GlobalSettings.shared.shadowRadius)
                         
                         LoadingBar()
                             .frame(height: 20)
@@ -369,49 +360,58 @@ struct UsersInGroup: View {
                 }
                 
                 ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
-                    TextHelper.text(key: "Invite New Members", alignment: .center, type: .h2, color: .white)
+                    Text("Invite Friends")
+                        .font(.custom("Lexend-Regular", size: 12))
+                        .foregroundColor(.white)
+                        .bold()
                         .padding()
-                        .background(Color("Primary"))
-                        .cornerRadius(16)
+                        .padding(.horizontal)
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                         .padding()
                 })
                 .buttonStyle(ButtonPressAnimationStyle())
+                .frame(maxWidth: .infinity)
             }
             .padding(12)
             .background(Color("Panel"))
-            .cornerRadius(16)
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         }
-        .padding(.horizontal)
     }
 }
 
 struct DaysForChallenges: View {
     @Binding var availableDays: [Int]
-    let daysInTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
     let isOwner: Bool
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "DaysToGetChallenge", alignment: .leading, type: .h2)
-                .padding(.horizontal)
+            TextHelper.text(key: "DaysToGetChallenge", alignment: .leading, type: .h4)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(daysInTheWeek, id: \.self) { day in
+                    ForEach(DaysForChallenge.allCases, id: \.rawValue) { day in
                         Button(action: {
-                            if availableDays.contains(dayToInt(day)) {
-                                availableDays.removeAll(where: { $0 == dayToInt(day) })
+                            if availableDays.contains(day.rawValue) {
+                                availableDays.removeAll(where: { $0 == day.rawValue })
                             }
                             else {
-                                availableDays.append(dayToInt(day))
+                                availableDays.append(day.rawValue)
                             }
                         }, label: {
-                            TextHelper.text(key: day, alignment: .center, type: .h2, color: .white)
-                                .padding()
-                                .background(Circle().foregroundColor(Color("DaySelection")))
-                                .opacity(availableDays.contains(dayToInt(day)) ? 1 : 0.25)
-                                .foregroundColor(availableDays.contains(dayToInt(day)) ? .red : .blue)
-                                .shadow(radius: 3)
+                            // W and M are larger letters and get more padding so I made the padding go off of W and hid the text
+                            ZStack {
+                                TextHelper.text(key: "W", alignment: .center, type: .h3, color: .clear)
+                                    .padding()
+                                    .background(
+                                        Circle()
+                                            .foregroundColor(availableDays.contains(day.rawValue) ? Color("BrandPurple") : Color("Gray150")))
+                                    .opacity(availableDays.contains(day.rawValue) ? 1 : 0.80)
+                                    .foregroundColor(.white)
+                                
+                                TextHelper.text(key: day.description, alignment: .center, type: .h3, color: .white)
+                                    .foregroundColor(.white)
+                            }
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
                         .disabled(!isOwner)
@@ -420,22 +420,7 @@ struct DaysForChallenges: View {
                 .padding()
             }
             .background(Color("Panel"))
-            .cornerRadius(16)
-            .padding(.horizontal)
-        }
-    }
-    
-    // TODO: Move this elsewhere
-    func dayToInt(_ day: String) -> Int {
-        switch day {
-        case "Su": return 1
-        case "Mo": return 2
-        case "Tu": return 3
-        case "We": return 4
-        case "Th": return 5
-        case "Fr": return 6
-        case "Sa": return 7
-        default: return -1
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         }
     }
 }

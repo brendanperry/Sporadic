@@ -16,7 +16,7 @@ struct GroupList: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            TextHelper.text(key: "Groups", alignment: .leading, type: .challengeAndSettings, color: .primary)
+            TextHelper.text(key: "Groups", alignment: .leading, type: .h4, color: .primary)
                 .padding(.horizontal)
                 .padding(.bottom)
 
@@ -26,7 +26,7 @@ struct GroupList: View {
                 }
                 else {
                     ForEach($groups.filter({ !$0.wrappedValue.wasDeleted })) { group in
-                        NavigationLink(destination: GroupOverview(group: group, groups: $groups)) {
+                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
@@ -45,17 +45,7 @@ struct AddNewGroup: View {
     
     var body: some View {
         NavigationLink(destination: CreateGroupView(groups: $groups)) {
-            ZStack {
-                Rectangle()
-                    .frame(width: 50, height: 50, alignment: .center)
-                    .foregroundColor(Color("Panel"))
-                    .shadow(radius: 3)
-                    .cornerRadius(10)
-                
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 15, height: 15, alignment: .center)
-            }
+            PlusButton()
         }
         .buttonStyle(ButtonPressAnimationStyle())
         .cornerRadius(10)
@@ -105,18 +95,19 @@ struct GroupWidget: View {
             .padding([.horizontal, .top])
             
             Text(group.name)
-                .font(.custom("Lexend-SemiBold", size: 20))
+                .font(.custom("Lexend-SemiBold", size: 16))
+                .foregroundColor(Color("Gray300"))
                 .padding(.horizontal)
                 .frame(height: 50)
                 .lineLimit(2)
             
             HStack(alignment: .bottom, spacing: 0) {
                 if group.activities.count == 1 {
-                    TextHelper.text(key: "1 exercise", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "1 exercise", alignment: .leading, type: .h7)
                         .frame(width: 70)
                 }
                 else {
-                    TextHelper.text(key: "\(group.activities.count) exercises", alignment: .leading, type: .challengeGroup)
+                    TextHelper.text(key: "\(group.activities.count) exercises", alignment: .leading, type: .h7)
                         .frame(width: 70)
                 }
                 

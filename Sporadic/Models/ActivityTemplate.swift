@@ -16,4 +16,5 @@ struct ActivityTemplate: Identifiable {
     let selectedMax: Double
     let minRange: Double
     let unit: ActivityUnit
+    let category: ActivityCategory
 }

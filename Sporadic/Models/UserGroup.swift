@@ -10,7 +10,6 @@ import CloudKit
 import SwiftUI
 
 class UserGroup: Identifiable, ObservableObject {
-    var id = UUID()
     @Published var displayedDays: [Int]
     @Published var deliveryTime: Date
     @Published var emoji: String

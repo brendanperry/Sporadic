@@ -142,15 +142,7 @@ struct SettingsPage: View {
                                 .cornerRadius(100)
                                 .padding(.leastNormalMagnitude)
                             
-                            Image("Edit Group Icon")
-                                .resizable()
-                                .frame(width: 15, height: 15, alignment: .center)
-                                .background(
-                                    Circle()
-                                        .foregroundColor(Color("EditProfile"))
-                                        .frame(width: 25, height: 25, alignment: .center)
-                                        .offset(x: -1, y: -1)
-                                )
+                            EditIcon()
                                 .offset(x: 25, y: -25)
                                 .onTapGesture {
                                     showImagePicker = true
@@ -174,7 +166,7 @@ struct SettingsPage: View {
                             .background(Color("Panel"))
                             .cornerRadius(16)
                             .font(Font.custom("Lexend-Regular", size: 14))
-                            .foregroundColor(Color("Header"))
+                            .foregroundColor(Color("Gray300"))
                             .padding(.leading)
                             .focused($textFieldFocus)
                             .onTapGesture {
@@ -190,7 +182,9 @@ struct SettingsPage: View {
                         photo = nil
                         viewModel.updateUserImage()
                     }, label: {
-                        TextHelper.text(key: "Remove", alignment: .center, type: .challengeGroup)
+                        Text("Remove")
+                            .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
+                            .foregroundColor(Color("Failed"))
                     })
                     .frame(maxWidth: 75, maxHeight: 25)
                 }
@@ -214,7 +208,7 @@ struct SettingsPage: View {
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                TextHelper.text(key: "", alignment: .leading, type: .challengeAndSettings, prefix: text)
+                TextHelper.text(key: "", alignment: .leading, type: .h4, prefix: text)
                     .padding(5)
             }
             .frame(maxWidth: .infinity, alignment: .center)

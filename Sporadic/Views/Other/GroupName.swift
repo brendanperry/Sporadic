@@ -14,7 +14,7 @@ struct GroupName: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Name", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Name", alignment: .leading, type: .h4)
             
             TextField("", text: $name)
                 .padding(10)
@@ -23,7 +23,6 @@ struct GroupName: View {
                 .cornerRadius(10)
                 .focused($focused)
         }
-        .padding(.horizontal)
         .onTapGesture {
             focused = true
         }

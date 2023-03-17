@@ -14,35 +14,35 @@ class TextHelper {
         case .h1:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-SemiBold", size: 28, relativeTo: .largeTitle))
-                .foregroundColor(Color("Header")))
+                .foregroundColor(Color("Gray300")))
         case .h2:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
-                .foregroundColor(color == nil ? Color("Header") : color))
+                .font(Font.custom("Lexend-SemiBold", size: 24, relativeTo: .title))
+                .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h3:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 18, relativeTo: .title2))
-                .foregroundColor(Color("Header")))
+                .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title2))
+                .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h4:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .title3))
-                .foregroundColor(color == nil ? Color("Header") : color))
+                .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title3))
+                .foregroundColor(color == nil ? Color("Gray300") : color))
+        case .h5:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title3))
+                .foregroundColor(color == nil ? Color("Gray300") : color))
+        case .h6:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Lexend-SemiBold", size: 12, relativeTo: .caption))
+                .foregroundColor(color == nil ? Color("Gray300") : color))
+        case .h7:
+            return AnyView(GetText(key, alignment, prefix, suffix)
+                .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .caption2))
+                .foregroundColor(color == nil ? Color("Gray200") : color))
         case .body:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
-                .foregroundColor(color == nil ? Color("Body") : color))
-        case .challengeAndSettings:
-            return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
-                .foregroundColor(color == nil ? Color("Header") : color))
-        case .challengeGroup:
-            return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .footnote))
-                .foregroundColor(Color("Body")))
-        case .activityTitle:
-            return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 23, relativeTo: .largeTitle))
-                .foregroundColor(color == nil ? Color("Header") : color))
+                .foregroundColor(color == nil ? Color("Gray200") : color))
         }
     }
     
@@ -57,8 +57,8 @@ enum TextType {
     case h2
     case h3
     case h4
+    case h5
+    case h6
+    case h7
     case body
-    case challengeAndSettings
-    case challengeGroup
-    case activityTitle
 }

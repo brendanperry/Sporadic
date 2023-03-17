@@ -8,9 +8,13 @@
 import Foundation
 import CloudKit
 
-class Activity: Equatable, ObservableObject {
+class Activity: Identifiable, Equatable, Hashable, ObservableObject {
     static func == (lhs: Activity, rhs: Activity) -> Bool {
         return lhs.record.recordID == rhs.record.recordID
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(record.recordID)
     }
     
     let record: CKRecord

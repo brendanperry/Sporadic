@@ -41,6 +41,9 @@
 		C664A93F279A4D1600EE2195 /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */; };
 		C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */; };
 		C664A943279DC8CA00EE2195 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A942279DC8CA00EE2195 /* SettingsViewModel.swift */; };
+		C664D8EB29C3FDBD00ACA1AB /* EditIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */; };
+		C664D8ED29C3FE8000ACA1AB /* DaysForChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664D8EC29C3FE8000ACA1AB /* DaysForChallenge.swift */; };
+		C664D8EF29C40EEF00ACA1AB /* RangeSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664D8EE29C40EEF00ACA1AB /* RangeSelection.swift */; };
 		C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CDE268F77D600991913 /* SettingsPage.swift */; };
 		C6667CE5268F8B7E00991913 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667CE4268F8B7E00991913 /* MainView.swift */; };
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
@@ -67,7 +70,7 @@
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
-		C6B0D6C8287B7E8D00EC6EE2 /* StreakAndTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */; };
+		C6B0D6C8287B7E8D00EC6EE2 /* DeliveryTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */; };
 		C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */; };
 		C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */; };
 		C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */; };
@@ -86,6 +89,9 @@
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
 		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
+		C6E6386729B3C9E0007DD574 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */; };
+		C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386829B3CC04007DD574 /* PlusButton.swift */; };
+		C6E6386B29B3F345007DD574 /* ActivityCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386A29B3F345007DD574 /* ActivityCategory.swift */; };
 		C6F31137294E66A40096F09D /* JoinGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F31136294E66A40096F09D /* JoinGroup.swift */; };
 		C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F31139294E66C00096F09D /* JoinGroupViewModel.swift */; };
 		C6F3113C294ED1C50096F09D /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F3113B294ED1C50096F09D /* CustomError.swift */; };
@@ -142,6 +148,9 @@
 		C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
 		C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityViewModel.swift; sourceTree = "<group>"; };
 		C664A942279DC8CA00EE2195 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIcon.swift; sourceTree = "<group>"; };
+		C664D8EC29C3FE8000ACA1AB /* DaysForChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysForChallenge.swift; sourceTree = "<group>"; };
+		C664D8EE29C40EEF00ACA1AB /* RangeSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSelection.swift; sourceTree = "<group>"; };
 		C6667CDE268F77D600991913 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		C6667CE4268F8B7E00991913 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
@@ -166,7 +175,7 @@
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
-		C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakAndTime.swift; sourceTree = "<group>"; };
+		C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTime.swift; sourceTree = "<group>"; };
 		C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPage.swift; sourceTree = "<group>"; };
 		C6B2CC3A285172DA008C979C /* ChallengeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetail.swift; sourceTree = "<group>"; };
@@ -186,6 +195,9 @@
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
 		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
 		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
+		C6E6386829B3CC04007DD574 /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
+		C6E6386A29B3F345007DD574 /* ActivityCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCategory.swift; sourceTree = "<group>"; };
 		C6F31136294E66A40096F09D /* JoinGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroup.swift; sourceTree = "<group>"; };
 		C6F31139294E66C00096F09D /* JoinGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroupViewModel.swift; sourceTree = "<group>"; };
 		C6F3113B294ED1C50096F09D /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
@@ -234,6 +246,8 @@
 				C626259E2862698700E84C79 /* LoadingStatus.swift */,
 				C62625AC2867493200E84C79 /* GroupBackgroundColor.swift */,
 				C62625AE2867601400E84C79 /* ActivityUnit.swift */,
+				C6E6386A29B3F345007DD574 /* ActivityCategory.swift */,
+				C664D8EC29C3FE8000ACA1AB /* DaysForChallenge.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -259,6 +273,7 @@
 				C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */,
 				C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */,
 				C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */,
+				C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -294,8 +309,10 @@
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
 				C68378D22849AC9800ABB6B3 /* Stats.swift */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
-				C6B0D6C7287B7E8C00EC6EE2 /* StreakAndTime.swift */,
+				C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */,
 				C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */,
+				C6E6386829B3CC04007DD574 /* PlusButton.swift */,
+				C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -376,6 +393,7 @@
 				C6401E2428E2A0030096E002 /* EmojiSelector.swift */,
 				C6401E2628E2A00D0096E002 /* GroupColor.swift */,
 				C640EEF72954FDEF00C4058B /* LoadingBar.swift */,
+				C664D8EE29C40EEF00ACA1AB /* RangeSelection.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -638,6 +656,7 @@
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
 				C62625AB286741AB00E84C79 /* CharacterExtensions.swift in Sources */,
 				C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */,
+				C664D8EB29C3FDBD00ACA1AB /* EditIcon.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
 				C66424D027B856A700B574D7 /* Complete.swift in Sources */,
@@ -645,11 +664,13 @@
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
 				C62625A92867418300E84C79 /* StringExtensions.swift in Sources */,
 				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
+				C664D8EF29C40EEF00ACA1AB /* RangeSelection.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
 				C68378D8284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
+				C6E6386B29B3F345007DD574 /* ActivityCategory.swift in Sources */,
 				C6F31137294E66A40096F09D /* JoinGroup.swift in Sources */,
 				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
@@ -658,9 +679,10 @@
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
-				C6B0D6C8287B7E8D00EC6EE2 /* StreakAndTime.swift in Sources */,
+				C6B0D6C8287B7E8D00EC6EE2 /* DeliveryTime.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
 				C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */,
+				C6E6386729B3C9E0007DD574 /* GlobalSettings.swift in Sources */,
 				C6B0D6CC2880FBB600EC6EE2 /* AddPage.swift in Sources */,
 				C6F3113C294ED1C50096F09D /* CustomError.swift in Sources */,
 				C68378C12844140500ABB6B3 /* Challenge.swift in Sources */,
@@ -677,6 +699,7 @@
 				C65A01FE26870098007A5B2F /* StartApp.swift in Sources */,
 				C689616C28301EED008A0C87 /* TransitionExtension.swift in Sources */,
 				C689616E28303572008A0C87 /* CustomSlider.swift in Sources */,
+				C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */,
 				C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */,
 				C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
@@ -684,6 +707,7 @@
 				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
+				C664D8ED29C3FE8000ACA1AB /* DaysForChallenge.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
 				C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */,

@@ -13,7 +13,7 @@ struct EmojiSelector: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextHelper.text(key: "Emoji", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Emoji", alignment: .leading, type: .h4)
             
             EmojiTextField(text: $emoji, focused: $focused)
                 .font(.system(size: 100))
@@ -23,6 +23,5 @@ struct EmojiSelector: View {
                 .focused($focused)
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal)
     }
 }

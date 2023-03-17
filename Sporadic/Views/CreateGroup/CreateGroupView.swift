@@ -22,7 +22,6 @@ struct CreateGroupView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
                     TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
-                        .padding(.horizontal)
                         .padding(.top, 50)
                     
                     GroupName(name: $viewModel.groupName)
@@ -31,13 +30,15 @@ struct CreateGroupView: View {
                     
                     GroupColor(selected: $viewModel.color)
                     
-                    StreakAndTime(isOwner: true, time: $viewModel.time)
+                    DeliveryTime(isOwner: true, time: $viewModel.time)
                     
                     DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
+                        .padding(.bottom, 50)
                     
-                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
+//                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                 }
             }
+            .padding(.horizontal)
             
             if viewModel.isLoading {
                 LoadingIndicator()
@@ -76,7 +77,7 @@ struct CreateGroupView: View {
                     .font(.custom("Lexend-SemiBold", fixedSize: 10))
                     .padding(10)
                     .foregroundColor(.white)
-                    .background(Color("Purple"))
+                    .background(Color("BrandPurple"))
                     .cornerRadius(12)
             })
             .buttonStyle(ButtonPressAnimationStyle())
@@ -86,7 +87,6 @@ struct CreateGroupView: View {
     struct SelectedActivityList: View {
         @Binding var selectedActivities: [Activity]
         @Binding var group: UserGroup
-        @State var showEditMenu = false
         var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
         let templates: [ActivityTemplate]
         
@@ -113,7 +113,7 @@ struct CreateGroupView: View {
                                             .frame(width: 50, height: 50, alignment: .center)
                                     }
                                     
-                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
+                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .h2, color: .white)
                                         .padding(5)
                                     
                                     TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue) \(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: Color("EditProfile"))
@@ -130,13 +130,13 @@ struct CreateGroupView: View {
                         .padding()
                     }
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
-                        Image("Add Activity Full")
-                            .resizable()
-                            .frame(width: 75, height: 75, alignment: .center)
-                    }
-                    .buttonStyle(ButtonPressAnimationStyle())
-                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
+//                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
+//                        Image("Add Activity Full")
+//                            .resizable()
+//                            .frame(width: 75, height: 75, alignment: .center)
+//                    }
+//                    .buttonStyle(ButtonPressAnimationStyle())
+//                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
                 }
             }
             .frame(maxWidth: .infinity)
