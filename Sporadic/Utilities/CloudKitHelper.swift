@@ -385,7 +385,6 @@ class CloudKitHelper {
         record.setValue(group.displayedDays, forKey: "displayedDays")
         record.setValue(getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
         record.setValue(color.rawValue, forKey: "backgroundColor")
-        record.setValue(UserGroup.getDeliveryTimeInt(date: group.deliveryTime), forKey: "deliveryTimeInt")
         
         database.save(record) { record, error in
             if let error = error {
@@ -413,7 +412,7 @@ class CloudKitHelper {
         record.setValue(UserGroup.availableDays(deliveryTime: time, displayedDays: days), forKey: "availableDays")
         record.setValue(time, forKey: "deliveryTime")
         record.setValue(color.rawValue, forKey: "backgroundColor")
-        record.setValue(UserGroup.getDeliveryTimeInt(date: time), forKey: "deliveryTimeInt")
+        record.setValue(Calendar.current.timeZone.identifier, forKey: "timeZone")
         
         database.save(record) { [weak self] record, error in
             if let error = error {
@@ -562,13 +561,16 @@ class CloudKitHelper {
             return
         }
         
+        let challengeReference = CKRecord.Reference(recordID: challenge.recordId, action: .none)
+        let userReference = CKRecord.Reference(recordID: user.record.recordID, action: .none)
+        
         let record = CKRecord(recordType: "CompletedChallenge")
-        record.setValue(challenge.recordId, forKey: "challenge")
+        record.setValue(challengeReference, forKey: "challenge")
         record.setValue(challenge.groupRecord, forKey: "group")
-        record.setValue(user.record, forKey: "user")
+        record.setValue(userReference, forKey: "user")
         record.setValue(challenge.amount, forKey: "amount")
         record.setValue(challenge.activity?.name ?? "", forKey: "activityName")
-        record.setValue(challenge.activity?.unit ?? "", forKey: "unit")
+        record.setValue(challenge.activity?.unit.rawValue ?? "", forKey: "unit")
         
         database.save(record) { record, error in
             if let error = error {

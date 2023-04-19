@@ -52,28 +52,36 @@ class UserGroup: Identifiable, ObservableObject {
         return days
     }
     
+    /*
+     Save the delivery date in UTC on the server (saving both date and time)
+     Save the group's time zone identifier
+     Loop through each group
+     Convert the delivery date to the time zone of the group for the current day (ex: delivery date is 6:00 PM 09/22/2022, Convert to 7:00 PM 03/21/2023 so we get daylight savings)
+     Pass this new date to the below function which will determine if the group needs a challenge or not
+     */
+    
     // TODO: convert to property
     /// Converts the local delivery time to UTC and then converts that to an int based on how many 15 minute intervals it contains
-    static func getDeliveryTimeInt(date: Date) -> Int {
-        var calendar = Calendar.current
-        calendar.timeZone = .gmt
-        
-        let components = calendar.dateComponents([.hour, .minute], from: date)
-        
-        var intValue = 0
-        
-        if let hours = components.hour {
-            var totalMinutes = hours * 60
-            
-            if let minutes = components.minute {
-                totalMinutes += minutes
-                
-                intValue += Int((Double(totalMinutes) / 15.0).rounded(.towardZero))
-            }
-        }
-        
-        return intValue
-    }
+//    static func getDeliveryTimeInt(date: Date) -> Int {
+//        var calendar = Calendar.current
+//        calendar.timeZone = .gmt
+//        
+//        let components = calendar.dateComponents([.hour, .minute], from: date)
+//        
+//        var intValue = 0
+//        
+//        if let hours = components.hour {
+//            var totalMinutes = hours * 60
+//            
+//            if let minutes = components.minute {
+//                totalMinutes += minutes
+//                
+//                intValue += Int((Double(totalMinutes) / 15.0).rounded(.towardZero))
+//            }
+//        }
+//        
+//        return intValue
+//    }
 }
 
 extension UserGroup {

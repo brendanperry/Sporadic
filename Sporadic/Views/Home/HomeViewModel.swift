@@ -147,19 +147,28 @@ class HomeViewModel : ObservableObject {
         DispatchQueue.concurrentPerform(iterations: challenges.count) { index in
             CloudKitHelper.shared.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
                 DispatchQueue.main.async {
-                    self?.challenges[index].activity = activity
+                    if let challengeCopy = self?.challenges[index] {
+                        challengeCopy.activity = activity
+                        self?.challenges[index] = challengeCopy
+                    }
                 }
             }
             
             CloudKitHelper.shared.getGroupFromChallenge(challenge: challenges[index]) { [weak self] group in
                 DispatchQueue.main.async {
-                    self?.challenges[index].group = group
+                    if let challengeCopy = self?.challenges[index] {
+                        challengeCopy.group = group
+                        self?.challenges[index] = challengeCopy
+                    }
                 }
             }
             
             CloudKitHelper.shared.getUsersFromChallenge(challenge: challenges[index]) { [weak self] users in
                 DispatchQueue.main.async {
-                    self?.challenges[index].users = users
+                    if let challengeCopy = self?.challenges[index] {
+                        challengeCopy.users = users
+                        self?.challenges[index] = challengeCopy
+                    }
                 }
             }
         }

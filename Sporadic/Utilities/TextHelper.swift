@@ -33,8 +33,8 @@ class TextHelper {
                 .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h6:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 12, relativeTo: .caption))
-                .foregroundColor(color == nil ? Color("Gray300") : color))
+                .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
+                .foregroundColor(color == nil ? Color("ActivityLight") : color))
         case .h7:
             return AnyView(GetText(key, alignment, prefix, suffix)
                 .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .caption2))

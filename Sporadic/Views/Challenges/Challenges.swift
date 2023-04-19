@@ -8,6 +8,7 @@
 import SwiftUI
 import CloudKit
 import ConfettiSwiftUI
+import Combine
 
 struct Challenges: View {
     @Binding var challenges: [Challenge]
@@ -71,47 +72,91 @@ struct ChallengeView: View {
     
     var body: some View {
         HStack {
-            switch challenge.getStatus() {
-            case .inProgress:
-                inProgressCheckbox()
-                
-                VStack {
-                    TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h4, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
-                }
-            case .completed:
-                completedCheckbox()
-                
-                VStack {
-                    TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .h4, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
-                }
-            case .failed:
-                failedCheckbox()
-                
-                VStack {
-                    TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .h4, color: .white)
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h4)
+            HStack {
+                switch challenge.getStatus() {
+                case .inProgress:
+                    inProgressCheckbox()
+                    
+                    VStack(spacing: 0) {
+                        TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                        UserList(users: challenge.users)
+                            .padding(.top, 5)
+                    }
+                case .completed:
+                    completedCheckbox()
+                    
+                    VStack(spacing: 0) {
+                        TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .h3, color: .white)
+                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                        UserList(users: challenge.users)
+                            .padding(.top, 5)
+                    }
+                case .failed:
+                    failedCheckbox()
+                    
+                    VStack(spacing: 0) {
+                        TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .h3, color: .white)
+                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                        UserList(users: challenge.users)
+                            .padding(.top, 5)
+                    }
                 }
             }
+            .padding()
             
-            if showNavigationCarrot {
-                Image("View Group Carrot Icon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 15, height: 15, alignment: .center)
-                    .foregroundColor(.white)
+            if !challenge.isCompleted {
+                DueTime(challengeStartTime: challenge.startTime)
+                    .transition(.move(edge: .trailing))
             }
         }
-        .padding()
-        .frame(height: 75, alignment: .center)
         .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
-        .cornerRadius(10)
+        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         .shadow(radius: 3)
         .padding(.horizontal)
         .padding(.top, 5)
         .alert(isPresented: $showError) {
             Alert(title: Text("Connection Failed"), message: Text("Could not complete exercise."))
+        }
+        
+    }
+    
+    struct DueTime: View {
+        let challengeStartTime: Date
+        @State var timeRemaining = "00:00"
+        let timer = Timer.publish(every: 60, tolerance: 10, on: .main, in: .common).autoconnect()
+        
+        var body: some View {
+            VStack {
+                TextHelper.text(key: timeRemaining, alignment: .center, type: .h6, color: .white)
+            }
+            .frame(maxWidth: 75, maxHeight: .infinity)
+            .background(Color("Gray50"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius, corners: [.topRight, .bottomRight])
+            .onReceive(timer) { _ in
+                updateTimeTillDue()
+            }
+            .onAppear {
+                updateTimeTillDue()
+            }
+        }
+        
+        func updateTimeTillDue() {
+            if let endTime = Calendar.current.date(byAdding: .day, value: 1, to: challengeStartTime) {
+                let timeLeft = endTime.timeIntervalSince1970 - Date().timeIntervalSince1970
+                let hours = Int(timeLeft) / 3600
+                
+                let secondsLeftAfterHoursTakenOut = Int(timeLeft) - (hours * 3600)
+                
+                let minutes = secondsLeftAfterHoursTakenOut / 60
+                
+                if minutes > 10 {
+                    timeRemaining = "\(hours):\(minutes)"
+                }
+                else {
+                    timeRemaining = "\(hours):0\(minutes)"
+                }
+            }
         }
     }
     
@@ -120,8 +165,10 @@ struct ChallengeView: View {
             let status = challenge.getStatus()
             
             if status == .inProgress {
-                challenge.isCompleted = true
-                confetti += 1
+                withAnimation {
+                    challenge.isCompleted = true
+                    confetti += 1
+                }
             }
             
             CloudKitHelper.shared.completeChallenge(challenge: challenge) { error in
@@ -158,5 +205,21 @@ struct ChallengeView: View {
             .foregroundColor(.white)
             .frame(width: 35, height: 35, alignment: .center)
             .padding(.trailing, 5)
+    }
+    
+    struct UserList: View {
+        let users: [User]
+        
+        var body: some View {
+            HStack {
+                ForEach(users) { user in
+                    Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .cornerRadius(.infinity)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 }

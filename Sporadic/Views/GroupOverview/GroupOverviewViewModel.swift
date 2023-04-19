@@ -53,7 +53,6 @@ class GroupOverviewViewModel: ObservableObject {
         groupRecord.setValue(group.displayedDays, forKey: "displayedDays")
         groupRecord.setValue(getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
         groupRecord.setValue(group.backgroundColor, forKey: "backgroundColor")
-        groupRecord.setValue(UserGroup.getDeliveryTimeInt(date: group.deliveryTime), forKey: "deliveryTimeInt")
         
         recordsToSave.append(groupRecord)
         

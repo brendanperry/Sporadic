@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-class Challenge: Identifiable {
+class Challenge: Identifiable, ObservableObject {
     let id: UUID
     let activityRecord: CKRecord.Reference
     var activity: Activity? = nil
@@ -16,9 +16,9 @@ class Challenge: Identifiable {
     let startTime: Date
     var isCompleted: Bool
     let userRecords: [CKRecord.Reference]
-    var users = [User]()
+    @Published var users = [User]()
     let groupRecord: CKRecord.Reference
-    var group: UserGroup? = nil
+    @Published var group: UserGroup? = nil
     let recordId: CKRecord.ID
     
     init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {

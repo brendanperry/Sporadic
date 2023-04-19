@@ -35,7 +35,7 @@ struct CreateGroupView: View {
                     DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
                         .padding(.bottom, 50)
                     
-//                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
+                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                 }
             }
             .padding(.horizontal)
@@ -130,13 +130,13 @@ struct CreateGroupView: View {
                         .padding()
                     }
                     
-//                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
-//                        Image("Add Activity Full")
-//                            .resizable()
-//                            .frame(width: 75, height: 75, alignment: .center)
-//                    }
-//                    .buttonStyle(ButtonPressAnimationStyle())
-//                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
+                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
+                        Image("Add Activity Full")
+                            .resizable()
+                            .frame(width: 75, height: 75, alignment: .center)
+                    }
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
                 }
             }
             .frame(maxWidth: .infinity)
