@@ -28,6 +28,8 @@
 		C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2228E29FFA0096E002 /* GroupName.swift */; };
 		C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2428E2A0030096E002 /* EmojiSelector.swift */; };
 		C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6401E2628E2A00D0096E002 /* GroupColor.swift */; };
+		C640520329F032B40054BD85 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640520229F032B40054BD85 /* StatsViewModel.swift */; };
+		C640520629F032FA0054BD85 /* CompletedChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640520529F032FA0054BD85 /* CompletedChallenge.swift */; };
 		C640EEF82954FDEF00C4058B /* LoadingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640EEF72954FDEF00C4058B /* LoadingBar.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
@@ -132,6 +134,8 @@
 		C6401E2228E29FFA0096E002 /* GroupName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupName.swift; sourceTree = "<group>"; };
 		C6401E2428E2A0030096E002 /* EmojiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelector.swift; sourceTree = "<group>"; };
 		C6401E2628E2A00D0096E002 /* GroupColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupColor.swift; sourceTree = "<group>"; };
+		C640520229F032B40054BD85 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
+		C640520529F032FA0054BD85 /* CompletedChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedChallenge.swift; sourceTree = "<group>"; };
 		C640EEF72954FDEF00C4058B /* LoadingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBar.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
@@ -287,6 +291,7 @@
 				C68378C42844148400ABB6B3 /* UserGroup.swift */,
 				C68378C62844152C00ABB6B3 /* User.swift */,
 				C6F3113B294ED1C50096F09D /* CustomError.swift */,
+				C640520529F032FA0054BD85 /* CompletedChallenge.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -307,7 +312,7 @@
 				C6C96017278FA22600A67AA2 /* Navigation */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C68378C8284542D500ABB6B3 /* GroupList.swift */,
-				C68378D22849AC9800ABB6B3 /* Stats.swift */,
+				C640520429F032B80054BD85 /* Stats */,
 				C62625A628673F7A00E84C79 /* EmojiKeyboard.swift */,
 				C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */,
 				C6B0D6C9287FB53D00EC6EE2 /* LoadingIndicator.swift */,
@@ -323,6 +328,15 @@
 				C630BE07268D2D230066D8C3 /* Info.plist */,
 			);
 			path = SporadicTests;
+			sourceTree = "<group>";
+		};
+		C640520429F032B80054BD85 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				C68378D22849AC9800ABB6B3 /* Stats.swift */,
+				C640520229F032B40054BD85 /* StatsViewModel.swift */,
+			);
+			path = Stats;
 			sourceTree = "<group>";
 		};
 		C65A01F126870098007A5B2F = {
@@ -655,6 +669,7 @@
 				C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */,
 				C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */,
 				C62625AB286741AB00E84C79 /* CharacterExtensions.swift in Sources */,
+				C640520629F032FA0054BD85 /* CompletedChallenge.swift in Sources */,
 				C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */,
 				C664D8EB29C3FDBD00ACA1AB /* EditIcon.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
@@ -678,6 +693,7 @@
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
 				C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */,
 				C6401E2328E29FFA0096E002 /* GroupName.swift in Sources */,
+				C640520329F032B40054BD85 /* StatsViewModel.swift in Sources */,
 				C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */,
 				C6B0D6C8287B7E8D00EC6EE2 /* DeliveryTime.swift in Sources */,
 				C65A020026870098007A5B2F /* HomePage.swift in Sources */,
