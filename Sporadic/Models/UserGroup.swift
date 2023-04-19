@@ -9,7 +9,15 @@ import Foundation
 import CloudKit
 import SwiftUI
 
-class UserGroup: Identifiable, ObservableObject {
+class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
+    static func == (lhs: UserGroup, rhs: UserGroup) -> Bool {
+        return lhs.record.recordID == rhs.record.recordID
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(record.recordID)
+    }
+    
     @Published var displayedDays: [Int]
     @Published var deliveryTime: Date
     @Published var emoji: String

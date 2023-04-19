@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var homeViewModel = HomeViewModel()
+    @StateObject var statsViewModel = StatsViewModel()
     @StateObject var viewRouter = ViewRouter()
     @State var showJoinGroup = false
     @State var groupId = ""
@@ -23,7 +24,7 @@ struct MainView: View {
             case .tutorial:
                 Tutorial()
             case .stats:
-                Stats()
+                Stats(viewModel: statsViewModel, homeViewModel: homeViewModel)
             }
         }
         .environmentObject(viewRouter)

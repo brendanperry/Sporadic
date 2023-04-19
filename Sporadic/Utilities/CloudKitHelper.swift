@@ -571,6 +571,7 @@ class CloudKitHelper {
         record.setValue(challenge.amount, forKey: "amount")
         record.setValue(challenge.activity?.name ?? "", forKey: "activityName")
         record.setValue(challenge.activity?.unit.rawValue ?? "", forKey: "unit")
+        record.setValue(Date(), forKey: "date")
         
         database.save(record) { record, error in
             if let error = error {
@@ -599,5 +600,18 @@ class CloudKitHelper {
         }
         
         return false
+    }
+    
+    func getCompletedChallenges(group: UserGroup) async throws -> [CompletedChallenge] {
+        let groupReference = CKRecord.Reference(record: group.record, action: .none)
+        
+        let predicate = NSPredicate(format: "group = %@", groupReference)
+        
+        let query = CKQuery(recordType: "CompletedChallenge", predicate: predicate)
+
+        let result = try await database.records(matching: query)
+        let records = try result.matchResults.map { try $0.1.get() }
+        
+        return records.compactMap { CompletedChallenge.init(from: $0)}
     }
 }
