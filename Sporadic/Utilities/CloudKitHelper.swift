@@ -254,7 +254,7 @@ class CloudKitHelper {
                     }
                 }
                 
-                return challenges
+                return challenges.sorted(by: { $0.startTime > $1.startTime })
             }
         }
 

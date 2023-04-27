@@ -105,7 +105,7 @@ struct ChallengeView: View {
             }
             .padding()
             
-            if !challenge.isCompleted {
+            if !challenge.isCompleted && !challenge.isChallengeFailed() {
                 DueTime(challengeStartTime: challenge.startTime)
                     .transition(.move(edge: .trailing))
             }

@@ -62,6 +62,18 @@ struct Stats: View {
                                 .padding(.horizontal)
                             
                             GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue, showUsers: viewModel.showUsers)
+                            
+                            HStack {
+                                Button("Back") {
+                                    viewModel.moveBackOneMonth()
+                                }
+                                
+                                Text(Calendar.current.monthSymbols[viewModel.selectedMonth - 1])
+                                
+                                Button("Forward") {
+                                    viewModel.moveForwardOneMonth()
+                                }
+                            }
                         }
                     }
                     .background(Color("Panel"))
