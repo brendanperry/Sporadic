@@ -17,8 +17,9 @@ struct CompletedChallenge: Identifiable {
     let unit: String
     let user: CKRecord.Reference
     let date: Date
+    let userName: String
     
-    internal init(id: UUID = UUID(), activityName: String, amount: Double, challenge: CKRecord.Reference, group: CKRecord.Reference, unit: String, user: CKRecord.Reference, date: Date) {
+    internal init(id: UUID = UUID(), activityName: String, amount: Double, challenge: CKRecord.Reference, group: CKRecord.Reference, unit: String, user: CKRecord.Reference, date: Date, userName: String) {
         self.id = id
         self.activityName = activityName
         self.amount = amount
@@ -27,9 +28,10 @@ struct CompletedChallenge: Identifiable {
         self.unit = unit
         self.user = user
         self.date = date
+        self.userName = userName
     }
     
-    init? (from record: CKRecord) {
+    init? (from record: CKRecord, group: UserGroup) {
         guard
             let activityName = record["activityName"] as? String,
             let userReference = record["user"] as? CKRecord.Reference,
@@ -42,6 +44,6 @@ struct CompletedChallenge: Identifiable {
             return nil
         }
         
-        self.init(activityName: activityName, amount: amount, challenge: challengeReference, group: groupReference, unit: unit, user: userReference, date: date)
+        self.init(activityName: activityName, amount: amount, challenge: challengeReference, group: groupReference, unit: unit, user: userReference, date: date, userName: group.users.first(where: { $0.record.recordID == userReference.recordID })?.name ?? "")
     }
 }

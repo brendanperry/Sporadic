@@ -602,7 +602,14 @@ class CloudKitHelper {
         return false
     }
     
-    func getCompletedChallenges(group: UserGroup) async throws -> [CompletedChallenge] {
+    var challenges = [CKRecord.ID: [CompletedChallenge]]()
+    func getCompletedChallenges(group: UserGroup, forceSync: Bool) async throws -> [CompletedChallenge] {
+        if !challenges.isEmpty && !forceSync {
+            if let groupChallenges = challenges.first(where: { $0.key == group.record.recordID })?.value {
+                return groupChallenges
+            }
+        }
+        
         let groupReference = CKRecord.Reference(record: group.record, action: .none)
         
         let predicate = NSPredicate(format: "group = %@", groupReference)
@@ -612,6 +619,10 @@ class CloudKitHelper {
         let result = try await database.records(matching: query)
         let records = try result.matchResults.map { try $0.1.get() }
         
-        return records.compactMap { CompletedChallenge.init(from: $0)}
+        let loadedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: group) }
+        
+        challenges[group.record.recordID] = loadedChallenges
+        
+        return loadedChallenges
     }
 }

@@ -13,8 +13,6 @@ struct Stats: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel: StatsViewModel
     @ObservedObject var homeViewModel: HomeViewModel
-    @State var selectedGroup: UserGroup? = nil
-    @State var selectedActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: 0, minValue: 0, name: "", unit: ActivityUnit.general)
     @FocusState var isPickerFocused: Bool
     
     var body: some View {
@@ -32,25 +30,24 @@ struct Stats: View {
                             isPickerFocused = true
                         }
                     
-                    GroupPicker(selectedGroup: $selectedGroup, homeViewModel: homeViewModel)
-                        .onChange(of: selectedGroup) { newValue in
-                            if let group = newValue {
-                                selectedActivity = group.activities.first ?? selectedActivity
-                                
-                                Task {
-                                    await viewModel.loadCompletedChallenges(group: group)
-                                }
-                            }
+                    GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
+                        .onChange(of: viewModel.selectedGroup) { _ in
+                            viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
                         }
                     
                     HStack(spacing: 20) {
-                        ActivityPicker(selectedActivity: $selectedActivity, activities: selectedGroup?.activities ?? [])
+                        ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: viewModel.selectedGroup?.activities ?? [])
+                            .onChange(of: viewModel.selectedActivity) { _ in
+                                Task {
+                                    await viewModel.loadCompletedChallenges(forceSync: false)
+                                }
+                            }
                         
-                        Streak(selectedGroup: selectedGroup)
+                        Streak(selectedGroup: viewModel.selectedGroup)
                     }
                     
                     VStack (alignment: .leading) {
-                        if viewModel.data.isEmpty {
+                        if viewModel.data.count < 2 {
                             TextHelper.text(key: "Not enough data to display.", alignment: .center, type: .body)
                                 .padding()
                         }
@@ -64,17 +61,26 @@ struct Stats: View {
                             TextHelper.text(key: "\(Int(viewModel.total)) mi", alignment: .leading, type: .h3)
                                 .padding(.horizontal)
                             
-                            GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue)
+                            GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue, showUsers: viewModel.showUsers)
                         }
                     }
                     .background(Color("Panel"))
                     .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                     .shadow(radius: GlobalSettings.shared.shadowRadius)
+                    
+                    Toggle(isOn: $viewModel.showUsers) {
+                        Text("Individual")
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 100)
                 .preferredColorScheme(ColorSchemeHelper().getColorSceme())
                 .padding(.top)
+            }
+            .refreshable {
+                Task {
+                    await viewModel.loadCompletedChallenges(forceSync: true)
+                }
             }
             
             NavigationBar(viewRouter: viewRouter)
@@ -84,19 +90,28 @@ struct Stats: View {
     struct GroupChart: View {
         let data: [CompletedChallenge]
         let groupColor: Color
+        let showUsers: Bool
         
         var body: some View {
             Chart(data) {
-                LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
-                    .interpolationMethod(.monotone)
-                    .foregroundStyle(groupColor)
-                
-                AreaMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
-                    .interpolationMethod(.monotone)
-                    .foregroundStyle(Gradient(colors: [groupColor, Color.clear]))
+                if showUsers {
+                    LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
+                        .interpolationMethod(.monotone)
+                        .foregroundStyle(by: .value("User", $0.userName))
+                        .symbol(by: .value("User", $0.userName))
+                }
+                else {
+                    LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
+                        .interpolationMethod(.monotone)
+                        .foregroundStyle(groupColor)
+                    
+                    AreaMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
+                        .interpolationMethod(.monotone)
+                        .foregroundStyle(Gradient(colors: [groupColor, Color.clear]))
+                }
             }
             .chartXAxis {
-                AxisMarks { value in
+                AxisMarks(values: .automatic(desiredCount: 3)) { value in
                     if let date = value.as(Date.self) {
                         AxisValueLabel {
                             Text(date, format: .dateTime.month(.defaultDigits).day().year(.twoDigits))
@@ -147,17 +162,16 @@ struct Stats: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
-                    if !homeViewModel.groups.isEmpty {
+                    if !homeViewModel.groups.isEmpty && selectedGroup == nil {
                         selectedGroup = homeViewModel.groups.first
                     }
                 }
                 
                 HStack(spacing: 0) {
                     Menu {
-                        ForEach(0 ..< homeViewModel.groups.count) {
-                            let index = $0
-                            Button("\(homeViewModel.groups[index].name)") {
-                                selectedGroup = homeViewModel.groups[index]
+                        ForEach(homeViewModel.groups) { group in
+                            Button(group.name) {
+                                selectedGroup = group
                             }
                         }
                     } label: {
@@ -230,10 +244,9 @@ struct Stats: View {
                 
                 HStack(spacing: 0) {
                     Menu {
-                        ForEach(0 ..< activities.count) {
-                            let index = $0
-                            Button("\(activities[index].name)") {
-                                selectedActivity = activities[index]
+                        ForEach(activities) { activity in
+                            Button(activity.name) {
+                                selectedActivity = activity
                             }
                         }
                     } label: {
