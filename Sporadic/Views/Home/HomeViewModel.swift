@@ -140,7 +140,7 @@ class HomeViewModel : ObservableObject {
     }
     
     func loadChallengeData() {
-        if challenges.allSatisfy({ $0.activity != nil && $0.group != nil && !$0.users.isEmpty }) {
+        if challenges.allSatisfy({ $0.activity != nil && $0.group != nil && $0.users != nil }) {
             return
         }
         
@@ -168,6 +168,7 @@ class HomeViewModel : ObservableObject {
                     if let challengeCopy = self?.challenges[index] {
                         challengeCopy.users = users
                         self?.challenges[index] = challengeCopy
+                        self?.challenges[index].setStatus()
                     }
                 }
             }

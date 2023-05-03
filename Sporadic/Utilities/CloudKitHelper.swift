@@ -225,7 +225,7 @@ class CloudKitHelper {
         if let user = try await getCurrentUser(forceSync: false) {
             let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [
                 NSPredicate(format: "users CONTAINS %@", user.record),
-                NSPredicate(format: "startTime > %@", (Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()) as NSDate)
+                NSPredicate(format: "startTime > %@", (Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()) as NSDate)
             ])
             
             let query = CKQuery(recordType: "Challenge", predicate: compoundPredicate)
@@ -236,10 +236,6 @@ class CloudKitHelper {
             let newChallenges = records
                 .compactMap({ Challenge.init(from: $0) })
                 .sorted(by: { $0.startTime > $1.startTime })
-            
-            for challenge in newChallenges {
-                challenge.isCompleted = try await isChallengeCompleted(challenge: challenge, user: user)
-            }
             
             if currentChallenges.elementsEqual(newChallenges, by: { $0.recordId == $1.recordId }) {
                 return currentChallenges
@@ -580,26 +576,30 @@ class CloudKitHelper {
         }
     }
     
-    func isChallengeCompleted(challenge: Challenge, user: User) async throws -> Bool {
-        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [
-            NSPredicate(format: "challenge = %@", challenge.recordId),
-            NSPredicate(format: "user = %@", user.record)
-        ])
-        
-        let query = CKQuery(recordType: "CompletedChallenge", predicate: compoundPredicate)
+    func usersWhoHaveCompletedChallenge(challenge: Challenge) async throws -> [User]? {
+        let predicate = NSPredicate(format: "challenge = %@", challenge.recordId)
+        let query = CKQuery(recordType: "CompletedChallenge", predicate: predicate)
         
         let response = try await database.records(matching: query)
             
-        if let result = response.matchResults.first?.1 {
-            switch result {
-            case .success(_):
-                return true
-            case .failure(let error):
-                throw error
-            }
-        }
+        let records = try response.matchResults.map { try $0.1.get() }
         
-        return false
+        let completedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: challenge.group ?? UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord.init(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))) }
+        
+        var users = [User]()
+        for completedChallenge in completedChallenges {
+            let predicate = NSPredicate(format: "recordID = %@", completedChallenge.user.recordID)
+            
+            let query = CKQuery(recordType: "User", predicate: predicate)
+            
+            let result = try await database.records(matching: query)
+            
+            let records = try result.matchResults.map { try $0.1.get() }
+            
+            users.append(contentsOf: records.compactMap({ User.init(from: $0) }))
+        }
+                    
+        return users
     }
     
     var challenges = [CKRecord.ID: [CompletedChallenge]]()

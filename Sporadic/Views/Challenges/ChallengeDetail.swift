@@ -9,7 +9,7 @@ import SwiftUI
 import CloudKit
 
 struct ChallengeDetail: View {
-    @Binding var challenge: Challenge
+    @ObservedObject var challenge: Challenge
     
     var body: some View {
         ZStack {
@@ -21,11 +21,11 @@ struct ChallengeDetail: View {
                 VStack {
                     TextHelper.text(key: "CompleteYourChallenge", alignment: .leading, type: .h2)
                         .padding(.horizontal)
-                    ChallengeView(challenge: $challenge, showNavigationCarrot: false)
+                    ChallengeView(challenge: challenge, showNavigationCarrot: false)
                 }
                 .padding(.top, 50)
                 
-                UsersForChallenge(users: challenge.users)
+                UsersForChallenge(users: challenge.users ?? [])
                 
                 Spacer()
             }

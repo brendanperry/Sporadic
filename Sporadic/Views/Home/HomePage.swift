@@ -32,7 +32,7 @@ struct HomePage: View {
                     VStack(spacing: 35) {
                         Welcome(viewModel: viewModel)
                     
-                        Challenges(challenges: $viewModel.challenges, isLoading: viewModel.areChallengesLoading)
+                        Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading)
                         
                         GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading)
                     }

@@ -11,7 +11,7 @@ import ConfettiSwiftUI
 import Combine
 
 struct Challenges: View {
-    @Binding var challenges: [Challenge]
+    let challenges: [Challenge]
     let isLoading: Bool
     
     var body: some View {
@@ -29,7 +29,7 @@ struct Challenges: View {
                             .padding(.top)
                     }
                     else {
-                        ForEach($challenges) { challenge in
+                        ForEach(challenges) { challenge in
                             ChallengeView(challenge: challenge, showNavigationCarrot: false)
                         }
                     }
@@ -65,7 +65,7 @@ struct ChallengeLoading: View {
 }
 
 struct ChallengeView: View {
-    @Binding var challenge: Challenge
+    @ObservedObject var challenge: Challenge
     @State var showError = false
     @State var confetti = 0
     let showNavigationCarrot: Bool
@@ -73,23 +73,32 @@ struct ChallengeView: View {
     var body: some View {
         HStack {
             HStack {
-                switch challenge.getStatus() {
+                switch challenge.status {
                 case .inProgress:
                     inProgressCheckbox()
                     
                     VStack(spacing: 0) {
                         TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users)
+                        UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
                     }
-                case .completed:
+                case .userCompleted:
+                    completedCheckbox()
+                    
+                    VStack(spacing: 0) {
+                        TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                        UserList(users: challenge.users ?? [], challenge: challenge)
+                            .padding(.top, 5)
+                    }
+                case .groupCompleted:
                     completedCheckbox()
                     
                     VStack(spacing: 0) {
                         TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .h3, color: .white)
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users)
+                        UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
                     }
                 case .failed:
@@ -98,14 +107,21 @@ struct ChallengeView: View {
                     VStack(spacing: 0) {
                         TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .h3, color: .white)
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users)
+                        UserList(users: challenge.users ?? [], challenge: challenge)
+                            .padding(.top, 5)
+                    }
+                case .unknown:
+                    VStack(spacing: 0) {
+                        TextHelper.text(key: "", alignment: .leading, type: .h3, color: .white)
+                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                        UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
                     }
                 }
             }
             .padding()
             
-            if !challenge.isCompleted && !challenge.isChallengeFailed() {
+            if challenge.status == .inProgress || challenge.status == .userCompleted {
                 DueTime(challengeStartTime: challenge.startTime)
                     .transition(.move(edge: .trailing))
             }
@@ -162,11 +178,24 @@ struct ChallengeView: View {
     
     func inProgressCheckbox() -> some View {
         Button(action: {
-            let status = challenge.getStatus()
+            guard let user = CloudKitHelper.shared.getCachedUser() else {
+                return
+            }
             
-            if status == .inProgress {
+            let currentStatus = challenge.status
+            let currentUsersCompleted = challenge.usersCompleted
+            
+            if currentStatus == .inProgress {
                 withAnimation {
-                    challenge.isCompleted = true
+                    if challenge.users?.count == challenge.usersCompleted.count + 1 {
+                        challenge.status = .groupCompleted
+                    }
+                    else {
+                        challenge.status = .userCompleted
+                    }
+                    
+                    challenge.usersCompleted.append(user)
+                    
                     confetti += 1
                 }
             }
@@ -175,7 +204,8 @@ struct ChallengeView: View {
                 if let error = error {
                     print(error)
                     showError = true
-                    challenge.isCompleted = false
+                    challenge.status = currentStatus
+                    challenge.usersCompleted = currentUsersCompleted
                 }
             }
         }, label: {
@@ -196,6 +226,9 @@ struct ChallengeView: View {
             .foregroundColor(.white)
             .frame(width: 35, height: 35, alignment: .center)
             .padding(.trailing, 5)
+            .onTapGesture {
+                confetti += 1
+            }
     }
     
     func failedCheckbox() -> some View {
@@ -209,14 +242,16 @@ struct ChallengeView: View {
     
     struct UserList: View {
         let users: [User]
+        @ObservedObject var challenge: Challenge
         
         var body: some View {
-            HStack {
+            ScrollView(.horizontal) {
                 ForEach(users) { user in
                     Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
                         .resizable()
                         .frame(width: 30, height: 30)
                         .cornerRadius(.infinity)
+                        .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

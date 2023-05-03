@@ -14,19 +14,19 @@ class Challenge: Identifiable, ObservableObject {
     var activity: Activity? = nil
     let amount: Double
     let startTime: Date
-    var isCompleted: Bool
     let userRecords: [CKRecord.Reference]
-    @Published var users = [User]()
+    @Published var users: [User]? = nil
     let groupRecord: CKRecord.Reference
     @Published var group: UserGroup? = nil
     let recordId: CKRecord.ID
+    @Published var status = ChallengeStatus.unknown
+    @Published var usersCompleted = [User]()
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
         self.startTime = startTime
-        self.isCompleted = isCompleted
         self.userRecords = userRecords
         self.groupRecord = groupRecord
         self.recordId = recordId
@@ -34,7 +34,7 @@ class Challenge: Identifiable, ObservableObject {
 }
 
 enum ChallengeStatus {
-    case completed, failed, inProgress
+    case userCompleted, groupCompleted, failed, unknown, inProgress
 }
 
 extension Challenge {
@@ -43,29 +43,62 @@ extension Challenge {
             let activityReference = record["activity"] as? CKRecord.Reference,
             let amount = record["amount"] as? Double,
             let startTime = record["startTime"] as? Date,
-            let isCompleted = record["isCompleted"] as? Int,
             let users = record["users"] as? [CKRecord.Reference],
             let group = record["group"] as? CKRecord.Reference
         else {
             return nil
         }
         
-        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group, recordId: record.recordID)
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID)
     }
     
     func isChallengeFailed() -> Bool {
         return Date() > Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime
     }
     
-    func getStatus() -> ChallengeStatus {
-        if self.isCompleted {
-            return .completed
+    func setStatus() {
+        Task {
+            let status = await getStatus()
+            
+            DispatchQueue.main.async {
+                self.status = status
+            }
+        }
+    }
+    
+    func getStatus() async -> ChallengeStatus {
+        if isChallengeFailed() {
+            return .failed
         }
         
-        if !self.isCompleted && !isChallengeFailed() {
-            return .inProgress
+        guard let user = CloudKitHelper.shared.getCachedUser() else {
+            return .unknown
         }
         
-        return .failed
+        guard let users = users else {
+            return .unknown
+        }
+        
+        do {
+            if let usersCompleted = try await CloudKitHelper.shared.usersWhoHaveCompletedChallenge(challenge: self) {
+                DispatchQueue.main.async {
+                    self.usersCompleted = usersCompleted
+                }
+                
+                if usersCompleted.count == users.count {
+                    return .groupCompleted
+                }
+                else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) {
+                    return .userCompleted
+                }
+                else {
+                    return .inProgress
+                }
+            }
+        } catch {
+            return .unknown
+        }
+        
+        return .unknown
     }
 }

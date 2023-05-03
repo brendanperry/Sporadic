@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct CompletedChallenge: Identifiable {
+struct CompletedChallenge: Identifiable, Equatable {
     var id = UUID()
     let activityName: String
     var amount: Double

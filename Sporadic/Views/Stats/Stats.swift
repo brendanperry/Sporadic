@@ -30,58 +30,26 @@ struct Stats: View {
                             isPickerFocused = true
                         }
                     
-                    GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
-                        .onChange(of: viewModel.selectedGroup) { _ in
-                            viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                        }
-                    
-                    HStack(spacing: 20) {
+                    HStack {
+                        GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
+                            .onChange(of: viewModel.selectedGroup) { _ in
+                                viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                            }
+                        
                         ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: viewModel.selectedGroup?.activities ?? [])
                             .onChange(of: viewModel.selectedActivity) { _ in
                                 Task {
                                     await viewModel.loadCompletedChallenges(forceSync: false)
                                 }
                             }
+                    }
+                    
+                    GraphSection(viewModel: viewModel)
+                    
+                    HStack {
+                        YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
                         
-                        Streak(selectedGroup: viewModel.selectedGroup)
-                    }
-                    
-                    VStack (alignment: .leading) {
-                        if viewModel.data.count < 2 {
-                            TextHelper.text(key: "Not enough data to display.", alignment: .center, type: .body)
-                                .padding()
-                        }
-                        else {
-                            Image(systemName: "magnifyingglass")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30)
-                                .padding()
-                            
-                            TextHelper.text(key: "\(Int(viewModel.total)) mi", alignment: .leading, type: .h3)
-                                .padding(.horizontal)
-                            
-                            GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue, showUsers: viewModel.showUsers)
-                            
-                            HStack {
-                                Button("Back") {
-                                    viewModel.moveBackOneMonth()
-                                }
-                                
-                                Text(Calendar.current.monthSymbols[viewModel.selectedMonth - 1])
-                                
-                                Button("Forward") {
-                                    viewModel.moveForwardOneMonth()
-                                }
-                            }
-                        }
-                    }
-                    .background(Color("Panel"))
-                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    .shadow(radius: GlobalSettings.shared.shadowRadius)
-                    
-                    Toggle(isOn: $viewModel.showUsers) {
-                        Text("Individual")
+                        YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
                     }
                 }
                 .padding(.horizontal)
@@ -89,6 +57,7 @@ struct Stats: View {
                 .preferredColorScheme(ColorSchemeHelper().getColorSceme())
                 .padding(.top)
             }
+            .padding(.top)
             .refreshable {
                 Task {
                     await viewModel.loadCompletedChallenges(forceSync: true)
@@ -99,38 +68,104 @@ struct Stats: View {
         }
     }
     
+    struct YourTotal: View {
+        let total: Double
+        let unit: String
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                    .padding()
+                
+                TextHelper.text(key: "Your total", alignment: .leading, type: .body)
+                    .padding(.horizontal)
+                
+                TextHelper.text(key: "\(String(format: "%.2f", total)) \(unit)", alignment: .leading, type: .h3)
+                    .padding([.horizontal, .bottom])
+            }
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+        }
+    }
+    
+    struct YourAvg: View {
+        let average: Double
+        let unit: String
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                    .padding()
+                
+                TextHelper.text(key: "Your daily avg.", alignment: .leading, type: .body)
+                    .padding(.horizontal)
+                
+                TextHelper.text(key: "\(String(format: "%.2f", average)) \(unit)", alignment: .leading, type: .h3)
+                    .padding([.horizontal, .bottom])
+            }
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+        }
+    }
+    
+    struct GraphSection: View {
+        @ObservedObject var viewModel: StatsViewModel
+        
+        var body: some View {
+            VStack (alignment: .leading) {
+                if viewModel.data.count < 2 {
+                    TextHelper.text(key: "Not enough data to display.", alignment: .center, type: .body)
+                        .padding()
+                }
+                else {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30)
+                        .padding()
+                    
+                    TextHelper.text(key: "Group total", alignment: .leading, type: .body)
+                        .padding(.horizontal)
+                    
+                    TextHelper.text(key: "\(Int(viewModel.total)) \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
+                        .padding([.horizontal, .bottom])
+                    
+                    GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue)
+                }
+            }
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+        }
+    }
+    
     struct GroupChart: View {
         let data: [CompletedChallenge]
         let groupColor: Color
-        let showUsers: Bool
         
         var body: some View {
             Chart(data) {
-                if showUsers {
-                    LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
-                        .interpolationMethod(.monotone)
-                        .foregroundStyle(by: .value("User", $0.userName))
-                        .symbol(by: .value("User", $0.userName))
-                }
-                else {
-                    LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
-                        .interpolationMethod(.monotone)
-                        .foregroundStyle(groupColor)
-                    
-                    AreaMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
-                        .interpolationMethod(.monotone)
-                        .foregroundStyle(Gradient(colors: [groupColor, Color.clear]))
-                }
+                LineMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
+                    .interpolationMethod(.monotone)
+                    .foregroundStyle(groupColor)
+                
+                AreaMark(x: .value("Date", $0.date), y: .value($0.unit, $0.amount))
+                    .interpolationMethod(.monotone)
+                    .foregroundStyle(Gradient(colors: [groupColor, Color.clear]))
             }
             .chartXAxis {
-                AxisMarks(values: .automatic(desiredCount: 3)) { value in
-                    if let date = value.as(Date.self) {
-                        AxisValueLabel {
-                            Text(date, format: .dateTime.month(.defaultDigits).day().year(.twoDigits))
-                                .font(Font.custom("Lexend-SemiBold", size: 11))
-                                .foregroundColor(Color("Gray200"))
-                        }
-                    }
+                AxisMarks() {
+                    AxisValueLabel()
+                        .font(Font.custom("Lexend-SemiBold", size: 11))
+                        .foregroundStyle(Color("Gray200"))
                 }
             }
             .chartYAxis {
@@ -193,6 +228,56 @@ struct Stats: View {
                     }
                 }
             }
+            .padding()
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+        }
+    }
+    
+    struct ActivityPicker: View {
+        @Binding var selectedActivity: Activity
+        let activities: [Activity]
+        
+        var body: some View {
+            ZStack {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image(selectedActivity.name)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+                        
+                        TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3)
+                        
+                        Image(systemName: "chevron.down")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 10, height: 10)
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                HStack(spacing: 0) {
+                    Menu {
+                        ForEach(activities) { activity in
+                            Button(activity.name) {
+                                selectedActivity = activity
+                            }
+                        }
+                    } label: {
+                        Label("", image: "")
+                            .labelStyle(TitleOnlyLabelStyle())
+                            .frame(maxWidth: .infinity, maxHeight: 75)
+                    }
+                }
+                .padding()
+            }
+            .padding()
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
         }
     }
     
@@ -221,54 +306,6 @@ struct Stats: View {
                     .foregroundColor(Color("Panel"))
                     .shadow(radius: GlobalSettings.shared.shadowRadius)
             )
-        }
-    }
-    
-    struct ActivityPicker: View {
-        @Binding var selectedActivity: Activity
-        let activities: [Activity]
-        
-        var body: some View {
-            ZStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Image(selectedActivity.name)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                        
-                        Image(systemName: "chevron.down")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 10, height: 10)
-                            .foregroundColor(.white)
-                    }
-                    
-                    TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3, color: Color("Gray150"))
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                        .foregroundColor(Color("Gray300"))
-                        .shadow(radius: GlobalSettings.shared.shadowRadius)
-                )
-                
-                HStack(spacing: 0) {
-                    Menu {
-                        ForEach(activities) { activity in
-                            Button(activity.name) {
-                                selectedActivity = activity
-                            }
-                        }
-                    } label: {
-                        Label("", image: "")
-                            .labelStyle(TitleOnlyLabelStyle())
-                            .frame(maxWidth: .infinity, maxHeight: 75)
-                    }
-                }
-                .padding()
-            }
         }
     }
 }
