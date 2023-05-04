@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct PlusButton: View {
-    let backgroundColor: Color? = nil
+    let backgroundColor: Color
     
     var body: some View {
         ZStack {
             Rectangle()
                 .frame(width: 50, height: 50, alignment: .center)
-                .foregroundColor(backgroundColor != nil ? backgroundColor : Color("Panel"))
+                .foregroundColor(backgroundColor)
                 .shadow(radius: 3)
                 .cornerRadius(10)
             
@@ -32,6 +32,6 @@ struct PlusButton: View {
 
 struct PlusButton_Previews: PreviewProvider {
     static var previews: some View {
-        PlusButton()
+        PlusButton(backgroundColor: Color("Panel"))
     }
 }

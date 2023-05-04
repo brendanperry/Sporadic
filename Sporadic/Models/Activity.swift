@@ -28,6 +28,7 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
     @Published var wasDeleted = false
     var isNew = false
     var createdAt = Date()
+    var template: ActivityTemplate? = nil
     
     internal init(record: CKRecord, maxValue: Double, minValue: Double, name: String, templateId: Int? = nil, unit: ActivityUnit, group: CKRecord.Reference? = nil, wasEdited: Bool = false, wasDeleted: Bool = false, isNew: Bool = false, createdAt: Date = Date()) {
         self.record = record
@@ -41,6 +42,8 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
         self.wasDeleted = wasDeleted
         self.isNew = isNew
         self.createdAt = createdAt
+        
+//        self.template = ActivityTemplateHelper.getTemplate(by: templateId ?? -1)
     }
 }
 

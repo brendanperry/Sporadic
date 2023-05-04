@@ -246,12 +246,14 @@ struct ChallengeView: View {
         
         var body: some View {
             ScrollView(.horizontal) {
-                ForEach(users) { user in
-                    Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .cornerRadius(.infinity)
-                        .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                HStack {
+                    ForEach(users) { user in
+                        Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(.infinity)
+                            .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

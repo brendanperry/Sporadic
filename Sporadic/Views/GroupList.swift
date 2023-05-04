@@ -45,7 +45,7 @@ struct AddNewGroup: View {
     
     var body: some View {
         NavigationLink(destination: CreateGroupView(groups: $groups)) {
-            PlusButton()
+            PlusButton(backgroundColor: Color("Panel"))
         }
         .buttonStyle(ButtonPressAnimationStyle())
         .cornerRadius(10)

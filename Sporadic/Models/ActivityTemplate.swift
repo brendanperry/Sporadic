@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct ActivityTemplate: Identifiable {
     let id: Int
@@ -17,4 +18,16 @@ struct ActivityTemplate: Identifiable {
     let minRange: Double
     let unit: ActivityUnit
     let category: ActivityCategory
+    
+    var color: Color {
+        if category == .cardio {
+            return Color("Cardio")
+        }
+        else if category == .strength {
+            return Color("Strength")
+        }
+        else {
+            return Color("CustomExercise")
+        }
+    }
 }

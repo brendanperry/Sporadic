@@ -46,10 +46,12 @@ struct Stats: View {
                     
                     GraphSection(viewModel: viewModel)
                     
-                    HStack {
-                        YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
-                        
-                        YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                    if viewModel.data.count > 1 {
+                        HStack {
+                            YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                            
+                            YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -135,7 +137,7 @@ struct Stats: View {
                     TextHelper.text(key: "Group total", alignment: .leading, type: .body)
                         .padding(.horizontal)
                     
-                    TextHelper.text(key: "\(Int(viewModel.total)) \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
+                    TextHelper.text(key: "\(String(format: "%.2f", viewModel.total)) \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
                         .padding([.horizontal, .bottom])
                     
                     GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue)

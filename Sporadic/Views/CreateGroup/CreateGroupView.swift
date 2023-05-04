@@ -87,6 +87,7 @@ struct CreateGroupView: View {
     struct SelectedActivityList: View {
         @Binding var selectedActivities: [Activity]
         @Binding var group: UserGroup
+        @State var showAddView = false
         var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
         let templates: [ActivityTemplate]
         
@@ -103,7 +104,7 @@ struct CreateGroupView: View {
                                 
                                 VStack {
                                     if let _ = activity.wrappedValue.templateId {
-                                        Image(activity.wrappedValue.name + " Circle")
+                                        Image(activity.wrappedValue.name)
                                             .resizable()
                                             .frame(width: 50, height: 50, alignment: .center)
                                     }
@@ -130,13 +131,26 @@ struct CreateGroupView: View {
                         .padding()
                     }
                     
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
-                        Image("Add Activity Full")
-                            .resizable()
-                            .frame(width: 75, height: 75, alignment: .center)
-                    }
+                    Button(action: {
+                        showAddView = true
+                    }, label: {
+                        PlusButton(backgroundColor: Color("Panel"))
+                    })
                     .buttonStyle(ButtonPressAnimationStyle())
                     .padding(.top, selectedActivities.isEmpty ? 40 : 0)
+                    
+//                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
+//                        Image("Add Activity Full")
+//                            .resizable()
+//                            .frame(width: 75, height: 75, alignment: .center)
+//                    }
+//                    .buttonStyle(ButtonPressAnimationStyle())
+//                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
+                }
+            }
+            .popover(isPresented: $showAddView) {
+                NavigationStack {
+                    ActivitySelector(selectedActivities: $selectedActivities)
                 }
             }
             .frame(maxWidth: .infinity)

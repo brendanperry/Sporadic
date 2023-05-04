@@ -33,10 +33,9 @@ class CreateGroupViewModel: ObservableObject {
     
     var group = UserGroup.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))
     
-    let activityTemplateHelper = ActivityTemplateHelper()
     
     func getTemplates() -> [ActivityTemplate] {
-        return activityTemplateHelper.getActivityTemplates()
+        return ActivityTemplateHelper.templates
     }
     
     func createGroup(completion: @escaping (UserGroup?) -> Void) {

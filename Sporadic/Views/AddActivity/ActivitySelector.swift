@@ -10,7 +10,8 @@ import SwiftUI
 struct ActivitySelector: View {
     @Binding var selectedActivities: [Activity]
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
-    let templates = ActivityTemplateHelper().getActivityTemplates()
+    let templates = ActivityTemplateHelper.templates
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack {
@@ -20,6 +21,24 @@ struct ActivitySelector: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center) {
+                    Button(action: {
+                        let impact = UIImpactFeedbackGenerator(style: .light)
+                        impact.impactOccurred()
+                        
+                        dismiss()
+                    }) {
+                        Image("CloseButton")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .leading)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                    .foregroundColor(Color("Panel"))
+                            )
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    
                     TextHelper.text(key: "AddANewActivity", alignment: .leading, type: .h1)
                         .padding(.top, 50)
                     
@@ -32,15 +51,24 @@ struct ActivitySelector: View {
                             LazyVGrid(columns: items, spacing: 17) {
                                 ForEach(templates.filter({ !selectedActivities.map({ $0.templateId }).contains($0.id) && $0.category == category })) { template in
                                     NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template)) {
-                                        VStack {
-                                            Image(template.name + " Circle")
-                                                .resizable()
-                                                .frame(width: 50, height: 50, alignment: .center)
-                                                .padding(.top)
+                                        VStack(alignment: .center) {
+                                            Spacer()
                                             
-                                            TextHelper.text(key: template.name, alignment: .center, type: .h2)
+//                                            Image(template.name)
+//                                                .resizable()
+//                                                .aspectRatio(contentMode: .fit)
+//                                                .frame(width: 25, height: 25, alignment: .center)
+//                                                .padding()
+//                                                .background(
+//                                                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+//                                                        .foregroundColor(template.color)
+//                                                )
+                                            
+                                            TextHelper.text(key: template.name, alignment: .center, type: .h3)
                                                 .padding(.top, 5)
-                                                .padding(.bottom)
+                                                .multilineTextAlignment(.center)
+                                            
+                                            Spacer()
                                         }
                                         .padding(.vertical)
                                         .background(
@@ -59,7 +87,7 @@ struct ActivitySelector: View {
                     HStack {
                         NavigationLink(destination: AddCustomActivityPage(activities: $selectedActivities)) {
                             VStack {
-//                                PlusButton(backgroundColor: )
+                                PlusButton(backgroundColor: Color("CustomExercise"))
                                 
                                 Text("Add New")
                                     .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
