@@ -17,7 +17,13 @@ struct BackButton: View {
             Image("BackButton")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 20, height: 20, alignment: .leading)
+                .frame(width: 20, height: 20, alignment: .center)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundColor(Color("Panel"))
+                )
+                
         })
         .buttonStyle(ButtonPressAnimationStyle())
         .frame(maxWidth: .infinity, alignment: .leading)

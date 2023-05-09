@@ -41,7 +41,6 @@ public class ActivityTemplateHelper {
     ]
     
     static func getTemplate(by id: Int) -> ActivityTemplate? {
-        print("WOAH")
         return templates.first(where: { $0.id == id })
     }
 }

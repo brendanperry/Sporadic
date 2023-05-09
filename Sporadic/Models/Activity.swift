@@ -43,7 +43,7 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
         self.isNew = isNew
         self.createdAt = createdAt
         
-//        self.template = ActivityTemplateHelper.getTemplate(by: templateId ?? -1)
+        self.template = ActivityTemplateHelper.getTemplate(by: templateId ?? -1)
     }
 }
 

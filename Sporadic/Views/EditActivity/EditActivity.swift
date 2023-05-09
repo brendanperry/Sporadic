@@ -23,24 +23,16 @@ struct EditActivity: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(alignment: .leading, spacing: GlobalSettings.shared.controlSpacing) {
-                HStack {
-                    Image(activity.name)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25, height: 25, alignment: .center)
-                        .padding()
-                    
-                    TextHelper.text(key: activity.name, alignment: .leading, type: .h3)
-                    
-                    Spacer()
-                }
-//                .background(
-//                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-//                        .foregroundColor(activity.template?.color ?? Color("Panel"))
-//                )
+                BackButton()
+                    .padding(.top)
                 
-                TextHelper.text(key: "Edit exercise", alignment: .leading, type: .h1)
-                    .padding(.top, 50)
+                VStack {
+                    if let template = activity.template {
+                        ExerciseName(template: template)
+                    }
+                    
+                    TextHelper.text(key: "Edit exercise", alignment: .leading, type: .h1)
+                }
 
                 RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
                     .alert(isPresented: $viewModel.showError) {
@@ -54,11 +46,6 @@ struct EditActivity: View {
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
-                BackButton()
-            }
-        }
         .onAppear {
             currentMin = activity.minValue
             currentMax = activity.maxValue

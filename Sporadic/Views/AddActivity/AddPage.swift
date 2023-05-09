@@ -31,10 +31,14 @@ struct AddPage: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                TextHelper.text(key: "Add exercise", alignment: .leading, type: .h1)
-                    .padding(.top, 50)
+                BackButton()
+                    .padding(.top)
                 
-                TextHelper.text(key: template.name, alignment: .leading, type: .h2)
+                VStack {
+                    ExerciseName(template: template)
+                    
+                    TextHelper.text(key: "Add exercise", alignment: .leading, type: .h1)
+                }
                 
                 RangeSelection(minValue: $minValue, maxValue: $maxValue, unit: template.unit, viewModel: viewModel)
                 
@@ -45,11 +49,6 @@ struct AddPage: View {
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
-                BackButton()
-            }
-        }
     }
     
     struct AddButton: View {
@@ -84,7 +83,6 @@ struct AddPage: View {
                         .padding(.bottom)
                 }
                 .buttonStyle(ButtonPressAnimationStyle())
-                .padding()
                 
                 Spacer()
             }

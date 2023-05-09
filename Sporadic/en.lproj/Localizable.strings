@@ -24,7 +24,7 @@
 "NotificationsEnabled" = "Notifications are enabled! Nothing to do.";
 "Loading" = "Loading your preferences...";
 "EditYourActivity" = "Edit your activity";
-"SetTheRangeForYourActivity" = "Set the range for your challenge";
+"SetTheRangeForYourActivity" = "Set the difficulty range for challenges";
 "Toggle" = "Toggle";
 "Miles" = "miles";
 "Minutes" = "minutes";
@@ -34,7 +34,6 @@
 "SecondsAbbr" = "s";
 "Sets" = "sets";
 "Laps" = "laps";
-"General" = "units";
 "AddANewActivity" = "Add exercises";
 "SelectANewActivity" = "Select a new activity to be challenged with.";
 "StayActive" = "Stay active throughout your week with Sporadic.";
@@ -77,10 +76,10 @@
 "Emoji" = "Emoji";
 "Color" = "Color";
 "ChooseActivities" = "Choose Activities";
-"ActivityName" = "Activity Name";
+"ActivityName" = "Exercise Name";
 "SetRange" = "Set the range for your challenge";
 "MaxCharacters" = "Max 18 characters";
-"AddActivity" = "Add Activity";
+"AddActivity" = "Add a custom exercise";
 "AddToList" = "Add to list";
 "NetworkError" = "Network Error";
 "CouldNotSaveActivity" = "Could not save activity. Please check your connection and try again.";
@@ -91,3 +90,4 @@
 "RemovingActivities" = "Activity progress will be saved";
 "RemoveActivity" = "Remove Activity";
 "NotCompleted" = "Not Completed";
+"Reps" = "reps";

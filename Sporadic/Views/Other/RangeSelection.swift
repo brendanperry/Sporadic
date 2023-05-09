@@ -15,7 +15,7 @@ struct RangeSelection: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Difficulty Range", alignment: .leading, type: .h4)
+            TextHelper.text(key: "Difficulty range", alignment: .leading, type: .h4)
             
             VStack {
                 
