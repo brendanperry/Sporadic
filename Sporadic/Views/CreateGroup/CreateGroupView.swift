@@ -150,7 +150,7 @@ struct CreateGroupView: View {
             }
             .popover(isPresented: $showAddView) {
                 NavigationStack {
-                    ActivitySelector(selectedActivities: $selectedActivities)
+                    ActivitySelector(selectedActivities: $selectedActivities, shouldShow: $showAddView)
                 }
             }
             .frame(maxWidth: .infinity)

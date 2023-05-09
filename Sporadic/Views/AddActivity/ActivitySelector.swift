@@ -11,7 +11,7 @@ struct ActivitySelector: View {
     @Binding var selectedActivities: [Activity]
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
     let templates = ActivityTemplateHelper.templates
-    @Environment(\.dismiss) var dismiss
+    @Binding var shouldShow: Bool
     
     var body: some View {
         ZStack {
@@ -25,7 +25,7 @@ struct ActivitySelector: View {
                         let impact = UIImpactFeedbackGenerator(style: .light)
                         impact.impactOccurred()
                         
-                        dismiss()
+                        shouldShow = false
                     }) {
                         Image("CloseButton")
                             .resizable()
@@ -54,15 +54,15 @@ struct ActivitySelector: View {
                                         VStack(alignment: .center) {
                                             Spacer()
                                             
-//                                            Image(template.name)
-//                                                .resizable()
-//                                                .aspectRatio(contentMode: .fit)
-//                                                .frame(width: 25, height: 25, alignment: .center)
-//                                                .padding()
-//                                                .background(
-//                                                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-//                                                        .foregroundColor(template.color)
-//                                                )
+                                            Image(template.name)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 25, height: 25, alignment: .center)
+                                                .padding()
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                                        .foregroundColor(template.color)
+                                                )
                                             
                                             TextHelper.text(key: template.name, alignment: .center, type: .h3)
                                                 .padding(.top, 5)

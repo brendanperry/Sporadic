@@ -269,7 +269,7 @@ struct YourActivities: View {
         }
         .popover(isPresented: $showAddView) {
             NavigationStack {
-                ActivitySelector(selectedActivities: $group.activities)
+                ActivitySelector(selectedActivities: $group.activities, shouldShow: $showAddView)
             }
         }
     }
