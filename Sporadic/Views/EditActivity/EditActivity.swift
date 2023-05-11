@@ -13,8 +13,19 @@ struct EditActivity: View {
     @Environment(\.isPresented) var isPresented
     @State var currentMin = 0.0
     @State var currentMax = 0.0
+    @State var newMin: Double
+    @State var newMax: Double
 
     @StateObject var viewModel = AddActivityViewModel()
+    
+    init(activity: Binding<Activity>) {
+        self._activity = activity
+        
+        self._currentMin = State(initialValue: activity.minValue.wrappedValue)
+        self._currentMax = State(initialValue: activity.maxValue.wrappedValue)
+        self._newMin = State(initialValue: activity.minValue.wrappedValue)
+        self._newMax = State(initialValue: activity.maxValue.wrappedValue)
+    }
     
     var body: some View {
         ZStack {
@@ -34,7 +45,7 @@ struct EditActivity: View {
                     TextHelper.text(key: "Edit exercise", alignment: .leading, type: .h1)
                 }
 
-                RangeSelection(minValue: $activity.minValue, maxValue: $activity.maxValue, unit: activity.unit, viewModel: viewModel)
+                RangeSelection(minValue: $newMin, maxValue: $newMax, unit: activity.unit, viewModel: viewModel)
                     .alert(isPresented: $viewModel.showError) {
                         Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                     }
@@ -46,14 +57,12 @@ struct EditActivity: View {
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            currentMin = activity.minValue
-            currentMax = activity.maxValue
-        }
         .onChange(of: isPresented) { newValue in
             if newValue == false {
-                if currentMin != activity.minValue || currentMax != activity.maxValue {
+                if currentMin != newMin || currentMax != newMax {
                     activity.wasEdited = true
+                    activity.minValue = newMin
+                    activity.maxValue = newMax
                 }
             }
         }

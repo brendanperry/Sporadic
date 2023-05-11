@@ -232,7 +232,7 @@ struct YourActivities: View {
                                         .padding()
                                         .background(
                                             RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-//                                                .foregroundColor(activity.wrappedValue.template?.color ?? Color("Panel"))
+                                                .foregroundColor(activity.wrappedValue.template?.color ?? Color("Panel"))
                                         )
                                 }
                                 
@@ -240,7 +240,6 @@ struct YourActivities: View {
                                     .padding(.top)
                                 
                                 TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .h7)
-                                    .frame(width: 60)
                                     .opacity(0.75)
                                 
                                 TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .h7)

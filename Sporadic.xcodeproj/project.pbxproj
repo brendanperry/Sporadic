@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -70,6 +70,7 @@
 		C68961732831AA26008A0C87 /* OneSignalExtension in Frameworks */ = {isa = PBXBuildFile; productRef = C68961722831AA26008A0C87 /* OneSignalExtension */; };
 		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
+		C69F4C4D2A09E30E006A4E62 /* ExerciseName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
 		C6B0D6C8287B7E8D00EC6EE2 /* DeliveryTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */; };
@@ -177,6 +178,7 @@
 		C689616D28303572008A0C87 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
+		C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseName.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		C6B0D6C7287B7E8C00EC6EE2 /* DeliveryTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTime.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				C664A940279A4D6300EE2195 /* AddActivityViewModel.swift */,
 				C6B0D6CB2880FBB600EC6EE2 /* AddPage.swift */,
 				C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */,
+				C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */,
 			);
 			path = AddActivity;
 			sourceTree = "<group>";
@@ -582,8 +585,9 @@
 		C65A01F226870098007A5B2F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					C630BE02268D2D230066D8C3 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -730,6 +734,7 @@
 				C6B0D6CA287FB53D00EC6EE2 /* LoadingIndicator.swift in Sources */,
 				C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */,
 				C664A93F279A4D1600EE2195 /* DoubleExtensions.swift in Sources */,
+				C69F4C4D2A09E30E006A4E62 /* ExerciseName.swift in Sources */,
 				C6667CDF268F77D600991913 /* SettingsPage.swift in Sources */,
 				C630BDFA268C313B0066D8C3 /* Localize.swift in Sources */,
 				C664A941279A4D6300EE2195 /* AddActivityViewModel.swift in Sources */,
@@ -855,7 +860,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -911,7 +916,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
