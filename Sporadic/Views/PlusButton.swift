@@ -17,15 +17,15 @@ struct PlusButton: View {
                 .foregroundColor(backgroundColor)
                 .shadow(radius: 3)
                 .cornerRadius(10)
+
+            Capsule(style: .continuous)
+                .frame(width: 5, height: 25)
+                .foregroundColor(Color("AddCrossUp"))
             
             Capsule(style: .continuous)
                 .rotation(.degrees(90))
                 .frame(width: 5, height: 25)
-                .foregroundColor(Color("Gray400"))
-
-            Capsule(style: .continuous)
-                .frame(width: 5, height: 25)
-                .foregroundColor(Color("Gray400"))
+                .foregroundColor(Color("AddCrossSide"))
         }
     }
 }
