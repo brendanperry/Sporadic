@@ -47,6 +47,16 @@ class CloudKitHelper {
         
         if let record = records.first {
             cachedUser = User.init(from: record)
+            
+            if cachedUser?.notificationId != OneSignal.getDeviceState().userId {
+                if let user = cachedUser {
+                    CloudKitHelper.shared.updateNotificationId(user: user) { error in
+                        if let error {
+                            print(error)
+                        }
+                    }
+                }
+            }
            
             return cachedUser
         }
@@ -76,12 +86,31 @@ class CloudKitHelper {
         
         record.setValue("Brendan Perry", forKey: "name")
         record.setValue(usersRecordId, forKey: "usersRecordId")
+        record.setValue(OneSignal.getDeviceState().userId ?? "", forKey: "notificationId")
         
         let userRecord = try await database.save(record)
         
         let user = User.init(from: userRecord)
         
         return user
+    }
+    
+    func updateNotificationId(user: User,  completion: @escaping (Error?) -> Void) {
+        let record = user.record
+        record["notificationId"] = OneSignal.getDeviceState().userId ?? ""
+        
+        database.save(record) { record, error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                if let record = record {
+                    user.record = record
+                }
+                
+                completion(nil)
+            }
+        }
     }
     
     func updateUserName(user: User, completion: @escaping (Error?) -> Void) {
@@ -573,6 +602,9 @@ class CloudKitHelper {
             if let error = error {
                 completion(error)
             }
+            else {
+                completion(nil)
+            }
         }
     }
     
@@ -624,5 +656,24 @@ class CloudKitHelper {
         challenges[group.record.recordID] = loadedChallenges
         
         return loadedChallenges
+    }
+    
+    func sendUsersNotifications(challenge: Challenge) async throws {
+        guard let user = cachedUser else {
+            return
+        }
+        
+        let device = OneSignal.getDeviceState()
+        
+        let playerIds = challenge.users?.map({ $0.notificationId }).filter({ $0 != device?.userId ?? "" }) ?? []
+        
+        let notification: [String: Any] = [
+            "app_id": "f211cce4-760d-4404-97f3-34df31eccde8",
+            "include_player_ids": playerIds,
+            "contents": ["en": "\(user.name) completed today's challenge for \(challenge.group?.name ?? "") \(challenge.group?.emoji ?? "")"],
+            "headings": ["en": "Challenge Completed"]
+        ]
+        
+        OneSignal.postNotification(notification)
     }
 }

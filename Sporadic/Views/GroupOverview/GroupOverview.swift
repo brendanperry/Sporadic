@@ -217,7 +217,7 @@ struct YourActivities: View {
                     .padding(.leading)
                 }
                 else {
-                    ForEach($group.activities) { activity in
+                    ForEach($group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
                         NavigationLink(destination: EditActivity(activity: activity)) {
                             VStack(spacing: 0) {
                                 ZStack {

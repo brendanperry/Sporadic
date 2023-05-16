@@ -26,6 +26,8 @@ struct Tutorial: View {
                 thirdPage()
             case 3:
                 fourthPage()
+            case 4:
+                fifthPage()
             default:
                 firstPage()
             }
@@ -66,57 +68,38 @@ struct Tutorial: View {
     }
     
     func firstPage() -> some View {
-        VStack {
-            Image("landing-rotation")
-                .resizable()
-                .frame(height: 350, alignment: .leading)
-            TextHelper.text(key: "StayActive", alignment: .leading, type: .h2, color: .white)
+        ZStack {
+                Image("TutorialBackground1")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                
+            TextHelper.text(key: "StayActive", alignment: .leading, type: .h1)
                 .padding()
+            
+            TextHelper.text(key: "Receive random exercise challenges throughout your week, personalized to you.", alignment: .leading, type: .body)
+                .padding(.horizontal)
+            
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .background(Color.blue)
         .transition(.backslide)
     }
     
     func secondPage() -> some View {
-        VStack(spacing: 0) {
-            Image("Landing-Image1")
+        VStack {
+            Image("TutorialBackground1")
                 .resizable()
-                .scaledToFit()
-                .edgesIgnoringSafeArea(.top)
-                .frame(maxWidth: .infinity, alignment: .top)
-                .padding(.bottom, -45)
-                .background(Color.blue)
-            TextHelper.text(key: "GetNotifications", alignment: .leading, type: .h2)
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.red)
-            TextHelper.text(key: "SetDays", alignment: .leading, type: .body)
-                .padding()
-            CustomSlider(lineHeight: 12,
-                         lineWidth: UIScreen.main.bounds.width - 50,
-                         lineCornerRadius: 10,
-                         circleWidth: 30,
-                         circleShadowRadius: 5,
-                         roundToNearest: 1,
-                         minValue: 1,
-                         maxValue: 7,
-                         circleBorder: 4,
-                         circleBorderColor: .white,
-                         circleColor: .white,
-                         lineColorInRange: Color("ActivityRangeColor"),
-                         lineColorOutOfRange: Color("SliderBackground"),
-                         selection: $days)
-            .frame(maxWidth: .infinity, maxHeight: 10, alignment: .center)
             
-            HStack {
-                TextHelper.text(key: "1", alignment: .leading, type: .body)
-                    .padding(.leading)
-
-                TextHelper.text(key: "7", alignment: .trailing, type: .h2)
-                    .padding(.trailing)
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
+            TextHelper.text(key: "Get started 🚀", alignment: .leading, type: .h1)
+                .padding()
+            
+            TextHelper.text(key: "You will be challenged with exercises from your group. Each exercise has a difficulty range the challenge will be chosen from.", alignment: .leading, type: .body)
+                .padding(.horizontal)
             
             Spacer()
         }
@@ -126,15 +109,39 @@ struct Tutorial: View {
     
     func thirdPage() -> some View {
         VStack {
-            Image("Landing-Image2")
+            Image("TutorialBackground1")
                 .resizable()
-                .scaledToFit()
-                .edgesIgnoringSafeArea(.top)
-                .frame(maxWidth: .infinity, alignment: .top)
-            TextHelper.text(key: "ScheduleChallenges", alignment: .leading, type: .h2)
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
                 .padding()
-            TextHelper.text(key: "SetTime", alignment: .leading, type: .body)
+            
+            VStack {
+                HStack(spacing: -10) {
+                    Circle()
+                        .frame(width: 21)
+                        .foregroundColor(Color("SuccessButtons"))
+//                        .opacity(<#T##opacity: Double##Double#>)
+                        .border(Color.white, width: 5)
+                        .zIndex(3)
+                    Circle()
+//                    rgba(217, 217, 217, 0.5)
+                        .frame(width: 21)
+                        .foregroundColor(.gray)
+                        .opacity(0.50)
+                        .zIndex(2)
+                    Circle()
+                        .frame(width: 21)
+                        .foregroundColor(.gray)
+                        .opacity(0.25)
+                        .zIndex(1)
+                }
+            }
+            
+            TextHelper.text(key: "Pick a preset", alignment: .leading, type: .h1)
                 .padding()
+            
+            TextHelper.text(key: "We want to help you get started. You can fully customize this group afterwards.", alignment: .leading, type: .body)
+                .padding(.horizontal)
             
             Spacer()
         }
@@ -144,10 +151,39 @@ struct Tutorial: View {
     
     func fourthPage() -> some View {
         VStack {
-            TextHelper.text(key: "ChooseActivities", alignment: .leading, type: .h2)
+            Image("TutorialBackground1")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
                 .padding()
-            TextHelper.text(key: "ChooseRange", alignment: .leading, type: .body)
+            
+            TextHelper.text(key: "Introduce yourself", alignment: .leading, type: .h1)
                 .padding()
+            
+            TextHelper.text(key: "There’s no account required. A name and photo will help your friends recognize you.", alignment: .leading, type: .body)
+                .padding(.horizontal)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .transition(.backslide)
+    }
+    
+    func fifthPage() -> some View {
+        VStack {
+            Image("TutorialBackground1")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
+                .padding()
+            
+            TextHelper.text(key: "Complete challenges with friends", alignment: .leading, type: .h1)
+                .padding()
+            
+            TextHelper.text(key: "Invite your friends and complete challenges together! Or go solo and rock it out.", alignment: .leading, type: .body)
+                .padding(.horizontal)
+            
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)
@@ -156,6 +192,6 @@ struct Tutorial: View {
 
 struct Tutorial_Previews: PreviewProvider {
     static var previews: some View {
-        Tutorial()
+        Tutorial(selection: 2)
     }
 }

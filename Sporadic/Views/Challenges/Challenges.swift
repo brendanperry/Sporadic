@@ -9,6 +9,7 @@ import SwiftUI
 import CloudKit
 import ConfettiSwiftUI
 import Combine
+import OneSignal
 
 struct Challenges: View {
     let challenges: [Challenge]
@@ -206,6 +207,12 @@ struct ChallengeView: View {
                     showError = true
                     challenge.status = currentStatus
                     challenge.usersCompleted = currentUsersCompleted
+                    
+                }
+                else {
+                    Task {
+                        try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
+                    }
                 }
             }
         }, label: {
@@ -247,7 +254,7 @@ struct ChallengeView: View {
         var body: some View {
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(users) { user in
+                    ForEach(users.sorted(by: { $0.name < $1.name })) { user in
                         Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
                             .resizable()
                             .frame(width: 30, height: 30)

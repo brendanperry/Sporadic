@@ -107,7 +107,7 @@ struct GroupWidget: View {
                         .frame(width: 70)
                 }
                 else {
-                    TextHelper.text(key: "\(group.activities.count) exercises", alignment: .leading, type: .h7)
+                    TextHelper.text(key: "\(group.activities.filter({ !$0.wasDeleted }).count) exercises", alignment: .leading, type: .h7)
                         .frame(width: 70)
                 }
                 
