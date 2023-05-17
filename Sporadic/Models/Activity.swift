@@ -21,7 +21,7 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
     @Published var maxValue: Double
     @Published var minValue: Double
     var name: String
-    var templateId: Int?
+    var templateId: Int
     var unit: ActivityUnit
     var group: CKRecord.Reference?
     @Published var wasEdited = false
@@ -30,7 +30,7 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
     var createdAt = Date()
     var template: ActivityTemplate? = nil
     
-    internal init(record: CKRecord, maxValue: Double, minValue: Double, name: String, templateId: Int? = nil, unit: ActivityUnit, group: CKRecord.Reference? = nil, wasEdited: Bool = false, wasDeleted: Bool = false, isNew: Bool = false, createdAt: Date = Date()) {
+    internal init(record: CKRecord, maxValue: Double, minValue: Double, name: String, templateId: Int, unit: ActivityUnit, group: CKRecord.Reference? = nil, wasEdited: Bool = false, wasDeleted: Bool = false, isNew: Bool = false, createdAt: Date = Date()) {
         self.record = record
         self.maxValue = maxValue
         self.minValue = minValue
@@ -43,7 +43,7 @@ class Activity: Identifiable, Equatable, Hashable, ObservableObject {
         self.isNew = isNew
         self.createdAt = createdAt
         
-        self.template = ActivityTemplateHelper.getTemplate(by: templateId ?? -1)
+        self.template = ActivityTemplateHelper.getTemplate(by: templateId)
     }
 }
 
@@ -60,6 +60,6 @@ extension Activity {
             return nil
         }
         
-        self.init(record: record, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId == -1 ? nil : templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles, group: group)
+        self.init(record: record, maxValue: maxValue, minValue: minValue, name: name, templateId: templateId, unit: ActivityUnit.init(rawValue: unit) ?? .miles, group: group)
     }
 }

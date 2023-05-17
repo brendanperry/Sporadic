@@ -16,7 +16,7 @@ class StatsViewModel: ObservableObject {
     @Published var yourAvg = 0.0
     @Published var selectedMonth = Calendar.current.dateComponents([.month], from: Date()).month ?? 1
     @Published var selectedYear = Calendar.current.dateComponents([.year], from: Date()).year ?? 2023
-    @Published var selectedActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: 0, minValue: 0, name: "", unit: ActivityUnit.miles)
+    @Published var selectedActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: 0, minValue: 0, name: "", templateId: -1, unit: ActivityUnit.miles)
     @Published var selectedGroup: UserGroup? = nil
     @Published var showUsers = false
     

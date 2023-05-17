@@ -219,36 +219,7 @@ struct YourActivities: View {
                 else {
                     ForEach($group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
                         NavigationLink(destination: EditActivity(activity: activity)) {
-                            VStack(spacing: 0) {
-                                ZStack {
-                                    Circle()
-                                        .frame(width: 50, height: 50, alignment: .center)
-                                        .foregroundColor(.white)
-                                    
-                                    Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 25, height: 25, alignment: .center)
-                                        .padding()
-                                        .background(
-                                            RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                                                .foregroundColor(activity.wrappedValue.template?.color ?? Color("Panel"))
-                                        )
-                                }
-                                
-                                TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .h3)
-                                    .padding(.top)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .h7)
-                                    .opacity(0.75)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .h7)
-                                    .opacity(0.75)
-                            }
-                            .padding()
-                            .background(Color("Panel"))
-                            .cornerRadius(10)
-                            .shadow(radius: GlobalSettings.shared.shadowRadius)
+                            SelectedActivity(activity: activity)
                         }
                         .id(UUID())
                         .disabled(!viewModel.isOwner)

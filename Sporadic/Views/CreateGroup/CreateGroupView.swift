@@ -20,9 +20,11 @@ struct CreateGroupView: View {
                 .edgesIgnoringSafeArea(.all)
             
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
+                VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                    BackButton()
+                        .padding(.top)
+                    
                     TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
-                        .padding(.top, 50)
                     
                     GroupName(name: $viewModel.groupName)
                     
@@ -33,9 +35,10 @@ struct CreateGroupView: View {
                     DeliveryTime(isOwner: true, time: $viewModel.time)
                     
                     DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
-                        .padding(.bottom, 50)
                     
                     SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
+                    
+                    CreateButton(groups: $groups, viewModel: viewModel)
                 }
             }
             .padding(.horizontal)
@@ -46,10 +49,7 @@ struct CreateGroupView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(viewModel.groupName)
-        .navigationBarItems(leading: BackButton(), trailing: CreateButton(groups: $groups, viewModel: viewModel))
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .toolbarBackground(viewModel.toolbarBackground, for: .navigationBar)
         .alert(isPresented: $viewModel.showError) {
             Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
         }
@@ -73,14 +73,14 @@ struct CreateGroupView: View {
                     }
                 }
             }, label: {
-                Text(Localize.getString("Create"))
-                    .font(.custom("Lexend-SemiBold", fixedSize: 10))
-                    .padding(10)
-                    .foregroundColor(.white)
+                TextHelper.text(key: "Create Group", alignment: .center, type: .h5, color: .white)
+                    .padding()
+                    .frame(maxWidth: 200)
                     .background(Color("BrandPurple"))
-                    .cornerRadius(12)
+                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
             })
             .buttonStyle(ButtonPressAnimationStyle())
+            .padding()
         }
     }
     
@@ -98,34 +98,7 @@ struct CreateGroupView: View {
                 LazyVGrid(columns: items, spacing: 10) {
                     ForEach($selectedActivities, id: \.record.recordID) { activity in
                         NavigationLink(destination: EditActivity(activity: activity)) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .top, endPoint: .bottom))
-                                
-                                VStack {
-                                    if let _ = activity.wrappedValue.templateId {
-                                        Image(activity.wrappedValue.name)
-                                            .resizable()
-                                            .frame(width: 50, height: 50, alignment: .center)
-                                    }
-                                    else {
-                                        Image("Custom Activity Icon")
-                                            .resizable()
-                                            .frame(width: 50, height: 50, alignment: .center)
-                                    }
-                                    
-                                    TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .h2, color: .white)
-                                        .padding(5)
-                                    
-                                    TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue) \(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: Color("EditProfile"))
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15).foregroundColor(Color("Activity"))
-                                )
-                                .padding(7)
-                            }
-                            .buttonStyle(ButtonPressAnimationStyle())
+                            SelectedActivity(activity: activity)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
                         .padding()
@@ -138,14 +111,6 @@ struct CreateGroupView: View {
                     })
                     .buttonStyle(ButtonPressAnimationStyle())
                     .padding(.top, selectedActivities.isEmpty ? 40 : 0)
-                    
-//                    NavigationLink(destination: ActivitySelector(selectedActivities: $selectedActivities)) {
-//                        Image("Add Activity Full")
-//                            .resizable()
-//                            .frame(width: 75, height: 75, alignment: .center)
-//                    }
-//                    .buttonStyle(ButtonPressAnimationStyle())
-//                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
                 }
             }
             .popover(isPresented: $showAddView) {
@@ -153,9 +118,6 @@ struct CreateGroupView: View {
                     ActivitySelector(selectedActivities: $selectedActivities, shouldShow: $showAddView)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal)
-            .padding(.bottom, 100)
         }
     }
 }
