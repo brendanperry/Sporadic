@@ -87,7 +87,22 @@ struct ActivitySelector: View {
                     HStack {
                         NavigationLink(destination: AddCustomActivityPage(activities: $selectedActivities)) {
                             VStack {
-                                PlusButton(backgroundColor: Color("CustomExercise"))
+                                ZStack {
+                                    Rectangle()
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .foregroundColor(Color("CustomExercise"))
+                                        .shadow(radius: 3)
+                                        .cornerRadius(10)
+
+                                    Capsule(style: .continuous)
+                                        .frame(width: 5, height: 25)
+                                        .foregroundColor(Color("AddCrossUpCustom"))
+                                    
+                                    Capsule(style: .continuous)
+                                        .rotation(.degrees(90))
+                                        .frame(width: 5, height: 25)
+                                        .foregroundColor(Color("AddCrossSideCustom"))
+                                }
                                 
                                 Text("Add New")
                                     .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
