@@ -67,10 +67,6 @@ extension Challenge {
     }
     
     func getStatus() async -> ChallengeStatus {
-        if isChallengeFailed() {
-            return .failed
-        }
-        
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             return .unknown
         }
@@ -90,6 +86,9 @@ extension Challenge {
                 }
                 else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) {
                     return .userCompleted
+                }
+                else if isChallengeFailed() {
+                    return .failed
                 }
                 else {
                     return .inProgress

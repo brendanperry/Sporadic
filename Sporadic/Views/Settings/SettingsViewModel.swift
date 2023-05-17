@@ -87,8 +87,10 @@ class SettingsViewModel : ObservableObject {
             
             CloudKitHelper.shared.updateUserImage(user: user) { [weak self] error in
                 if let _ = error {
-                    self?.errorMessage = "We could not save the changes to your user profile. Please check your connection and try again."
-                    self?.showError = true
+                    DispatchQueue.main.async {
+                        self?.errorMessage = "We could not save the changes to your user profile. Please check your connection and try again."
+                        self?.showError = true
+                    }
                 }
                 
                 if let backgroundTaskID = self?.imageTaskId {

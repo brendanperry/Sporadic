@@ -31,8 +31,8 @@ struct JoinGroup: View {
                 
                 VStack {
                     VStack {
-                        TextHelper.text(key: "You've been invited to join a group!", alignment: .center, type: .h2)
-                        TextHelper.text(key: "Would you like to join?", alignment: .center, type: .h2)
+                        TextHelper.text(key: "You've been invited to join a group.", alignment: .center, type: .h5)
+                        TextHelper.text(key: "Would you like to join?", alignment: .center, type: .h5)
                     }
                     .padding(.top)
                     
@@ -42,9 +42,9 @@ struct JoinGroup: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            TextHelper.text(key: "Don't Join", alignment: .center, type: .h2, color: .white)
+                            TextHelper.text(key: "Don't Join", alignment: .center, type: .h6, color: .white)
                                 .padding()
-                                .background(Color("Delete"))
+                                .background(Color("Gray400"))
                                 .cornerRadius(16)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
@@ -59,9 +59,9 @@ struct JoinGroup: View {
                                 }
                             }
                         }, label: {
-                            TextHelper.text(key: "Join Group", alignment: .center, type: .h2, color: .white)
+                            TextHelper.text(key: "Join Group", alignment: .center, type: .h6, color: .white)
                                 .padding()
-                                .background(Color("Primary"))
+                                .background(Color("BrandPurple"))
                                 .cornerRadius(16)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
@@ -73,9 +73,6 @@ struct JoinGroup: View {
                 .background(Color("Panel"))
                 .cornerRadius(16)
                 .padding()
-                
-                // oof
-//                UsersInGroup(users: viewModel.group.use, group: <#T##UserGroup#>)
             }
             
             if viewModel.isLoading {
