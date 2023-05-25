@@ -12,6 +12,8 @@ struct SelectedActivity: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            Spacer()
+            
             ZStack {
                 Circle()
                     .frame(width: 50, height: 50, alignment: .center)
@@ -29,6 +31,8 @@ struct SelectedActivity: View {
             }
             
             TextHelper.text(key: activity.name, alignment: .center, type: .h3)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
                 .padding(.top)
             
             TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue)", alignment: .center, type: .h7)
@@ -36,6 +40,8 @@ struct SelectedActivity: View {
             
             TextHelper.text(key: "\(activity.unit.toString())", alignment: .center, type: .h7)
                 .opacity(0.75)
+            
+            Spacer()
         }
         .padding()
         .background(Color("Panel"))
