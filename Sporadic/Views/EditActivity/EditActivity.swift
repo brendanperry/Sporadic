@@ -94,13 +94,16 @@ struct EditActivity: View {
                     Alert(title: Text("Remove \(activity.name)?"), message: Text("Add back an activity with the same name later to pick up where you left off."),
                           primaryButton: .cancel(),
                           secondaryButton: .destructive(Text("Remove")) {
-                        var deletedActivity = activities.first(where: { $0.record.recordID == activity.record.recordID })
+                        let deletedActivity = activities.first(where: { $0.record.recordID == activity.record.recordID })
+                        
                         deletedActivity?.wasDeleted = true
                         
                         if let deletedActivity {
                             activities.removeAll(where: { $0.record.recordID == activity.record.recordID })
-                            activities.append(deletedActivity)
-                            //                        activity.wasDeleted = true
+                            
+                            if !deletedActivity.isNew {
+                                activities.append(deletedActivity)
+                            }
                         }
                         
                         presentationMode.wrappedValue.dismiss()
