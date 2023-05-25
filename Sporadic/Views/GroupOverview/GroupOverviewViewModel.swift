@@ -90,8 +90,7 @@ class GroupOverviewViewModel: ObservableObject {
         
         CloudKitHelper.shared.database.modifyRecords(saving: recordsToSave, deleting: deletedActivities) { [weak self] response in
             switch response {
-            case .success(let results):
-                print(results)
+            case .success(_):
                 completion(true)
             case .failure(let error):
                 print(error)

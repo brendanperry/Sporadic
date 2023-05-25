@@ -38,7 +38,6 @@ struct Stats: View {
                                 }
                                 .onChange(of: viewModel.selectedGroup?.activities) { newVal in
                                     viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                    print(viewModel.selectedActivity.name)
                                 }
                             
                             ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
@@ -239,7 +238,6 @@ struct Stats: View {
                 .onChange(of: homeViewModel.groups) { _ in
                     if selectedGroup == nil {
                         selectedGroup = homeViewModel.groups.first
-                        print(selectedGroup?.activities.map({ $0.name }))
                     }
                 }
                 .onAppear {

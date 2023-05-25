@@ -35,11 +35,7 @@ class UIEmojiTextField: UITextField {
 }
 
 struct EmojiTextField: UIViewRepresentable {
-    @Binding var text: String {
-        didSet {
-            print(text)
-        }
-    }
+    @Binding var text: String
     var focused: FocusState<Bool>.Binding
     var placeholder: String = ""
     let textField = UIEmojiTextField()
