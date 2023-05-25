@@ -40,8 +40,9 @@ struct CreateGroupView: View {
                     
                     CreateButton(groups: $groups, viewModel: viewModel)
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
+            .padding(.top)
             
             if viewModel.isLoading {
                 LoadingIndicator()
@@ -88,20 +89,19 @@ struct CreateGroupView: View {
         @Binding var selectedActivities: [Activity]
         @Binding var group: UserGroup
         @State var showAddView = false
-        var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
+        var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
         let templates: [ActivityTemplate]
         
         var body: some View {
             VStack(alignment: .leading) {
                 TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
                 
-                LazyVGrid(columns: items, spacing: 10) {
+                LazyVGrid(columns: items, spacing: 17) {
                     ForEach($selectedActivities, id: \.record.recordID) { activity in
                         NavigationLink(destination: EditActivity(activity: activity, activities: $selectedActivities)) {
                             SelectedActivity(activity: activity)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
-                        .padding()
                     }
                     
                     Button(action: {
