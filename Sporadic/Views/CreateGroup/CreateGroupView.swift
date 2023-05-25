@@ -97,7 +97,7 @@ struct CreateGroupView: View {
                 
                 LazyVGrid(columns: items, spacing: 10) {
                     ForEach($selectedActivities, id: \.record.recordID) { activity in
-                        NavigationLink(destination: EditActivity(activity: activity)) {
+                        NavigationLink(destination: EditActivity(activity: activity, activities: $selectedActivities)) {
                             SelectedActivity(activity: activity)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())

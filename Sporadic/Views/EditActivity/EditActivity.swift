@@ -10,6 +10,7 @@ import SwiftUI
 
 struct EditActivity: View {
     @Binding var activity: Activity
+    @Binding var activities: [Activity]
     @Environment(\.isPresented) var isPresented
     @State var currentMin = 0.0
     @State var currentMax = 0.0
@@ -18,8 +19,9 @@ struct EditActivity: View {
 
     @StateObject var viewModel = AddActivityViewModel()
     
-    init(activity: Binding<Activity>) {
+    init(activity: Binding<Activity>, activities: Binding<[Activity]>) {
         self._activity = activity
+        self._activities = activities
         
         self._currentMin = State(initialValue: activity.minValue.wrappedValue)
         self._currentMax = State(initialValue: activity.maxValue.wrappedValue)
@@ -50,7 +52,7 @@ struct EditActivity: View {
                         Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                     }
 
-                DeleteButton(activity: $activity)
+                DeleteButton(activity: $activity, activities: $activities)
             }
             .padding(.horizontal)
             .frame(maxHeight: .infinity, alignment: .top)
@@ -72,6 +74,7 @@ struct EditActivity: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         @State var showDeleteConfirmation = false
         @Binding var activity: Activity
+        @Binding var activities: [Activity]
         
         var body: some View {
             HStack() {
@@ -91,7 +94,14 @@ struct EditActivity: View {
                     Alert(title: Text("Remove \(activity.name)?"), message: Text("Add back an activity with the same name later to pick up where you left off."),
                           primaryButton: .cancel(),
                           secondaryButton: .destructive(Text("Remove")) {
-                        activity.wasDeleted = true
+                        var deletedActivity = activities.first(where: { $0.record.recordID == activity.record.recordID })
+                        deletedActivity?.wasDeleted = true
+                        
+                        if let deletedActivity {
+                            activities.removeAll(where: { $0.record.recordID == activity.record.recordID })
+                            activities.append(deletedActivity)
+                            //                        activity.wasDeleted = true
+                        }
                         
                         presentationMode.wrappedValue.dismiss()
                     })

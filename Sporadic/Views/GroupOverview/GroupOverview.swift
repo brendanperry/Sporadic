@@ -219,7 +219,7 @@ struct YourActivities: View {
                 }
                 else {
                     ForEach($group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
-                        NavigationLink(destination: EditActivity(activity: activity)) {
+                        NavigationLink(destination: EditActivity(activity: activity, activities: $group.activities)) {
                             SelectedActivity(activity: activity)
                         }
                         .id(UUID())
