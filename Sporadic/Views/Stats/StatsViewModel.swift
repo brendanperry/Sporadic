@@ -25,6 +25,11 @@ class StatsViewModel: ObservableObject {
     var challenges = [CompletedChallenge]()
     
     func waitForGroupsToFinishLoading(homeViewModel: HomeViewModel) {
+        if areGroupsDoneLoading(homeViewModel: homeViewModel) {
+            areGroupsLoaded = true
+            return
+        }
+        
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             if self?.areGroupsDoneLoading(homeViewModel: homeViewModel) ?? false {
                 self?.areGroupsLoaded = true
