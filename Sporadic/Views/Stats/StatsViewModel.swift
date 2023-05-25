@@ -19,8 +19,23 @@ class StatsViewModel: ObservableObject {
     @Published var selectedActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: 0, minValue: 0, name: "", templateId: -1, unit: ActivityUnit.miles)
     @Published var selectedGroup: UserGroup? = nil
     @Published var showUsers = false
+    @Published var isLoading = false
+    @Published var areGroupsLoaded = false
     
     var challenges = [CompletedChallenge]()
+    
+    func waitForGroupsToFinishLoading(homeViewModel: HomeViewModel) {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            if self?.areGroupsDoneLoading(homeViewModel: homeViewModel) ?? false {
+                self?.areGroupsLoaded = true
+                timer.invalidate()
+            }
+        }
+    }
+    
+    func areGroupsDoneLoading(homeViewModel: HomeViewModel) -> Bool {
+        return (homeViewModel.areGroupsLoading == false && homeViewModel.groups.allSatisfy({ !$0.areActivitiesLoading && !$0.areUsersLoading }))
+    }
     
     func moveBackOneMonth() {
         if selectedMonth > 1 {
@@ -45,6 +60,10 @@ class StatsViewModel: ObservableObject {
             return
         }
         
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
         challenges = (try? await CloudKitHelper.shared.getCompletedChallenges(group: selectedGroup, forceSync: forceSync)) ?? []
         
         setData(month: 4, year: 2023, isAllTime: true)
@@ -53,6 +72,7 @@ class StatsViewModel: ObservableObject {
     private func setData(month: Int, year: Int, isAllTime: Bool) {
         DispatchQueue.main.async {
             self.data = self.getAllTimeDataCombined()
+            self.isLoading = false
         }
     }
     

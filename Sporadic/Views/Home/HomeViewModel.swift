@@ -87,17 +87,15 @@ class HomeViewModel : ObservableObject {
                 // there is a delay in pulling down newly created cloudkit records.
                 // this keeps them from disappearing temporarily
                 DispatchQueue.main.async {
-                    group.activities = newActivities + newlyCreatedActivitiesOnDevice
+                    group.activities = (newActivities + newlyCreatedActivitiesOnDevice).sorted(by: { $0.name < $1.name })
+                    group.areActivitiesLoading = false
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    group.activities = newActivities
+                    group.activities = newActivities.sorted(by: { $0.name < $1.name })
+                    group.areActivitiesLoading = false
                 }
-            }
-            
-            DispatchQueue.main.async {
-                group.areActivitiesLoading = false
             }
         }
         catch {
@@ -121,12 +119,12 @@ class HomeViewModel : ObservableObject {
                 // this keeps them from disappearing temporarily
                 
                 DispatchQueue.main.async {
-                    group.users = newUsers + newlyCreatedUsersOnDevice
+                    group.users = (newUsers + newlyCreatedUsersOnDevice).sorted(by: { $0.name < $1.name })
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    group.users = newUsers
+                    group.users = newUsers.sorted(by: { $0.name < $1.name })
                 }
             }
             
@@ -196,10 +194,10 @@ class HomeViewModel : ObservableObject {
 
                         let newlyCreatedGroupsOnDevice = groupsOnDeviceOnly?.filter({ (Calendar.current.date(byAdding: .minute, value: 2, to: $0.createdAt) ?? Date()) > Date() })
 
-                        self?.groups = newGroups + (newlyCreatedGroupsOnDevice ?? [])
+                        self?.groups = (newGroups + (newlyCreatedGroupsOnDevice ?? [])).sorted(by: { $0.name < $1.name })
                     }
                     else {
-                        self?.groups = newGroups
+                        self?.groups = newGroups.sorted(by: { $0.name < $1.name })
                     }
                     
                     self?.areGroupsLoading = false

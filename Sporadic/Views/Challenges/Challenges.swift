@@ -79,7 +79,13 @@ struct ChallengeView: View {
                     inProgressCheckbox()
                     
                     VStack(spacing: 0) {
-                        TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        if challenge.activity?.unit == .reps {
+                            TextHelper.text(key: "\(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.name ?? "")", alignment: .leading, type: .h3, color: .white)
+                        }
+                        else {
+                            TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        }
+                        
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
                         UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)

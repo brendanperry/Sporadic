@@ -71,7 +71,6 @@
 		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C69F4C4D2A09E30E006A4E62 /* ExerciseName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */; };
-		C6A59AF92A13230100FFBC9D /* PushBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A59AF82A13230100FFBC9D /* PushBody.swift */; };
 		C6A59AFB2A14809800FFBC9D /* SelectedActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A59AFA2A14809800FFBC9D /* SelectedActivity.swift */; };
 		C6A6865A27DD40D400B607CA /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A6865927DD40D400B607CA /* Repository.swift */; };
 		C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */; };
@@ -181,7 +180,6 @@
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseName.swift; sourceTree = "<group>"; };
-		C6A59AF82A13230100FFBC9D /* PushBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushBody.swift; sourceTree = "<group>"; };
 		C6A59AFA2A14809800FFBC9D /* SelectedActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedActivity.swift; sourceTree = "<group>"; };
 		C6A6865927DD40D400B607CA /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		C6B0D6C5287B664C00EC6EE2 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 				C68378C62844152C00ABB6B3 /* User.swift */,
 				C6F3113B294ED1C50096F09D /* CustomError.swift */,
 				C640520529F032FA0054BD85 /* CompletedChallenge.swift */,
-				C6A59AF82A13230100FFBC9D /* PushBody.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -719,7 +716,6 @@
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C68378C72844152C00ABB6B3 /* User.swift in Sources */,
 				C640EEF82954FDEF00C4058B /* LoadingBar.swift in Sources */,
-				C6A59AF92A13230100FFBC9D /* PushBody.swift in Sources */,
 				C6C9601E278FA51700A67AA2 /* UIImageExtensions.swift in Sources */,
 				C6C96014278F9F3C00A67AA2 /* AddCustomActivityPage.swift in Sources */,
 				C6C96024278FAC2300A67AA2 /* ButtonExtensions.swift in Sources */,
@@ -942,7 +938,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -954,7 +950,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -971,7 +967,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -983,7 +979,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

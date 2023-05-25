@@ -136,7 +136,7 @@ struct GroupOverview: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView(.vertical) {
+                ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 35) {
                         GroupName(name: $name)
                         
@@ -146,6 +146,7 @@ struct GroupOverview: View {
                     }
                     .padding(.top, 50)
                 }
+                .padding()
             }
         }
     }

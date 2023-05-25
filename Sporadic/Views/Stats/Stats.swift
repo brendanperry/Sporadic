@@ -21,52 +21,64 @@ struct Stats: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
-                    TextHelper.text(key: "Analytics", alignment: .leading, type: .h1)
-                        .padding(.top, 50)
-                        .padding(.bottom)
-                        .onTapGesture {
-                            isPickerFocused = true
-                        }
-                    
-                    HStack {
-                        GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
-                            .onChange(of: viewModel.selectedGroup) { _ in
-                                viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+            if viewModel.areGroupsLoaded {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        TextHelper.text(key: "Analytics", alignment: .leading, type: .h1)
+                            .padding(.top, 50)
+                            .padding(.bottom)
+                            .onTapGesture {
+                                isPickerFocused = true
                             }
                         
-                        ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: viewModel.selectedGroup?.activities ?? [])
-                            .onChange(of: viewModel.selectedActivity) { _ in
-                                Task {
-                                    await viewModel.loadCompletedChallenges(forceSync: false)
-                                }
-                            }
-                    }
-                    
-                    GraphSection(viewModel: viewModel)
-                    
-                    if viewModel.data.count > 1 {
                         HStack {
-                            YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                            GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
+                                .onChange(of: viewModel.selectedGroup) { _ in
+                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                }
+                                .onChange(of: viewModel.selectedGroup?.activities) { newVal in
+                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                    print(viewModel.selectedActivity.name)
+                                }
                             
-                            YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                            ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
+                                .onChange(of: viewModel.selectedActivity) { _ in
+                                    Task {
+                                        await viewModel.loadCompletedChallenges(forceSync: false)
+                                    }
+                                }
+                        }
+                        
+                        GraphSection(viewModel: viewModel)
+                        
+                        if viewModel.data.count > 1 {
+                            HStack {
+                                YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                                
+                                YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                            }
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.bottom, 100)
+                    .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+                    .padding(.top)
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 100)
-                .preferredColorScheme(ColorSchemeHelper().getColorSceme())
                 .padding(.top)
-            }
-            .padding(.top)
-            .refreshable {
-                Task {
-                    await viewModel.loadCompletedChallenges(forceSync: true)
+                .refreshable {
+                    Task {
+                        await viewModel.loadCompletedChallenges(forceSync: true)
+                    }
                 }
+            }
+            else {
+                LoadingIndicator()
             }
             
             NavigationBar(viewRouter: viewRouter)
+        }
+        .onAppear {
+            viewModel.waitForGroupsToFinishLoading(homeViewModel: homeViewModel)
         }
     }
     
@@ -76,7 +88,7 @@ struct Stats: View {
         
         var body: some View {
             VStack(alignment: .leading) {
-                Image(systemName: "magnifyingglass")
+                Image("Your Total")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
@@ -100,7 +112,7 @@ struct Stats: View {
         
         var body: some View {
             VStack(alignment: .leading) {
-                Image(systemName: "magnifyingglass")
+                Image("Your Avg")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
@@ -123,12 +135,26 @@ struct Stats: View {
         
         var body: some View {
             VStack (alignment: .leading) {
-                if viewModel.data.count < 2 {
+                if viewModel.isLoading {
+                    VStack {
+                        TextHelper.text(key: "Loading group data...", alignment: .center, type: .body)
+                        
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .padding()
+                            Spacer()
+                        }
+                        
+                    }
+                    .padding()
+                }
+                else if viewModel.data.count < 2 {
                     TextHelper.text(key: "Not enough data to display.", alignment: .center, type: .body)
                         .padding()
                 }
                 else {
-                    Image(systemName: "magnifyingglass")
+                    Image("Group Total")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30)
@@ -164,7 +190,7 @@ struct Stats: View {
                     .foregroundStyle(Gradient(colors: [groupColor, Color.clear]))
             }
             .chartXAxis {
-                AxisMarks() {
+                AxisMarks(preset: .aligned) {
                     AxisValueLabel()
                         .font(Font.custom("Lexend-SemiBold", size: 11))
                         .foregroundStyle(Color("Gray200"))
@@ -192,24 +218,30 @@ struct Stats: View {
         var body: some View {
             ZStack {
                 HStack {
-                    Text(selectedGroup?.emoji ?? "")
-                        .font(.title)
-                        .padding(10)
-                        .background(Circle().foregroundColor(GroupBackgroundColor.init(rawValue: selectedGroup?.backgroundColor ?? 0)?.getColor()))
+                    if selectedGroup != nil {
+                        Text(selectedGroup?.emoji ?? "")
+                            .font(.title)
+                            .padding(10)
+                            .background(Circle().foregroundColor(GroupBackgroundColor.init(rawValue: selectedGroup?.backgroundColor ?? 0)?.getColor()))
+                    }
                     
-                    Text(selectedGroup?.name ?? "Select Group")
-                        .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title3))
-                        .foregroundColor(Color("Gray300"))
-                        .padding(.vertical)
+                    TextHelper.text(key: selectedGroup?.name ?? "Select Group", alignment: .leading, type: .h3)
+                        .truncationMode(.tail)
+                        .lineLimit(1)
                     
                     Image(systemName: "chevron.down")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 10, height: 10)
-                    
-                    Spacer()
                 }
+                
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .onChange(of: homeViewModel.groups) { _ in
+                    if selectedGroup == nil {
+                        selectedGroup = homeViewModel.groups.first
+                        print(selectedGroup?.activities.map({ $0.name }))
+                    }
+                }
                 .onAppear {
                     if !homeViewModel.groups.isEmpty && selectedGroup == nil {
                         selectedGroup = homeViewModel.groups.first
@@ -245,20 +277,25 @@ struct Stats: View {
             ZStack {
                 VStack(alignment: .leading) {
                     HStack {
-                        Image(selectedActivity.name)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                        
-                        TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3)
-                        
-                        Image(systemName: "chevron.down")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 10, height: 10)
+                        if !activities.isEmpty && selectedActivity != nil {
+                            Image(selectedActivity.template != nil ? selectedActivity.name : "Custom Activity Icon")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                                .padding(10)
+                                .background(Circle().foregroundColor(selectedActivity.template?.color ?? Color("CustomExercise")))
+                            
+                            TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3)
+                                .truncationMode(.tail)
+                                .lineLimit(1)
+                            
+                            Image(systemName: "chevron.down")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 10, height: 10)
+                        }
                     }
                 }
-                .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 HStack(spacing: 0) {
