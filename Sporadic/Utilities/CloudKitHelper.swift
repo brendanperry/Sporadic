@@ -254,7 +254,7 @@ class CloudKitHelper {
         if let user = try await getCurrentUser(forceSync: false) {
             let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [
                 NSPredicate(format: "users CONTAINS %@", user.record),
-                NSPredicate(format: "startTime > %@", (Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()) as NSDate)
+                NSPredicate(format: "startTime > %@", (Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date()) as NSDate)
             ])
             
             let query = CKQuery(recordType: "Challenge", predicate: compoundPredicate)
