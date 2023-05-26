@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import SwiftUI
 import CloudKit
+import ConfettiSwiftUI
 
 class HomeViewModel : ObservableObject {
     @Published var challenges = [Challenge]()
@@ -17,11 +18,16 @@ class HomeViewModel : ObservableObject {
     @Published var isUserLoading = true
     @Published var areChallengesLoading = true
     @Published var areGroupsLoading = true
-        
+    @Published var confetti = 0
+    
     init() {
         DispatchQueue.global(qos: .userInitiated).async {
             self.loadData()
         }
+    }
+    
+    func triggerConfetti(group: UserGroup) {
+        confetti += 1
     }
     
     func loadData() {

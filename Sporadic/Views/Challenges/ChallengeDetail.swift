@@ -10,6 +10,7 @@ import CloudKit
 
 struct ChallengeDetail: View {
     @ObservedObject var challenge: Challenge
+    let triggerConfetti: (UserGroup) -> Void
     
     var body: some View {
         ZStack {
@@ -21,7 +22,7 @@ struct ChallengeDetail: View {
                 VStack {
                     TextHelper.text(key: "CompleteYourChallenge", alignment: .leading, type: .h2)
                         .padding(.horizontal)
-                    ChallengeView(challenge: challenge, showNavigationCarrot: false)
+                    ChallengeView(challenge: challenge, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
                 }
                 .padding(.top, 50)
                 

@@ -14,6 +14,7 @@ import OneSignal
 struct Challenges: View {
     let challenges: [Challenge]
     let isLoading: Bool
+    let triggerConfetti: (UserGroup) -> Void
     
     var body: some View {
         VStack {
@@ -31,7 +32,7 @@ struct Challenges: View {
                     }
                     else {
                         ForEach(challenges) { challenge in
-                            ChallengeView(challenge: challenge, showNavigationCarrot: false)
+                            ChallengeView(challenge: challenge, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
                         }
                     }
                 }
@@ -68,7 +69,7 @@ struct ChallengeLoading: View {
 struct ChallengeView: View {
     @ObservedObject var challenge: Challenge
     @State var showError = false
-    @State var confetti = 0
+    let triggerConfetti: (UserGroup) -> Void
     let showNavigationCarrot: Bool
     
     var body: some View {
@@ -80,7 +81,13 @@ struct ChallengeView: View {
                     
                     VStack(spacing: 0) {
                         if challenge.activity?.unit == .reps {
-                            TextHelper.text(key: "\(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.name ?? "")", alignment: .leading, type: .h3, color: .white)
+                            TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.name ?? "")", alignment: .leading, type: .h3, color: .white)
+                        }
+                        else if challenge.activity?.unit == .miles || challenge.activity?.unit == .laps {
+                            TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        }
+                        else if challenge.activity?.unit == .seconds || challenge.activity?.unit == .minutes {
+                            TextHelper.text(key: "\(challenge.activity?.name ?? "") for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
                         }
                         else {
                             TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
@@ -203,7 +210,9 @@ struct ChallengeView: View {
                     
                     challenge.usersCompleted.append(user)
                     
-                    confetti += 1
+                    if let group = challenge.group {
+                        triggerConfetti(group)
+                    }
                 }
             }
             
@@ -213,7 +222,6 @@ struct ChallengeView: View {
                     showError = true
                     challenge.status = currentStatus
                     challenge.usersCompleted = currentUsersCompleted
-                    
                 }
                 else {
                     Task {
@@ -229,7 +237,6 @@ struct ChallengeView: View {
                 .frame(width: 35, height: 35, alignment: .center)
         })
         .padding(.trailing, 5)
-        .confettiCannon(counter: $confetti, num: 50, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 15), radius: 300)
     }
     
     func completedCheckbox() -> some View {
@@ -239,9 +246,6 @@ struct ChallengeView: View {
             .foregroundColor(.white)
             .frame(width: 35, height: 35, alignment: .center)
             .padding(.trailing, 5)
-            .onTapGesture {
-                confetti += 1
-            }
     }
     
     func failedCheckbox() -> some View {

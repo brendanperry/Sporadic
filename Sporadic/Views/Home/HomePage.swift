@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CloudKit
+import ConfettiSwiftUI
 
 
 
@@ -32,7 +33,9 @@ struct HomePage: View {
                     VStack(spacing: 35) {
                         Welcome(viewModel: viewModel)
                     
-                        Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading)
+                        Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
+                            viewModel.triggerConfetti(group: group)
+                        }
                         
                         GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading)
                     }
@@ -44,6 +47,8 @@ struct HomePage: View {
                     viewModel.loadData()
                 }
                 
+                ConfettiBar(confetti: $viewModel.confetti)
+                
                 NavigationBar(viewRouter: viewRouter)
             }
             .navigationBarTitle("")
@@ -52,6 +57,26 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+    }
+}
+
+struct ConfettiBar: View {
+    @Binding var confetti: Int
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Rectangle()
+                    .frame(width: 1, height: 1)
+                    .foregroundColor(.clear)
+                    .confettiCannon(counter: $confetti, num: 100, rainHeight: 1250, fadesOut: false, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 180))
+                    .offset(y: -25)
+                Spacer()
+            }
+            
+            Spacer()
+        }
     }
 }
 
