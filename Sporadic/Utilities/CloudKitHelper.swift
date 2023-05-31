@@ -33,10 +33,6 @@ class CloudKitHelper {
         
         let userId = (try await container.userRecordID()).recordName
         
-        OneSignal.promptForPushNotifications(userResponse: { accepted in
-            OneSignal.setExternalUserId(userId)
-        })
-        
         let predicate = NSPredicate(format: "usersRecordId = %@", userId)
         
         let query = CKQuery(recordType: "User", predicate: predicate)

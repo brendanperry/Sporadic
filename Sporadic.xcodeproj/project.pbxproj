@@ -14,6 +14,7 @@
 		C613CFE426955EBF0061DC49 /* Icon-2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */; };
 		C613CFE526955EBF0061DC49 /* Icon-3-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */; };
 		C613CFE626955EBF0061DC49 /* Icon-1-@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */; };
+		C61983212A26E52A00FCBDBA /* TutorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */; };
 		C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C626259E2862698700E84C79 /* LoadingStatus.swift */; };
 		C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A02867397E00E84C79 /* CreateGroupView.swift */; };
 		C62625A328673B3100E84C79 /* CreateGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A228673B3100E84C79 /* CreateGroupViewModel.swift */; };
@@ -120,6 +121,7 @@
 		C613CFDE26955EBF0061DC49 /* Icon-2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2@3x.png"; sourceTree = "<group>"; };
 		C613CFDF26955EBF0061DC49 /* Icon-3-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3-@2x.png"; sourceTree = "<group>"; };
 		C613CFE026955EBF0061DC49 /* Icon-1-@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1-@2x.png"; sourceTree = "<group>"; };
+		C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewModel.swift; sourceTree = "<group>"; };
 		C626259E2862698700E84C79 /* LoadingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatus.swift; sourceTree = "<group>"; };
 		C62625A02867397E00E84C79 /* CreateGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupView.swift; sourceTree = "<group>"; };
 		C62625A228673B3100E84C79 /* CreateGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewModel.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				C689616928301AB3008A0C87 /* Tutorial.swift */,
+				C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -671,6 +674,7 @@
 				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
 				C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */,
 				C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */,
+				C61983212A26E52A00FCBDBA /* TutorialViewModel.swift in Sources */,
 				C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */,
 				C6B0D6C6287B664C00EC6EE2 /* BackButton.swift in Sources */,
 				C664A93D279A3D7C00EE2195 /* EditActivityViewModel.swift in Sources */,

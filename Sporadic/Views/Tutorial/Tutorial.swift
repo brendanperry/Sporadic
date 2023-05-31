@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import PhotosUI
+import OneSignal
+
+enum GroupDifficulty {
+    case beginner, intermediate, advanced
+}
 
 struct Tutorial: View {
     @State var selection = 0
-    @AppStorage(UserPrefs.daysPerWeek.rawValue)
-    var days = 3.0
+    @State var showImagePicker = false
+    @State var selectedphoto: PhotosPickerItem?
+    @FocusState var textFieldFocus: Bool
+    @StateObject var viewModel = TutorialViewModel()
     
     var body: some View {
         ZStack {
@@ -18,31 +26,37 @@ struct Tutorial: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
                 .zIndex(-1)
-
+            
             switch selection {
             case 1:
-                secondPage()
+                difficultySelector()
             case 2:
-                thirdPage()
+                nameAndPhoto()
             case 3:
-                fourthPage()
+                notifications()
             case 4:
-                fifthPage()
+                inviteFriends()
             default:
-                firstPage()
+                openingPage()
             }
             
             VStack {
                 Button(action: {
                     withAnimation {
-                        if selection == 3 {
-                            selection = 0
+                        if selection == 3 && CloudKitHelper.shared.hasUser() {
+                            OneSignal.promptForPushNotifications(userResponse: { accepted in
+                                if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
+                                    OneSignal.setExternalUserId(userId)
+                                }
+                                
+                                selection += 1
+                            })
                         } else {
                             selection += 1
                         }
                     }
                 }, label: {
-                    Image(selection == 0 ? "Landing-Arrow-White" : "Landing-Arrow-Blue")
+                    Image("TutorialArrow")
                         .resizable()
                         .frame(width: 60, height: 60, alignment: .center)
                 })
@@ -57,24 +71,27 @@ struct Tutorial: View {
                         .frame(width: selection == 2 ? 20 : 10, height: 10, alignment: .center)
                     Capsule()
                         .frame(width: selection == 3 ? 20 : 10, height: 10, alignment: .center)
+                    Capsule()
+                        .frame(width: selection == 4 ? 20 : 10, height: 10, alignment: .center)
                 }
                 .padding()
-                .foregroundColor(selection == 0 ? .white : .blue)
+                .foregroundColor(Color("Gray400"))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .ignoresSafeArea(.all)
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
     
-    func firstPage() -> some View {
-        ZStack {
-                Image("TutorialBackground1")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                
+    func openingPage() -> some View {
+        VStack {
+            Image("TutorialBackground1")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
+                .padding()
+            
             TextHelper.text(key: "StayActive", alignment: .leading, type: .h1)
                 .padding()
             
@@ -87,13 +104,21 @@ struct Tutorial: View {
         .transition(.backslide)
     }
     
-    func secondPage() -> some View {
+    func challengeExplanation() -> some View {
         VStack {
-            Image("TutorialBackground1")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
-                .padding()
+            HStack {
+                Image("TutorialActivity")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding([.leading, .top, .trailing])
+                
+                Image("TutorialSlider")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding([.trailing, .top])
+            }
             
             TextHelper.text(key: "Get started 🚀", alignment: .leading, type: .h1)
                 .padding()
@@ -107,55 +132,181 @@ struct Tutorial: View {
         .transition(.backslide)
     }
     
-    func thirdPage() -> some View {
+    func difficultySelector() -> some View {
         VStack {
-            Image("TutorialBackground1")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
-                .padding()
+            VStack {
+                HStack {
+                    Image(systemName: "gear")
+                    
+                    Spacer()
+                    
+                    Text("2 challenges per week")
+                        .font(Font.custom("Lexend-Regular", size: 10, relativeTo: .footnote))
+                        .foregroundColor(Color("Gray400"))
+                        .padding(5)
+                        .background(
+                            RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                .foregroundColor(Color("Gray100"))
+                        )
+                }
+                
+                TextHelper.text(key: "Beginner", alignment: .leading, type: .h3)
+                    .padding(.vertical, 3)
+                
+                TextHelper.text(key: "Includes jumping jacks, push-ups, walking, and running at an easier difficulty", alignment: .leading, type: .body)
+            }
+            .padding()
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                    .strokeBorder(viewModel.selectedDifficulty == .beginner ? Color("BrandBlue") : .clear)
+            )
+            .onTapGesture {
+                withAnimation {
+                    viewModel.selectedDifficulty = .beginner
+                }
+            }
             
             VStack {
-                HStack(spacing: -10) {
-                    Circle()
-                        .frame(width: 21)
-                        .foregroundColor(Color("SuccessButtons"))
-//                        .opacity(<#T##opacity: Double##Double#>)
-                        .border(Color.white, width: 5)
-                        .zIndex(3)
-                    Circle()
-//                    rgba(217, 217, 217, 0.5)
-                        .frame(width: 21)
-                        .foregroundColor(.gray)
-                        .opacity(0.50)
-                        .zIndex(2)
-                    Circle()
-                        .frame(width: 21)
-                        .foregroundColor(.gray)
-                        .opacity(0.25)
-                        .zIndex(1)
+                HStack {
+                    Image(systemName: "gear")
+                    
+                    Spacer()
+                    
+                    Text("4 challenges per week")
+                        .font(Font.custom("Lexend-Regular", size: 10, relativeTo: .footnote))
+                        .foregroundColor(Color("Gray400"))
+                        .padding(5)
+                        .background(
+                            RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                .foregroundColor(Color("Gray100"))
+                        )
+                }
+                
+                TextHelper.text(key: "Intermediate", alignment: .leading, type: .h3)
+                    .padding(.vertical, 3)
+                
+                TextHelper.text(key: "Includes crunches, push-ups, walking, planks, and running at a medium difficulty.", alignment: .leading, type: .body)
+            }
+            .padding()
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                    .strokeBorder(viewModel.selectedDifficulty == .intermediate ? Color("BrandBlue") : .clear)
+            )
+            .onTapGesture {
+                withAnimation {
+                    viewModel.selectedDifficulty = .intermediate
+                }
+            }
+            
+            VStack {
+                HStack {
+                    Image(systemName: "gear")
+                    
+                    Spacer()
+                    
+                    Text("6 challenges per week")
+                        .font(Font.custom("Lexend-Regular", size: 10, relativeTo: .footnote))
+                        .foregroundColor(Color("Gray400"))
+                        .padding(5)
+                        .background(
+                            RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                .foregroundColor(Color("Gray100"))
+                        )
+                }
+                
+                TextHelper.text(key: "Advanced", alignment: .leading, type: .h3)
+                    .padding(.vertical, 3)
+                
+                TextHelper.text(key: "Includes running, wall sits, squats, burpes, planks, and push-ups at a harder difficulty.", alignment: .leading, type: .body)
+            }
+            .padding()
+            .background(Color("Panel"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                    .strokeBorder(viewModel.selectedDifficulty == .advanced ? Color("BrandBlue") : .clear)
+            )
+            .onTapGesture {
+                withAnimation {
+                    viewModel.selectedDifficulty = .advanced
                 }
             }
             
             TextHelper.text(key: "Pick a preset", alignment: .leading, type: .h1)
-                .padding()
+                .padding(.vertical)
             
             TextHelper.text(key: "We want to help you get started. You can fully customize this group afterwards.", alignment: .leading, type: .body)
-                .padding(.horizontal)
             
             Spacer()
         }
+        .padding([.horizontal, .top])
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)
     }
     
-    func fourthPage() -> some View {
+    func nameAndPhoto() -> some View {
         VStack {
-            Image("TutorialBackground1")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
-                .padding()
+            VStack {
+                ZStack {
+                    Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 75, height: 75, alignment: .center)
+                        .cornerRadius(100)
+                    
+                    EditIcon()
+                        .offset(x: 25, y: -25)
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
+                        .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
+                        .onChange(of: selectedphoto) { newValue in
+                            Task {
+                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                    DispatchQueue.main.async {
+                                        viewModel.photo = UIImage(data: data)
+                                    }
+                                }
+                            }
+                        }
+                }
+                
+                Button(action: {
+                    viewModel.photo = nil
+                }, label: {
+                    Text("Remove")
+                        .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
+                        .foregroundColor(Color("Failed"))
+                })
+                .frame(maxWidth: 75, maxHeight: 25)
+                
+                TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
+                
+                TextField("", text: $viewModel.name)
+                    .padding()
+                    .frame(minWidth: 200, alignment: .leading)
+                    .background(Color("Panel"))
+                    .cornerRadius(16)
+                    .font(Font.custom("Lexend-Regular", size: 14))
+                    .foregroundColor(Color("Gray300"))
+                    .focused($textFieldFocus)
+                    .onTapGesture {
+                        textFieldFocus = true
+                    }
+                
+            }
+            .padding()
+            .padding(.vertical)
+            .background(Color("Gray100"))
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+            .padding()
             
             TextHelper.text(key: "Introduce yourself", alignment: .leading, type: .h1)
                 .padding()
@@ -169,13 +320,88 @@ struct Tutorial: View {
         .transition(.backslide)
     }
     
-    func fifthPage() -> some View {
+    func notifications() -> some View {
         VStack {
-            Image("TutorialBackground1")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
+            ZStack {
+                Image("TutorialBackground2")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                
+                Image("Notification")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .padding()
+            }
+            
+            TextHelper.text(key: "Get notifications for your challenges 🔔", alignment: .leading, type: .h1)
                 .padding()
+            
+            TextHelper.text(key: "We need your permission to send notifications when your exercise challenges are ready. We will only send notifications for your challenges and when your other group members have completed challenges.", alignment: .leading, type: .body)
+                .padding(.horizontal)
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        selection += 1
+                    }
+                }, label: {
+                    Text("Enable Later")
+                        .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title3))
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .transition(.backslide)
+    }
+    
+    func inviteFriends() -> some View {
+        VStack {
+            ZStack {
+                Image("InviteBackground")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: 300)
+                    .padding()
+                
+                VStack {
+                    Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 75, height: 75, alignment: .center)
+                        .cornerRadius(100)
+                        .padding()
+                    
+                    TextHelper.text(key: "Join me in Sporadic and let’s complete exercise challenges together!", alignment: .center, type: .body, color: .white)
+                    
+                    ShareLink(item: "https://sporadic.app/?group=\(viewModel.group.record.recordID.recordName)", message: Text("Join \(viewModel.group.name) on Sporadic!"), label: {
+                        Text("Invite Friends")
+                            .font(.custom("Lexend-Regular", size: 12))
+                            .foregroundColor(.white)
+                            .bold()
+                            .padding()
+                            .padding(.horizontal)
+                            .background(Color("BrandPurple"))
+                            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                            .padding()
+                    })
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    .frame(maxWidth: .infinity)
+                }
+            }
             
             TextHelper.text(key: "Complete challenges with friends", alignment: .leading, type: .h1)
                 .padding()
