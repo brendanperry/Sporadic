@@ -14,11 +14,11 @@ enum GroupDifficulty {
 }
 
 struct Tutorial: View {
-    @State var selection = 0
     @State var showImagePicker = false
     @State var selectedphoto: PhotosPickerItem?
     @FocusState var textFieldFocus: Bool
     @StateObject var viewModel = TutorialViewModel()
+    @EnvironmentObject var viewRouter: ViewRouter
     
     var body: some View {
         ZStack {
@@ -27,15 +27,11 @@ struct Tutorial: View {
                 .edgesIgnoringSafeArea(.all)
                 .zIndex(-1)
             
-            switch selection {
+            switch viewModel.selection {
             case 1:
-                difficultySelector()
-            case 2:
                 nameAndPhoto()
-            case 3:
+            case 2:
                 notifications()
-            case 4:
-                inviteFriends()
             default:
                 openingPage()
             }
@@ -43,16 +39,26 @@ struct Tutorial: View {
             VStack {
                 Button(action: {
                     withAnimation {
-                        if selection == 3 && CloudKitHelper.shared.hasUser() {
+                        if viewModel.selection == 1 {
+                            if viewModel.name == "" {
+                                viewModel.errorMessage = "Please enter a nickname"
+                                viewModel.showError = true
+                            }
+                            else {
+                                viewModel.updateUser()
+                            }
+                        }
+                        else if viewModel.selection == 2 && CloudKitHelper.shared.hasUser() {
                             OneSignal.promptForPushNotifications(userResponse: { accepted in
                                 if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
                                     OneSignal.setExternalUserId(userId)
                                 }
                                 
-                                selection += 1
+                                viewRouter.navigateTo(.home)
+                                UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
                             })
                         } else {
-                            selection += 1
+                            viewModel.selection += 1
                         }
                     }
                 }, label: {
@@ -64,24 +70,31 @@ struct Tutorial: View {
                 
                 HStack {
                     Capsule()
-                        .frame(width: selection == 0 ? 20 : 10, height: 10, alignment: .leading)
+                        .frame(width: viewModel.selection == 0 ? 20 : 10, height: 10, alignment: .leading)
                     Capsule()
-                        .frame(width: selection == 1 ? 20 : 10, height: 10, alignment: .center)
+                        .frame(width: viewModel.selection == 1 ? 20 : 10, height: 10, alignment: .center)
                     Capsule()
-                        .frame(width: selection == 2 ? 20 : 10, height: 10, alignment: .center)
-                    Capsule()
-                        .frame(width: selection == 3 ? 20 : 10, height: 10, alignment: .center)
-                    Capsule()
-                        .frame(width: selection == 4 ? 20 : 10, height: 10, alignment: .center)
+                        .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
                 }
                 .padding()
                 .foregroundColor(Color("Gray400"))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .ignoresSafeArea(.all)
+            
+            if viewModel.isLoading {
+                LoadingIndicator()
+            }
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .alert("Oops", isPresented: $viewModel.showError, actions: {
+            Button("Okay") {
+                viewModel.showError = false
+            }
+        }) {
+            Text(viewModel.errorMessage)
+        }
     }
     
     func openingPage() -> some View {
@@ -350,7 +363,8 @@ struct Tutorial: View {
                 
                 Button(action: {
                     withAnimation {
-                        selection += 1
+                        viewRouter.navigateTo(.home)
+                        UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
                     }
                 }, label: {
                     Text("Enable Later")
@@ -370,38 +384,36 @@ struct Tutorial: View {
     
     func inviteFriends() -> some View {
         VStack {
-            ZStack {
-                Image("InviteBackground")
+            VStack {
+                Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity, maxHeight: 300)
+                    .frame(width: 75, height: 75, alignment: .center)
+                    .cornerRadius(100)
                     .padding()
                 
-                VStack {
-                    Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 75, height: 75, alignment: .center)
-                        .cornerRadius(100)
+                TextHelper.text(key: "Join me in Sporadic and let’s complete exercise challenges together!", alignment: .center, type: .body, color: .white)
+                
+                ShareLink(item: "https://sporadic.app/?group=\(viewModel.group.record.recordID.recordName)", message: Text("Join \(viewModel.group.name) on Sporadic!"), label: {
+                    Text("Invite Friends")
+                        .font(.custom("Lexend-Regular", size: 12))
+                        .foregroundColor(.white)
+                        .bold()
                         .padding()
-                    
-                    TextHelper.text(key: "Join me in Sporadic and let’s complete exercise challenges together!", alignment: .center, type: .body, color: .white)
-                    
-                    ShareLink(item: "https://sporadic.app/?group=\(viewModel.group.record.recordID.recordName)", message: Text("Join \(viewModel.group.name) on Sporadic!"), label: {
-                        Text("Invite Friends")
-                            .font(.custom("Lexend-Regular", size: 12))
-                            .foregroundColor(.white)
-                            .bold()
-                            .padding()
-                            .padding(.horizontal)
-                            .background(Color("BrandPurple"))
-                            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                            .padding()
-                    })
-                    .buttonStyle(ButtonPressAnimationStyle())
-                    .frame(maxWidth: .infinity)
-                }
+                        .padding(.horizontal)
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                        .padding()
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .frame(maxWidth: .infinity)
             }
+            .background(
+                Image("InviteBackground")
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+            )
+            .padding()
             
             TextHelper.text(key: "Complete challenges with friends", alignment: .leading, type: .h1)
                 .padding()
@@ -413,11 +425,5 @@ struct Tutorial: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)
-    }
-}
-
-struct Tutorial_Previews: PreviewProvider {
-    static var previews: some View {
-        Tutorial(selection: 2)
     }
 }

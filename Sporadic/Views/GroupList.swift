@@ -33,6 +33,10 @@ struct GroupList: View {
                     }
 
                     AddNewGroup(groups: $groups)
+                    
+                    if !isLoading && groups.isEmpty {
+                        TextHelper.text(key: "Get started by creating a group.", alignment: .center, type: .body)
+                    }
                 }
             }
             .padding(.horizontal)

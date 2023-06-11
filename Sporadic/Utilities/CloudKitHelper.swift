@@ -80,7 +80,7 @@ class CloudKitHelper {
     func createNewUser(usersRecordId: String) async throws -> User? {
         let record = CKRecord(recordType: "User")
         
-        record.setValue("Brendan Perry", forKey: "name")
+        record.setValue("Challenger", forKey: "name")
         record.setValue(usersRecordId, forKey: "usersRecordId")
         record.setValue(OneSignal.getDeviceState().userId ?? "", forKey: "notificationId")
         
@@ -145,6 +145,9 @@ class CloudKitHelper {
                     completion(nil)
                 }
             }
+        }
+        else {
+            completion(nil)
         }
     }
     

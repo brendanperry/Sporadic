@@ -57,7 +57,7 @@ struct GroupOverview: View {
                 LoadingIndicator()
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(viewModel.isOwner ? true : false)
         .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
         .navigationTitle("\(group.name)")
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -176,7 +176,9 @@ struct GroupOverview: View {
                 .buttonStyle(ButtonPressAnimationStyle())
                 .disabled(!isOwner)
                 .onTapGesture {
-                    showEdit = true
+                    if isOwner {
+                        showEdit = true
+                    }
                 }
                 .popover(isPresented: $showEdit) {
                     EditGroupHeader(name: $name, emoji: $emoji, color: $color)

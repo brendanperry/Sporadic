@@ -15,6 +15,51 @@ class TutorialViewModel: ObservableObject {
     @Published var name = ""
     @Published var photo: UIImage? = nil
     @Published var group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))
+    @Published var errorMessage = ""
+    @Published var showError = false
+    @Published var selection = 0
+    @Published var isLoading = false
 
-
+    
+    func updateUser() {
+        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        
+        user.name = name
+        user.photo = photo
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        CloudKitHelper.shared.updateUserName(user: user) { [weak self] error in
+            if let error {
+                print(error)
+                
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Failed to update nickname. Please check your connection an try again."
+                    self?.showError = true
+                    self?.isLoading = false
+                }
+            }
+            else {
+                CloudKitHelper.shared.updateUserImage(user: user) { error in
+                    if let error {
+                        print(error)
+                        
+                        DispatchQueue.main.async {
+                            self?.errorMessage = "Failed to update photo. Please check your connection an try again."
+                            self?.showError = true
+                            self?.isLoading = false
+                        }
+                    }
+                    else {
+                        DispatchQueue.main.async {
+                            self?.isLoading = false
+                            self?.selection += 1
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

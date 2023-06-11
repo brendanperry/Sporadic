@@ -31,31 +31,36 @@ struct Stats: View {
                                 isPickerFocused = true
                             }
                         
-                        HStack {
-                            GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
-                                .onChange(of: viewModel.selectedGroup) { _ in
-                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                }
-                                .onChange(of: viewModel.selectedGroup?.activities) { newVal in
-                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                }
-                            
-                            ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
-                                .onChange(of: viewModel.selectedActivity) { _ in
-                                    Task {
-                                        await viewModel.loadCompletedChallenges(forceSync: false)
-                                    }
-                                }
-                        }
-                        
-                        GraphSection(viewModel: viewModel)
-                        
-                        if viewModel.data.count > 1 {
+                        if !homeViewModel.areGroupsLoading && !homeViewModel.groups.isEmpty {
                             HStack {
-                                YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                                GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
+                                    .onChange(of: viewModel.selectedGroup) { _ in
+                                        viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                    }
+                                    .onChange(of: viewModel.selectedGroup?.activities) { newVal in
+                                        viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                    }
                                 
-                                YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                                ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
+                                    .onChange(of: viewModel.selectedActivity) { _ in
+                                        Task {
+                                            await viewModel.loadCompletedChallenges(forceSync: false)
+                                        }
+                                    }
                             }
+                            
+                            GraphSection(viewModel: viewModel)
+                            
+                            if viewModel.data.count > 1 {
+                                HStack {
+                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                                    
+                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                                }
+                            }
+                        }
+                        else if !homeViewModel.areGroupsLoading && homeViewModel.groups.isEmpty {
+                            TextHelper.text(key: "Get started by creating a group.", alignment: .center, type: .body)
                         }
                     }
                     .padding(.horizontal)
@@ -275,7 +280,7 @@ struct Stats: View {
             ZStack {
                 VStack(alignment: .leading) {
                     HStack {
-                        if !activities.isEmpty && selectedActivity != nil {
+                        if !activities.isEmpty {
                             Image(selectedActivity.template != nil ? selectedActivity.name : "Custom Activity Icon")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
