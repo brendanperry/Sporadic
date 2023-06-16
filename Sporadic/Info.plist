@@ -59,6 +59,8 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>OneSignal contains location tracking abilities that this app does not use.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to load profile pictures.</string>
 	<key>UIAppFonts</key>
