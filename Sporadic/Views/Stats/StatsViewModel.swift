@@ -60,7 +60,7 @@ class StatsViewModel: ObservableObject {
         }
     }
     
-    func loadCompletedChallenges(forceSync: Bool) async {
+    func loadCompletedChallenges(forceSync: Bool) {
         guard let selectedGroup else {
             return
         }
@@ -69,9 +69,17 @@ class StatsViewModel: ObservableObject {
             self.isLoading = true
         }
         
-        challenges = (try? await CloudKitHelper.shared.getCompletedChallenges(group: selectedGroup, forceSync: forceSync)) ?? []
+        CloudKitHelper.shared.fetchCompletedChallenges(group: selectedGroup, forceSync: forceSync) { [weak self] result in
+            switch result {
+            case .success(let completedChallenges):
+                self?.challenges = completedChallenges
+                self?.setData(month: 4, year: 2023, isAllTime: true)
+            case .failure(let error):
+                print(error)
+            }
+        }
+//        challenges = (try? await CloudKitHelper.shared.getCompletedChallenges(group: selectedGroup, forceSync: forceSync)) ?? []
         
-        setData(month: 4, year: 2023, isAllTime: true)
     }
     
     private func setData(month: Int, year: Int, isAllTime: Bool) {
@@ -95,7 +103,7 @@ class StatsViewModel: ObservableObject {
             
             let days = Calendar.current.dateComponents([.day], from: self.challenges.first?.date ?? Date(), to: self.challenges.last?.date ?? Date()).day ?? 1
             
-            self.yourAvg = self.yourTotal / Double(days)
+            self.yourAvg = self.yourTotal / Double(days + 1)
         }
         
         let dictionary = Dictionary(grouping: challenges, by: { (element: CompletedChallenge) in

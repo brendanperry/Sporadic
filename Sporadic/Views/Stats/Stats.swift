@@ -43,9 +43,7 @@ struct Stats: View {
                                 
                                 ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
                                     .onChange(of: viewModel.selectedActivity) { _ in
-                                        Task {
-                                            await viewModel.loadCompletedChallenges(forceSync: false)
-                                        }
+                                        viewModel.loadCompletedChallenges(forceSync: false)
                                     }
                             }
                             
@@ -70,9 +68,7 @@ struct Stats: View {
                 }
                 .padding(.top)
                 .refreshable {
-                    Task {
-                        await viewModel.loadCompletedChallenges(forceSync: true)
-                    }
+                    viewModel.loadCompletedChallenges(forceSync: true)
                 }
             }
             else {

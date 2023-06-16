@@ -634,27 +634,41 @@ class CloudKitHelper {
     }
     
     var challenges = [CKRecord.ID: [CompletedChallenge]]()
-    func getCompletedChallenges(group: UserGroup, forceSync: Bool) async throws -> [CompletedChallenge] {
+    func fetchCompletedChallenges(group: UserGroup, forceSync: Bool, completion: @escaping (Result<[CompletedChallenge], Error>) -> Void) {
         if !challenges.isEmpty && !forceSync {
             if let groupChallenges = challenges.first(where: { $0.key == group.record.recordID })?.value {
-                return groupChallenges
+                completion(.success(groupChallenges))
             }
         }
         
         let groupReference = CKRecord.Reference(record: group.record, action: .none)
-        
         let predicate = NSPredicate(format: "group = %@", groupReference)
-        
         let query = CKQuery(recordType: "CompletedChallenge", predicate: predicate)
 
-        let result = try await database.records(matching: query)
-        let records = try result.matchResults.map { try $0.1.get() }
+        let queryOperation = CKQueryOperation(query: query)
         
-        let loadedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: group) }
-        
-        challenges[group.record.recordID] = loadedChallenges
-        
-        return loadedChallenges
+        var records = [CKRecord]()
+
+        queryOperation.recordFetchedBlock = { records.append($0) }
+        queryOperation.queryCompletionBlock = { [weak self] cursor, error in
+            if let error {
+                completion(.failure(error))
+                return
+            }
+            
+            if let cursor  {
+                print("Cursed")
+                let newOperation = CKQueryOperation(cursor: cursor)
+                newOperation.recordFetchedBlock = { records.append($0) }
+                newOperation.queryCompletionBlock = queryOperation.queryCompletionBlock
+                self?.database.add(newOperation)
+            }
+            else {
+                completion(.success(records.compactMap({ CompletedChallenge.init(from: $0, group: group) })))
+            }
+        }
+
+        database.add(queryOperation)
     }
     
     func sendUsersNotifications(challenge: Challenge) async throws {

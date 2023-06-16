@@ -80,19 +80,7 @@ struct ChallengeView: View {
                     inProgressCheckbox()
                     
                     VStack(spacing: 0) {
-                        if challenge.activity?.unit == .reps {
-                            TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.name ?? "")", alignment: .leading, type: .h3, color: .white)
-                        }
-                        else if challenge.activity?.unit == .miles || challenge.activity?.unit == .laps {
-                            TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
-                        }
-                        else if challenge.activity?.unit == .seconds || challenge.activity?.unit == .minutes {
-                            TextHelper.text(key: "\(challenge.activity?.name ?? "") for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
-                        }
-                        else {
-                            TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
-                        }
-                        
+                        getChallengeText()
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
                         UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
@@ -101,7 +89,7 @@ struct ChallengeView: View {
                     completedCheckbox()
                     
                     VStack(spacing: 0) {
-                        TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount) \(challenge.activity?.unit.rawValue ?? "miles")", alignment: .leading, type: .h3, color: .white)
+                        getChallengeText()
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
                         UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
@@ -148,7 +136,32 @@ struct ChallengeView: View {
         .alert(isPresented: $showError) {
             Alert(title: Text("Connection Failed"), message: Text("Could not complete exercise."))
         }
+    }
+    
+    func getChallengeText() -> some View {
+        if challenge.activity?.unit == .reps {
+            return TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.name ?? ""))", alignment: .leading, type: .h3, color: .white)
+        }
+        else if challenge.activity?.unit == .miles || challenge.activity?.unit == .laps {
+            return TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue ?? ""))", alignment: .leading, type: .h3, color: .white)
+        }
+        else if challenge.activity?.unit == .seconds || challenge.activity?.unit == .minutes {
+            return TextHelper.text(key: "\(challenge.activity?.name ?? "") for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue  ?? ""))", alignment: .leading, type: .h3, color: .white)
+        }
+        else {
+            return TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue  ?? ""))", alignment: .leading, type: .h3, color: .white)
+        }
+    }
+    
+    func getLabel(_ amount: Double, _ unit: String) -> String {
+        var unit = unit
+        if amount == 1 {
+            if unit.last == "s" {
+                let _ = unit.popLast()
+            }
+        }
         
+        return unit
     }
     
     struct DueTime: View {
