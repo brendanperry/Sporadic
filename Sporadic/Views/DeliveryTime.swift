@@ -26,7 +26,7 @@ struct DeliveryTime: View {
                         .scaleEffect(1.6)
                         .disabled(!isOwner)
                         .onAppear {
-                            UIDatePicker.appearance().minuteInterval = 15
+                            UIDatePicker.appearance().minuteInterval = 30
                         }
                     
                     VStack {
