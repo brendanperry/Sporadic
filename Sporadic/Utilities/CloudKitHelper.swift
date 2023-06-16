@@ -195,6 +195,11 @@ class CloudKitHelper {
         
         let groupIds = user.groups.map { $0.recordID }
         
+        if groupIds.isEmpty {
+            completion([])
+            return
+        }
+        
         let predicate = NSPredicate(format: "recordID in %@", groupIds)
         let query = CKQuery(recordType: "Group", predicate: predicate)
         
