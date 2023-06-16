@@ -57,6 +57,9 @@ class CloudKitHelper {
             return cachedUser
         }
         else {
+            // The user object may not be indexed server side yet, let's not create a new user if we already have one on device to avoid duplicates
+            if cachedUser != nil { return cachedUser }
+            
             let user = try await createNewUser(usersRecordId: userId)
             
             if let user = user {
