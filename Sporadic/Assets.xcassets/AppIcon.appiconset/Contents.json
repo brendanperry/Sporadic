@@ -1,49 +1,49 @@
 {
   "images" : [
     {
-      "filename" : "Sporadic_40x40-purple.png",
+      "filename" : "40x40.jpg",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "Sporadic_60x60-purple.png",
+      "filename" : "60x60.jpg",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "Sporadic_58x58-purple.png",
+      "filename" : "58x58.jpg",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "Sporadic_87x87-purple.png",
+      "filename" : "87x87.jpg",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "Sporadic_80x80-purple.png",
+      "filename" : "80x80.jpg",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Sporadic_120x120-purple.png",
+      "filename" : "120x120 1.jpg",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "Sporadic_120x120-purple-1.png",
+      "filename" : "120x120.jpg",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "Sporadic_180x180-purple.png",
+      "filename" : "180x180.jpg",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
@@ -94,7 +94,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "Sporadic_1024x1024-AppStore.png",
+      "filename" : "1024x1024.jpg",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
