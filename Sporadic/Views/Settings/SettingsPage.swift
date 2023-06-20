@@ -113,7 +113,7 @@ struct SettingsPage: View {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
-                let email = "contact@sporadic.app"
+                let email = "brendan@brendanperry.me"
                 if let url = URL(string: "mailto:\(email)") {
                     UIApplication.shared.open(url)
                 }
