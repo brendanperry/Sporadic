@@ -124,7 +124,7 @@ struct ChallengeView: View {
             .padding()
             
             if challenge.status == .inProgress || challenge.status == .userCompleted {
-                DueTime(challengeStartTime: challenge.startTime)
+                DueTime(challenge: challenge)
                     .transition(.move(edge: .trailing))
             }
         }
@@ -165,7 +165,7 @@ struct ChallengeView: View {
     }
     
     struct DueTime: View {
-        let challengeStartTime: Date
+        @ObservedObject var challenge: Challenge
         @State var timeRemaining = "00:00"
         let timer = Timer.publish(every: 60, tolerance: 10, on: .main, in: .common).autoconnect()
         
@@ -185,7 +185,9 @@ struct ChallengeView: View {
         }
         
         func updateTimeTillDue() {
-            if let endTime = Calendar.current.date(byAdding: .day, value: 1, to: challengeStartTime) {
+            challenge.setStatus()
+            
+            if let endTime = Calendar.current.date(byAdding: .day, value: 1, to: challenge.startTime) {
                 let timeLeft = endTime.timeIntervalSince1970 - Date().timeIntervalSince1970
                 let hours = Int(timeLeft) / 3600
                 
