@@ -26,6 +26,9 @@ struct GroupOverview: View {
             ZStack {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                        BackButton()
+                            .padding(.top)
+                        
                         GroupHeader(name: $group.name, emoji: $viewModel.emoji, color: $group.backgroundColor, isOwner: viewModel.isOwner)
                         
                         YourActivities(group: group, viewModel: viewModel)
@@ -82,9 +85,9 @@ struct GroupOverview: View {
                 Button(action: {
                     dismiss()
                 }, label: {
-                    TextHelper.text(key: "Cancel", alignment: .center, type: .h5, color: .white)
+                    TextHelper.text(key: "Cancel", alignment: .center, type: .h5, color: Color("CancelText"))
                         .padding()
-                        .background(Color("Failed"))
+                        .background(Color("Cancel"))
                         .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                 })
                 .buttonStyle(ButtonPressAnimationStyle())
@@ -257,47 +260,45 @@ struct DeleteButton: View {
     let viewModel: GroupOverviewViewModel
     
     var body: some View {
-        VStack(alignment: .leading) {
-            TextHelper.text(key: "Delete Group", alignment: .leading, type: .h4)
+        ZStack {
+            TextHelper.text(key: "", alignment: .leading, type: .h4)
                 .alert(isPresented: $showDeleteFailure) {
                     Alert(title: Text("Network Error"), message: Text("Could not delete group. Please check your connection and try again!"))
                 }
             
-            Button(action: {
-                DispatchQueue.main.async {
-                    showDeleteConfirmation = true
-                }
-            }, label: {
-                HStack {
-                    Text("Delete")
-                        .foregroundColor(.white)
-                        .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title3))
-                        .padding()
-                        .padding(.horizontal)
-                        .background(Color("Failed"))
-                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    
-                    Spacer()
-                }
-            })
-            .buttonStyle(ButtonPressAnimationStyle())
-            .alert(isPresented: $showDeleteConfirmation) {
-                Alert(title: Text("Delete \(group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
-                      primaryButton: .cancel(),
-                      secondaryButton: .destructive(Text("Delete")) {
-                    viewModel.deleteGroup(group: group) {
-                        if $0 == true {
-                            group.wasDeleted = true
-                            groups.removeAll(where: { $0.record.recordID == group.record.recordID })
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                        else {
-                            showDeleteFailure = true
-                        }
-                        
-                        print("Delete Group Finished With Status: \($0)")
+            HStack {
+                Button(action: {
+                    DispatchQueue.main.async {
+                        showDeleteConfirmation = true
+                    }
+                }, label: {
+                    HStack {
+                        Text("Delete group")
+                            .font(.custom("Lexend-Regular", size: 15))
+                            .foregroundColor(Color("Failed"))
                     }
                 })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .alert(isPresented: $showDeleteConfirmation) {
+                    Alert(title: Text("Delete \(group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
+                          primaryButton: .cancel(),
+                          secondaryButton: .destructive(Text("Delete")) {
+                        viewModel.deleteGroup(group: group) {
+                            if $0 == true {
+                                group.wasDeleted = true
+                                groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                            else {
+                                showDeleteFailure = true
+                            }
+                            
+                            print("Delete Group Finished With Status: \($0)")
+                        }
+                    })
+                }
+                
+                Spacer()
             }
         }
     }

@@ -27,60 +27,90 @@ struct Tutorial: View {
                 .edgesIgnoringSafeArea(.all)
                 .zIndex(-1)
             
-            switch viewModel.selection {
-            case 1:
-                nameAndPhoto()
-            case 2:
-                notifications()
-            default:
-                openingPage()
-            }
-            
             VStack {
-                Button(action: {
-                    withAnimation {
-                        if viewModel.selection == 1 {
-                            if viewModel.name == "" {
-                                viewModel.errorMessage = "Please enter a nickname"
-                                viewModel.showError = true
-                            }
-                            else {
-                                viewModel.updateUser()
-                            }
-                        }
-                        else if viewModel.selection == 2 && CloudKitHelper.shared.hasUser() {
-                            OneSignal.promptForPushNotifications(userResponse: { accepted in
-                                if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
-                                    OneSignal.setExternalUserId(userId)
-                                }
-                                
-                                viewRouter.navigateTo(.home)
-                                UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
-                            })
-                        } else {
-                            viewModel.selection += 1
-                        }
-                    }
-                }, label: {
-                    Image("TutorialArrow")
-                        .resizable()
-                        .frame(width: 60, height: 60, alignment: .center)
-                })
-                .buttonStyle(ButtonPressAnimationStyle())
+                Spacer()
                 
                 HStack {
-                    Capsule()
-                        .frame(width: viewModel.selection == 0 ? 20 : 10, height: 10, alignment: .leading)
-                    Capsule()
-                        .frame(width: viewModel.selection == 1 ? 20 : 10, height: 10, alignment: .center)
-                    Capsule()
-                        .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
+                    Button(action: {
+                        withAnimation {
+                            viewRouter.navigateTo(.home)
+                            UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                        }
+                    }, label: {
+                        Text("Enable later")
+                            .font(.custom("Lexend-Regular", size: 15))
+                            .foregroundColor(Color("Gray200"))
+                    })
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    .padding()
+                    
+                    Spacer()
                 }
-                .padding()
-                .foregroundColor(Color("Gray400"))
+                .padding(.bottom)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            .ignoresSafeArea(.all)
+            .disabled(viewModel.selection != 2)
+            .opacity(viewModel.selection == 2 ? 1 : 0)
+            
+            VStack {
+                switch viewModel.selection {
+                case 1:
+                    nameAndPhoto()
+                case 2:
+                    notifications()
+                default:
+                    openingPage()
+                }
+                
+                VStack {
+                    Button(action: {
+                        withAnimation {
+                            if viewModel.selection == 1 {
+                                if viewModel.name == "" {
+                                    viewModel.errorMessage = "Please enter a nickname"
+                                    viewModel.showError = true
+                                }
+                                else {
+                                    viewModel.updateUser()
+                                }
+                            }
+                            else if viewModel.selection == 2 && CloudKitHelper.shared.hasUser() {
+                                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                                    if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
+                                        OneSignal.setExternalUserId(userId)
+                                    }
+                                    
+                                    viewRouter.navigateTo(.home)
+                                    UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                                })
+                            } else {
+                                viewModel.selection += 1
+                            }
+                        }
+                    }, label: {
+                        Image("TutorialArrow")
+                            .resizable()
+                            .frame(width: 60, height: 60, alignment: .center)
+                    })
+                    .buttonStyle(ButtonPressAnimationStyle())
+                    
+                    HStack {
+                        Capsule()
+                            .frame(width: viewModel.selection == 0 ? 20 : 10, height: 10, alignment: .leading)
+                            .foregroundColor(viewModel.selection == 0 ? Color("Gray400") : Color("Gray150"))
+                        Capsule()
+                            .frame(width: viewModel.selection == 1 ? 20 : 10, height: 10, alignment: .center)
+                            .foregroundColor(viewModel.selection == 1 ? Color("Gray400") : Color("Gray150"))
+                        Capsule()
+                            .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
+                            .foregroundColor(viewModel.selection == 2 ? Color("Gray400") : Color("Gray150"))
+                    }
+                    .padding()
+                }
+                .frame(maxWidth: .infinity, alignment: .bottom)
+                .padding(.top)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .padding([.horizontal, .top])
             
             if viewModel.isLoading {
                 LoadingIndicator()
@@ -102,16 +132,13 @@ struct Tutorial: View {
             Image("TutorialBackground1")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
-                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             TextHelper.text(key: "StayActive", alignment: .leading, type: .h1)
-                .padding()
+                .padding(.vertical)
+                .background(Color("Blue"))
             
             TextHelper.text(key: "Receive random exercise challenges throughout your week, personalized to you.", alignment: .leading, type: .body)
-                .padding(.horizontal)
-            
-            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)
@@ -266,66 +293,68 @@ struct Tutorial: View {
     
     func nameAndPhoto() -> some View {
         VStack {
-            VStack {
-                ZStack {
-                    Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 75, height: 75, alignment: .center)
-                        .cornerRadius(100)
-                    
-                    EditIcon()
-                        .offset(x: 25, y: -25)
-                        .onTapGesture {
-                            showImagePicker = true
-                        }
-                        .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
-                        .onChange(of: selectedphoto) { newValue in
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    DispatchQueue.main.async {
-                                        viewModel.photo = UIImage(data: data)
+            ZStack {
+                Image("TutorialBackground2")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                VStack {
+                    ZStack {
+                        Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 75, height: 75, alignment: .center)
+                            .cornerRadius(100)
+                        
+                        EditIcon()
+                            .offset(x: 25, y: -25)
+                            .onTapGesture {
+                                showImagePicker = true
+                            }
+                            .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
+                            .onChange(of: selectedphoto) { newValue in
+                                Task {
+                                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                        DispatchQueue.main.async {
+                                            viewModel.photo = UIImage(data: data)
+                                        }
                                     }
                                 }
                             }
-                        }
-                }
-                
-                Button(action: {
-                    viewModel.photo = nil
-                }, label: {
-                    Text("Remove")
-                        .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
-                        .foregroundColor(Color("Failed"))
-                })
-                .frame(maxWidth: 75, maxHeight: 25)
-                
-                TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
-                
-                TextField("", text: $viewModel.name)
-                    .padding()
-                    .frame(minWidth: 200, alignment: .leading)
-                    .background(Color("Panel"))
-                    .cornerRadius(16)
-                    .font(Font.custom("Lexend-Regular", size: 14))
-                    .foregroundColor(Color("Gray300"))
-                    .focused($textFieldFocus)
-                    .onTapGesture {
-                        textFieldFocus = true
                     }
-                
+                    
+                    Button(action: {
+                        viewModel.photo = nil
+                    }, label: {
+                        Text("Remove")
+                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .caption))
+                            .foregroundColor(Color("Failed"))
+                    })
+                    
+                    TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
+                    
+                    TextField("", text: $viewModel.name)
+                        .padding()
+                        .frame(minWidth: 200, alignment: .leading)
+                        .background(Color("Panel"))
+                        .cornerRadius(16)
+                        .font(Font.custom("Lexend-Regular", size: 14))
+                        .foregroundColor(Color("Gray300"))
+                        .focused($textFieldFocus)
+                        .onTapGesture {
+                            textFieldFocus = true
+                        }
+                    
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .padding()
             }
-            .padding()
-            .padding(.vertical)
-            .background(Color("Gray100"))
-            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .padding()
             
             TextHelper.text(key: "Introduce yourself", alignment: .leading, type: .h1)
-                .padding()
+                .padding(.vertical)
             
             TextHelper.text(key: "There’s no account required. A name and photo will help your friends recognize you.", alignment: .leading, type: .body)
-                .padding(.horizontal)
             
             Spacer()
         }
@@ -335,48 +364,17 @@ struct Tutorial: View {
     
     func notifications() -> some View {
         VStack {
-            ZStack {
-                Image("TutorialBackground2")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                
-                Image("Notification")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .padding()
-            }
+            Image("TutorialBackground3")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
             
             TextHelper.text(key: "Get notifications for your challenges 🔔", alignment: .leading, type: .h1)
-                .padding()
+                .padding(.vertical)
             
             TextHelper.text(key: "We need your permission to send notifications when your exercise challenges are ready. We will only send notifications for your challenges and when your other group members have completed challenges.", alignment: .leading, type: .body)
-                .padding(.horizontal)
             
             Spacer()
-            
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    withAnimation {
-                        viewRouter.navigateTo(.home)
-                        UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
-                    }
-                }, label: {
-                    Text("Enable Later")
-                        .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title3))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color("BrandPurple"))
-                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                })
-                .buttonStyle(ButtonPressAnimationStyle())
-                .padding()
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .transition(.backslide)

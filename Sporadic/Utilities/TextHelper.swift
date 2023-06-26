@@ -13,35 +13,35 @@ class TextHelper {
         switch(type) {
         case .h1:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 28, relativeTo: .largeTitle))
+                .font(Font.custom("Lexend-SemiBold", size: 29, relativeTo: .largeTitle))
                 .foregroundColor(Color("Gray300")))
         case .h2:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 24, relativeTo: .title))
+                .font(Font.custom("Lexend-SemiBold", size: 25, relativeTo: .title))
                 .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h3:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 18, relativeTo: .title2))
+                .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))
                 .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h4:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title3))
+                .font(Font.custom("Lexend-SemiBold", size: 17, relativeTo: .title3))
                 .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h5:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title3))
+                .font(Font.custom("Lexend-SemiBold", size: 15, relativeTo: .title3))
                 .foregroundColor(color == nil ? Color("Gray300") : color))
         case .h6:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
+                .font(Font.custom("Lexend-Regular", size: 13, relativeTo: .caption))
                 .foregroundColor(color == nil ? Color("ActivityLight") : color))
         case .h7:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 11, relativeTo: .caption2))
+                .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption2))
                 .foregroundColor(color == nil ? Color("Gray200") : color))
         case .body:
             return AnyView(GetText(key, alignment, prefix, suffix)
-                .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
+                .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
                 .foregroundColor(color == nil ? Color("Gray200") : color))
         }
     }

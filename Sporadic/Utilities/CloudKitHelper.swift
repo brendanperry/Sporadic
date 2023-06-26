@@ -149,7 +149,18 @@ class CloudKitHelper {
             
             database.save(record) { record, error in
                 if let error = error {
-                    completion(error)
+                    // this means that the server has a more up to date user than us, so pull it down and try again
+                    if error.localizedDescription.contains("oplock") {
+                        Task {
+                            if let newUser = try? await self.getCurrentUser(forceSync: true) {
+                                newUser.photo = user.photo
+                                self.updateUserImage(user: newUser, completion: completion)
+                            }
+                        }
+                    }
+                    else {
+                        completion(error)
+                    }
                 }
                 else {
                     if let record = record {

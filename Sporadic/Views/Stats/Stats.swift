@@ -23,7 +23,7 @@ struct Stats: View {
             
             if viewModel.areGroupsLoaded {
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 20) {
+                    VStack(spacing: 15) {
                         TextHelper.text(key: "Analytics", alignment: .leading, type: .h1)
                             .padding(.top, 50)
                             .padding(.bottom)
@@ -32,7 +32,7 @@ struct Stats: View {
                             }
                         
                         if !homeViewModel.areGroupsLoading && !homeViewModel.groups.isEmpty {
-                            HStack {
+//                            HStack {
                                 GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
                                     .onChange(of: viewModel.selectedGroup) { _ in
                                         viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
@@ -45,12 +45,12 @@ struct Stats: View {
                                     .onChange(of: viewModel.selectedActivity) { _ in
                                         viewModel.loadCompletedChallenges(forceSync: false)
                                     }
-                            }
+//                            }
                             
                             GraphSection(viewModel: viewModel)
                             
                             if viewModel.data.count > 1 {
-                                HStack {
+                                HStack(spacing: 15) {
                                     YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
                                     
                                     YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
@@ -220,8 +220,8 @@ struct Stats: View {
                 HStack {
                     if selectedGroup != nil {
                         Text(selectedGroup?.emoji ?? "")
-                            .font(.title)
-                            .padding(10)
+                            .font(.title3)
+                            .padding(5)
                             .background(Circle().foregroundColor(GroupBackgroundColor.init(rawValue: selectedGroup?.backgroundColor ?? 0)?.getColor()))
                     }
                     
@@ -234,7 +234,6 @@ struct Stats: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 10, height: 10)
                 }
-                
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onChange(of: homeViewModel.groups) { _ in
                     if selectedGroup == nil {
@@ -246,6 +245,11 @@ struct Stats: View {
                         selectedGroup = homeViewModel.groups.first
                     }
                 }
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Color("Panel"))
+                .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                .shadow(radius: GlobalSettings.shared.shadowRadius)
                 
                 HStack(spacing: 0) {
                     Menu {
@@ -255,16 +259,11 @@ struct Stats: View {
                             }
                         }
                     } label: {
-                        Label("", image: "")
-                            .labelStyle(TitleOnlyLabelStyle())
-                            .frame(maxWidth: .infinity, maxHeight: 75)
+                        TextHelper.text(key: "PlaceHolder", alignment: .leading, type: .h3, color: .clear)
+                            .padding()
                     }
                 }
             }
-            .padding()
-            .background(Color("Panel"))
-            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
         }
     }
     
@@ -280,8 +279,8 @@ struct Stats: View {
                             Image(selectedActivity.template != nil ? selectedActivity.name : "Custom Activity Icon")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 30, height: 30)
-                                .padding(10)
+                                .frame(width: 20, height: 20)
+                                .padding(5)
                                 .background(Circle().foregroundColor(selectedActivity.template?.color ?? Color("CustomExercise")))
                             
                             TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3)
@@ -296,6 +295,11 @@ struct Stats: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Color("Panel"))
+                .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                .shadow(radius: GlobalSettings.shared.shadowRadius)
                 
                 HStack(spacing: 0) {
                     Menu {
@@ -305,17 +309,11 @@ struct Stats: View {
                             }
                         }
                     } label: {
-                        Label("", image: "")
-                            .labelStyle(TitleOnlyLabelStyle())
-                            .frame(maxWidth: .infinity, maxHeight: 75)
+                        TextHelper.text(key: "PlaceHolder", alignment: .leading, type: .h3, color: .clear)
+                            .padding()
                     }
                 }
-                .padding()
             }
-            .padding()
-            .background(Color("Panel"))
-            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
         }
     }
     

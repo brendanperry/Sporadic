@@ -29,7 +29,7 @@ struct ActivitySelector: View {
                     }) {
                         Image("CloseButton")
                             .resizable()
-                            .frame(width: 20, height: 20, alignment: .leading)
+                            .frame(width: 15, height: 15, alignment: .leading)
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)

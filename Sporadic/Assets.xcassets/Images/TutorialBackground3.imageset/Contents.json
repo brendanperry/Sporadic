@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Light Background.jpg",
+      "filename" : "Onboarding-Image3-Light.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Dark Background.jpg",
+      "filename" : "Onboarding-Image3-Dark.png",
       "idiom" : "universal"
     }
   ],

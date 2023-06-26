@@ -19,6 +19,7 @@ class HomeViewModel : ObservableObject {
     @Published var areChallengesLoading = true
     @Published var areGroupsLoading = true
     @Published var confetti = 0
+    @Published var nextChallengeText = ""
     
     init() {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -64,6 +65,50 @@ class HomeViewModel : ObservableObject {
             }
         } catch {
             print(error)
+        }
+    }
+    
+    func loadNextChallengeText() {
+        guard let today = Calendar.current.dateComponents([.weekday], from: Date()).weekday else { return }
+        
+        var dayToCheck = today
+        var dayToRun = today
+        
+        var groupsToRun = groups.filter({ $0.displayedDays.contains(today - 1) && ($0.deliveryTime.setDateToToday() ?? Date()) > Date() })
+            
+        var daysChecked = 1
+        while(groupsToRun.isEmpty && daysChecked < 7) {
+            if dayToCheck == 7 {
+                dayToCheck = 1
+            }
+            else {
+                dayToCheck += 1
+            }
+            
+            groupsToRun = groups.filter({ $0.displayedDays.contains(dayToCheck - 1) })
+            
+            if !groupsToRun.isEmpty {
+                dayToRun = dayToCheck
+            }
+            
+            daysChecked += 1
+        }
+        
+        if let nextGroupToRun = groupsToRun.sorted(by: { $0.deliveryTime < $1.deliveryTime }).first {
+            var newText = ""
+            if today == dayToRun {
+                newText += "Your next challenge is today at "
+            }
+            else {
+                newText += "Your next challenge is \(dayToRun.getWeekday()) at "
+            }
+            
+            newText += nextGroupToRun.deliveryTime.formatted(date: .omitted, time: .shortened) + " for " + nextGroupToRun.name + " " + nextGroupToRun.emoji
+            
+            nextChallengeText = newText
+        }
+        else {
+            nextChallengeText = "No challenges scheduled. Create or join a group to get started!"
         }
     }
     
@@ -208,6 +253,7 @@ class HomeViewModel : ObservableObject {
                     
                     self?.areGroupsLoading = false
                     self?.loadGroupData()
+                    self?.loadNextChallengeText()
                 }
             }
         }

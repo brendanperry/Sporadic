@@ -15,7 +15,7 @@ public class ActivityTemplateHelper {
         
         ActivityTemplate(id: 2, name: "Bike", minValue: 0.5, maxValue: 30.0, selectedMin: 2.0, selectedMax: 4.0, minRange: 0.5, unit: .miles, category: .cardio),
         
-        ActivityTemplate(id: 3, name: "Yoga", minValue: 5, maxValue: 120, selectedMin: 10, selectedMax: 30, minRange: 1, unit: .minutes, category: .cardio),
+        ActivityTemplate(id: 3, name: "Yoga", minValue: 5, maxValue: 120, selectedMin: 10, selectedMax: 30, minRange: 1, unit: .minutes, category: .strength),
         
         ActivityTemplate(id: 4, name: "Swim", minValue: 5, maxValue: 120, selectedMin: 10, selectedMax: 30, minRange: 1, unit: .minutes, category: .cardio),
         

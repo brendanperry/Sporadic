@@ -75,7 +75,7 @@ extension ActivityUnit {
     func maxValue() -> Double {
         switch self {
         case .miles: return 20
-        case .minutes: return 360
+        case .minutes: return 60
         case .seconds: return 120
         case .laps: return 50
         case .sets: return 50

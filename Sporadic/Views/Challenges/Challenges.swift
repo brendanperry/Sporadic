@@ -130,7 +130,6 @@ struct ChallengeView: View {
         }
         .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
         .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-        .shadow(radius: 3)
         .padding(.horizontal)
         .padding(.top, 5)
         .alert(isPresented: $showError) {

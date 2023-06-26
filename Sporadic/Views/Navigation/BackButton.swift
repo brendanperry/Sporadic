@@ -17,7 +17,7 @@ struct BackButton: View {
             Image("BackButton")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 20, height: 20, alignment: .center)
+                .frame(width: 15, height: 15, alignment: .center)
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)

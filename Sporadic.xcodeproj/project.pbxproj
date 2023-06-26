@@ -50,6 +50,7 @@
 		C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6667D2D2690FB5D00991913 /* UserPrefs.swift */; };
 		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
 		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
+		C67085642A4166ED00E46EBD /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67085632A4166ED00E46EBD /* IntExtensions.swift */; };
 		C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BA2843F43B00ABB6B3 /* Challenges.swift */; };
 		C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BC28440FF700ABB6B3 /* Activity.swift */; };
 		C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */; };
@@ -160,6 +161,7 @@
 		C6667D2D2690FB5D00991913 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		C66A3729283F1CB50096757C /* GroupOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverview.swift; sourceTree = "<group>"; };
 		C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverviewViewModel.swift; sourceTree = "<group>"; };
+		C67085632A4166ED00E46EBD /* IntExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensions.swift; sourceTree = "<group>"; };
 		C68378BA2843F43B00ABB6B3 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
 		C68378BC28440FF700ABB6B3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				C62625A82867418300E84C79 /* StringExtensions.swift */,
 				C62625AA286741AB00E84C79 /* CharacterExtensions.swift */,
 				C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */,
+				C67085632A4166ED00E46EBD /* IntExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -664,6 +667,7 @@
 			files = (
 				C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */,
 				C68378C52844148400ABB6B3 /* UserGroup.swift in Sources */,
+				C67085642A4166ED00E46EBD /* IntExtensions.swift in Sources */,
 				C62625A728673F7A00E84C79 /* EmojiKeyboard.swift in Sources */,
 				C6401E2528E2A0030096E002 /* EmojiSelector.swift in Sources */,
 				C61983212A26E52A00FCBDBA /* TutorialViewModel.swift in Sources */,

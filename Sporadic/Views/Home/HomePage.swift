@@ -37,6 +37,8 @@ struct HomePage: View {
                             viewModel.triggerConfetti(group: group)
                         }
                         
+                        Text(viewModel.nextChallengeText)
+                        
                         GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading)
                     }
                     .padding(.bottom, 100)
@@ -101,7 +103,6 @@ struct Welcome: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
-                .shadow(radius: 3)
                 .padding()
         }
         .padding(.horizontal)

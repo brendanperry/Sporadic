@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 import UIKit
-
+import SwiftUI
 
 class TutorialViewModel: ObservableObject {
     @Published var selectedDifficulty = GroupDifficulty.beginner
@@ -22,7 +22,13 @@ class TutorialViewModel: ObservableObject {
 
     
     func updateUser() {
-        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        guard let user = CloudKitHelper.shared.getCachedUser() else {
+            errorMessage = "No iCloud account was detected. Please make sure you are signed into your iCloud account and have an internet connection. Once this is done, restart the app and try again."
+            showError = true
+            isLoading = false
+            
+            return
+        }
         
         user.name = name
         user.photo = photo
@@ -55,7 +61,9 @@ class TutorialViewModel: ObservableObject {
                     else {
                         DispatchQueue.main.async {
                             self?.isLoading = false
-                            self?.selection += 1
+                            withAnimation {
+                                self?.selection += 1
+                            }
                         }
                     }
                 }

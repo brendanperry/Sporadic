@@ -12,7 +12,7 @@ enum Page {
     case settings
     case stats
     case tutorial
- }
+}
 
 class ViewRouter: ObservableObject {
     private(set) var currentPage: Page

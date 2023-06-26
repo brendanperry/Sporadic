@@ -21,7 +21,7 @@ struct SettingsPage: View {
     @StateObject var viewModel = settingsViewModel
     
     @EnvironmentObject var viewRouter: ViewRouter
-
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")

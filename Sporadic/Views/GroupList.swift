@@ -20,7 +20,7 @@ struct GroupList: View {
                 .padding(.horizontal)
                 .padding(.bottom)
 
-            LazyVGrid(columns: items, spacing: 17) {
+            LazyVGrid(columns: items, spacing: 10) {
                 if isLoading && groups.isEmpty {
                     GroupLoadingWidget()
                 }
@@ -35,7 +35,7 @@ struct GroupList: View {
                     AddNewGroup(groups: $groups)
                     
                     if !isLoading && groups.isEmpty {
-                        TextHelper.text(key: "Get started by creating a group.", alignment: .center, type: .body)
+                        TextHelper.text(key: "Hit the plus button to create a group.", alignment: .center, type: .body)
                     }
                 }
             }
@@ -105,31 +105,31 @@ struct GroupWidget: View {
                 .frame(height: 50)
                 .lineLimit(2)
             
-            HStack(alignment: .bottom, spacing: 0) {
+            HStack(alignment: .bottom) {
                 if group.activities.count == 1 {
-                    TextHelper.text(key: "1 exercise", alignment: .leading, type: .h7)
-                        .frame(width: 70)
+                    Text("1 exercise")
+                        .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption2))
+                        .foregroundColor(Color("Gray200"))
                 }
                 else {
-                    TextHelper.text(key: "\(group.activities.filter({ !$0.wasDeleted }).count) exercises", alignment: .leading, type: .h7)
-                        .frame(width: 70)
+                    Text("\(group.activities.filter({ !$0.wasDeleted }).count) exercises")
+                        .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption2))
+                        .foregroundColor(Color("Gray200"))
                 }
                 
-                VStack {
-                    Spacer()
-                    Image("View Group Carrot Icon")
+                Image("View Group Carrot Icon")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .offset(y: -2)
-                }
-                .frame(maxWidth: .infinity)
+                        .frame(maxWidth: 5)
+                        .offset(y: -3)
+                
+                Spacer()
             }
             .frame(height: 15)
             .padding([.horizontal, .bottom])
         }
         .background(Color("Panel"))
-        .cornerRadius(10)
-        .shadow(radius: 3)
+        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }
 }

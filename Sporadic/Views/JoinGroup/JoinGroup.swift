@@ -42,9 +42,9 @@ struct JoinGroup: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            TextHelper.text(key: "Don't Join", alignment: .center, type: .h6, color: .white)
+                            TextHelper.text(key: "Decline", alignment: .center, type: .h6, color: Color("CancelText"))
                                 .padding()
-                                .background(Color("Gray400"))
+                                .background(Color("Cancel"))
                                 .cornerRadius(16)
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
@@ -59,7 +59,7 @@ struct JoinGroup: View {
                                 }
                             }
                         }, label: {
-                            TextHelper.text(key: "Join Group", alignment: .center, type: .h6, color: .white)
+                            TextHelper.text(key: "Accept", alignment: .center, type: .h6, color: .white)
                                 .padding()
                                 .background(Color("BrandPurple"))
                                 .cornerRadius(16)
