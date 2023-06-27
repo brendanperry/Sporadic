@@ -62,7 +62,7 @@ struct NavigationBar: View {
                     .foregroundColor(Color("Panel"))
                     .frame(maxWidth: .infinity, maxHeight: 123, alignment: .bottom)
                     .offset(y: 50)
-                    .shadow(radius: 3)
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
                     .ignoresSafeArea()
             }
             .frame(maxHeight: .infinity)

@@ -13,6 +13,8 @@ struct CreateGroupView: View {
     @StateObject var viewModel = CreateGroupViewModel()
     @Binding var groups: [UserGroup]
     
+    let updateNextChallengeText: () -> Void
+    
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -21,7 +23,7 @@ struct CreateGroupView: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                    BackButton()
+                    BackButton(showBackground: true)
                         .padding(.top)
                     
                     TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
@@ -38,7 +40,7 @@ struct CreateGroupView: View {
                     
                     SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                     
-                    CreateButton(groups: $groups, viewModel: viewModel)
+                    CreateButton(groups: $groups, viewModel: viewModel, updateNextChallengeText: updateNextChallengeText)
                 }
                 .padding(.horizontal)
             }
@@ -61,6 +63,8 @@ struct CreateGroupView: View {
         @Binding var groups: [UserGroup]
         let viewModel: CreateGroupViewModel
         
+        let updateNextChallengeText: () -> Void
+        
         var body: some View {
             Button(action: {
                 viewModel.createGroup { group in
@@ -68,6 +72,8 @@ struct CreateGroupView: View {
                         DispatchQueue.main.async {
                             groups.append(group)
                             groups.sort(by: { $0.name < $1.name })
+                            
+                            updateNextChallengeText()
                             
                             presentationMode.wrappedValue.dismiss()
                         }

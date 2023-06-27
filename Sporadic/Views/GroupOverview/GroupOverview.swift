@@ -12,6 +12,8 @@ struct GroupOverview: View {
     @ObservedObject var group: UserGroup
     @Binding var groups: [UserGroup]
     
+    let updateNextChallengeText: () -> Void
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
@@ -26,14 +28,11 @@ struct GroupOverview: View {
             ZStack {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                        BackButton()
-                            .padding(.top)
-                        
                         GroupHeader(name: $group.name, emoji: $viewModel.emoji, color: $group.backgroundColor, isOwner: viewModel.isOwner)
                         
                         YourActivities(group: group, viewModel: viewModel)
                         
-                        UsersInGroup(viewModel: viewModel, group: group)
+                        UsersInGroup(viewModel: viewModel, group: group, groups: $groups)
                             .alert(isPresented: $viewModel.showError) {
                                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
                             }
@@ -43,7 +42,7 @@ struct GroupOverview: View {
                         DeliveryTime(isOwner: viewModel.isOwner, time: $group.deliveryTime)
 
                         if viewModel.isOwner {
-                            DeleteButton(group: group, groups: $groups, viewModel: viewModel)
+                            DeleteButton(group: group, groups: $groups, viewModel: viewModel, loadNextChallengeText: updateNextChallengeText)
                         }
                     }
                     .padding(.horizontal)
@@ -60,7 +59,8 @@ struct GroupOverview: View {
                 LoadingIndicator()
             }
         }
-        .navigationBarBackButtonHidden(viewModel.isOwner ? true : false)
+        .navigationBarItems(leading: BackButton(showBackground: false))
+        .navigationBarBackButtonHidden(true)
         .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
         .navigationTitle("\(group.name)")
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -99,6 +99,7 @@ struct GroupOverview: View {
                     viewModel.save(group: group) { didComplete in
                         if didComplete {
                             DispatchQueue.main.async {
+                                updateNextChallengeText()
                                 presentationMode.wrappedValue.dismiss()
                             }
                         }
@@ -122,7 +123,8 @@ struct GroupOverview: View {
             }
             .background(
                 Rectangle()
-                    .foregroundColor(Color("Panel")).shadow(radius: GlobalSettings.shared.shadowRadius)
+                    .foregroundColor(Color("Panel"))
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
                     .ignoresSafeArea(.all, edges: .bottom)
             )
         }
@@ -132,6 +134,7 @@ struct GroupOverview: View {
         @Binding var name: String
         @Binding var emoji: String
         @Binding var color: Int
+        @Binding var showEdit: Bool
         
         var body: some View {
             ZStack {
@@ -140,6 +143,10 @@ struct GroupOverview: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 ScrollView(.vertical, showsIndicators: false) {
+                    CloseButton(shouldShow: $showEdit)
+                    
+                    Spacer()
+                    
                     VStack(spacing: 35) {
                         GroupName(name: $name)
                         
@@ -184,7 +191,7 @@ struct GroupOverview: View {
                     }
                 }
                 .popover(isPresented: $showEdit) {
-                    EditGroupHeader(name: $name, emoji: $emoji, color: $color)
+                    EditGroupHeader(name: $name, emoji: $emoji, color: $color, showEdit: $showEdit)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -219,7 +226,7 @@ struct YourActivities: View {
                     .padding(.vertical, 10)
                     .background(Color.purple)
                     .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    .shadow(radius: GlobalSettings.shared.shadowRadius)
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                     .padding(.leading)
                 }
                 else {
@@ -259,6 +266,8 @@ struct DeleteButton: View {
     @Binding var groups: [UserGroup]
     let viewModel: GroupOverviewViewModel
     
+    let loadNextChallengeText: () -> Void
+    
     var body: some View {
         ZStack {
             TextHelper.text(key: "", alignment: .leading, type: .h4)
@@ -287,6 +296,7 @@ struct DeleteButton: View {
                             if $0 == true {
                                 group.wasDeleted = true
                                 groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                loadNextChallengeText()
                                 presentationMode.wrappedValue.dismiss()
                             }
                             else {
@@ -307,10 +317,29 @@ struct DeleteButton: View {
 struct UsersInGroup: View {
     @ObservedObject var viewModel: GroupOverviewViewModel
     @ObservedObject var group: UserGroup
-    
+    @Binding var groups: [UserGroup]
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         VStack {
-            TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h4)
+            HStack {
+                TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h4)
+                
+                if !viewModel.isOwner {
+                    Button(action: {
+                        viewModel.leaveGroup(group: group) { didLeave in
+                            if didLeave {
+                                DispatchQueue.main.async {
+                                    groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }, label: {
+                        TextHelper.text(key: "Leave", alignment: .trailing, type: .body, color: Color("Failed"))
+                    })
+                }
+            }
             
             VStack(spacing: 0) {
                 if !group.areUsersLoading {
@@ -321,8 +350,7 @@ struct UsersInGroup: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 50, height: 50, alignment: .leading)
                                 .cornerRadius(100)
-                                .shadow(radius: GlobalSettings.shared.shadowRadius)
-                            
+
                             TextHelper.text(key: user.name, alignment: .leading, type: .h5)
                         }
                     }
@@ -333,8 +361,8 @@ struct UsersInGroup: View {
                         Circle()
                             .frame(width: 50, height: 50, alignment: .leading)
                             .foregroundColor(.white)
-                            .shadow(radius: GlobalSettings.shared.shadowRadius)
-                        
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+
                         LoadingBar()
                             .frame(height: 20)
                     }

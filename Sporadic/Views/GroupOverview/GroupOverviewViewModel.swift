@@ -42,7 +42,37 @@ class GroupOverviewViewModel: ObservableObject {
         return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
     }
     
+    func leaveGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
+        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        
+        user.groups.removeAll(where: { $0.recordID == group.record.recordID })
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        CloudKitHelper.shared.updateUserGroups(user: user, groups: user.groups) { error in
+            if let error {
+                print(error)
+                DispatchQueue.main.async {
+                    self.errorMessage = "Failed to leave group. Please check your connection and try again."
+                    self.showError = true
+                    completion(false)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.isLoading = false
+                completion(true)
+            }
+        }
+    }
+    
     func save(group: UserGroup, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.main.async {
+            group.emoji = self.emoji
+        }
+        
         var recordsToSave = [CKRecord]()
         
         let groupRecord = group.record

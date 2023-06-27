@@ -141,6 +141,36 @@ class CloudKitHelper {
         }
     }
     
+    func updateUserGroups(user: User, groups: [CKRecord.Reference], completion: @escaping (Error?) -> Void) {
+        let record = user.record
+
+        record["groups"] = groups
+        
+        database.save(record) { record, error in
+            if let error = error {
+                // this means that the server has a more up to date user than us, so pull it down and try again
+                if error.localizedDescription.contains("oplock") {
+                    Task {
+                        if let newUser = try? await self.getCurrentUser(forceSync: true) {
+                            newUser.groups = user.groups
+                            self.updateUserGroups(user: user, groups: groups, completion: completion)
+                        }
+                    }
+                }
+                else {
+                    completion(error)
+                }
+            }
+            else {
+                if let record = record {
+                    user.record = record
+                }
+
+                completion(nil)
+            }
+        }
+    }
+    
     func updateUserImage(user: User, completion: @escaping (Error?) -> Void) {
         let record = user.record
         

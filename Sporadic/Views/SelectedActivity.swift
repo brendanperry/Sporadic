@@ -46,6 +46,6 @@ struct SelectedActivity: View {
         .padding()
         .background(Color("Panel"))
         .cornerRadius(10)
-        .shadow(radius: GlobalSettings.shared.shadowRadius)
+        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }
 }

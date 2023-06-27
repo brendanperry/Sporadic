@@ -11,7 +11,7 @@ struct LoadingBar: View {
     @State var isAnimating = false
     
     var body: some View {
-        LinearGradient(colors: [Color("GroupOption3"), Color("GroupOption5")], startPoint: isAnimating ? .trailing : .leading, endPoint: .trailing)
+        LinearGradient(colors: [Color("Gray150"), Color("BrandPurple")], startPoint: isAnimating ? .trailing : .leading, endPoint: .trailing)
             .mask {
                 RoundedRectangle(cornerRadius: 16)
                     .padding(1)

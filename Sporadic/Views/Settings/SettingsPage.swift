@@ -144,9 +144,6 @@ struct SettingsPage: View {
                             
                             EditIcon()
                                 .offset(x: 25, y: -25)
-                                .onTapGesture {
-                                    showImagePicker = true
-                                }
                                 .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
                                 .onChange(of: selectedphoto) { newValue in
                                     Task {
@@ -159,6 +156,9 @@ struct SettingsPage: View {
                                     }
                                 }
                         }
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
                         
                         TextField("", text: $name)
                             .padding()
@@ -169,6 +169,7 @@ struct SettingsPage: View {
                             .foregroundColor(Color("Gray300"))
                             .padding(.leading)
                             .focused($textFieldFocus)
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                             .onTapGesture {
                                 textFieldFocus = true
                             }
@@ -183,7 +184,7 @@ struct SettingsPage: View {
                         viewModel.updateUserImage()
                     }, label: {
                         Text("Remove")
-                            .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption))
+                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
                             .foregroundColor(Color("Failed"))
                     })
                     .frame(maxWidth: 75, maxHeight: 25)
@@ -215,6 +216,7 @@ struct SettingsPage: View {
             .padding()
             .background(Color("Panel"))
             .cornerRadius(15)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .onTapGesture {
                 action()
             }
@@ -243,6 +245,7 @@ struct SettingsPage: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
             .background(Color("Panel"))
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .cornerRadius(15)
         }
         

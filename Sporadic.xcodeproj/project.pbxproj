@@ -51,6 +51,7 @@
 		C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A3729283F1CB50096757C /* GroupOverview.swift */; };
 		C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */; };
 		C67085642A4166ED00E46EBD /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67085632A4166ED00E46EBD /* IntExtensions.swift */; };
+		C67085682A4A6ED700E46EBD /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67085672A4A6ED700E46EBD /* CloseButton.swift */; };
 		C68378BB2843F43B00ABB6B3 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BA2843F43B00ABB6B3 /* Challenges.swift */; };
 		C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BC28440FF700ABB6B3 /* Activity.swift */; };
 		C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */; };
@@ -162,6 +163,7 @@
 		C66A3729283F1CB50096757C /* GroupOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverview.swift; sourceTree = "<group>"; };
 		C66A372B283F21CF0096757C /* GroupOverviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOverviewViewModel.swift; sourceTree = "<group>"; };
 		C67085632A4166ED00E46EBD /* IntExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensions.swift; sourceTree = "<group>"; };
+		C67085672A4A6ED700E46EBD /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		C68378BA2843F43B00ABB6B3 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
 		C68378BC28440FF700ABB6B3 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C68378BE2844115700ABB6B3 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				C6E6386829B3CC04007DD574 /* PlusButton.swift */,
 				C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */,
 				C6A59AFA2A14809800FFBC9D /* SelectedActivity.swift */,
+				C67085672A4A6ED700E46EBD /* CloseButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -695,6 +698,7 @@
 				C6E6386B29B3F345007DD574 /* ActivityCategory.swift in Sources */,
 				C6F31137294E66A40096F09D /* JoinGroup.swift in Sources */,
 				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
+				C67085682A4A6ED700E46EBD /* CloseButton.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,
@@ -938,7 +942,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -950,7 +954,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -967,7 +971,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -979,7 +983,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

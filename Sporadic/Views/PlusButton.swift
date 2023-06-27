@@ -15,7 +15,7 @@ struct PlusButton: View {
             Rectangle()
                 .frame(width: 50, height: 50, alignment: .center)
                 .foregroundColor(backgroundColor)
-                .shadow(radius: 3)
+                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                 .cornerRadius(10)
 
             Capsule(style: .continuous)

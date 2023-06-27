@@ -13,6 +13,7 @@ struct GroupList: View {
     var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 2)
     @State var isActive = false
     let isLoading: Bool
+    let updateNextChallengeText: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -26,17 +27,13 @@ struct GroupList: View {
                 }
                 else {
                     ForEach($groups.filter({ !$0.wrappedValue.wasDeleted })) { group in
-                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups)) {
+                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
 
-                    AddNewGroup(groups: $groups)
-                    
-                    if !isLoading && groups.isEmpty {
-                        TextHelper.text(key: "Hit the plus button to create a group.", alignment: .center, type: .body)
-                    }
+                    AddNewGroup(groups: $groups, updateNextChallengeText: updateNextChallengeText)
                 }
             }
             .padding(.horizontal)
@@ -46,17 +43,37 @@ struct GroupList: View {
 
 struct AddNewGroup: View {
     @Binding var groups: [UserGroup]
+    let updateNextChallengeText: () -> Void
     
     var body: some View {
-        NavigationLink(destination: CreateGroupView(groups: $groups)) {
-            PlusButton(backgroundColor: Color("Panel"))
+        NavigationLink(destination: CreateGroupView(groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
+            if groups.isEmpty {
+                VStack(alignment: .leading) {
+                    Image("FirstGroupAddButton")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 25)
+                        .padding(10)
+                        .background(Circle().foregroundColor(Color("BrandPurple")))
+                        .padding([.top, .leading])
+                    
+                    TextHelper.text(key: "Create a new group!", alignment: .leading, type: .h3)
+                        .padding(.horizontal)
+                        .frame(height: 50)
+                        .lineLimit(2)
+                        .padding(.bottom)
+                }
+                .background(Color("Panel"))
+            }
+            else {
+                PlusButton(backgroundColor: Color("Panel"))
+                    .padding()
+            }
         }
         .buttonStyle(ButtonPressAnimationStyle())
         .cornerRadius(10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
-        .shadow(radius: 3)
-        .padding()
+        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }
 }
 
@@ -78,8 +95,7 @@ struct GroupLoadingWidget: View {
         .cornerRadius(10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .aspectRatio(1, contentMode: .fit)
-        .shadow(radius: 3)
-        .padding()
+        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }
 }
 

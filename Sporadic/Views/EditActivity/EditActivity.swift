@@ -36,7 +36,7 @@ struct EditActivity: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(alignment: .leading, spacing: GlobalSettings.shared.controlSpacing) {
-                BackButton()
+                BackButton(showBackground: true)
                     .padding(.top)
                 
                 VStack {

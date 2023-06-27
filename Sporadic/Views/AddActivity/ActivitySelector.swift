@@ -21,23 +21,7 @@ struct ActivitySelector: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center) {
-                    Button(action: {
-                        let impact = UIImpactFeedbackGenerator(style: .light)
-                        impact.impactOccurred()
-                        
-                        shouldShow = false
-                    }) {
-                        Image("CloseButton")
-                            .resizable()
-                            .frame(width: 15, height: 15, alignment: .leading)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                                    .foregroundColor(Color("Panel"))
-                            )
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .buttonStyle(ButtonPressAnimationStyle())
+                    CloseButton(shouldShow: $shouldShow)
                     
                     TextHelper.text(key: "AddANewActivity", alignment: .leading, type: .h1)
                         .padding(.top, 50)
@@ -74,7 +58,7 @@ struct ActivitySelector: View {
                                         .background(
                                             RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                                                 .foregroundColor(Color("Panel"))
-                                                .shadow(radius: GlobalSettings.shared.shadowRadius)
+                                                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                                         )
                                     }
                                     .buttonStyle(ButtonPressAnimationStyle())
@@ -91,7 +75,7 @@ struct ActivitySelector: View {
                                     Rectangle()
                                         .frame(width: 50, height: 50, alignment: .center)
                                         .foregroundColor(Color("CustomExercise"))
-                                        .shadow(radius: 3)
+                                        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                                         .cornerRadius(10)
 
                                     Capsule(style: .continuous)
@@ -135,7 +119,7 @@ struct ActivitySelector: View {
         }
         .toolbar {
             ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
-                BackButton()
+                BackButton(showBackground: true)
             }
         }
     }

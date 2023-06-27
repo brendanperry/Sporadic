@@ -33,13 +33,34 @@ struct HomePage: View {
                     VStack(spacing: 35) {
                         Welcome(viewModel: viewModel)
                     
-                        Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
-                            viewModel.triggerConfetti(group: group)
+                        VStack {
+                            Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
+                                viewModel.triggerConfetti(group: group)
+                            }
+                            
+                            if !viewModel.areChallengesLoading {
+                                HStack {
+                                    Image("ChallengeStatus")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 25)
+                                        .padding(.trailing)
+                                    
+                                    Text(.init(viewModel.nextChallengeText))
+                                        .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
+                                        .foregroundColor(Color("Gray400"))
+                                    
+                                    Spacer()
+                                }
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("BrandLight")))
+                                .padding(.horizontal)
+                            }
                         }
                         
-                        Text(viewModel.nextChallengeText)
-                        
-                        GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading)
+                        GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading) {
+                            viewModel.loadNextChallengeText()
+                        }
                     }
                     .padding(.bottom, 100)
                 }

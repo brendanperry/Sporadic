@@ -32,20 +32,18 @@ struct Stats: View {
                             }
                         
                         if !homeViewModel.areGroupsLoading && !homeViewModel.groups.isEmpty {
-//                            HStack {
-                                GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
-                                    .onChange(of: viewModel.selectedGroup) { _ in
-                                        viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                    }
-                                    .onChange(of: viewModel.selectedGroup?.activities) { newVal in
-                                        viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                    }
-                                
-                                ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
-                                    .onChange(of: viewModel.selectedActivity) { _ in
-                                        viewModel.loadCompletedChallenges(forceSync: false)
-                                    }
-//                            }
+                            GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
+                                .onChange(of: viewModel.selectedGroup) { _ in
+                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                }
+                                .onChange(of: viewModel.selectedGroup?.activities) { newVal in
+                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                }
+                            
+                            ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
+                                .onChange(of: viewModel.selectedActivity) { _ in
+                                    viewModel.loadCompletedChallenges(forceSync: false)
+                                }
                             
                             GraphSection(viewModel: viewModel)
                             
@@ -102,7 +100,7 @@ struct Stats: View {
             }
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
         }
     }
     
@@ -126,7 +124,7 @@ struct Stats: View {
             }
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
         }
     }
     
@@ -171,7 +169,7 @@ struct Stats: View {
             }
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
         }
     }
     
@@ -229,7 +227,7 @@ struct Stats: View {
                         .truncationMode(.tail)
                         .lineLimit(1)
                     
-                    Image(systemName: "chevron.down")
+                    Image("Expand")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 10, height: 10)
@@ -249,8 +247,8 @@ struct Stats: View {
                 .padding(.vertical, 10)
                 .background(Color("Panel"))
                 .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                .shadow(radius: GlobalSettings.shared.shadowRadius)
-                
+                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+
                 HStack(spacing: 0) {
                     Menu {
                         ForEach(homeViewModel.groups) { group in
@@ -287,7 +285,7 @@ struct Stats: View {
                                 .truncationMode(.tail)
                                 .lineLimit(1)
                             
-                            Image(systemName: "chevron.down")
+                            Image("Expand")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 10, height: 10)
@@ -299,8 +297,8 @@ struct Stats: View {
                 .padding(.vertical, 10)
                 .background(Color("Panel"))
                 .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                .shadow(radius: GlobalSettings.shared.shadowRadius)
-                
+                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+
                 HStack(spacing: 0) {
                     Menu {
                         ForEach(activities) { activity in
@@ -340,7 +338,7 @@ struct Stats: View {
             .background(
                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                     .foregroundColor(Color("Panel"))
-                    .shadow(radius: GlobalSettings.shared.shadowRadius)
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             )
         }
     }

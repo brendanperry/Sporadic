@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BackButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let showBackground: Bool
     
     var body: some View {
         Button(action: {
@@ -21,7 +22,7 @@ struct BackButton: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                        .foregroundColor(Color("Panel"))
+                        .foregroundColor(showBackground ? Color("Panel") : .clear)
                 )
                 
         })
@@ -32,6 +33,6 @@ struct BackButton: View {
 
 struct BackButton_Previews: PreviewProvider {
     static var previews: some View {
-        BackButton()
+        BackButton(showBackground: true)
     }
 }

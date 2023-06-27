@@ -26,14 +26,8 @@ struct Challenges: View {
                     ChallengeLoading()
                 }
                 else {
-                    if challenges.isEmpty {
-                        TextHelper.text(key: "No challenges yet today!", alignment: .center, type: .body)
-                            .padding(.top)
-                    }
-                    else {
-                        ForEach(challenges) { challenge in
-                            ChallengeView(challenge: challenge, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
-                        }
+                    ForEach(challenges) { challenge in
+                        ChallengeView(challenge: challenge, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
                     }
                 }
                 
@@ -58,9 +52,9 @@ struct ChallengeLoading: View {
         }
         .padding()
         .frame(height: 75, alignment: .center)
-        .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
+        .background(LinearGradient(gradient: Gradient(colors: [Color("Gray150"), Color("BrandPurple")]), startPoint: .leading, endPoint: .trailing))
         .cornerRadius(10)
-        .shadow(radius: 3)
+        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
         .padding(.horizontal)
         .padding(.top, 5)
     }
@@ -279,11 +273,13 @@ struct ChallengeView: View {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(users.sorted(by: { $0.name < $1.name })) { user in
-                        Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .cornerRadius(.infinity)
-                            .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                        if user.usersRecordId != CloudKitHelper.shared.getCachedUser()?.usersRecordId {
+                            Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(.infinity)
+                                .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                        }
                     }
                 }
             }

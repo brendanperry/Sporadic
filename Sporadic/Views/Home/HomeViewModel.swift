@@ -103,7 +103,7 @@ class HomeViewModel : ObservableObject {
                 newText += "Your next challenge is \(dayToRun.getWeekday()) at "
             }
             
-            newText += nextGroupToRun.deliveryTime.formatted(date: .omitted, time: .shortened) + " for " + nextGroupToRun.name + " " + nextGroupToRun.emoji
+            newText += "\(nextGroupToRun.deliveryTime.formatted(date: .omitted, time: .shortened)) for **\(nextGroupToRun.name)** \(nextGroupToRun.emoji)."
             
             nextChallengeText = newText
         }

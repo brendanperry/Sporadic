@@ -32,7 +32,7 @@ struct AddCustomActivityPage: View {
             
             ScrollView(showsIndicators: false) {
                 VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                    BackButton()
+                    BackButton(showBackground: true)
                         .padding(.top)
                     
                     TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)

@@ -198,7 +198,7 @@ struct Tutorial: View {
             .padding()
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .overlay(
                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                     .strokeBorder(viewModel.selectedDifficulty == .beginner ? Color("BrandBlue") : .clear)
@@ -233,7 +233,7 @@ struct Tutorial: View {
             .padding()
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .overlay(
                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                     .strokeBorder(viewModel.selectedDifficulty == .intermediate ? Color("BrandBlue") : .clear)
@@ -268,7 +268,7 @@ struct Tutorial: View {
             .padding()
             .background(Color("Panel"))
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-            .shadow(radius: GlobalSettings.shared.shadowRadius)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .overlay(
                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                     .strokeBorder(viewModel.selectedDifficulty == .advanced ? Color("BrandBlue") : .clear)

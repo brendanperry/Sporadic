@@ -31,7 +31,7 @@ struct AddPage: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                BackButton()
+                BackButton(showBackground: true)
                     .padding(.top)
                 
                 VStack {
