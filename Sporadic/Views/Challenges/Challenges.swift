@@ -127,7 +127,7 @@ struct ChallengeView: View {
         .padding(.horizontal)
         .padding(.top, 5)
         .alert(isPresented: $showError) {
-            Alert(title: Text("Connection Failed"), message: Text("Could not complete exercise."))
+            Alert(title: Text("Oh no!"), message: Text("This exercise could not be completed due to a connection problem. Please check your internet connection and try again."))
         }
     }
     
@@ -188,7 +188,7 @@ struct ChallengeView: View {
                 
                 let minutes = secondsLeftAfterHoursTakenOut / 60
                 
-                if minutes > 10 {
+                if minutes > 9 {
                     timeRemaining = "\(hours):\(minutes)"
                 }
                 else {
