@@ -52,7 +52,7 @@ extension Challenge {
         self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID)
     }
     
-    func isChallengeFailed() -> Bool {
+    func isChallengeTimeUp() -> Bool {
         return Date() > Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime
     }
     
@@ -86,10 +86,10 @@ extension Challenge {
                 if usersCompleted.count == users.count {
                     return .groupCompleted
                 }
-                else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) {
+                else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
                     return .userCompleted
                 }
-                else if isChallengeFailed() {
+                else if isChallengeTimeUp() {
                     return .failed
                 }
                 else {
