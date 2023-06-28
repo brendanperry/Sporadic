@@ -77,6 +77,8 @@ extension Challenge {
         
         do {
             if let usersCompleted = try await CloudKitHelper.shared.usersWhoHaveCompletedChallenge(challenge: self) {
+                let usersCompleted = getUniqueUsers(users: usersCompleted)
+                
                 DispatchQueue.main.async {
                     self.usersCompleted = usersCompleted
                 }
@@ -99,5 +101,19 @@ extension Challenge {
         }
         
         return .unknown
+    }
+    
+    func getUniqueUsers(users: [User]) -> [User] {
+        var recordIds = [CKRecord.ID]()
+        var uniqueUsers = [User]()
+        
+        users.forEach { user in
+            if !recordIds.contains(user.record.recordID) {
+                recordIds.append(user.record.recordID)
+                uniqueUsers.append(user)
+            }
+        }
+        
+        return uniqueUsers
     }
 }
