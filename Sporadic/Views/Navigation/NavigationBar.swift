@@ -60,7 +60,7 @@ struct NavigationBar: View {
                 
                 Rectangle()
                     .foregroundColor(Color("Panel"))
-                    .frame(maxWidth: .infinity, maxHeight: 123, alignment: .bottom)
+                    .frame(maxWidth: .infinity, maxHeight: 110, alignment: .bottom)
                     .offset(y: 50)
                     .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
                     .ignoresSafeArea()
@@ -70,10 +70,13 @@ struct NavigationBar: View {
             HStack {
                 Spacer()
                 HomeIcon(viewRouter: viewRouter, isOn: homeIconOn)
+                    .scaleEffect(0.75)
                 Spacer()
                 StatsIcon(viewRouter: viewRouter, isOn: statsIconOn)
+                    .scaleEffect(0.75)
                 Spacer()
                 SettingsIcon(viewRouter: viewRouter, isOn: settingsIconOn)
+                    .scaleEffect(0.75)
                 Spacer()
             }
             .animation(.easeInOut, value: homeIconOn)
@@ -81,7 +84,7 @@ struct NavigationBar: View {
             .animation(.easeInOut, value: settingsIconOn)
             .padding()
             .frame(maxHeight: .infinity, alignment: .bottom)
-            .offset(y: 10)
+            .offset(y: 16)
             .onAppear {
                 withAnimation {
                     if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
