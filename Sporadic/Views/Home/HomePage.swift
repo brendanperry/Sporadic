@@ -55,6 +55,7 @@ struct HomePage: View {
                                 .padding()
                                 .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("BrandLight")))
                                 .padding(.horizontal)
+                                .padding(.top, 5)
                             }
                         }
                         
