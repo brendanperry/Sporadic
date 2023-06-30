@@ -21,7 +21,7 @@ struct GroupList: View {
                 .padding(.horizontal)
                 .padding(.bottom)
 
-            LazyVGrid(columns: items, spacing: 10) {
+            LazyVGrid(columns: items, spacing: 17) {
                 if isLoading && groups.isEmpty {
                     GroupLoadingWidget()
                 }

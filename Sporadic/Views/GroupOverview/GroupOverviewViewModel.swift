@@ -70,6 +70,7 @@ class GroupOverviewViewModel: ObservableObject {
     
     func save(group: UserGroup, completion: @escaping (Bool) -> Void) {
         DispatchQueue.main.async {
+            self.isLoading = true
             group.emoji = self.emoji
         }
         
@@ -127,11 +128,17 @@ class GroupOverviewViewModel: ObservableObject {
                 self?.errorMessage = "Failed to save changes. Please check your connection and try again."
                 completion(false)
             }
+            
+            DispatchQueue.main.async {
+                self?.isLoading = false
+            }
         }
     }
     
     func deleteGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
-        isLoading = true
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
         
         CloudKitHelper.shared.deleteGroup(recordId: group.record.recordID) { [weak self] error in
             DispatchQueue.main.async {
@@ -145,24 +152,10 @@ class GroupOverviewViewModel: ObservableObject {
                     completion(true)
                 }
                 
-                self?.isLoading = false
-            }
-        }
-    }
-    
-    private func saveGroup(group: UserGroup, completion: @escaping (Bool) -> Void) {
-        CloudKitHelper.shared.updateGroup(group: group, name: group.name, emoji: emoji, color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one) { [weak self] error in
-            if let error = error {
-                print(error)
-                
+
                 DispatchQueue.main.async {
-                    self?.errorMessage = "Could not save group changes. Please check your connection and try again."
-                    self?.showError = true
-                    completion(false)
+                    self?.isLoading = false
                 }
-            }
-            else {
-                completion(true)
             }
         }
     }

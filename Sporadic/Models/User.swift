@@ -14,7 +14,7 @@ class User: Identifiable, Equatable {
     var record: CKRecord
     let usersRecordId: String
     var name: String
-    var photo: UIImage?
+    @Published var photo: UIImage?
     var groups: [CKRecord.Reference]
     var createdAt = Date()
     let notificationId: String
