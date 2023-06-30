@@ -306,7 +306,33 @@ class CloudKitHelper {
         let result = try await database.records(matching: query)
         let records = try result.matchResults.map { try $0.1.get() }
         
-        return records.compactMap { Activity.init(from: $0) }
+        let activities = records.compactMap { Activity.init(from: $0) }
+        
+        return await removeDuplicateActivities(activities: activities)
+    }
+    
+    func removeDuplicateActivities(activities: [Activity]) async -> [Activity] {
+        // get newest at top
+        let activities = activities.sorted(by: { $0.createdAt > $1.createdAt })
+        var uniqueActivities = [Activity]()
+        var activitiesToRemove = [Activity]()
+        
+        for activity in activities {
+            // if its custom, the name can be the same but the unit can be different so we check both
+            if uniqueActivities.contains(where: { $0.name == activity.name && $0.unit == activity.unit }) {
+                activitiesToRemove.append(activity)
+            }
+            else {
+                uniqueActivities.append(activity)
+            }
+        }
+       
+        // remove any duplicates
+        for activity in activitiesToRemove {
+            try? await deleteRecord(recordId: activity.record.recordID)
+        }
+       
+        return uniqueActivities
     }
         
     func getChallengesForUser(currentChallenges: [Challenge]) async throws -> [Challenge]? {
@@ -441,6 +467,10 @@ class CloudKitHelper {
                 }
             }
         }
+    }
+    
+    func deleteRecord(recordId: CKRecord.ID) async throws {
+        try await database.deleteRecord(withID: recordId)
     }
     
     func deleteRecord(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
