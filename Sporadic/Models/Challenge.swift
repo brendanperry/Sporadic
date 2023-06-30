@@ -21,6 +21,7 @@ class Challenge: Identifiable, ObservableObject {
     let recordId: CKRecord.ID
     @Published var status = ChallengeStatus.unknown
     @Published var usersCompleted = [User]()
+    var cachedStatus = ChallengeStatus.unknown
     
     init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {
         self.id = id
@@ -67,6 +68,13 @@ extension Challenge {
     }
     
     func getStatus() async -> ChallengeStatus {
+        // we save the status in case the user completes the challenge then navigate away
+        // and comes back and the challenge hasn't been fully synced to the server yet
+        // so we only cache completed statuses
+        if cachedStatus != .unknown {
+            return cachedStatus
+        }
+        
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             return .unknown
         }
@@ -84,9 +92,11 @@ extension Challenge {
                 }
                 
                 if usersCompleted.count == users.count {
+                    cachedStatus = .groupCompleted
                     return .groupCompleted
                 }
                 else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
+                    cachedStatus = .userCompleted
                     return .userCompleted
                 }
                 else if isChallengeTimeUp() {
