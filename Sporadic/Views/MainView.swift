@@ -38,10 +38,12 @@ struct MainView: View {
             }
         }
         .onChange(of: groupId) { _ in
-            showJoinGroup = true
+            if !groupId.isEmpty {
+                showJoinGroup = true
+            }
         }
         .popover(isPresented: $showJoinGroup) {
-            JoinGroup(viewModel: JoinGroupViewModel(groupId: groupId, homeViewModel: homeViewModel))
+            JoinGroup(viewModel: JoinGroupViewModel(groupId: groupId, homeViewModel: homeViewModel), groupId: $groupId)
         }
     }
 }

@@ -347,11 +347,18 @@ struct UsersInGroup: View {
                         HStack {
                             Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 50, height: 50, alignment: .leading)
-                                .cornerRadius(100)
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .cornerRadius(.infinity)
 
                             TextHelper.text(key: user.name, alignment: .leading, type: .h5)
+                            
+                            Spacer()
+                            
+                            if group.owner.recordID == user.record.recordID {
+                                Image("Owner")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                            }
                         }
                     }
                     .padding(12)

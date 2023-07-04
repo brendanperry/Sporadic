@@ -114,7 +114,7 @@ class CloudKitHelper {
     
     func updateUserName(user: User, completion: @escaping (Error?) -> Void) {
         let record = user.record
-        record["name"] = user.name
+        record["name"] = user.name.trimmingCharacters(in: [" "])
         
         database.save(record) { record, error in
             if let error = error {

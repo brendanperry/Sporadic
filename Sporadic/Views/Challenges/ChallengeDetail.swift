@@ -51,9 +51,9 @@ struct ChallengeDetail: View {
                         if users.isEmpty {
                             HStack {
                                 Circle()
-                                    .frame(width: 50, height: 50, alignment: .leading)
+                                    .frame(width: 50, height: 50, alignment: .center)
                                     .foregroundColor(Color.gray)
-                                    .cornerRadius(100)
+                                    .cornerRadius(.infinity)
                                 
                                 LoadingBar()
                                     .frame(height: 20)
@@ -66,8 +66,8 @@ struct ChallengeDetail: View {
                                     Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: 50, height: 50, alignment: .leading)
-                                        .cornerRadius(100)
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .cornerRadius(.infinity)
                                     
                                     VStack {
                                         TextHelper.text(key: user.name, alignment: .leading, type: .h2)

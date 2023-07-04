@@ -101,7 +101,7 @@ struct ChallengeView: View {
                     failedCheckbox()
                     
                     VStack(spacing: 0) {
-                        TextHelper.text(key: "ChallengeFailed", alignment: .leading, type: .h3, color: .white)
+                        getChallengeText()
                         TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
                         UserList(users: challenge.users ?? [], challenge: challenge)
                             .padding(.top, 5)
@@ -211,9 +211,11 @@ struct ChallengeView: View {
                 withAnimation {
                     if challenge.users?.count == challenge.usersCompleted.count + 1 {
                         challenge.status = .groupCompleted
+                        challenge.cachedStatus = .groupCompleted
                     }
                     else {
                         challenge.status = .userCompleted
+                        challenge.cachedStatus = .userCompleted
                     }
                     
                     challenge.usersCompleted.append(user)
@@ -229,6 +231,7 @@ struct ChallengeView: View {
                     print(error)
                     showError = true
                     challenge.status = currentStatus
+                    challenge.cachedStatus = .unknown
                     challenge.usersCompleted = currentUsersCompleted
                 }
                 else {
@@ -274,11 +277,17 @@ struct ChallengeView: View {
                 HStack {
                     ForEach(users.sorted(by: { $0.name < $1.name })) { user in
                         if user.usersRecordId != CloudKitHelper.shared.getCachedUser()?.usersRecordId {
-                            Image(uiImage: user.photo ?? UIImage(named: "defaultProfile")!)
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(.infinity)
-                                .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                            ZStack {
+                                Circle()
+                                    .foregroundColor(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? Color("SuccessButtons") : .clear)
+                                    .frame(width: 32, height: 32)
+                                
+                                Image(uiImage: user.photo ?? UIImage(named: "Default Profile")!)
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .cornerRadius(.infinity)
+                                    .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)
+                            }
                         }
                     }
                 }

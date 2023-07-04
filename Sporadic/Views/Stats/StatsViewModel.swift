@@ -101,7 +101,7 @@ class StatsViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.yourTotal = self.challenges.filter({ $0.user.recordID == user.record.recordID }).reduce(0, { $0 + $1.amount })
             
-            let days = Calendar.current.dateComponents([.day], from: self.challenges.first?.date ?? Date(), to: self.challenges.last?.date ?? Date()).day ?? 1
+            let days = Calendar.current.dateComponents([.day], from: self.challenges.first?.date ?? Date(), to: Date()).day ?? 1
             
             self.yourAvg = self.yourTotal / Double(days + 1)
         }

@@ -29,46 +29,48 @@ struct HomePage: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 35) {
-                        Welcome(viewModel: viewModel)
+                VStack {
+                    Spacer().frame(height: 1)
                     
-                        VStack {
-                            Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
-                                viewModel.triggerConfetti(group: group)
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 35) {
+                            Welcome(viewModel: viewModel)
+                            
+                            VStack {
+                                Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
+                                    viewModel.triggerConfetti(group: group)
+                                }
+                                
+                                if !viewModel.areChallengesLoading {
+                                    HStack {
+                                        Image("ChallengeStatus")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 25)
+                                            .padding(.trailing)
+                                        
+                                        Text(.init(viewModel.nextChallengeText))
+                                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
+                                            .foregroundColor(Color("Gray400"))
+                                        
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("BrandLight")))
+                                    .padding(.horizontal)
+                                    .padding(.top, 5)
+                                }
                             }
                             
-                            if !viewModel.areChallengesLoading {
-                                HStack {
-                                    Image("ChallengeStatus")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 25)
-                                        .padding(.trailing)
-                                    
-                                    Text(.init(viewModel.nextChallengeText))
-                                        .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
-                                        .foregroundColor(Color("Gray400"))
-                                    
-                                    Spacer()
-                                }
-                                .padding()
-                                .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("BrandLight")))
-                                .padding(.horizontal)
-                                .padding(.top, 5)
+                            GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading) {
+                                viewModel.loadNextChallengeText()
                             }
                         }
-                        
-                        GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading) {
-                            viewModel.loadNextChallengeText()
-                        }
+                        .padding(.bottom, 100)
                     }
-                    .padding(.bottom, 100)
-                }
-                .padding(.top)
-                .coordinateSpace(name: "HomePage")
-                .refreshable {
-                    viewModel.loadData()
+                    .refreshable {
+                        viewModel.loadData()
+                    }
                 }
                 
                 ConfettiBar(confetti: $viewModel.confetti)

@@ -179,6 +179,14 @@ class HomeViewModel : ObservableObject {
                 }
             }
             
+            if let cachedUser = CloudKitHelper.shared.getCachedUser() {
+                if !group.users.contains(where: { $0.usersRecordId == cachedUser.usersRecordId }) {
+                    DispatchQueue.main.async {
+                        group.users.append(cachedUser)
+                    }
+                }
+            }
+            
             DispatchQueue.main.async {
                 group.areUsersLoading = false
             }
@@ -189,10 +197,6 @@ class HomeViewModel : ObservableObject {
     }
     
     func loadChallengeData() {
-        if challenges.allSatisfy({ $0.activity != nil && $0.group != nil && $0.users != nil }) {
-            return
-        }
-        
         DispatchQueue.concurrentPerform(iterations: challenges.count) { index in
             CloudKitHelper.shared.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
                 DispatchQueue.main.async {

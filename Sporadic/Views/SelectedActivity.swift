@@ -33,6 +33,7 @@ struct SelectedActivity: View {
             TextHelper.text(key: activity.name, alignment: .center, type: .h3)
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
+                .minimumScaleFactor(0.5)
                 .padding(.top)
             
             TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue)", alignment: .center, type: .h7)

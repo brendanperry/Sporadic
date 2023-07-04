@@ -10,6 +10,7 @@ import SwiftUI
 struct JoinGroup: View {
     @ObservedObject var viewModel: JoinGroupViewModel
     @Environment(\.dismiss) var dismiss
+    @Binding var groupId: String
     
     var body: some View {
         ZStack {
@@ -73,6 +74,9 @@ struct JoinGroup: View {
                 .background(Color("Panel"))
                 .cornerRadius(16)
                 .padding()
+                .onDisappear {
+                    groupId = ""
+                }
             }
             
             if viewModel.isLoading {
