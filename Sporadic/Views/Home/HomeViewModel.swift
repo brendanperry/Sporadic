@@ -156,6 +156,8 @@ class HomeViewModel : ObservableObject {
     
     func getUsersForGroup(group: UserGroup) async {
         do {
+            guard let cachedUser = CloudKitHelper.shared.getCachedUser() else { return }
+
             let currentUsers = group.users
             let newUsers = try await CloudKitHelper.shared.getUsersForGroup(group: group) ?? []
             
@@ -171,24 +173,24 @@ class HomeViewModel : ObservableObject {
                 
                 DispatchQueue.main.async {
                     group.users = (newUsers + newlyCreatedUsersOnDevice).sorted(by: { $0.name < $1.name })
+                    
+                    if !group.users.contains(where: { $0.usersRecordId == cachedUser.usersRecordId }) {
+                        group.users.append(cachedUser)
+                    }
+                    
+                    group.areUsersLoading = false
                 }
             }
             else {
                 DispatchQueue.main.async {
                     group.users = newUsers.sorted(by: { $0.name < $1.name })
-                }
-            }
-            
-            if let cachedUser = CloudKitHelper.shared.getCachedUser() {
-                if !group.users.contains(where: { $0.usersRecordId == cachedUser.usersRecordId }) {
-                    DispatchQueue.main.async {
+                    
+                    if !group.users.contains(where: { $0.usersRecordId == cachedUser.usersRecordId }) {
                         group.users.append(cachedUser)
                     }
+                    
+                    group.areUsersLoading = false
                 }
-            }
-            
-            DispatchQueue.main.async {
-                group.areUsersLoading = false
             }
         }
         catch {

@@ -779,4 +779,66 @@ class CloudKitHelper {
         
         OneSignal.postNotification(notification)
     }
+    
+    func getStreakForGroup(group: UserGroup) async -> Int {
+        var challenges = await withCheckedContinuation { continuation in
+            getAllChallengesForGroup(group: group) { result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                    continuation.resume(returning: [Challenge]())
+                case .success(let challenges):
+                    continuation.resume(returning: challenges)
+                }
+            }
+        }
+        
+        challenges.sort(by: { $0.startTime > $1.startTime })
+        
+        var streak = 0
+        for challenge in challenges {
+            if let completions = try? await usersWhoHaveCompletedChallenge(challenge: challenge) {
+                if completions.count >= challenge.userRecords.count {
+                    streak += 1
+                }
+                else {
+                    if challenge.isChallengeTimeUp() {
+                        break
+                    }
+                }
+            }
+        }
+        
+        return streak
+    }
+    
+    func getAllChallengesForGroup(group: UserGroup, completion: @escaping (Result<[Challenge], Error>) -> Void) {
+        let groupReference = CKRecord.Reference(record: group.record, action: .none)
+        let predicate = NSPredicate(format: "group = %@", groupReference)
+        let query = CKQuery(recordType: "Challenge", predicate: predicate)
+
+        let queryOperation = CKQueryOperation(query: query)
+        
+        var records = [CKRecord]()
+
+        queryOperation.recordFetchedBlock = { records.append($0) }
+        queryOperation.queryCompletionBlock = { [weak self] cursor, error in
+            if let error {
+                completion(.failure(error))
+                return
+            }
+
+            if let cursor  {
+                let newOperation = CKQueryOperation(cursor: cursor)
+                newOperation.recordFetchedBlock = { records.append($0) }
+                newOperation.queryCompletionBlock = queryOperation.queryCompletionBlock
+                self?.database.add(newOperation)
+            }
+            else {
+                completion(.success(records.compactMap({ Challenge(from: $0) })))
+            }
+        }
+
+        database.add(queryOperation)
+    }
 }

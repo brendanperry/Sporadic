@@ -47,6 +47,8 @@ struct Stats: View {
                             
                             GraphSection(viewModel: viewModel)
                             
+                            Streak(streak: viewModel.streak)
+                            
                             if viewModel.data.count > 1 {
                                 HStack(spacing: 15) {
                                     YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
@@ -316,28 +318,32 @@ struct Stats: View {
     }
     
     struct Streak: View {
-        let selectedGroup: UserGroup?
+        let streak: Int
         
         var body: some View {
-            VStack(alignment: .leading) {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30, height: 30)
-                }
+            HStack{
+                Spacer()
                 
-                Text("Current Streak")
+                Image("Streaks Icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30)
+                
+                Text("Completion Streak: ")
                     .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .title3))
-                    .foregroundColor(Color("Gray150"))
+                    .foregroundColor(Color("StreaksText"))
                 
-                TextHelper.text(key: "14", alignment: .leading, type: .h3)
+                Text(streak == -1 ? "-" : "\(streak)")
+                    .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))
+                    .foregroundColor(.white)
+                
+                Spacer()
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                    .foregroundColor(Color("Panel"))
+                    .foregroundColor(Color("Streaks"))
                     .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             )
         }

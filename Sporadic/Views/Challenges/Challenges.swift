@@ -72,47 +72,21 @@ struct ChallengeView: View {
                 switch challenge.status {
                 case .inProgress:
                     inProgressCheckbox()
-                    
-                    VStack(spacing: 0) {
-                        getChallengeText()
-                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users ?? [], challenge: challenge)
-                            .padding(.top, 5)
-                    }
                 case .userCompleted:
                     completedCheckbox()
-                    
-                    VStack(spacing: 0) {
-                        getChallengeText()
-                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users ?? [], challenge: challenge)
-                            .padding(.top, 5)
-                    }
                 case .groupCompleted:
                     completedCheckbox()
-                    
-                    VStack(spacing: 0) {
-                        TextHelper.text(key: "ChallengeCompleted", alignment: .leading, type: .h3, color: .white)
-                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users ?? [], challenge: challenge)
-                            .padding(.top, 5)
-                    }
                 case .failed:
                     failedCheckbox()
-                    
-                    VStack(spacing: 0) {
-                        getChallengeText()
-                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users ?? [], challenge: challenge)
-                            .padding(.top, 5)
-                    }
                 case .unknown:
-                    VStack(spacing: 0) {
-                        TextHelper.text(key: "", alignment: .leading, type: .h3, color: .white)
-                        TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
-                        UserList(users: challenge.users ?? [], challenge: challenge)
-                            .padding(.top, 5)
-                    }
+                    EmptyView()
+                }
+                
+                VStack(spacing: 0) {
+                    getChallengeText()
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                    UserList(users: challenge.users ?? [], challenge: challenge)
+                        .padding(.top, 5)
                 }
             }
             .padding()

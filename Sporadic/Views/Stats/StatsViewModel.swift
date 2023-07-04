@@ -21,6 +21,7 @@ class StatsViewModel: ObservableObject {
     @Published var showUsers = false
     @Published var isLoading = false
     @Published var areGroupsLoaded = false
+    @Published var streak = -1
     
     var challenges = [CompletedChallenge]()
     
@@ -63,6 +64,15 @@ class StatsViewModel: ObservableObject {
     func loadCompletedChallenges(forceSync: Bool) {
         guard let selectedGroup else {
             return
+        }
+        
+        Task {
+            DispatchQueue.main.async {
+                self.streak = -1
+                Task {
+                    self.streak = await CloudKitHelper.shared.getStreakForGroup(group: selectedGroup)
+                }
+            }
         }
         
         DispatchQueue.main.async {
