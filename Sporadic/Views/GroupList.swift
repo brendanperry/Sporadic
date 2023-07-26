@@ -14,6 +14,7 @@ struct GroupList: View {
     @State var isActive = false
     let isLoading: Bool
     let updateNextChallengeText: () -> Void
+    let hardRefresh: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -27,7 +28,7 @@ struct GroupList: View {
                 }
                 else {
                     ForEach($groups.filter({ !$0.wrappedValue.wasDeleted })) { group in
-                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
+                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText, hardRefresh: hardRefresh)) {
                             GroupWidget(group: group.wrappedValue)
                         }
                         .buttonStyle(ButtonPressAnimationStyle())

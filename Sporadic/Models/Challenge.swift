@@ -68,6 +68,18 @@ extension Challenge {
     }
     
     func getStatus() async -> ChallengeStatus {
+        do {
+            if let usersCompleted = try await CloudKitHelper.shared.usersWhoHaveCompletedChallenge(challenge: self) {
+                let usersCompleted = getUniqueUsers(users: usersCompleted)
+                
+                await MainActor.run {
+                    self.usersCompleted = usersCompleted
+                }
+            }
+        } catch {
+            return .unknown
+        }
+        
         // we save the status in case the user completes the challenge then navigate away
         // and comes back and the challenge hasn't been fully synced to the server yet
         // so we only cache completed statuses
@@ -83,34 +95,20 @@ extension Challenge {
             return .unknown
         }
         
-        do {
-            if let usersCompleted = try await CloudKitHelper.shared.usersWhoHaveCompletedChallenge(challenge: self) {
-                let usersCompleted = getUniqueUsers(users: usersCompleted)
-                
-                DispatchQueue.main.async {
-                    self.usersCompleted = usersCompleted
-                }
-                
-                if usersCompleted.count == users.count {
-                    cachedStatus = .groupCompleted
-                    return .groupCompleted
-                }
-                else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
-                    cachedStatus = .userCompleted
-                    return .userCompleted
-                }
-                else if isChallengeTimeUp() {
-                    return .failed
-                }
-                else {
-                    return .inProgress
-                }
-            }
-        } catch {
-            return .unknown
+        if self.usersCompleted.count == users.count {
+            cachedStatus = .groupCompleted
+            return .groupCompleted
         }
-        
-        return .unknown
+        else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
+            cachedStatus = .userCompleted
+            return .userCompleted
+        }
+        else if isChallengeTimeUp() {
+            return .failed
+        }
+        else {
+            return .inProgress
+        }
     }
     
     func getUniqueUsers(users: [User]) -> [User] {

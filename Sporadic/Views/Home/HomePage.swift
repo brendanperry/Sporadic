@@ -62,9 +62,11 @@ struct HomePage: View {
                                 }
                             }
                             
-                            GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading) {
+                            GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading, updateNextChallengeText: {
                                 viewModel.loadNextChallengeText()
-                            }
+                            }, hardRefresh: {
+                                viewModel.getGroups()
+                            })
                         }
                         .padding(.top)
                         .padding(.bottom, 100)

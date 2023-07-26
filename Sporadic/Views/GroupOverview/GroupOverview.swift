@@ -13,6 +13,7 @@ struct GroupOverview: View {
     @Binding var groups: [UserGroup]
     
     let updateNextChallengeText: () -> Void
+    let hardRefresh: () -> Void
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
@@ -94,6 +95,7 @@ struct GroupOverview: View {
                 Spacer()
                 
                 Button(action: {
+                    hardRefresh()
                     dismiss()
                 }, label: {
                     TextHelper.text(key: "Cancel", alignment: .center, type: .h5, color: Color("CancelText"))
