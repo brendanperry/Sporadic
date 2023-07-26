@@ -942,7 +942,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -954,7 +954,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.14;
+				MARKETING_VERSION = 1.0.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -971,7 +971,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sporadic/Sporadic.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_ASSET_PATHS = "\"Sporadic/Preview Content\"";
 				DEVELOPMENT_TEAM = K9JT8S56CG;
 				ENABLE_PREVIEWS = YES;
@@ -983,7 +983,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.14;
+				MARKETING_VERSION = 1.0.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brendanperry.sporadic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

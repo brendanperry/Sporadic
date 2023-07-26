@@ -96,13 +96,13 @@ struct Tutorial: View {
                     HStack {
                         Capsule()
                             .frame(width: viewModel.selection == 0 ? 20 : 10, height: 10, alignment: .leading)
-                            .foregroundColor(viewModel.selection == 0 ? Color("Gray400") : Color("Gray150"))
+                            .foregroundColor(viewModel.selection == 0 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
                         Capsule()
                             .frame(width: viewModel.selection == 1 ? 20 : 10, height: 10, alignment: .center)
-                            .foregroundColor(viewModel.selection == 1 ? Color("Gray400") : Color("Gray150"))
+                            .foregroundColor(viewModel.selection == 1 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
                         Capsule()
                             .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
-                            .foregroundColor(viewModel.selection == 2 ? Color("Gray400") : Color("Gray150"))
+                            .foregroundColor(viewModel.selection == 2 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
                     }
                     .padding()
                 }
@@ -136,7 +136,6 @@ struct Tutorial: View {
             
             TextHelper.text(key: "StayActive", alignment: .leading, type: .h1)
                 .padding(.vertical)
-                .background(Color("Blue"))
             
             TextHelper.text(key: "Receive random exercise challenges throughout your week, personalized to you.", alignment: .leading, type: .body)
         }
@@ -337,7 +336,7 @@ struct Tutorial: View {
                     TextField("", text: $viewModel.name)
                         .padding()
                         .frame(minWidth: 200, alignment: .leading)
-                        .background(Color("Panel"))
+                        .background(Color("Deep Blue 200 And White"))
                         .cornerRadius(16)
                         .font(Font.custom("Lexend-Regular", size: 14))
                         .foregroundColor(Color("Gray300"))
