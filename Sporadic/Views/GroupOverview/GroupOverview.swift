@@ -18,7 +18,7 @@ struct GroupOverview: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         ZStack {
             Image("BackgroundImage")
@@ -62,9 +62,20 @@ struct GroupOverview: View {
         .navigationBarItems(leading: BackButton(showBackground: false))
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
-        .navigationTitle("\(group.name)")
+        .toolbarBackground(.visible, for: .navigationBar)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("\(group.name)")
+                    .font(.headline)
+                    .foregroundColor(Color("Gray400"))
+            }
+        }
+        .onAppear {
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red ]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.red ]
+        }
         .onChange(of: group.backgroundColor) { _ in
             viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
         }
@@ -319,6 +330,7 @@ struct UsersInGroup: View {
     @ObservedObject var group: UserGroup
     @Binding var groups: [UserGroup]
     @Environment(\.dismiss) var dismiss
+    @State var showLeave = false
 
     var body: some View {
         VStack {
@@ -327,16 +339,28 @@ struct UsersInGroup: View {
                 
                 if !viewModel.isOwner {
                     Button(action: {
-                        viewModel.leaveGroup(group: group) { didLeave in
-                            if didLeave {
-                                DispatchQueue.main.async {
-                                    groups.removeAll(where: { $0.record.recordID == group.record.recordID })
-                                    dismiss()
-                                }
-                            }
-                        }
+                        showLeave = true
                     }, label: {
                         TextHelper.text(key: "Leave", alignment: .trailing, type: .body, color: Color("Failed"))
+                    })
+                    .alert("Leave Group?", isPresented: $showLeave, actions: {
+                        Button("Cancel", role: ButtonRole.cancel, action: {
+                            showLeave = false
+                        })
+                        
+                        Button("Leave", role: ButtonRole.destructive, action: {
+                            viewModel.leaveGroup(group: group) { didLeave in
+                                if didLeave {
+                                    DispatchQueue.main.async {
+                                        groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                        showLeave = false
+                                        dismiss()
+                                    }
+                                }
+                            }
+                        })
+                    }, message: {
+                        Text("You can always join back later.")
                     })
                 }
             }

@@ -15,7 +15,7 @@ struct BackButton: View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }, label: {
-            Image("BackButton")
+            Image(showBackground ? "BackButtonAutoTheme" : "BackButton")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 15, height: 15, alignment: .center)
