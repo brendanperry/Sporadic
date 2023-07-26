@@ -347,6 +347,7 @@ struct UsersInGroup: View {
                         HStack {
                             Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                                 .resizable()
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .cornerRadius(.infinity)
 

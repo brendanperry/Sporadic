@@ -66,8 +66,10 @@ struct HomePage: View {
                                 viewModel.loadNextChallengeText()
                             }
                         }
+                        .padding(.top)
                         .padding(.bottom, 100)
                     }
+                    .padding(.top)
                     .refreshable {
                         viewModel.loadData()
                     }
@@ -129,8 +131,8 @@ struct Welcome: View {
                 .cornerRadius(100)
                 .padding()
         }
+        .padding(.top, 11)
         .padding(.horizontal)
-        .padding(.top, 50)
     }
 }
 

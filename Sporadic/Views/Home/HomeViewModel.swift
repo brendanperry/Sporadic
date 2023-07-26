@@ -94,7 +94,7 @@ class HomeViewModel : ObservableObject {
             daysChecked += 1
         }
         
-        if let nextGroupToRun = groupsToRun.sorted(by: { $0.deliveryTime < $1.deliveryTime }).first {
+        if let nextGroupToRun = groupsToRun.sorted(by: { ($0.deliveryTime.setDateToToday() ?? Date()) < ($1.deliveryTime.setDateToToday() ?? Date()) }).first {
             var newText = ""
             if today == dayToRun {
                 newText += "Your next challenge is today at "

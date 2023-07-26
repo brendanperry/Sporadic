@@ -258,6 +258,7 @@ struct ChallengeView: View {
                                 
                                 Image(uiImage: user.photo ?? UIImage(named: "Default Profile")!)
                                     .resizable()
+                                    .aspectRatio(contentMode: .fill)
                                     .frame(width: 30, height: 30)
                                     .cornerRadius(.infinity)
                                     .opacity(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? 1 : 0.5)

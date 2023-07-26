@@ -40,7 +40,7 @@ struct SettingsPage: View {
                     AppIcons()
                     Contact()
                 }
-                .padding(.horizontal)
+                .padding([.horizontal, .top])
                 .padding(.bottom, 100)
             })
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
@@ -232,7 +232,7 @@ struct SettingsPage: View {
                         .frame(width: 30, height: 30)
                         .padding(.horizontal, 5)
                     
-                    TextHelper.text(key: "AppIcon", alignment: .leading, type: TextType.body)
+                    TextHelper.text(key: "AppIcon", alignment: .leading, type: .h4)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
