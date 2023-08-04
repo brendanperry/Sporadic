@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Home Inside Active.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Home Inside Active Dark.png",
+      "filename" : "Frame 526.png",
       "idiom" : "universal"
     }
   ],

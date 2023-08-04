@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Home Outline Active.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Home Outline Active Dark.png",
+      "filename" : "Home.png",
       "idiom" : "universal"
     }
   ],

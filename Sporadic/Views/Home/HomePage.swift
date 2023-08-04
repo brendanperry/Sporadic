@@ -131,7 +131,6 @@ struct Welcome: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
-                .padding()
         }
         .padding(.top, 11)
         .padding(.horizontal)

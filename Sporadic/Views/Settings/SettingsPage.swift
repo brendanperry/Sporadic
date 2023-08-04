@@ -206,6 +206,7 @@ struct SettingsPage: View {
             HStack {
                 Image(image)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 

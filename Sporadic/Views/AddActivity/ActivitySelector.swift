@@ -71,6 +71,8 @@ struct ActivitySelector: View {
                     HStack {
                         NavigationLink(destination: AddCustomActivityPage(activities: $selectedActivities)) {
                             VStack {
+                                Spacer()
+                                
                                 ZStack {
                                     Rectangle()
                                         .frame(width: 50, height: 50, alignment: .center)
@@ -87,18 +89,21 @@ struct ActivitySelector: View {
                                         .frame(width: 5, height: 25)
                                         .foregroundColor(Color("AddCrossSideCustom"))
                                 }
+                                .padding([.horizontal, .top])
                                 
                                 Text("Add New")
-                                    .font(Font.custom("Lexend-SemiBold", size: 14, relativeTo: .title))
+                                    .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))
                                     .foregroundColor(Color("Gray300"))
                                     .padding(.top, 5)
                                     .padding(.bottom)
+                                
+                                Spacer()
                             }
-                            .padding()
+                            .padding(10)
                             .background(
                                 RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                                     .foregroundColor(Color("Panel"))
-                                    .shadow(radius: GlobalSettings.shared.shadowRadius)
+                                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                             )
                         }
                         .buttonStyle(ButtonPressAnimationStyle())

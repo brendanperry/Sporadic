@@ -10,6 +10,7 @@ import CloudKit
 import ConfettiSwiftUI
 import Combine
 import OneSignal
+import StoreKit
 
 struct Challenges: View {
     let challenges: [Challenge]
@@ -52,7 +53,7 @@ struct ChallengeLoading: View {
         }
         .padding()
         .frame(height: 75, alignment: .center)
-        .background(LinearGradient(gradient: Gradient(colors: [Color("Gray150"), Color("BrandPurple")]), startPoint: .leading, endPoint: .trailing))
+        .background(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing))
         .cornerRadius(10)
         .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
         .padding(.horizontal)
@@ -62,6 +63,7 @@ struct ChallengeLoading: View {
 
 struct ChallengeView: View {
     @ObservedObject var challenge: Challenge
+    @Environment(\.requestReview) var requestReview
     @State var showError = false
     let triggerConfetti: (UserGroup) -> Void
     let showNavigationCarrot: Bool
@@ -84,7 +86,7 @@ struct ChallengeView: View {
                 
                 VStack(spacing: 0) {
                     getChallengeText()
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6)
+                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6, color: Color("BrandLight"))
                     UserList(users: challenge.users ?? [], challenge: challenge)
                         .padding(.top, 5)
                 }
@@ -212,6 +214,8 @@ struct ChallengeView: View {
                     Task {
                         try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
                     }
+                    
+                    showReviewPopUp()
                 }
             }
         }, label: {
@@ -222,6 +226,19 @@ struct ChallengeView: View {
                 .frame(width: 35, height: 35, alignment: .center)
         })
         .padding(.trailing, 5)
+    }
+    
+    func showReviewPopUp() {
+        let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
+        
+        if challengesCompleted == 1 {
+            requestReview()
+        }
+        else if challengesCompleted % 30 == 0 && challengesCompleted != 0 {
+            requestReview()
+        }
+        
+        UserDefaults.standard.set(challengesCompleted + 1, forKey: "ChallengesCompleted")
     }
     
     func completedCheckbox() -> some View {

@@ -22,7 +22,7 @@ struct MainView: View {
             case .settings:
                 SettingsPage()
             case .tutorial:
-                Tutorial()
+                HomePage(viewModel: homeViewModel)
             case .stats:
                 Stats(viewModel: statsViewModel, homeViewModel: homeViewModel)
             }

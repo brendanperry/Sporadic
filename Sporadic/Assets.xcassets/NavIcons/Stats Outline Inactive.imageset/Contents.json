@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Stats Outline Active-1.png",
+      "filename" : "Analytics Inactive.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Stats Outline Inactive Dark.png",
+      "filename" : "Analytics Inactive Dark.png",
       "idiom" : "universal"
     }
   ],
