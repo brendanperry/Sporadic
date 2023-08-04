@@ -24,10 +24,12 @@ struct CloseButton: View {
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                         .foregroundColor(Color("Panel"))
+                        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                 )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .buttonStyle(ButtonPressAnimationStyle())
+        .padding()
     }
 }
 
