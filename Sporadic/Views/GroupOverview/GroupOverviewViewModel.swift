@@ -221,4 +221,10 @@ class GroupOverviewViewModel: ObservableObject {
             }
         }
     }
+    
+    func removeUnsavedActivities(group: UserGroup) {
+        let newActivities = group.activities.filter({ $0.isNew })
+
+        group.activities.removeAll(where: { newActivities.contains($0) })
+    }
 }

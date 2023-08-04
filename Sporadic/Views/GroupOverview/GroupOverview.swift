@@ -95,6 +95,7 @@ struct GroupOverview: View {
                 Spacer()
                 
                 Button(action: {
+                    viewModel.removeUnsavedActivities(group: group)
                     hardRefresh()
                     dismiss()
                 }, label: {
