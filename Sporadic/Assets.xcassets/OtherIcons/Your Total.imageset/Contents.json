@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Group 502.png",
+      "filename" : "Stats Light.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Stats Dark.png",
       "idiom" : "universal"
     }
   ],

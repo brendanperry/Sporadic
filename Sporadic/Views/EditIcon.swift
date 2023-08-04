@@ -17,13 +17,16 @@ struct EditIcon: View {
                     .foregroundColor(.white)
                     .opacity(0.75)
                     .frame(width: 25, height: 25, alignment: .center)
-                    .offset(x: -1, y: -1)
             )
     }
 }
 
 struct EditIcon_Previews: PreviewProvider {
     static var previews: some View {
-        EditIcon()
+        VStack {
+            EditIcon()
+        }
+        .padding()
+        .background(Color.gray)
     }
 }
