@@ -21,18 +21,22 @@ class GroupOverviewViewModel: ObservableObject {
     @Published var showError = false
     @Published var isLoading = false
     @Published var itemsCompleted = 4
-    @Published var isOwner = true
+    @Published var isOwner = false
     @Published var toolbarColor = Color("Panel")
     
     func updateToolbarColor(color: GroupBackgroundColor) {
         toolbarColor = color.getColor()
     }
     
-    func checkOwnership(group: UserGroup) async {
-        if let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) {
-            DispatchQueue.main.async {
-                self.isOwner = user.record.recordID == group.owner.recordID
-            }
+    func checkOwnership(group: UserGroup) {
+        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        
+        let owner = user.record.recordID == group.owner.recordID
+        
+        GlobalSettings.shared.swipeToGoBackEnabled = !owner
+        
+        DispatchQueue.main.async {
+            self.isOwner = owner
         }
     }
         

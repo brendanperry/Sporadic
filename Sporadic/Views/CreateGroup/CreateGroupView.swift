@@ -108,7 +108,6 @@ struct CreateGroupView: View {
         @State var showAddView = false
         var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
         let templates: [ActivityTemplate]
-        let isOwner: Bool
         
         var body: some View {
             VStack(alignment: .leading) {

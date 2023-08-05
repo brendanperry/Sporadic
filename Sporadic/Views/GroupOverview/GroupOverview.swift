@@ -60,13 +60,18 @@ struct GroupOverview: View {
                 LoadingIndicator()
             }
         }
-        .navigationBarItems(leading: BackButton(showBackground: false))
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .toolbar {
+            if !viewModel.isOwner {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    BackButton(showBackground: false)
+                }
+            }
+            
             ToolbarItem(placement: .principal) {
                 Text("\(group.name)")
                     .font(.headline)
@@ -74,6 +79,7 @@ struct GroupOverview: View {
             }
         }
         .onAppear {
+            viewModel.checkOwnership(group: group)
             UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red ]
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.red ]
         }
@@ -83,7 +89,6 @@ struct GroupOverview: View {
         .task {
             viewModel.emoji = group.emoji
             viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
-            await viewModel.checkOwnership(group: group)
         }
     }
     

@@ -15,6 +15,7 @@ struct AddPage: View {
     
     let viewModel = AddActivityViewModel()
     let template: ActivityTemplate
+    @State var currentSwipeStatus: Bool? = nil
     
     init(activityList: Binding<[Activity]>, template: ActivityTemplate) {
         self._activityList = activityList
@@ -49,6 +50,13 @@ struct AddPage: View {
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            currentSwipeStatus = GlobalSettings.shared.swipeToGoBackEnabled
+            GlobalSettings.shared.swipeToGoBackEnabled = true
+        }
+        .onDisappear {
+            GlobalSettings.shared.swipeToGoBackEnabled = currentSwipeStatus ?? true
+        }
     }
     
     struct AddButton: View {

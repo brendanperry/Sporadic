@@ -16,6 +16,8 @@ struct EditActivity: View {
     @State var currentMax = 0.0
     @State var newMin: Double
     @State var newMax: Double
+    
+    @State var currentSwipeStatus: Bool? = nil
 
     @StateObject var viewModel = AddActivityViewModel()
     
@@ -67,6 +69,13 @@ struct EditActivity: View {
                     activity.maxValue = newMax
                 }
             }
+        }
+        .onAppear {
+            currentSwipeStatus = GlobalSettings.shared.swipeToGoBackEnabled
+            GlobalSettings.shared.swipeToGoBackEnabled = true
+        }
+        .onDisappear {
+            GlobalSettings.shared.swipeToGoBackEnabled = currentSwipeStatus ?? true
         }
     }
     

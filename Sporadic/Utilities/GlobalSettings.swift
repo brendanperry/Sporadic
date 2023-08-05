@@ -13,6 +13,7 @@ public struct GlobalSettings {
     public let controlCornerRadius = 12.0
     public let controlSpacing = 50.0
     public let shadowRadius = 3.0
+    public var swipeToGoBackEnabled = true
     
     private init() { }
 }

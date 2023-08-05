@@ -14,6 +14,11 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        if GlobalSettings.shared.swipeToGoBackEnabled {
+            return viewControllers.count > 1
+        }
+        else {
+            return false
+        }
     }
 }
