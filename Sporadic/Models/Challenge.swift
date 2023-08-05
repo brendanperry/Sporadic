@@ -85,6 +85,10 @@ extension Challenge {
             return .unknown
         }
         
+        if isChallengeTimeUp() {
+            return .failed
+        }
+        
         // we save the status in case the user completes the challenge then navigate away
         // and comes back and the challenge hasn't been fully synced to the server yet
         // so we only cache completed statuses
@@ -107,9 +111,6 @@ extension Challenge {
         else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
             cachedStatus = .userCompleted
             return .userCompleted
-        }
-        else if isChallengeTimeUp() {
-            return .failed
         }
         else {
             return .inProgress
