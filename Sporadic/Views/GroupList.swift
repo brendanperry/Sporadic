@@ -50,7 +50,7 @@ struct AddNewGroup: View {
         NavigationLink(destination: CreateGroupView(groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
             if groups.isEmpty {
                 VStack(alignment: .leading) {
-                    PlusButton(backgroundColor: .clear)
+                    PlusButton(backgroundColor: .clear, lockLightMode: true)
                         .frame(width: 25, height: 25)
                         .padding(10)
                         .background(Circle().foregroundColor(Color("BrandPurple")))
@@ -65,7 +65,7 @@ struct AddNewGroup: View {
                 .background(Color("Panel"))
             }
             else {
-                PlusButton(backgroundColor: Color("Panel"))
+                PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
                     .padding()
             }
         }

@@ -200,15 +200,6 @@ class HomeViewModel : ObservableObject {
     
     func loadChallengeData() {
         DispatchQueue.concurrentPerform(iterations: challenges.count) { index in
-            CloudKitHelper.shared.getActivityFromChallenge(challenge: challenges[index]) { [weak self] activity in
-                DispatchQueue.main.async {
-                    if let challengeCopy = self?.challenges[index] {
-                        challengeCopy.activity = activity
-                        self?.challenges[index] = challengeCopy
-                    }
-                }
-            }
-            
             CloudKitHelper.shared.getGroupFromChallenge(challenge: challenges[index]) { [weak self] group in
                 DispatchQueue.main.async {
                     if let challengeCopy = self?.challenges[index] {

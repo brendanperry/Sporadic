@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlusButton: View {
     let backgroundColor: Color
+    let lockLightMode: Bool
     
     var body: some View {
         ZStack {
@@ -20,18 +21,18 @@ struct PlusButton: View {
 
             Capsule(style: .continuous)
                 .frame(width: 5, height: 25)
-                .foregroundColor(Color("AddCrossUp"))
+                .foregroundColor(lockLightMode ? Color("AddCrossUpLight") :Color("AddCrossUp"))
             
             Capsule(style: .continuous)
                 .rotation(.degrees(90))
                 .frame(width: 5, height: 25)
-                .foregroundColor(Color("AddCrossSide"))
+                .foregroundColor(lockLightMode ? Color("AddCrossSideLight") :Color("AddCrossSide"))
         }
     }
 }
 
 struct PlusButton_Previews: PreviewProvider {
     static var previews: some View {
-        PlusButton(backgroundColor: Color("Panel"))
+        PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
     }
 }

@@ -11,7 +11,6 @@ import CloudKit
 class Challenge: Identifiable, ObservableObject {
     let id: UUID
     let activityRecord: CKRecord.Reference
-    var activity: Activity? = nil
     let amount: Double
     let startTime: Date
     let userRecords: [CKRecord.Reference]
@@ -22,8 +21,10 @@ class Challenge: Identifiable, ObservableObject {
     @Published var status = ChallengeStatus.unknown
     @Published var usersCompleted = [User]()
     var cachedStatus = ChallengeStatus.unknown
+    let activityName: String
+    let unit: ActivityUnit
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID, activityName: String, unit: ActivityUnit) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
@@ -31,6 +32,8 @@ class Challenge: Identifiable, ObservableObject {
         self.userRecords = userRecords
         self.groupRecord = groupRecord
         self.recordId = recordId
+        self.activityName = activityName
+        self.unit = unit
     }
 }
 
@@ -45,12 +48,14 @@ extension Challenge {
             let amount = record["amount"] as? Double,
             let startTime = record["startTime"] as? Date,
             let users = record["users"] as? [CKRecord.Reference],
-            let group = record["group"] as? CKRecord.Reference
+            let group = record["group"] as? CKRecord.Reference,
+            let activityName = record["activityName"] as? String,
+            let unit = record["unit"] as? String
         else {
             return nil
         }
         
-        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID)
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
     }
     
     func isChallengeTimeUp() -> Bool {

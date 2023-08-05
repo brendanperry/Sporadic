@@ -24,7 +24,7 @@ struct ExerciseName: View {
                     .foregroundColor(Color("Gray400"))
                     .padding(.trailing)
             }
-            .background(template.color)
+            .background(Color.white)
             .cornerRadius(GlobalSettings.shared.controlCornerRadius)
             
             Spacer()

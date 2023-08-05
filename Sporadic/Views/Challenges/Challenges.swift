@@ -108,17 +108,17 @@ struct ChallengeView: View {
     }
     
     func getChallengeText() -> some View {
-        if challenge.activity?.unit == .reps {
-            return TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.name ?? ""))", alignment: .leading, type: .h3, color: .white)
+        if challenge.unit == .reps {
+            return TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activityName))", alignment: .leading, type: .h3, color: .white)
         }
-        else if challenge.activity?.unit == .miles || challenge.activity?.unit == .laps {
-            return TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue ?? ""))", alignment: .leading, type: .h3, color: .white)
+        else if challenge.unit == .miles || challenge.unit == .laps {
+            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
         }
-        else if challenge.activity?.unit == .seconds || challenge.activity?.unit == .minutes {
-            return TextHelper.text(key: "\(challenge.activity?.name ?? "") for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue  ?? ""))", alignment: .leading, type: .h3, color: .white)
+        else if challenge.unit == .seconds || challenge.unit == .minutes {
+            return TextHelper.text(key: "\(challenge.activityName) for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
         }
         else {
-            return TextHelper.text(key: "\(challenge.activity?.name ?? "") \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activity?.unit.rawValue  ?? ""))", alignment: .leading, type: .h3, color: .white)
+            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
         }
     }
     
@@ -264,8 +264,8 @@ struct ChallengeView: View {
         @ObservedObject var challenge: Challenge
         
         var body: some View {
-            ScrollView(.horizontal) {
-                HStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 2) {
                     ForEach(users.sorted(by: { $0.name < $1.name })) { user in
                         if user.usersRecordId != CloudKitHelper.shared.getCachedUser()?.usersRecordId {
                             ZStack {

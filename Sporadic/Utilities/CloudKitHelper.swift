@@ -428,28 +428,6 @@ class CloudKitHelper {
         }
     }
     
-    func getActivityFromChallenge(challenge: Challenge, completion: @escaping (Activity?) -> Void) {
-        database.fetch(withRecordID: challenge.activityRecord.recordID) { activityRecord, error in
-            if let error = error {
-                print(error)
-                completion(nil)
-            }
-            else {
-                if let record = activityRecord {
-                    if let activity = Activity.init(from: record) {
-                        completion(activity)
-                    }
-                    else {
-                        completion(nil)
-                    }
-                }
-                else {
-                    completion(nil)
-                }
-            }
-        }
-    }
-    
     func deleteGroup(recordId: CKRecord.ID, completion: @escaping (Error?) -> Void) {
         deleteRecord(recordId: recordId) { [weak self] error in
             if let error = error {
@@ -683,8 +661,8 @@ class CloudKitHelper {
         record.setValue(challenge.groupRecord, forKey: "group")
         record.setValue(userReference, forKey: "user")
         record.setValue(challenge.amount, forKey: "amount")
-        record.setValue(challenge.activity?.name ?? "", forKey: "activityName")
-        record.setValue(challenge.activity?.unit.rawValue ?? "", forKey: "unit")
+        record.setValue(challenge.activityName, forKey: "activityName")
+        record.setValue(challenge.unit.rawValue, forKey: "unit")
         record.setValue(Date(), forKey: "date")
         
         database.save(record) { record, error in
