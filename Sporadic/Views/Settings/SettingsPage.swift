@@ -44,7 +44,7 @@ struct SettingsPage: View {
                 .padding(.bottom, 100)
             })
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-            .padding(.top)
+            .padding(.top, 1)
             
             NavigationBar(viewRouter: viewRouter)
         }

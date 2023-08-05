@@ -156,21 +156,23 @@ struct GroupOverview: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView(.vertical, showsIndicators: false) {
-                    CloseButton(shouldShow: $showEdit)
-                    
-                    Spacer()
-                    
-                    VStack(spacing: 35) {
-                        GroupName(name: $name)
+                ZStack {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        Spacer()
                         
-                        EmojiSelector(emoji: $emoji)
-                        
-                        GroupColor(selected: $color)
+                        VStack(spacing: 35) {
+                            GroupName(name: $name)
+                            
+                            EmojiSelector(emoji: $emoji)
+                            
+                            GroupColor(selected: $color)
+                        }
+                        .padding(.top, 100)
                     }
-                    .padding(.top, 50)
+                    .padding()
+                    
+                    CloseButton(shouldShow: $showEdit)
                 }
-                .padding()
             }
         }
     }

@@ -71,7 +71,7 @@ struct HomePage: View {
                         .padding(.top)
                         .padding(.bottom, 100)
                     }
-                    .padding(.top)
+                    .padding(.top, 1)
                     .refreshable {
                         viewModel.loadData()
                     }

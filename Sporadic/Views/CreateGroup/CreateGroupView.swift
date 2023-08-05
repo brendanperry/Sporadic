@@ -21,30 +21,37 @@ struct CreateGroupView: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                    BackButton(showBackground: true)
-                        .padding(.top)
-                    
-                    TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
-                    
-                    GroupName(name: $viewModel.groupName)
-                    
-                    EmojiSelector(emoji: $viewModel.emoji)
-                    
-                    GroupColor(selected: $viewModel.color)
-                    
-                    DeliveryTime(isOwner: true, time: $viewModel.time)
-                    
-                    DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
-                    
-                    SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
-                    
-                    CreateButton(groups: $groups, viewModel: viewModel, updateNextChallengeText: updateNextChallengeText)
+            ZStack {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                        TextHelper.text(key: "CreateGroup", alignment: .leading, type: .h1)
+                            .padding(.top, 100)
+                        
+                        GroupName(name: $viewModel.groupName)
+                        
+                        EmojiSelector(emoji: $viewModel.emoji)
+                        
+                        GroupColor(selected: $viewModel.color)
+                        
+                        DeliveryTime(isOwner: true, time: $viewModel.time)
+                        
+                        DaysForChallenges(availableDays: $viewModel.days, isOwner: true)
+                        
+                        SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
+                        
+                        CreateButton(groups: $groups, viewModel: viewModel, updateNextChallengeText: updateNextChallengeText)
+                    }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .padding(.top, 1)
+                
+                VStack {
+                    BackButton(showBackground: true)
+                    
+                    Spacer()
+                }
+                .padding()
             }
-            .padding(.top)
             
             if viewModel.isLoading {
                 LoadingIndicator()

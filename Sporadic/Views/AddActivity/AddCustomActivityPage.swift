@@ -30,28 +30,35 @@ struct AddCustomActivityPage: View {
                         dismissButton: .default(Text(Localize.getString("Okay"))))
                 }
             
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: GlobalSettings.shared.controlSpacing) {
-                    BackButton(showBackground: true)
-                        .padding(.top)
-                    
-                    TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)
-                    
-                    ActivityName(name: $viewModel.name)
-                    
-                    Units(selected: $viewModel.unit, viewModel: viewModel)
-                    
-                    RangeSelection(minValue: $viewModel.minValue, maxValue: $viewModel.maxValue, unit: viewModel.unit, viewModel: viewModel)
-                        .alert(isPresented: $showNameError) {
-                            Alert(
-                                title: Text(Localize.getString("InvalidInput")),
-                                message: Text(Localize.getString("ActivityNameError")),
-                                dismissButton: .default(Text(Localize.getString("Okay"))))
-                        }
-                    
-                    AddButton()
+            ZStack {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                        TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)
+                            .padding(.top, 100)
+                        
+                        ActivityName(name: $viewModel.name)
+                        
+                        Units(selected: $viewModel.unit, viewModel: viewModel)
+                        
+                        RangeSelection(minValue: $viewModel.minValue, maxValue: $viewModel.maxValue, unit: viewModel.unit, viewModel: viewModel)
+                            .alert(isPresented: $showNameError) {
+                                Alert(
+                                    title: Text(Localize.getString("InvalidInput")),
+                                    message: Text(Localize.getString("ActivityNameError")),
+                                    dismissButton: .default(Text(Localize.getString("Okay"))))
+                            }
+                        
+                        AddButton()
+                    }
+                    .padding()
                 }
-                .padding()
+                
+                VStack {
+                    BackButton(showBackground: true)
+                        .padding()
+                    
+                    Spacer()
+                }
             }
         }
         .navigationBarBackButtonHidden(true)

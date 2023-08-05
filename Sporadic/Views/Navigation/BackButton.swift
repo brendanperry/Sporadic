@@ -23,6 +23,7 @@ struct BackButton: View {
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                         .foregroundColor(showBackground ? Color("Panel") : .clear)
+                        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                 )
                 
         })

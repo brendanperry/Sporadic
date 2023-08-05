@@ -66,7 +66,7 @@ struct Stats: View {
                     .preferredColorScheme(ColorSchemeHelper().getColorSceme())
                     .padding(.top)
                 }
-                .padding(.top)
+                .padding(.top, 1)
                 .refreshable {
                     viewModel.loadCompletedChallenges(forceSync: true)
                 }

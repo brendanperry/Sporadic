@@ -23,7 +23,7 @@ struct ActivitySelector: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .center) {
                         TextHelper.text(key: "AddANewActivity", alignment: .leading, type: .h1)
-                            .padding(.top, 50)
+                            .padding(.top, 100)
                         
                         TextHelper.text(key: "Add new exercises to your group to be challenged with.", alignment: .leading, type: .body)
                         
@@ -115,11 +115,7 @@ struct ActivitySelector: View {
                     .padding()
                 }
                 
-                VStack {
-                    CloseButton(shouldShow: $shouldShow)
-                    
-                    Spacer()
-                }
+                CloseButton(shouldShow: $shouldShow)
             }
         }
         .navigationBarHidden(true)
@@ -127,11 +123,6 @@ struct ActivitySelector: View {
             // this is used as a swift ui bug where the keyboard space is eaten up despite it being
             // dropped after navigating away
             UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
-        }
-        .toolbar {
-            ToolbarItem(id: "BackButton", placement: .navigationBarLeading, showsByDefault: true) {
-                BackButton(showBackground: true)
-            }
         }
     }
 }

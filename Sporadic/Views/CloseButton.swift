@@ -11,25 +11,29 @@ struct CloseButton: View {
     @Binding var shouldShow: Bool
     
     var body: some View {
-        Button(action: {
-            let impact = UIImpactFeedbackGenerator(style: .light)
-            impact.impactOccurred()
+        VStack {
+            Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                
+                shouldShow = false
+            }) {
+                Image("CloseButton")
+                    .resizable()
+                    .frame(width: 15, height: 15, alignment: .leading)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                            .foregroundColor(Color("Panel"))
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+                    )
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .buttonStyle(ButtonPressAnimationStyle())
+            .padding()
             
-            shouldShow = false
-        }) {
-            Image("CloseButton")
-                .resizable()
-                .frame(width: 15, height: 15, alignment: .leading)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                        .foregroundColor(Color("Panel"))
-                        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
-                )
+            Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .buttonStyle(ButtonPressAnimationStyle())
-        .padding()
     }
 }
 
