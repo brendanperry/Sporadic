@@ -271,7 +271,7 @@ struct ChallengeView: View {
                             ZStack {
                                 Circle()
                                     .foregroundColor(challenge.usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) ? Color("SuccessButtons") : .clear)
-                                    .frame(width: 32, height: 32)
+                                    .frame(width: 33, height: 33)
                                 
                                 Image(uiImage: user.photo ?? UIImage(named: "Default Profile")!)
                                     .resizable()
