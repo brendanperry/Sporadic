@@ -87,14 +87,18 @@ struct CreateGroupView: View {
                     }
                 }
             }, label: {
-                TextHelper.text(key: "Create Group", alignment: .center, type: .h5, color: .white)
+                Text("Create Group")
+                    .font(.custom("Lexend-Regular", size: 15))
+                    .foregroundColor(.white)
+                    .bold()
                     .padding()
-                    .frame(maxWidth: 200)
+                    .padding(.horizontal)
                     .background(Color("BrandPurple"))
                     .cornerRadius(GlobalSettings.shared.controlCornerRadius)
             })
             .buttonStyle(ButtonPressAnimationStyle())
             .padding()
+            .padding(.bottom, 50)
         }
     }
     
@@ -104,10 +108,11 @@ struct CreateGroupView: View {
         @State var showAddView = false
         var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
         let templates: [ActivityTemplate]
+        let isOwner: Bool
         
         var body: some View {
             VStack(alignment: .leading) {
-                TextHelper.text(key: "Activities", alignment: .leading, type: .h2)
+                TextHelper.text(key: "Exercises", alignment: .leading, type: .h4)
                 
                 LazyVGrid(columns: items, spacing: 17) {
                     ForEach($selectedActivities, id: \.record.recordID) { activity in
@@ -120,10 +125,32 @@ struct CreateGroupView: View {
                     Button(action: {
                         showAddView = true
                     }, label: {
-                        PlusButton(backgroundColor: Color("Panel"))
+                        if selectedActivities.isEmpty {
+                            VStack(alignment: .center) {
+                                Spacer()
+                                
+                                PlusButton(backgroundColor: .clear)
+                                    .frame(width: 25)
+                                    .padding(10)
+                                    .background(Circle().foregroundColor(Color("BrandPurple")))
+                                
+                                Spacer()
+                                
+                                TextHelper.text(key: "Add an exercise!", alignment: .center, type: .h3)
+                                    .padding()
+                                
+                                Spacer()
+                            }
+                            .background(Color("Panel"))
+                            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+                        }
+                        else {
+                            PlusButton(backgroundColor: Color("Panel"))
+                        }
                     })
                     .buttonStyle(ButtonPressAnimationStyle())
-                    .padding(.top, selectedActivities.isEmpty ? 40 : 0)
                 }
             }
             .popover(isPresented: $showAddView) {

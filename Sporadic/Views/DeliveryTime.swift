@@ -16,7 +16,7 @@ struct DeliveryTime: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Notification Delivery", alignment: .leading, type: .h4)
+            TextHelper.text(key: "Notification delivery", alignment: .leading, type: .h4)
             
             HStack(spacing: 25) {
                 ZStack {

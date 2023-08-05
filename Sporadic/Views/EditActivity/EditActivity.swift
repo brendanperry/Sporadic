@@ -82,10 +82,10 @@ struct EditActivity: View {
                     showDeleteConfirmation = true
                 }, label: {
                     Text("Remove")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("CancelText"))
                         .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title3))
                         .padding()
-                        .background(Color("Failed"))
+                        .background(Color("Cancel"))
                         .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                         .padding(.bottom)
                 })

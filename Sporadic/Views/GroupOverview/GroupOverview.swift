@@ -408,7 +408,7 @@ struct UsersInGroup: View {
                 
                 ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
                     Text("Invite Friends")
-                        .font(.custom("Lexend-Regular", size: 12))
+                        .font(.custom("Lexend-Regular", size: 15))
                         .foregroundColor(.white)
                         .bold()
                         .padding()

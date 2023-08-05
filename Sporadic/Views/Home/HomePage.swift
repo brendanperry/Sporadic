@@ -30,8 +30,6 @@ struct HomePage: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Spacer().frame(height: 1)
-                    
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 35) {
                             Welcome(viewModel: viewModel)
@@ -46,17 +44,17 @@ struct HomePage: View {
                                         Image("ChallengeStatus")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 25)
-                                            .padding(.trailing)
+                                            .frame(width: 35, height: 35, alignment: .center)
+                                            .padding(.trailing, 5)
                                         
                                         Text(.init(viewModel.nextChallengeText))
                                             .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
-                                            .foregroundColor(Color("Gray400"))
+                                            .foregroundColor(Color("Gray400AutoTheme"))
                                         
                                         Spacer()
                                     }
                                     .padding()
-                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("BrandLight")))
+                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("NextChallengeBG")))
                                     .padding(.horizontal)
                                     .padding(.top, 5)
                                 }
@@ -132,7 +130,7 @@ struct Welcome: View {
                 .frame(width: 60, height: 60, alignment: .trailing)
                 .cornerRadius(100)
         }
-        .padding(.top, 11)
+        .padding(.top, 30)
         .padding(.horizontal)
     }
 }

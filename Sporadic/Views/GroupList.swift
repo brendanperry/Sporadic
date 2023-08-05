@@ -50,13 +50,11 @@ struct AddNewGroup: View {
         NavigationLink(destination: CreateGroupView(groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
             if groups.isEmpty {
                 VStack(alignment: .leading) {
-                    Image("FirstGroupAddButton")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25)
+                    PlusButton(backgroundColor: .clear)
+                        .frame(width: 25, height: 25)
                         .padding(10)
                         .background(Circle().foregroundColor(Color("BrandPurple")))
-                        .padding([.top, .leading])
+                        .padding([.leading, .top])
                     
                     TextHelper.text(key: "Create a new group!", alignment: .leading, type: .h3)
                         .padding(.horizontal)
@@ -72,7 +70,7 @@ struct AddNewGroup: View {
             }
         }
         .buttonStyle(ButtonPressAnimationStyle())
-        .cornerRadius(10)
+        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }
