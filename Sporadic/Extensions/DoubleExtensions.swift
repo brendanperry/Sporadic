@@ -12,7 +12,8 @@ extension Double {
         let formatter = NumberFormatter()
         let number = NSNumber(value: self)
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 16
+        formatter.maximumFractionDigits = 2
+        formatter.minimumIntegerDigits = 1
         return String(formatter.string(from: number) ?? "")
     }
 }

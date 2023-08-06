@@ -36,7 +36,7 @@ struct SelectedActivity: View {
                 .minimumScaleFactor(0.5)
                 .padding(.top)
             
-            TextHelper.text(key: "\(activity.minValue) - \(activity.maxValue)", alignment: .center, type: .h7)
+            TextHelper.text(key: "\(activity.minValue.removeZerosFromEnd()) - \(activity.maxValue.removeZerosFromEnd())", alignment: .center, type: .h7)
                 .opacity(0.75)
             
             TextHelper.text(key: "\(activity.unit.toString())", alignment: .center, type: .h7)

@@ -22,7 +22,7 @@ struct RangeSelection: View {
                 ZStack {
                     HStack {
                         HStack(alignment: .bottom, spacing: 1) {
-                            Text("\(minValue, specifier: "%.2f")")
+                            Text(minValue.removeZerosFromEnd())
                                 .font(Font.custom("Lexend-SemiBold", size: 17))
                             Text(unit.toAbbreviatedString())
                                 .font(Font.custom("Lexend-SemiBold", size: 12.5))
@@ -33,7 +33,7 @@ struct RangeSelection: View {
                         Spacer()
                         
                         HStack(alignment: .bottom, spacing: 1) {
-                            Text("\(maxValue, specifier: "%.2f")")
+                            Text(maxValue.removeZerosFromEnd())
                                 .font(Font.custom("Lexend-SemiBold", size: 17))
                             Text(unit.toAbbreviatedString())
                                 .font(Font.custom("Lexend-SemiBold", size: 12.5))

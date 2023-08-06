@@ -27,14 +27,6 @@ class StatsViewModel: ObservableObject {
     
     var challenges = [CompletedChallenge]()
     
-    let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
-        formatter.minimumIntegerDigits = 1
-        return formatter
-    }()
-    
     func waitForGroupsToFinishLoading(homeViewModel: HomeViewModel) {
         if areGroupsDoneLoading(homeViewModel: homeViewModel) {
             areGroupsLoaded = true
