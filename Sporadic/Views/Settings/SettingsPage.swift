@@ -140,7 +140,6 @@ struct SettingsPage: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 75, height: 75, alignment: .center)
                                 .cornerRadius(100)
-                                .padding(.leastNormalMagnitude)
                             
                             EditIcon()
                                 .offset(x: 25, y: -25)

@@ -130,7 +130,7 @@ struct Welcome: View {
             Image(uiImage: viewModel.user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 60, height: 60, alignment: .trailing)
+                .frame(width: 60, height: 60, alignment: .center)
                 .cornerRadius(100)
         }
         .padding(.top, 30)

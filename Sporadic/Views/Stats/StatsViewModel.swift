@@ -96,7 +96,6 @@ class StatsViewModel: ObservableObject {
                 print(error)
             }
         }
-//        challenges = (try? await CloudKitHelper.shared.getCompletedChallenges(group: selectedGroup, forceSync: forceSync)) ?? []
         
     }
     

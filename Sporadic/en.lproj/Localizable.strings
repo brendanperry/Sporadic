@@ -85,7 +85,7 @@
 "CouldNotSaveActivity" = "Could not save activity. Please check your connection and try again.";
 "Okay" = "Okay";
 "InvalidInput" = "Invalid Input";
-"ActivityNameError" = "Activity name must be between 1 and 24 characters.";
+"ActivityNameError" = "Exercise name must be between 1 and 24 characters.";
 "AddToGroup" = "Add to your group";
 "RemovingActivities" = "Activity progress will be saved";
 "RemoveActivity" = "Remove Activity";
