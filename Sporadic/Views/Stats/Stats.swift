@@ -51,9 +51,9 @@ struct Stats: View {
                             
                             if viewModel.data.count > 1 {
                                 HStack(spacing: 15) {
-                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString())
+                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString(), formatter: viewModel.formatter)
                                     
-                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString())
+                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString(), formatter: viewModel.formatter)
                                 }
                             }
                         }
@@ -85,6 +85,7 @@ struct Stats: View {
     struct YourTotal: View {
         let total: Double
         let unit: String
+        let formatter: NumberFormatter
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -97,7 +98,7 @@ struct Stats: View {
                 TextHelper.text(key: "Your total", alignment: .leading, type: .body)
                     .padding(.horizontal)
                 
-                TextHelper.text(key: "\(String(format: "%.2f", total)) \(unit)", alignment: .leading, type: .h3)
+                TextHelper.text(key: "\(formatter.string(from: total as NSNumber) ?? "") \(unit)", alignment: .leading, type: .h3)
                     .padding([.horizontal, .bottom])
             }
             .background(Color("Panel"))
@@ -109,6 +110,7 @@ struct Stats: View {
     struct YourAvg: View {
         let average: Double
         let unit: String
+        let formatter: NumberFormatter
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -121,7 +123,7 @@ struct Stats: View {
                 TextHelper.text(key: "Your daily avg.", alignment: .leading, type: .body)
                     .padding(.horizontal)
                 
-                TextHelper.text(key: "\(String(format: "%.2f", average)) \(unit)", alignment: .leading, type: .h3)
+                TextHelper.text(key: "\(formatter.string(from: average as NSNumber) ?? "") \(unit)", alignment: .leading, type: .h3)
                     .padding([.horizontal, .bottom])
             }
             .background(Color("Panel"))
@@ -163,7 +165,7 @@ struct Stats: View {
                     TextHelper.text(key: "Group total", alignment: .leading, type: .body)
                         .padding(.horizontal)
                     
-                    TextHelper.text(key: "\(String(format: "%.2f", viewModel.total)) \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
+                    TextHelper.text(key: "\(viewModel.formatter.string(from: viewModel.total as NSNumber) ?? "") \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
                         .padding([.horizontal, .bottom])
                     
                     GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue)
