@@ -44,6 +44,10 @@ class CloudKitHelper {
         if let record = records.first {
             cachedUser = User.init(from: record)
             
+            if let userId = cachedUser?.usersRecordId {
+                OneSignal.setExternalUserId(userId)
+            }
+            
             if cachedUser?.notificationId != OneSignal.getDeviceState().userId {
                 if let user = cachedUser {
                     CloudKitHelper.shared.updateNotificationId(user: user) { error in

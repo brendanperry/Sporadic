@@ -73,6 +73,7 @@ struct NavigationBar: View {
         .animation(.easeInOut, value: statsIconOn)
         .animation(.easeInOut, value: settingsIconOn)
         .frame(maxHeight: .infinity, alignment: .bottom)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear {
             withAnimation {
                 if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
