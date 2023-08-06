@@ -193,7 +193,7 @@ struct Stats: View {
             }
             .chartXAxis {
                 AxisMarks(preset: .aligned) {
-                    AxisValueLabel()
+                    AxisValueLabel(collisionResolution: .greedy)
                         .font(Font.custom("Lexend-SemiBold", size: 11))
                         .foregroundStyle(Color("Gray200"))
                 }
