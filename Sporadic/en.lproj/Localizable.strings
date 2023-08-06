@@ -78,14 +78,14 @@
 "ChooseActivities" = "Choose Activities";
 "ActivityName" = "Exercise Name";
 "SetRange" = "Set the range for your challenge";
-"MaxCharacters" = "Max 18 characters";
+"MaxCharacters" = "Max 24 characters";
 "AddActivity" = "Add a custom exercise";
 "AddToList" = "Add to list";
 "NetworkError" = "Network Error";
 "CouldNotSaveActivity" = "Could not save activity. Please check your connection and try again.";
 "Okay" = "Okay";
 "InvalidInput" = "Invalid Input";
-"ActivityNameError" = "Activity name must be between 1 and 18 characters.";
+"ActivityNameError" = "Activity name must be between 1 and 24 characters.";
 "AddToGroup" = "Add to your group";
 "RemovingActivities" = "Activity progress will be saved";
 "RemoveActivity" = "Remove Activity";

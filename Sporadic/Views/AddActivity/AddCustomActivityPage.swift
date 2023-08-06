@@ -66,7 +66,7 @@ struct AddCustomActivityPage: View {
     
     func AddButton() -> some View {
         Button(action: {
-            if viewModel.name.count < 1 || viewModel.name.count > 18 {
+            if viewModel.name.count < 1 || viewModel.name.count > 24 {
                 showNameError = true
             }
             else {
@@ -129,7 +129,7 @@ struct AddCustomActivityPage: View {
                     TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .h7)
                 }
                 
-                TextField("", text: $name)
+                TextField("", text: $name.max(24))
                     .padding(10)
                     .background(Color("Panel"))
                     .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))

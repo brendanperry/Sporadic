@@ -160,7 +160,7 @@ struct SettingsPage: View {
                             showImagePicker = true
                         }
                         
-                        TextField("", text: $name)
+                        TextField("", text: $name.max(24))
                             .padding()
                             .frame(minWidth: 200, alignment: .leading)
                             .background(Color("Panel"))

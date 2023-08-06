@@ -330,10 +330,15 @@ struct Tutorial: View {
                             .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .caption))
                             .foregroundColor(Color("Failed"))
                     })
+                    .padding(.bottom)
                     
-                    TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
+                    HStack {
+                        TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
+                        
+                        TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .h7)
+                    }
                     
-                    TextField("", text: $viewModel.name)
+                    TextField("", text: $viewModel.name.max(24))
                         .padding()
                         .frame(minWidth: 200, alignment: .leading)
                         .background(Color("Deep Blue 200 And White"))
