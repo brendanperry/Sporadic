@@ -16,12 +16,14 @@ class StatsViewModel: ObservableObject {
     @Published var yourAvg = 0.0
     @Published var selectedMonth = Calendar.current.dateComponents([.month], from: Date()).month ?? 1
     @Published var selectedYear = Calendar.current.dateComponents([.year], from: Date()).year ?? 2023
-    @Published var selectedActivity = Activity(record: CKRecord(recordType: "Activity"), maxValue: 0, minValue: 0, name: "", templateId: -1, unit: ActivityUnit.miles)
+    @Published var selectedActivity = ""
     @Published var selectedGroup: UserGroup? = nil
     @Published var showUsers = false
     @Published var isLoading = false
     @Published var areGroupsLoaded = false
     @Published var streak = -1
+    @Published var activities = [String]()
+    @Published var template: ActivityTemplate? = nil
     
     var challenges = [CompletedChallenge]()
     
@@ -69,7 +71,7 @@ class StatsViewModel: ObservableObject {
         }
     }
     
-    func loadCompletedChallenges(forceSync: Bool) {
+    func loadCompletedChallenges(forceSync: Bool, currentGroupActivities: [Activity], shouldUpdateData: Bool) {
         guard let selectedGroup else {
             return
         }
@@ -91,15 +93,21 @@ class StatsViewModel: ObservableObject {
             switch result {
             case .success(let completedChallenges):
                 self?.challenges = completedChallenges
-                self?.setData(month: 4, year: 2023, isAllTime: true)
+                let currentGroupActivityNames = currentGroupActivities.map { $0.name }
+                DispatchQueue.main.async {
+                    self?.activities = (completedChallenges.map({ $0.activityName }) + currentGroupActivityNames).unique().sorted()
+                    self?.selectedActivity = self?.activities.first ?? ""
+                    if shouldUpdateData {
+                        self?.setData(month: 4, year: 2023, isAllTime: true)
+                    }
+                }
             case .failure(let error):
                 print(error)
             }
         }
-        
     }
     
-    private func setData(month: Int, year: Int, isAllTime: Bool) {
+    func setData(month: Int, year: Int, isAllTime: Bool) {
         DispatchQueue.main.async {
             self.data = self.getAllTimeDataCombined()
             self.isLoading = false
@@ -109,21 +117,21 @@ class StatsViewModel: ObservableObject {
     private func getAllTimeDataCombined() -> [CompletedChallenge] {
         var preparedData = [CompletedChallenge]()
         
-        challenges = challenges.filter({ $0.activityName == selectedActivity.name }).sorted(by: { $0.date < $1.date })
+        let challengesForExercise = challenges.filter({ $0.activityName == selectedActivity }).sorted(by: { $0.date < $1.date })
         
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             return []
         }
         
         DispatchQueue.main.async {
-            self.yourTotal = self.challenges.filter({ $0.user.recordID == user.record.recordID }).reduce(0, { $0 + $1.amount })
+            self.yourTotal = challengesForExercise.filter({ $0.user.recordID == user.record.recordID }).reduce(0, { $0 + $1.amount })
             
             let days = Calendar.current.dateComponents([.day], from: self.challenges.first?.date ?? Date(), to: Date()).day ?? 1
             
             self.yourAvg = self.yourTotal / Double(days + 1)
         }
         
-        let dictionary = Dictionary(grouping: challenges, by: { (element: CompletedChallenge) in
+        let dictionary = Dictionary(grouping: challengesForExercise, by: { (element: CompletedChallenge) in
             return Calendar.current.startOfDay(for: element.date)
         }).sorted(by: { $0.key < $1.key })
         

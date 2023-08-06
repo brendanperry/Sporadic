@@ -34,15 +34,13 @@ struct Stats: View {
                         if !homeViewModel.areGroupsLoading && !homeViewModel.groups.isEmpty {
                             GroupPicker(selectedGroup: $viewModel.selectedGroup, homeViewModel: homeViewModel)
                                 .onChange(of: viewModel.selectedGroup) { _ in
-                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
-                                }
-                                .onChange(of: viewModel.selectedGroup?.activities) { newVal in
-                                    viewModel.selectedActivity = viewModel.selectedGroup?.activities.first ?? viewModel.selectedActivity
+                                    viewModel.loadCompletedChallenges(forceSync: false, currentGroupActivities: viewModel.selectedGroup?.activities ?? [], shouldUpdateData: false)
                                 }
                             
-                            ActivityPicker(selectedActivity: $viewModel.selectedActivity, activities: homeViewModel.groups.first(where: { $0.record.recordID == viewModel.selectedGroup?.record.recordID })?.activities ?? [])
+                            ActivityPicker(selectedActivity: $viewModel.selectedActivity, template: viewModel.template, activities: viewModel.activities)
                                 .onChange(of: viewModel.selectedActivity) { _ in
-                                    viewModel.loadCompletedChallenges(forceSync: false)
+                                    viewModel.template = ActivityTemplateHelper.templates.first(where: { $0.name == viewModel.selectedActivity })
+                                    viewModel.setData(month: 4, year: 2023, isAllTime: true)
                                 }
                             
                             GraphSection(viewModel: viewModel)
@@ -51,9 +49,9 @@ struct Stats: View {
                             
                             if viewModel.data.count > 1 {
                                 HStack(spacing: 15) {
-                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toAbbreviatedString(), formatter: viewModel.formatter)
+                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.template?.unit.toAbbreviatedString() ?? "", formatter: viewModel.formatter)
                                     
-                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toAbbreviatedString(), formatter: viewModel.formatter)
+                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.template?.unit.toAbbreviatedString() ?? "", formatter: viewModel.formatter)
                                 }
                             }
                         }
@@ -68,7 +66,7 @@ struct Stats: View {
                 }
                 .padding(.top, 1)
                 .refreshable {
-                    viewModel.loadCompletedChallenges(forceSync: true)
+                    viewModel.loadCompletedChallenges(forceSync: true, currentGroupActivities: viewModel.selectedGroup?.activities ?? [], shouldUpdateData: true)
                 }
             }
             else {
@@ -165,7 +163,7 @@ struct Stats: View {
                     TextHelper.text(key: "Group total", alignment: .leading, type: .body)
                         .padding(.horizontal)
                     
-                    TextHelper.text(key: "\(viewModel.formatter.string(from: viewModel.total as NSNumber) ?? "") \(viewModel.selectedActivity.unit.toString())", alignment: .leading, type: .h3)
+                    TextHelper.text(key: "\(viewModel.formatter.string(from: viewModel.total as NSNumber) ?? "") \(viewModel.template?.unit.toString() ?? "")", alignment: .leading, type: .h3)
                         .padding([.horizontal, .bottom])
                     
                     GroupChart(data: viewModel.data, groupColor: GroupBackgroundColor(rawValue: viewModel.selectedGroup?.backgroundColor ?? 0)?.getColor() ?? Color.blue)
@@ -270,22 +268,23 @@ struct Stats: View {
     }
     
     struct ActivityPicker: View {
-        @Binding var selectedActivity: Activity
-        let activities: [Activity]
+        @Binding var selectedActivity: String
+        let template: ActivityTemplate?
+        let activities: [String]
         
         var body: some View {
             ZStack {
                 VStack(alignment: .leading) {
                     HStack {
                         if !activities.isEmpty {
-                            Image(selectedActivity.template != nil ? selectedActivity.name : "Custom Activity Icon")
+                            Image(template != nil ? selectedActivity : "Custom Activity Icon")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20)
                                 .padding(5)
-                                .background(Circle().foregroundColor(selectedActivity.template?.color ?? Color("CustomExercise")))
+                                .background(Circle().foregroundColor(template?.color ?? Color("CustomExercise")))
                             
-                            TextHelper.text(key: selectedActivity.name, alignment: .leading, type: .h3)
+                            TextHelper.text(key: selectedActivity, alignment: .leading, type: .h3)
                                 .truncationMode(.tail)
                                 .lineLimit(1)
                             
@@ -305,8 +304,8 @@ struct Stats: View {
 
                 HStack(spacing: 0) {
                     Menu {
-                        ForEach(activities) { activity in
-                            Button(activity.name) {
+                        ForEach(activities, id: \.self) { activity in
+                            Button(activity) {
                                 selectedActivity = activity
                             }
                         }
