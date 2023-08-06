@@ -51,9 +51,9 @@ struct Stats: View {
                             
                             if viewModel.data.count > 1 {
                                 HStack(spacing: 15) {
-                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toString(), formatter: viewModel.formatter)
+                                    YourTotal(total: viewModel.yourTotal, unit: viewModel.selectedActivity.unit.toAbbreviatedString(), formatter: viewModel.formatter)
                                     
-                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toString(), formatter: viewModel.formatter)
+                                    YourAvg(average: viewModel.yourAvg, unit: viewModel.selectedActivity.unit.toAbbreviatedString(), formatter: viewModel.formatter)
                                 }
                             }
                         }
