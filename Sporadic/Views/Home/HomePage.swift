@@ -68,6 +68,9 @@ struct HomePage: View {
                         }
                         .padding(.top)
                         .padding(.bottom, 100)
+                        .onAppear {
+                            GlobalSettings.shared.swipeToGoBackEnabled = true
+                        }
                     }
                     .padding(.top, 1)
                     .refreshable {
