@@ -136,6 +136,8 @@ struct CreateGroupView: View {
                                 Spacer()
                                 
                                 TextHelper.text(key: "Add an exercise!", alignment: .center, type: .h3)
+                                    .lineLimit(2)
+                                    .minimumScaleFactor(0.5)
                                     .padding()
                                 
                                 Spacer()
