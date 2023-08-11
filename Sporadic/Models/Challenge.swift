@@ -104,6 +104,9 @@ extension Challenge {
         else if isChallengeTimeUp() && cachedStatus == .unknown {
             return .failed
         }
+        else if cachedStatus != .unknown {
+            return cachedStatus
+        }
         
         // we save the status in case the user completes the challenge then navigate away
         // and comes back and the challenge hasn't been fully synced to the server yet
