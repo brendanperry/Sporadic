@@ -368,6 +368,8 @@ struct Tutorial: View {
     
     func notifications() -> some View {
         VStack {
+            Spacer()
+            
             Image("TutorialBackground3")
                 .resizable()
                 .aspectRatio(contentMode: .fit)

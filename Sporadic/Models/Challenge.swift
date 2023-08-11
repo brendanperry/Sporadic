@@ -85,17 +85,6 @@ extension Challenge {
             return .unknown
         }
         
-        if isChallengeTimeUp() {
-            return .failed
-        }
-        
-        // we save the status in case the user completes the challenge then navigate away
-        // and comes back and the challenge hasn't been fully synced to the server yet
-        // so we only cache completed statuses
-        if cachedStatus != .unknown {
-            return cachedStatus
-        }
-        
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             return .unknown
         }
@@ -112,9 +101,15 @@ extension Challenge {
             cachedStatus = .userCompleted
             return .userCompleted
         }
-        else {
-            return .inProgress
+        else if isChallengeTimeUp() && cachedStatus == .unknown {
+            return .failed
         }
+        
+        // we save the status in case the user completes the challenge then navigate away
+        // and comes back and the challenge hasn't been fully synced to the server yet
+        // so we only cache completed statuses
+        
+        return .inProgress
     }
     
     func getUniqueUsers(users: [User]) -> [User] {
