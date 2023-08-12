@@ -19,7 +19,7 @@ struct Challenges: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Challenges", alignment: .leading, type: .h4, color: .primary)
+            TextHelper.text(key: "Challenges", alignment: .leading, type: .h4)
                 .padding(.horizontal)
             
             VStack {
