@@ -32,10 +32,12 @@ struct DeliveryTime: View {
                     VStack {
                         Group {
                             Text(dateHelper.getHoursAndMinutes(date: time))
-                                .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2)) +
+                                .font(Font.custom("Lexend-SemiBold", size: 30, relativeTo: .title2))
+                                .foregroundColor(Color("Gray300")) +
                             Text(" ") +
                             Text(dateHelper.getAmPm(date: time))
                                 .font(Font.custom("Lexend-SemiBold", size: 20, relativeTo: .title2))
+                                .foregroundColor(Color("Gray300"))
                         }
                     }
                     .padding(.vertical)

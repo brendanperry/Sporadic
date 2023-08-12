@@ -18,7 +18,7 @@ struct GroupList: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            TextHelper.text(key: "Groups", alignment: .leading, type: .h4, color: .primary)
+            TextHelper.text(key: "Groups", alignment: .leading, type: .h4)
                 .padding(.horizontal)
                 .padding(.bottom)
 
