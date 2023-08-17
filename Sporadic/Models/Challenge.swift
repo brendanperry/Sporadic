@@ -101,7 +101,7 @@ extension Challenge {
             cachedStatus = .userCompleted
             return .userCompleted
         }
-        else if isChallengeTimeUp() && cachedStatus == .unknown {
+        else if isChallengeTimeUp() {
             return .failed
         }
         else if cachedStatus != .unknown {
