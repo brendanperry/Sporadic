@@ -13,14 +13,14 @@ struct GroupColor: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextHelper.text(key: "Color", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Color", alignment: .leading, type: .h4)
             
             LazyVGrid(columns: items, spacing: 20) {
                 ForEach(GroupBackgroundColor.allCases, id: \.self) { color in
                     Circle()
                         .foregroundColor(color.getColor())
                         .frame(width: color.rawValue == selected ? 40 : 50, height: color.rawValue == selected ? 40 : 50, alignment: .center)
-                        .shadow(radius: color.rawValue == selected ? 3 : 0)
+                        .shadow(color: Color("Shadow"), radius: color.rawValue == selected ? 16 : 0)
                         .animation(Animation.easeInOut, value: selected)
                         .onTapGesture {
                             withAnimation {
@@ -34,6 +34,5 @@ struct GroupColor: View {
             .cornerRadius(16)
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal)
     }
 }

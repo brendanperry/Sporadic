@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NavigationBar: View {
-    let viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     @State var homeIconOn: Bool
     @State var statsIconOn: Bool
     @State var settingsIconOn: Bool
@@ -54,35 +54,28 @@ struct NavigationBar: View {
     }
     
     var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
-                
-                Rectangle()
-                    .foregroundColor(Color("Panel"))
-                    .frame(maxWidth: .infinity, maxHeight: 123, alignment: .bottom)
-                    .offset(y: 50)
-                    .shadow(radius: 3)
-                    .ignoresSafeArea()
-            }
-            .frame(maxHeight: .infinity)
-            
-            HStack {
-                Spacer()
-                HomeIcon(viewRouter: viewRouter, isOn: homeIconOn)
-                Spacer()
-                StatsIcon(viewRouter: viewRouter, isOn: statsIconOn)
-                Spacer()
-                SettingsIcon(viewRouter: viewRouter, isOn: settingsIconOn)
-                Spacer()
-            }
-            .animation(.easeInOut, value: homeIconOn)
-            .animation(.easeInOut, value: statsIconOn)
-            .animation(.easeInOut, value: settingsIconOn)
-            .padding()
-            .frame(maxHeight: .infinity, alignment: .bottom)
-            .offset(y: 10)
-            .onAppear {
+        HStack {
+            Spacer()
+            HomeIcon(viewRouter: viewRouter, isOn: homeIconOn)
+            Spacer()
+            StatsIcon(viewRouter: viewRouter, isOn: statsIconOn)
+            Spacer()
+            SettingsIcon(viewRouter: viewRouter, isOn: settingsIconOn)
+            Spacer()
+        }
+        .background(
+            Rectangle()
+                .foregroundColor(Color("Panel"))
+                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
+                .ignoresSafeArea()
+        )
+        .animation(.easeInOut, value: homeIconOn)
+        .animation(.easeInOut, value: statsIconOn)
+        .animation(.easeInOut, value: settingsIconOn)
+        .frame(maxHeight: .infinity, alignment: .bottom)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onAppear {
+            withAnimation {
                 if viewRouter.previousPage == .home && viewRouter.currentPage == .stats {
                     self.homeIconOn = false
                     self.statsIconOn = true
@@ -113,7 +106,7 @@ struct NavigationBar: View {
 }
 
 struct HomeIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {
@@ -126,8 +119,8 @@ struct HomeIcon: View {
             Image(isOn ? "Home Inside Active" : "Home Inside Inactive")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 25, height: 25, alignment: .center)
-                .offset(y: isOn ? -2 : 0)
+                .frame(width: 18, height: 18, alignment: .center)
+                .scaleEffect(isOn ? 1.1 : 1)
         }
         .onTapGesture {
             viewRouter.navigateTo(.home)
@@ -136,7 +129,7 @@ struct HomeIcon: View {
  }
 
 struct StatsIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {
@@ -144,14 +137,15 @@ struct StatsIcon: View {
             Image(isOn ? "Stats Outline Active" : "Stats Outline Inactive")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 62, height: 62, alignment: .center)
-                .rotationEffect(isOn ? Angle(degrees: 45) : Angle(degrees: 0))
+                .frame(width: 45, height: 45, alignment: .center)
+                .rotationEffect(isOn ? Angle(degrees: 0) : Angle(degrees: -45))
             
             Image(isOn ? "Stats Inside Active" : "Stats Inside Inactive")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 20, height: 20, alignment: .center)
+                .frame(width: 15, height: 15, alignment: .center)
         }
+        .offset(y: -2)
         .onTapGesture {
             viewRouter.navigateTo(.stats)
         }
@@ -159,7 +153,7 @@ struct StatsIcon: View {
  }
 
 struct SettingsIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let isOn: Bool
 
     var body: some View {

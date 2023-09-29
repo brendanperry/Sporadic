@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Stats Inside Active.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Stats Inside Active Dark.png",
+      "filename" : "Frame 515.png",
       "idiom" : "universal"
     }
   ],

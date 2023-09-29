@@ -8,66 +8,144 @@
 import SwiftUI
 
 struct GroupOverview: View {
-    @ObservedObject var viewModel: GroupOverviewViewModel
+    @StateObject var viewModel = GroupOverviewViewModel()
+    @ObservedObject var group: UserGroup
+    @Binding var groups: [UserGroup]
     
-    let textHelper = TextHelper()
-    let reloadAction: (Bool) -> Void
+    let updateNextChallengeText: () -> Void
+    let hardRefresh: () -> Void
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var viewRouter: ViewRouter
     @Environment(\.isPresented) var isPresented
-    
-    init(viewModel: GroupOverviewViewModel, reloadAction: @escaping (Bool) -> Void) {
-        self.viewModel = viewModel
-        self.reloadAction = reloadAction
-    }
-    
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ZStack {
             Image("BackgroundImage")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
-                ScrollView(.vertical) {
-                    VStack(spacing: 35) {
-                        GroupHeader(name: $viewModel.group.name, emoji: $viewModel.emoji, color: $viewModel.group.backgroundColor)
+            ZStack {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                        GroupHeader(name: $group.name, emoji: $viewModel.emoji, color: $group.backgroundColor, isOwner: viewModel.isOwner)
                         
-                        YourActivities(viewModel: viewModel)
+                        YourActivities(group: group, viewModel: viewModel)
                         
-                        DaysAndTime(days: $viewModel.group.daysPerWeek, time: $viewModel.group.deliveryTime)
+                        UsersInGroup(viewModel: viewModel, group: group, groups: $groups)
+                            .alert(isPresented: $viewModel.showError) {
+                                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
+                            }
+                                                
+                        DaysForChallenges(availableDays: $group.displayedDays, isOwner: viewModel.isOwner)
                         
-                        DaysForChallenges(availableDays: $viewModel.group.displayedDays)
-                        
-                        UsersInGroup(users: viewModel.users)
-                        
-                        DeleteButton(viewModel: viewModel, reloadAction: reloadAction)
+                        DeliveryTime(isOwner: viewModel.isOwner, time: $group.deliveryTime)
+
+                        if viewModel.isOwner {
+                            DeleteButton(group: group, groups: $groups, viewModel: viewModel, loadNextChallengeText: updateNextChallengeText)
+                        }
                     }
+                    .padding(.horizontal)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.bottom, viewModel.isOwner ? 100 : 20)
+                }
+                
+                if viewModel.isOwner {
+                    saveBar()
                 }
             }
-            .alert(isPresented: $viewModel.showError) {
-                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
-            }
             
-            if viewModel.isLoading {
+            if viewModel.isLoading  {
                 LoadingIndicator()
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("\(viewModel.group.name)")
+        .toolbarBackground(viewModel.toolbarColor, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+        .toolbar {
+            if !viewModel.isOwner {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    BackButton(showBackground: false)
+                }
+            }
+            
+            ToolbarItem(placement: .principal) {
+                Text("\(group.name)")
+                    .font(.headline)
+                    .foregroundColor(Color("Gray400"))
+            }
+        }
         .onAppear {
-            UINavigationBar.appearance().barTintColor = UIColor(GroupBackgroundColor.init(rawValue: viewModel.group.backgroundColor)?.getColor() ?? .red)
+            viewModel.checkOwnership(group: group)
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red ]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.red ]
+        }
+        .onChange(of: group.backgroundColor) { _ in
+            viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
+        }
+        .task {
+            viewModel.emoji = group.emoji
+            viewModel.updateToolbarColor(color: GroupBackgroundColor(rawValue: group.backgroundColor) ?? .one)
         }
     }
     
-    func saveAndExit() {
-        viewModel.save { didComplete in
-            if didComplete == false {
+    func saveBar() -> VStack<TupleView<(Spacer, some View)>> {
+        return VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
                 
+                Button(action: {
+                    viewModel.removeUnsavedActivities(group: group)
+                    hardRefresh()
+                    dismiss()
+                }, label: {
+                    TextHelper.text(key: "Cancel", alignment: .center, type: .h5, color: Color("CancelText"))
+                        .padding()
+                        .background(Color("Cancel"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
+                
+                Spacer()
+                
+                Button(action: {
+                    viewModel.save(group: group) { didComplete in
+                        if didComplete {
+                            DispatchQueue.main.async {
+                                updateNextChallengeText()
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                    }
+                }, label: {
+                    TextHelper.text(key: "Save", alignment: .center, type: .h5, color: .white)
+                        .padding()
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .padding()
+                .onChange(of: viewModel.itemsCompleted) { newValue in
+                    if newValue == 4 {
+                        viewModel.isLoading = false
+                        dismiss()
+                    }
+                }
+                
+                Spacer()
             }
+            .background(
+                Rectangle()
+                    .foregroundColor(Color("Panel"))
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
+                    .ignoresSafeArea(.all, edges: .bottom)
+            )
         }
     }
     
@@ -75,6 +153,7 @@ struct GroupOverview: View {
         @Binding var name: String
         @Binding var emoji: String
         @Binding var color: Int
+        @Binding var showEdit: Bool
         
         var body: some View {
             ZStack {
@@ -82,15 +161,22 @@ struct GroupOverview: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView(.vertical) {
-                    VStack(spacing: 35) {
-                        GroupName(name: $name)
+                ZStack {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        Spacer()
                         
-                        EmojiSelector(emoji: $emoji)
-                        
-                        GroupColor(selected: $color)
+                        VStack(spacing: 35) {
+                            GroupName(name: $name)
+                            
+                            EmojiSelector(emoji: $emoji)
+                            
+                            GroupColor(selected: $color)
+                        }
+                        .padding(.top, 100)
                     }
-                    .padding(.top, 50)
+                    .padding()
+                    
+                    CloseButton(shouldShow: $showEdit)
                 }
             }
         }
@@ -100,31 +186,34 @@ struct GroupOverview: View {
         @Binding var name: String
         @Binding var emoji: String
         @Binding var color: Int
+        @State var showEdit = false
+        let isOwner: Bool
         
         var body: some View {
             VStack {
-                NavigationLink(destination: EditGroupHeader(name: $name, emoji: $emoji, color: $color)) {
-                    ZStack {
-                        Circle()
-                            .frame(width: 75, height: 75, alignment: .leading)
-                            .foregroundColor(GroupBackgroundColor.init(rawValue: color)?.getColor())
-                        
-                        Text(emoji)
-                            .font(.system(size: 40))
-                        
-                        Image("Edit Group Icon")
-                            .resizable()
-                            .frame(width: 15, height: 15, alignment: .center)
-                            .background(
-                                Circle()
-                                    .foregroundColor(Color("EditProfile"))
-                                    .frame(width: 25, height: 25, alignment: .center)
-                                    .offset(x: -1, y: -1)
-                            )
+                ZStack {
+                    Circle()
+                        .frame(width: 75, height: 75, alignment: .leading)
+                        .foregroundColor(GroupBackgroundColor.init(rawValue: color)?.getColor())
+                    
+                    Text(emoji)
+                        .font(.system(size: 40))
+                    
+                    if isOwner {
+                        EditIcon()
                             .offset(x: 25, y: -25)
                     }
                 }
                 .buttonStyle(ButtonPressAnimationStyle())
+                .disabled(!isOwner)
+                .onTapGesture {
+                    if isOwner {
+                        showEdit = true
+                    }
+                }
+                .popover(isPresented: $showEdit) {
+                    EditGroupHeader(name: $name, emoji: $emoji, color: $color, showEdit: $showEdit)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top)
@@ -133,194 +222,257 @@ struct GroupOverview: View {
 }
 
 struct YourActivities: View {
+    @ObservedObject var group: UserGroup
     @ObservedObject var viewModel: GroupOverviewViewModel
+    var items: [GridItem] = Array(repeating: .init(.flexible(), spacing: 17), count: 3)
+    @State var showAddView = false
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "GroupActivities", alignment: .leading, type: .h2)
+            TextHelper.text(key: "Exercises", alignment: .leading, type: .h4)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach($viewModel.activities) { activity in
-                        NavigationLink(destination: EditActivity(activityList: $viewModel.activities, activity: activity)) {
-                            VStack(spacing: 0) {
-                                ZStack {
-                                    Circle()
-                                        .frame(width: 50, height: 50, alignment: .center)
-                                        .foregroundColor(.white)
-                                    
-                                    Image(activity.wrappedValue.templateId == nil ? "Custom Activity Icon Circle" : activity.wrappedValue.name + " Circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30, alignment: .center)
-                                }
-                                
-                                TextHelper.text(key: activity.wrappedValue.name, alignment: .center, type: .activityTitle, color: .white)
-                                    .padding(.bottom)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.minValue) - \(activity.wrappedValue.maxValue)", alignment: .center, type: .body, color: .white)
-                                    .frame(width: 60)
-                                    .opacity(0.75)
-                                
-                                TextHelper.text(key: "\(activity.wrappedValue.unit.toAbbreviatedString())", alignment: .center, type: .body, color: .white)
-                                    .opacity(0.75)
-                            }
-                            .padding(.horizontal, 25)
-                            .padding(.vertical, 10)
-                            .background(Color.purple)
-                            .cornerRadius(16)
-                            .shadow(radius: 3)
-                            .padding(.leading)
+            LazyVGrid(columns: items, spacing: 17) {
+                if group.areActivitiesLoading {
+                    VStack(spacing: 0) {
+                        Circle()
+                            .frame(width: 50, height: 50, alignment: .center)
+                            .foregroundColor(.white)
+                        
+                        LoadingBar()
+                            .frame(height: 15)
+                            .padding(.vertical)
+                    }
+                    .frame(height: 125)
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 10)
+                    .background(Color.purple)
+                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+                    .padding(.leading)
+                }
+                else {
+                    ForEach($group.activities.filter({ !$0.wrappedValue.wasDeleted })) { activity in
+                        NavigationLink(destination: EditActivity(activity: activity, activities: $group.activities)) {
+                            SelectedActivity(activity: activity)
                         }
+                        .id(UUID())
+                        .disabled(!viewModel.isOwner)
                     }
                     .padding(.vertical, 1)
-                    
-                    NavigationLink(destination: ActivitySelector(selectedActivities: $viewModel.activities, showEditMenu: true), label: {
-                        Image("Custom Plus")
-                            .resizable()
-                            .frame(width: 20, height: 20, alignment: .center)
-                            .foregroundColor(.blue)
-                            .padding(5)
-                            .background(Circle().foregroundColor(.white))
-                            .padding(15)
-                            .background(RoundedRectangle(cornerRadius: 16).foregroundColor(.purple))
-                            .shadow(radius: 3)
-                            .padding()
-                    })
                 }
-                .frame(minHeight: 175)
+                
+                if viewModel.isOwner {
+                    Button(action: {
+                        showAddView = true
+                    }, label: {
+                        PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
+                    })
+                    .buttonStyle(ButtonPressAnimationStyle())
+                }
             }
-            .background(Color("Panel"))
-            .cornerRadius(16)
         }
-        .padding(.horizontal)
+        .popover(isPresented: $showAddView) {
+            NavigationStack {
+                ActivitySelector(selectedActivities: $group.activities, shouldShow: $showAddView)
+            }
+        }
     }
 }
 
 struct DeleteButton: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showDeleteConfirmation = false
+    @State var showDeleteFailure = false
+    @ObservedObject var group: UserGroup
+    @Binding var groups: [UserGroup]
     let viewModel: GroupOverviewViewModel
-    let reloadAction: (Bool) -> Void
+    
+    let loadNextChallengeText: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading) {
-            TextHelper.text(key: "DeletingGroups", alignment: .leading, type: .h2)
+        ZStack {
+            TextHelper.text(key: "", alignment: .leading, type: .h4)
+                .alert(isPresented: $showDeleteFailure) {
+                    Alert(title: Text("Network Error"), message: Text("Could not delete group. Please check your connection and try again!"))
+                }
             
-            Button(action: {
-                showDeleteConfirmation = true
-            }, label: {
-                TextHelper.text(key: "DeleteGroup", alignment: .center, type: .h2)
-                    .padding()
-                    .frame(width: 150, height: 40, alignment: .leading)
-                    .background(Color("Delete"))
-                    .cornerRadius(16)
-                    .padding(.bottom)
-            })
-            .buttonStyle(ButtonPressAnimationStyle())
-            .alert(isPresented: $showDeleteConfirmation) {
-                Alert(title: Text("Delete \(viewModel.group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
-                      primaryButton: .cancel(),
-                      secondaryButton: .destructive(Text("Delete")) {
-                    viewModel.deleteGroup() { didFinishSuccessfully in
-                        if didFinishSuccessfully {
-                            reloadAction(false)
-                            presentationMode.wrappedValue.dismiss()
-                        }
+            HStack {
+                Button(action: {
+                    DispatchQueue.main.async {
+                        showDeleteConfirmation = true
+                    }
+                }, label: {
+                    HStack {
+                        Text("Delete group")
+                            .font(.custom("Lexend-Regular", size: 15))
+                            .foregroundColor(Color("Failed"))
                     }
                 })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .alert(isPresented: $showDeleteConfirmation) {
+                    Alert(title: Text("Delete \(group.name)?"), message: Text("Are you sure you want to delete this group? It cannot be undone."),
+                          primaryButton: .cancel(),
+                          secondaryButton: .destructive(Text("Delete")) {
+                        viewModel.deleteGroup(group: group) {
+                            if $0 == true {
+                                group.wasDeleted = true
+                                groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                loadNextChallengeText()
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                            else {
+                                showDeleteFailure = true
+                            }
+                            
+                            print("Delete Group Finished With Status: \($0)")
+                        }
+                    })
+                }
+                
+                Spacer()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal)
     }
 }
 
 struct UsersInGroup: View {
-    let users: [User]
-    
-    init(users: [User]) {
-        self.users = users
-        
-        UITableView.appearance().backgroundColor = .clear
-    }
-    
+    @ObservedObject var viewModel: GroupOverviewViewModel
+    @ObservedObject var group: UserGroup
+    @Binding var groups: [UserGroup]
+    @Environment(\.dismiss) var dismiss
+    @State var showLeave = false
+
     var body: some View {
         VStack {
-            TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h2)
+            HStack {
+                TextHelper.text(key: "PeopleInGroup", alignment: .leading, type: .h4)
+                
+                if !viewModel.isOwner {
+                    Button(action: {
+                        showLeave = true
+                    }, label: {
+                        TextHelper.text(key: "Leave", alignment: .trailing, type: .body, color: Color("Failed"))
+                    })
+                    .alert("Leave Group?", isPresented: $showLeave, actions: {
+                        Button("Cancel", role: ButtonRole.cancel, action: {
+                            showLeave = false
+                        })
+                        
+                        Button("Leave", role: ButtonRole.destructive, action: {
+                            viewModel.leaveGroup(group: group) { didLeave in
+                                if didLeave {
+                                    DispatchQueue.main.async {
+                                        groups.removeAll(where: { $0.record.recordID == group.record.recordID })
+                                        showLeave = false
+                                        dismiss()
+                                    }
+                                }
+                            }
+                        })
+                    }, message: {
+                        Text("You can always join back later.")
+                    })
+                }
+            }
             
             VStack(spacing: 0) {
-                ForEach(users) { user in
-                    HStack {
-                        Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50, alignment: .leading)
-                            .cornerRadius(100)
-                            .shadow(radius: 3)
-                        
-                        TextHelper.text(key: user.name, alignment: .leading, type: .h2)
+                if !group.areUsersLoading {
+                    ForEach(group.users) { user in
+                        HStack {
+                            Image(uiImage: user.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .cornerRadius(.infinity)
+
+                            TextHelper.text(key: user.name, alignment: .leading, type: .h5)
+                            
+                            Spacer()
+                            
+                            if group.owner.recordID == user.record.recordID {
+                                Image("Owner")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                            }
+                        }
                     }
+                    .padding(12)
                 }
-                .padding(12)
+                else {
+                    HStack {
+                        Circle()
+                            .frame(width: 50, height: 50, alignment: .leading)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+
+                        LoadingBar()
+                            .frame(height: 20)
+                    }
+                    .padding(12)
+                }
+                
+                ShareLink(item: "https://sporadic.app/?group=\(group.record.recordID.recordName)", message: Text("Join \(group.name) on Sporadic!"), label: {
+                    Text("Invite Friends")
+                        .font(.custom("Lexend-Regular", size: 15))
+                        .foregroundColor(.white)
+                        .bold()
+                        .padding()
+                        .padding(.horizontal)
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                        .padding()
+                })
+                .buttonStyle(ButtonPressAnimationStyle())
+                .frame(maxWidth: .infinity)
             }
             .padding(12)
             .background(Color("Panel"))
-            .cornerRadius(16)
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         }
-        .padding(.horizontal)
     }
 }
 
 struct DaysForChallenges: View {
     @Binding var availableDays: [Int]
-    let daysInTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+    let isOwner: Bool
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "PotentialDays", alignment: .leading, type: .h2)
-                .padding(.horizontal)
+            TextHelper.text(key: "DaysToGetChallenge", alignment: .leading, type: .h4)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(daysInTheWeek, id: \.self) { day in
+                    ForEach(DaysForChallenge.allCases, id: \.rawValue) { day in
                         Button(action: {
-                            if availableDays.contains(dayToInt(day)) {
-                                availableDays.removeAll(where: { $0 == dayToInt(day) })
+                            if availableDays.contains(day.rawValue) {
+                                availableDays.removeAll(where: { $0 == day.rawValue })
                             }
                             else {
-                                availableDays.append(dayToInt(day))
+                                availableDays.append(day.rawValue)
                             }
                         }, label: {
-                            TextHelper.text(key: day, alignment: .center, type: .h2, color: .white)
-                                .padding()
-                                .background(Circle().foregroundColor(Color("DaySelection")))
-                                .opacity(availableDays.contains(dayToInt(day)) ? 1 : 0.25)
-                                .foregroundColor(availableDays.contains(dayToInt(day)) ? .red : .blue)
-                                .shadow(radius: 3)
+                            // W and M are larger letters and get more padding so I made the padding go off of W and hid the text
+                            ZStack {
+                                TextHelper.text(key: "W", alignment: .center, type: .h3, color: .clear)
+                                    .padding()
+                                    .background(
+                                        Circle()
+                                            .foregroundColor(availableDays.contains(day.rawValue) ? Color("BrandPurple") : Color("Gray150")))
+                                    .opacity(availableDays.contains(day.rawValue) ? 1 : 0.80)
+                                    .foregroundColor(.white)
+                                
+                                TextHelper.text(key: day.description, alignment: .center, type: .h3, color: .white)
+                                    .foregroundColor(.white)
+                            }
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
+                        .disabled(!isOwner)
                     }
                 }
                 .padding()
             }
             .background(Color("Panel"))
-            .cornerRadius(16)
-            .padding(.horizontal)
-        }
-    }
-    
-    // TODO: Move this elsewhere
-    func dayToInt(_ day: String) -> Int {
-        switch day {
-        case "Su": return 1
-        case "Mo": return 2
-        case "Tu": return 3
-        case "We": return 4
-        case "Th": return 5
-        case "Fr": return 6
-        case "Sa": return 7
-        default: return -1
+            .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         }
     }
 }

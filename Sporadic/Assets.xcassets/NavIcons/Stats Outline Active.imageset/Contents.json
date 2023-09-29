@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Stats Outline Active.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Stats Outline Active Dark.png",
+      "filename" : "Analytics Active.png",
       "idiom" : "universal"
     }
   ],

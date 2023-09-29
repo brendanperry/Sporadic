@@ -7,9 +7,10 @@
 
 import SwiftUI
 import CoreData
+import CloudKit
 
 struct AddCustomActivityPage: View {
-    @ObservedObject var viewModel = AddActivityViewModel()
+    @StateObject var viewModel = AddActivityViewModel()
     @Binding var activities: [Activity]
     @State var showNetworkError = false
     @State var showNameError = false
@@ -29,55 +30,64 @@ struct AddCustomActivityPage: View {
                         dismissButton: .default(Text(Localize.getString("Okay"))))
                 }
             
-            VStack(spacing: 30) {
-                TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)
-                    .padding(.top, 50)
-                
-                VStack {
-                    ActivityName(name: $viewModel.name)
+            ZStack {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: GlobalSettings.shared.controlSpacing) {
+                        TextHelper.text(key: "AddActivity", alignment: .leading, type: .h1)
+                            .padding(.top, 100)
+                        
+                        ActivityName(name: $viewModel.name)
+                        
+                        Units(selected: $viewModel.unit, viewModel: viewModel)
+                        
+                        RangeSelection(minValue: $viewModel.minValue, maxValue: $viewModel.maxValue, unit: viewModel.unit, viewModel: viewModel)
+                            .alert(isPresented: $showNameError) {
+                                Alert(
+                                    title: Text(Localize.getString("InvalidInput")),
+                                    message: Text(Localize.getString("ActivityNameError")),
+                                    dismissButton: .default(Text(Localize.getString("Okay"))))
+                            }
+                        
+                        AddButton()
+                    }
+                    .padding()
                 }
                 
-                Units(selected: $viewModel.unit, viewModel: viewModel)
-                
-                RangeSelection(minValue: $viewModel.minValue, maxValue: $viewModel.maxValue, unit: viewModel.unit, viewModel: viewModel)
-                    .alert(isPresented: $showNameError) {
-                        Alert(
-                            title: Text(Localize.getString("InvalidInput")),
-                            message: Text(Localize.getString("ActivityNameError")),
-                            dismissButton: .default(Text(Localize.getString("Okay"))))
-                    }
-                
-                AddButton()
-                
-                Spacer()
+                VStack {
+                    BackButton(showBackground: true)
+                        .padding()
+                    
+                    Spacer()
+                }
             }
-            .padding()
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     func AddButton() -> some View {
         Button(action: {
-            if viewModel.name.count < 1 || viewModel.name.count > 18 {
+            if viewModel.name.count < 1 || viewModel.name.count > 24 {
                 showNameError = true
             }
             else {
                 activities.append(
                     Activity(
-                        id: UUID(),
+                        record: CKRecord(recordType: "Activity"),
                         maxValue: viewModel.maxValue,
                         minValue: viewModel.minValue,
                         name: viewModel.name,
-                        templateId: nil,
-                        unit: viewModel.unit))
+                        templateId: -1,
+                        unit: viewModel.unit,
+                        isNew: true))
                 
                 dismiss()
             }
         }, label: {
-            TextHelper.text(key: "AddToList", alignment: .center, type: .h2, color: .white)
+            TextHelper.text(key: "AddToList", alignment: .center, type: .h5, color: .white)
                 .padding()
-                .frame(width: 200)
-                .background(Color("Purple"))
-                .cornerRadius(16)
+                .frame(maxWidth: 150)
+                .background(Color("BrandPurple"))
+                .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         })
         .buttonStyle(ButtonPressAnimationStyle())
     }
@@ -88,14 +98,14 @@ struct AddCustomActivityPage: View {
         
         var body: some View {
             VStack {
-                TextHelper.text(key: "SetRange", alignment: .leading, type: .h2)
+                TextHelper.text(key: "SetRange", alignment: .leading, type: .h5)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(ActivityUnit.allCases, id: \.self) { unit in
-                            TextHelper.text(key: unit.toString(), alignment: .center, type: .h4, color: selected == unit ? .white : Color("Header"))
+                            TextHelper.text(key: unit.toString().capitalized(with: .current), alignment: .center, type: .h7, color: selected == unit ? .white : Color("Gray300"))
                                 .padding()
-                                .background(selected == unit ? Color("Purple") : Color("Panel"))
+                                .background(selected == unit ? Color("BrandPurple") : Color("Panel"))
                                 .cornerRadius(16)
                                 .onTapGesture {
                                     selected = unit
@@ -114,12 +124,12 @@ struct AddCustomActivityPage: View {
         var body: some View {
             VStack {
                 HStack {
-                    TextHelper.text(key: "ActivityName", alignment: .leading, type: .h2)
+                    TextHelper.text(key: "ActivityName", alignment: .leading, type: .h5)
                     
-                    TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .challengeGroup)
+                    TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .h7)
                 }
                 
-                TextField("", text: $name)
+                TextField("", text: $name.max(24))
                     .padding(10)
                     .background(Color("Panel"))
                     .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .body))
@@ -171,11 +181,11 @@ struct AddCustomActivityPage: View {
                     minValue: unit.minValue(),
                     maxValue: unit.maxValue(),
                     circleBorder: 10,
-                    leftCircleBorderColor: Color("RangeGradient1"),
-                    rightCircleBorderColor: Color("Purple"),
+                    leftCircleBorderColor: Color("Gradient1"),
+                    rightCircleBorderColor: Color("Gradient2"),
                     leftCircleColor: .white,
                     rightCircleColor: .white,
-                    lineColorInRange: AnyShapeStyle(LinearGradient(gradient: Gradient(colors: [Color("RangeGradient1"), Color("Purple")]), startPoint: .leading, endPoint: .trailing)),
+                    lineColorInRange: AnyShapeStyle(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing)),
                     lineColorOutOfRange: Color("RangeUnselected"),
                     leftValue: $minValue,
                     rightValue: $maxValue,

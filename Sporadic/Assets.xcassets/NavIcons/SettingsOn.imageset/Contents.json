@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Settings Icon Active.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Settings Active Dark.png",
+      "filename" : "Settings Active.png",
       "idiom" : "universal"
     }
   ],

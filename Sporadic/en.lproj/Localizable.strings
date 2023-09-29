@@ -6,8 +6,8 @@
   
 */
 
-"WelcomeBack" = "Welcome back, ";
-"YourGoal" = "Let's keep things sporadic!";
+"WelcomeBack" = "Welcome, ";
+"YourGoal" = "Dashboard";
 "CurrentRhythm" = "Current Rhythm";
 "Activities" = "Activities";
 "RandomNotificationDelivery" = "Random Notification Delivery";
@@ -24,7 +24,7 @@
 "NotificationsEnabled" = "Notifications are enabled! Nothing to do.";
 "Loading" = "Loading your preferences...";
 "EditYourActivity" = "Edit your activity";
-"SetTheRangeForYourActivity" = "Set the range for your challenge";
+"SetTheRangeForYourActivity" = "Set the difficulty range for challenges";
 "Toggle" = "Toggle";
 "Miles" = "miles";
 "Minutes" = "minutes";
@@ -34,10 +34,9 @@
 "SecondsAbbr" = "s";
 "Sets" = "sets";
 "Laps" = "laps";
-"General" = "units";
-"AddANewActivity" = "Add a new activity";
+"AddANewActivity" = "Add exercises";
 "SelectANewActivity" = "Select a new activity to be challenged with.";
-"StayActive" = "Stay active throughout your week with Sporadic.";
+"StayActive" = "Stay active with Sporadic";
 "GetNotifications" = "Get sporadic notifications.";
 "SetDays" = "Set how many days during your week you want a challenge. Sporadic will choose random days throughout your week to challenge you.";
 "GreatWork" = "Great work!";
@@ -67,8 +66,8 @@
 "ChallengesPerWeek" = "Weekly Challenges";
 "DeliveryTime" = "Delivery Time";
 "ChallengeSettings" = "Challenge Settings";
-"PotentialDays" = "Potential days to receive a challenge";
-"PeopleInGroup" = "People In Group";
+"DaysToGetChallenge" = "Days to receive a challenge";
+"PeopleInGroup" = "Members";
 "DeletingGroups" = "Deleting Groups Can't Be Undone";
 "DeleteGroup" = "Delete Group";
 "CompleteYourChallenge" = "Complete Your Challenge";
@@ -77,18 +76,18 @@
 "Emoji" = "Emoji";
 "Color" = "Color";
 "ChooseActivities" = "Choose Activities";
-"ActivityName" = "Activity Name";
+"ActivityName" = "Exercise Name";
 "SetRange" = "Set the range for your challenge";
-"MaxCharacters" = "Max 18 characters";
-"AddActivity" = "Add Activity";
+"MaxCharacters" = "Max 24 characters";
+"AddActivity" = "Add a custom exercise";
 "AddToList" = "Add to list";
 "NetworkError" = "Network Error";
 "CouldNotSaveActivity" = "Could not save activity. Please check your connection and try again.";
 "Okay" = "Okay";
 "InvalidInput" = "Invalid Input";
-"ActivityNameError" = "Activity name must be between 1 and 18 characters.";
-"CreateGroup" = "Create Group";
+"ActivityNameError" = "Exercise name must be between 1 and 24 characters.";
 "AddToGroup" = "Add to your group";
 "RemovingActivities" = "Activity progress will be saved";
 "RemoveActivity" = "Remove Activity";
 "NotCompleted" = "Not Completed";
+"Reps" = "reps";

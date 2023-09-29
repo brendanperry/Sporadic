@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TabBarIcon: View {
-    @StateObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter: ViewRouter
     let assignedPage: Page
     let icon: String
 

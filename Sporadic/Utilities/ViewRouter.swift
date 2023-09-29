@@ -12,7 +12,7 @@ enum Page {
     case settings
     case stats
     case tutorial
- }
+}
 
 class ViewRouter: ObservableObject {
     private(set) var currentPage: Page
@@ -20,8 +20,7 @@ class ViewRouter: ObservableObject {
     
     init() {
         if !UserDefaults.standard.bool(forKey: UserPrefs.tutorial.rawValue) {
-            //currentPage = .tutorial
-            currentPage = .home
+            currentPage = .tutorial
         } else {
             currentPage = .home
         }

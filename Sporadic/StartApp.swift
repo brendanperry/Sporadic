@@ -21,6 +21,7 @@ struct StartApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
@@ -28,6 +29,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         OneSignal.setLogLevel(.LL_ERROR, visualLevel: .LL_NONE)
         OneSignal.initWithLaunchOptions(launchOptions)
+        OneSignal.setLocationShared(false)
         OneSignal.setAppId("f211cce4-760d-4404-97f3-34df31eccde8")
         
         return true

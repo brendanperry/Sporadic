@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Settings Icon Inactive.png",
+      "filename" : "Settings Inactive.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Settings Icon Inactive Dark.png",
+      "filename" : "Settings Inactive Dark.png",
       "idiom" : "universal"
     }
   ],

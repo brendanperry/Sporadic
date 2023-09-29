@@ -6,30 +6,21 @@
 //
 
 import SwiftUI
+import PhotosUI
+
+private let settingsViewModel = SettingsViewModel()
 
 struct SettingsPage: View {
-    @AppStorage(UserPrefs.measurement.rawValue)
-    var measurement = "Imperial"
-    
     @AppStorage(UserPrefs.appearance.rawValue)
     var appTheme = "System"
-    
-    @AppStorage(UserPrefs.deliveryTime.rawValue)
-    var time = Date()
     
     let appThemeOptions = ["System", "Light", "Dark"]
     
     @State var showThemeOptions = false
     
-    @ObservedObject var viewModel: SettingsViewModel
-    
-    @Environment(\.scenePhase) var scenePhase
+    @StateObject var viewModel = settingsViewModel
     
     @EnvironmentObject var viewRouter: ViewRouter
-    
-    init() {
-        viewModel = SettingsViewModel()
-    }
     
     var body: some View {
         ZStack {
@@ -49,16 +40,11 @@ struct SettingsPage: View {
                     AppIcons()
                     Contact()
                 }
-                .padding(.horizontal)
+                .padding([.horizontal, .top])
                 .padding(.bottom, 100)
             })
             .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
-                    //                    GlobalSettings.Env.scheduleNotificationsIfNoneExist()
-                }
-            }
-            .padding(.top)
+            .padding(.top, 1)
             
             NavigationBar(viewRouter: viewRouter)
         }
@@ -127,7 +113,7 @@ struct SettingsPage: View {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
-                let email = "contact@sporadic.app"
+                let email = "brendan@brendanperry.me"
                 if let url = URL(string: "mailto:\(email)") {
                     UIApplication.shared.open(url)
                 }
@@ -139,7 +125,10 @@ struct SettingsPage: View {
         @ObservedObject var viewModel: SettingsViewModel
         @Binding var name: String
         @Binding var photo: UIImage?
+        @FocusState var textFieldFocus: Bool
         let textHelper = TextHelper()
+        
+        @State var selectedphoto: PhotosPickerItem?
         
         var body: some View {
             HStack(alignment: .center) {
@@ -151,37 +140,38 @@ struct SettingsPage: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 75, height: 75, alignment: .center)
                                 .cornerRadius(100)
-                                .padding(.leastNormalMagnitude)
                             
-                            Image("Edit Group Icon")
-                                .resizable()
-                                .frame(width: 15, height: 15, alignment: .center)
-                                .background(
-                                    Circle()
-                                        .foregroundColor(Color("EditProfile"))
-                                        .frame(width: 25, height: 25, alignment: .center)
-                                        .offset(x: -1, y: -1)
-                                )
+                            EditIcon()
                                 .offset(x: 25, y: -25)
-                                .onTapGesture {
-                                    showImagePicker = true
-                                }
-                                .sheet(isPresented: $showImagePicker) {
-                                    ImagePicker(image: $photo)
-                                }
-                                .onChange(of: photo) { _ in
-                                    viewModel.updateUserImage()
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
+                                .onChange(of: selectedphoto) { newValue in
+                                    Task {
+                                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                            DispatchQueue.main.async {
+                                                photo = UIImage(data: data)
+                                                viewModel.updateUserImage()
+                                            }
+                                        }
+                                    }
                                 }
                         }
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
                         
-                        TextField("", text: $name)
+                        TextField("", text: $name.max(24))
                             .padding()
-                            .frame(minWidth: 200, maxHeight: 50, alignment: .leading)
+                            .frame(minWidth: 200, alignment: .leading)
                             .background(Color("Panel"))
                             .cornerRadius(16)
                             .font(Font.custom("Lexend-Regular", size: 14))
-                            .foregroundColor(Color("Header"))
+                            .foregroundColor(Color("Gray300"))
                             .padding(.leading)
+                            .focused($textFieldFocus)
+                            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+                            .onTapGesture {
+                                textFieldFocus = true
+                            }
                             .onSubmit {
                                 viewModel.updateUserName()
                             }
@@ -192,7 +182,9 @@ struct SettingsPage: View {
                         photo = nil
                         viewModel.updateUserImage()
                     }, label: {
-                        TextHelper.text(key: "Remove", alignment: .center, type: .challengeGroup)
+                        Text("Remove")
+                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
+                            .foregroundColor(Color("Failed"))
                     })
                     .frame(maxWidth: 75, maxHeight: 25)
                 }
@@ -213,16 +205,18 @@ struct SettingsPage: View {
             HStack {
                 Image(image)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                TextHelper.text(key: "", alignment: .leading, type: .challengeAndSettings, prefix: text)
+                TextHelper.text(key: "", alignment: .leading, type: .h4, prefix: text)
                     .padding(5)
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
             .background(Color("Panel"))
             .cornerRadius(15)
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .onTapGesture {
                 action()
             }
@@ -238,7 +232,7 @@ struct SettingsPage: View {
                         .frame(width: 30, height: 30)
                         .padding(.horizontal, 5)
                     
-                    TextHelper.text(key: "AppIcon", alignment: .leading, type: TextType.body)
+                    TextHelper.text(key: "AppIcon", alignment: .leading, type: .h4)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -251,6 +245,7 @@ struct SettingsPage: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
             .background(Color("Panel"))
+            .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .cornerRadius(15)
         }
         

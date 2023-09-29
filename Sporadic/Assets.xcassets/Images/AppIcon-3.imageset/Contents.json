@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Sporadic_60x60-orange.jpg",
+      "filename" : "87x87.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Sporadic_120x120-orange.jpg",
+      "filename" : "120x120.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Sporadic_180x180-orange.jpg",
+      "filename" : "180x180.jpg",
       "idiom" : "universal",
       "scale" : "3x"
     }

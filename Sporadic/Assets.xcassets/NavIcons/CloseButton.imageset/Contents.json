@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Close Button.png",
+      "filename" : "Group 504.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Close Button Dark.png",
+      "filename" : "Close Button.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

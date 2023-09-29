@@ -55,14 +55,12 @@ struct Complete: View {
                 }
                 .padding(.bottom)
                 
-                TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .challengeAndSettings, color: nil)
+                TextHelper.text(key: "CurrentRhythm", alignment: .leading, type: .h4, color: nil)
                 
                 TextHelper.text(key: "days", alignment: .leading, type: .h4, color: nil, prefix: "\(streak) ")
                     .padding(.bottom)
                 
                 TextHelper.text(key: "YourNewTotalIs", alignment: .leading, type: .h4, color: nil)
-//                
-//                textHelper.GetTextByType(key: "", alignment: .leading, type: .largeTitle, color: Color("CheckGreen"), prefix: "\(challenge.activity?.total ?? 0) ", suffix: "\(challenge.activity?.unit ?? "miles")")
             }
             
             Spacer()

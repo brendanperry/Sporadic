@@ -7,6 +7,7 @@
 
 import Foundation
 import CloudKit
+import SwiftUI
 
 class CreateGroupViewModel: ObservableObject {
     @Published var groupName = ""
@@ -18,53 +19,74 @@ class CreateGroupViewModel: ObservableObject {
             }
         }
     }
-    @Published var days = 3
+    @Published var days = [Int]()
     @Published var time = Date()
-    @Published var color = 1
+    @Published var color = 0 {
+        didSet {
+            toolbarBackground = GroupBackgroundColor.init(rawValue: color)?.getColor() ?? Color("Panel")
+        }
+    }
     @Published var activities = [Activity]()
     @Published var errorMessage = ""
     @Published var showError = false
+    @Published var toolbarBackground = GroupBackgroundColor.one.getColor()
     
-    var group = UserGroup.init(activities: nil, challenges: nil, displayedDays: [], daysPerWeek: 0, deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", users: nil, recordId: CKRecord(recordType: "Group").recordID)
+    var group = UserGroup.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))
     
-    let activityTemplateHelper = ActivityTemplateHelper()
     
     func getTemplates() -> [ActivityTemplate] {
-        return activityTemplateHelper.getActivityTemplates()
+        return ActivityTemplateHelper.templates
     }
     
-    func createGroup() async -> Bool {
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoading = true
+    func createGroup(completion: @escaping (UserGroup?) -> Void) {
+        if groupName.isEmpty {
+            DispatchQueue.main.async {
+                self.errorMessage = "Group name cannot be empty."
+                self.showError = true
+                completion(nil)
+            }
+            
+            return
         }
         
-        if groupName == "" {
-            DispatchQueue.main.async { [weak self] in
-                self?.errorMessage = "Group name cannot be empty."
-                self?.showError = true
+        if days.isEmpty {
+            DispatchQueue.main.async {
+                self.errorMessage = "You must select days to receive challenges."
+                self.showError = true
+                completion(nil)
             }
             
-            isLoading = false
-            return false
+            return
         }
         
-        do {
-            try await CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time, activities: activities)
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoading = false
+        if activities.isEmpty {
+            DispatchQueue.main.async {
+                self.errorMessage = "You must select at least one activity."
+                self.showError = true
+                completion(nil)
             }
             
-            return true
+            return
         }
-        catch {
-            DispatchQueue.main.async { [weak self] in
-                self?.errorMessage = "Could not create group. Please check your connection and try again."
-                self?.showError = true
-                self?.isLoading = false
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time, activities: activities) { [weak self] result in
+            switch result {
+            case .success(let group):
+                group.areUsersLoading = false
+                group.areActivitiesLoading = false
+                completion(group)
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Could not create group. Please check your connection and try again."
+                    self?.showError = true
+                    self?.isLoading = false
+                    completion(nil)
+                }
             }
-            
-            return false
         }
     }
 }

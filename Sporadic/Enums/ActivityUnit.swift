@@ -13,7 +13,7 @@ enum ActivityUnit: String, CaseIterable {
     case seconds = "seconds"
     case laps = "laps"
     case sets = "sets"
-    case general = "general"
+    case reps = "reps"
 }
 
 extension ActivityUnit {
@@ -24,7 +24,7 @@ extension ActivityUnit {
         case .seconds: return Localize.getString("Seconds")
         case .laps: return Localize.getString("Laps")
         case .sets: return Localize.getString("Sets")
-        case .general: return Localize.getString("General")
+        case .reps: return Localize.getString("Reps")
         }
     }
     
@@ -35,7 +35,7 @@ extension ActivityUnit {
         case .seconds: return Localize.getString("SecondsAbbr")
         case .laps: return Localize.getString("Laps")
         case .sets: return Localize.getString("Sets")
-        case .general: return Localize.getString("General")
+        case .reps: return Localize.getString("Reps")
         }
     }
     
@@ -46,7 +46,7 @@ extension ActivityUnit {
         case .seconds: return 30
         case .laps: return 1
         case .sets: return 3
-        case .general: return 10
+        case .reps: return 5
         }
     }
     
@@ -57,7 +57,7 @@ extension ActivityUnit {
         case .seconds: return 90
         case .laps: return 5
         case .sets: return 5
-        case .general: return 100
+        case .reps: return 20
         }
     }
     
@@ -68,18 +68,18 @@ extension ActivityUnit {
         case .seconds: return 1
         case .laps: return 1
         case .sets: return 1
-        case .general: return 0.25
+        case .reps: return 1
         }
     }
     
     func maxValue() -> Double {
         switch self {
         case .miles: return 20
-        case .minutes: return 360
+        case .minutes: return 60
         case .seconds: return 120
         case .laps: return 50
         case .sets: return 50
-        case .general: return 500
+        case .reps: return 100
         }
     }
 }

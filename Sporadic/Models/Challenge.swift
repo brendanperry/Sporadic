@@ -8,58 +8,124 @@
 import Foundation
 import CloudKit
 
-struct Challenge: Identifiable {
+class Challenge: Identifiable, ObservableObject {
     let id: UUID
     let activityRecord: CKRecord.Reference
-    var activity: Activity? = nil
     let amount: Double
     let startTime: Date
-    let isCompleted: Bool
     let userRecords: [CKRecord.Reference]
-    var users = [User]()
+    @Published var users: [User]? = nil
     let groupRecord: CKRecord.Reference
-    var group: UserGroup? = nil
+    @Published var group: UserGroup? = nil
+    let recordId: CKRecord.ID
+    @Published var status = ChallengeStatus.unknown
+    @Published var usersCompleted = [User]()
+    var cachedStatus = ChallengeStatus.unknown
+    let activityName: String
+    let unit: ActivityUnit
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, isCompleted: Bool, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID, activityName: String, unit: ActivityUnit) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
         self.startTime = startTime
-        self.isCompleted = isCompleted
         self.userRecords = userRecords
         self.groupRecord = groupRecord
+        self.recordId = recordId
+        self.activityName = activityName
+        self.unit = unit
     }
 }
 
 enum ChallengeStatus {
-    case completed, failed, inProgress
+    case userCompleted, groupCompleted, failed, unknown, inProgress
 }
 
 extension Challenge {
-    init? (from record: CKRecord) {
+    convenience init? (from record: CKRecord) {
         guard
             let activityReference = record["activity"] as? CKRecord.Reference,
             let amount = record["amount"] as? Double,
             let startTime = record["startTime"] as? Date,
-            let isCompleted = record["isCompleted"] as? Int,
             let users = record["users"] as? [CKRecord.Reference],
-            let group = record["group"] as? CKRecord.Reference
+            let group = record["group"] as? CKRecord.Reference,
+            let activityName = record["activityName"] as? String,
+            let unit = record["unit"] as? String
         else {
             return nil
         }
         
-        self = .init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, isCompleted: isCompleted == 0 ? false : true, userRecords: users, groupRecord: group)
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
     }
     
-    func getStatus() -> ChallengeStatus {
-        if self.isCompleted {
-            return .completed
+    func isChallengeTimeUp() -> Bool {
+        return Date() > Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime
+    }
+    
+    func setStatus() {
+        Task {
+            let status = await getStatus()
+            
+            DispatchQueue.main.async {
+                self.status = status
+            }
+        }
+    }
+    
+    func getStatus() async -> ChallengeStatus {
+        do {
+            if let usersCompleted = try await CloudKitHelper.shared.usersWhoHaveCompletedChallenge(challenge: self) {
+                let usersCompleted = getUniqueUsers(users: usersCompleted)
+                
+                await MainActor.run {
+                    self.usersCompleted = usersCompleted
+                }
+            }
+        } catch {
+            return .unknown
         }
         
-        if !self.isCompleted && Date() < Calendar.current.date(byAdding: .day, value: 1, to: startTime) ?? startTime {
-            return .inProgress
+        guard let user = CloudKitHelper.shared.getCachedUser() else {
+            return .unknown
         }
         
-        return .failed
+        guard let users = users else {
+            return .unknown
+        }
+        
+        if self.usersCompleted.count == users.count {
+            cachedStatus = .groupCompleted
+            return .groupCompleted
+        }
+        else if usersCompleted.contains(where: { $0.record.recordID == user.record.recordID }) && !isChallengeTimeUp() {
+            cachedStatus = .userCompleted
+            return .userCompleted
+        }
+        else if isChallengeTimeUp() {
+            return .failed
+        }
+        else if cachedStatus != .unknown {
+            return cachedStatus
+        }
+        
+        // we save the status in case the user completes the challenge then navigate away
+        // and comes back and the challenge hasn't been fully synced to the server yet
+        // so we only cache completed statuses
+        
+        return .inProgress
+    }
+    
+    func getUniqueUsers(users: [User]) -> [User] {
+        var recordIds = [CKRecord.ID]()
+        var uniqueUsers = [User]()
+        
+        users.forEach { user in
+            if !recordIds.contains(user.record.recordID) {
+                recordIds.append(user.record.recordID)
+                uniqueUsers.append(user)
+            }
+        }
+        
+        return uniqueUsers
     }
 }
