@@ -1,16 +1,10 @@
-# Short Version:
+The only data that we have is what you enter into Sporadic. This includes your profile information, groups, challenges, and so on. This is all required for the app's function, and none of this data is sold to third parties.
 
-We don't collect any personal data.
+We use OneSignal to provide push notifications. OneSignal does collect basic analytics data.
 
-# Long Version:
+OneSignal collects user First Session, Last Session, Session Count, Total Usage Duration, and Notification Clicks
 
-We really don't. We don't even have a database or a server. 
-
-The only information that leaves the device is if you choose to sync to iCloud. This is used to maintain your stats in the case that you get a new phone. None of that data is stored by us, and it can be disabled entirely in the iPhone settings by turning off iCloud for the app.
-
-This data is a key-value pair. 
-
-For example: `"Run" : 5`
+OneSignal creates an user-level ID called OneSignal ID for Analytics and App functionality. The OneSignal ID is not linked to the user's identity.
 
 Don't want to take our word for it? Have a look for yourself. The app is open source.
 
