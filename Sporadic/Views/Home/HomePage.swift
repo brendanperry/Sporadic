@@ -23,7 +23,7 @@ struct HomePage: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
                 Image("BackgroundImage")
                     .resizable()
