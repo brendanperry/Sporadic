@@ -146,7 +146,6 @@
 		C65A020626870099007A5B2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6620062278A58D9000AF577 /* EditActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivity.swift; sourceTree = "<group>"; };
 		C66424CF27B856A700B574D7 /* Complete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complete.swift; sourceTree = "<group>"; };
-		C664A92E2796208300EE2195 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C664A936279A156400EE2195 /* ActivityTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplate.swift; sourceTree = "<group>"; };
 		C664A938279A174400EE2195 /* ActivityTemplateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTemplateHelper.swift; sourceTree = "<group>"; };
 		C664A93E279A4D1600EE2195 /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
@@ -338,7 +337,6 @@
 				C65A01FC26870098007A5B2F /* Sporadic */,
 				C630BE04268D2D230066D8C3 /* SporadicTests */,
 				C65A01FB26870098007A5B2F /* Products */,
-				FE7EE66C50E94596AE3B347F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -516,14 +514,6 @@
 				C6F31139294E66C00096F09D /* JoinGroupViewModel.swift */,
 			);
 			path = JoinGroup;
-			sourceTree = "<group>";
-		};
-		FE7EE66C50E94596AE3B347F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				C664A92E2796208300EE2195 /* HealthKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
