@@ -29,9 +29,6 @@ struct NotificationHelper {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
         
-        let wow = try? await URLSession.shared.data(for: request)
-        
-        print(wow?.0)
-        print(wow?.1)
+        let _ = try? await URLSession.shared.data(for: request)
     }
 }
