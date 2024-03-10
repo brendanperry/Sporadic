@@ -109,28 +109,17 @@ struct ChallengeView: View {
     
     func getChallengeText() -> some View {
         if challenge.unit == .reps {
-            return TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.activityName))", alignment: .leading, type: .h3, color: .white)
+            return TextHelper.text(key: "Do \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.activityName)", alignment: .leading, type: .h3, color: .white)
         }
         else if challenge.unit == .miles || challenge.unit == .laps {
-            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
+            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.getLabel())", alignment: .leading, type: .h3, color: .white)
         }
         else if challenge.unit == .seconds || challenge.unit == .minutes {
-            return TextHelper.text(key: "\(challenge.activityName) for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
+            return TextHelper.text(key: "\(challenge.activityName) for \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.getLabel())", alignment: .leading, type: .h3, color: .white)
         }
         else {
-            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(getLabel(challenge.amount, challenge.unit.rawValue))", alignment: .leading, type: .h3, color: .white)
+            return TextHelper.text(key: "\(challenge.activityName) \(challenge.amount.formatted(FloatingPointFormatStyle())) \(challenge.getLabel())", alignment: .leading, type: .h3, color: .white)
         }
-    }
-    
-    func getLabel(_ amount: Double, _ unit: String) -> String {
-        var unit = unit
-        if amount == 1 {
-            if unit.last == "s" {
-                let _ = unit.popLast()
-            }
-        }
-        
-        return unit
     }
     
     struct DueTime: View {
