@@ -26,6 +26,7 @@ class StatsViewModel: ObservableObject {
     @Published var template: ActivityTemplate? = nil
     
     var challenges = [CompletedChallenge]()
+    let statsManager = StatsManager()
     
     func waitForGroupsToFinishLoading(homeViewModel: HomeViewModel) {
         if areGroupsDoneLoading(homeViewModel: homeViewModel) {
@@ -107,43 +108,25 @@ class StatsViewModel: ObservableObject {
     }
     
     private func getAllTimeDataCombined() -> [CompletedChallenge] {
-        var preparedData = [CompletedChallenge]()
-        
         let challengesForExercise = challenges.filter({ $0.activityName == selectedActivity }).sorted(by: { $0.date < $1.date })
         
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             return []
         }
         
-        DispatchQueue.main.async {
-            self.yourTotal = challengesForExercise.filter({ $0.user.recordID == user.record.recordID }).reduce(0, { $0 + $1.amount })
-            
-            let days = Calendar.current.dateComponents([.day], from: self.challenges.first?.date ?? Date(), to: Date()).day ?? 1
-            
-            self.yourAvg = self.yourTotal / Double(days + 1)
-        }
-        
-        let dictionary = Dictionary(grouping: challengesForExercise, by: { (element: CompletedChallenge) in
-            return Calendar.current.startOfDay(for: element.date)
-        }).sorted(by: { $0.key < $1.key })
-        
-        var total = 0.0
-        
-        for entry in dictionary {
-            if var combinedChallenge = entry.value.first {
-                let totalAmount = entry.value.reduce(0, { $0 + $1.amount })
-                combinedChallenge.amount = totalAmount + total
-                
-                preparedData.append(combinedChallenge)
-                
-                total += totalAmount
-            }
-        }
+        let personalStats = statsManager.getPersonalStatsForOneExercise(challenges: challengesForExercise, user: user)
         
         DispatchQueue.main.async {
-            self.total = total
+            self.yourTotal = personalStats.0
+            self.yourAvg = personalStats.1
         }
         
-        return preparedData
+        let groupStats = statsManager.getGroupStatsForOneExercise(challenges: challengesForExercise)
+        
+        DispatchQueue.main.async {
+            self.total = groupStats.0
+        }
+        
+        return groupStats.1
     }
 }

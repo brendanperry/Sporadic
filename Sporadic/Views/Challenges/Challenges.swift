@@ -9,8 +9,9 @@ import SwiftUI
 import CloudKit
 import ConfettiSwiftUI
 import Combine
-import OneSignal
+import OneSignalFramework
 import StoreKit
+import WidgetKit
 
 struct Challenges: View {
     let challenges: [Challenge]
@@ -202,6 +203,7 @@ struct ChallengeView: View {
                 else {
                     Task {
                         try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                     
                     showReviewPopUp()

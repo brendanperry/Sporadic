@@ -35,6 +35,21 @@ class Challenge: Identifiable, ObservableObject {
         self.activityName = activityName
         self.unit = unit
     }
+    
+    convenience init() {
+        self.init(id: UUID(), activityRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Activity"), action: .none), amount: 0, startTime: Date(), userRecords: [CKRecord.Reference.init(record: CKRecord(recordType: "User"), action: .none)], groupRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Group"), action: .none), recordId: CKRecord.ID.init(recordName: "Challenge"), activityName: "Loading activity", unit: .miles)
+    }
+    
+    func getLabel() -> String {
+        var unit = unit.rawValue
+        if amount == 1 {
+            if unit.last == "s" {
+                let _ = unit.popLast()
+            }
+        }
+        
+        return unit
+    }
 }
 
 enum ChallengeStatus {

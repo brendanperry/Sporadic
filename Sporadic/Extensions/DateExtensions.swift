@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date: RawRepresentable {
+extension Date {
     private static let formatter = ISO8601DateFormatter()
 
     public var rawValue: String {

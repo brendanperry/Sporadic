@@ -7,7 +7,7 @@
 
 import Foundation
 import CloudKit
-import OneSignal
+import OneSignalFramework
 
 
 class CloudKitHelper {
@@ -44,15 +44,17 @@ class CloudKitHelper {
         if let record = records.first {
             cachedUser = User.init(from: record)
             
-            if let userId = cachedUser?.usersRecordId {
-                OneSignal.setExternalUserId(userId)
-            }
-            
-            if cachedUser?.notificationId != OneSignal.getDeviceState().userId {
-                if let user = cachedUser {
-                    CloudKitHelper.shared.updateNotificationId(user: user) { error in
-                        if let error {
-                            print(error)
+            if isInWidget() == false {
+                if let userId = cachedUser?.usersRecordId {
+                    OneSignal.login(userId)
+                }
+                
+                if cachedUser?.notificationId != OneSignal.User.pushSubscription.id {
+                    if let user = cachedUser {
+                        CloudKitHelper.shared.updateNotificationId(user: user) { error in
+                            if let error {
+                                print(error)
+                            }
                         }
                     }
                 }
@@ -76,6 +78,12 @@ class CloudKitHelper {
         return nil
     }
     
+    func isInWidget() -> Bool {
+        guard let extesion = Bundle.main.infoDictionary?["NSExtension"] as? [String: String] else { return false }
+        guard let widget = extesion["NSExtensionPointIdentifier"] else { return false }
+        return widget == "com.apple.widgetkit-extension"
+    }
+    
     func hasUser() -> Bool {
         return cachedUser != nil
     }
@@ -89,7 +97,7 @@ class CloudKitHelper {
         
         record.setValue("Challenger", forKey: "name")
         record.setValue(usersRecordId, forKey: "usersRecordId")
-        record.setValue(OneSignal.getDeviceState().userId ?? "", forKey: "notificationId")
+        record.setValue(OneSignal.User.pushSubscription.id ?? "", forKey: "notificationId")
         
         let userRecord = try await database.save(record)
         
@@ -100,7 +108,7 @@ class CloudKitHelper {
     
     func updateNotificationId(user: User,  completion: @escaping (Error?) -> Void) {
         let record = user.record
-        record["notificationId"] = OneSignal.getDeviceState().userId ?? ""
+        record["notificationId"] = OneSignal.User.pushSubscription.id ?? ""
         
         database.save(record) { record, error in
             if let error = error {
@@ -278,7 +286,9 @@ class CloudKitHelper {
     
     func getGroupsForUser() async throws -> [UserGroup]? {
         if let user = try await getCurrentUser(forceSync: false) {
-            let predicate = NSPredicate(format: "users CONTAINS %@", user.record)
+            let groupIds = user.groups.map { $0.recordID }
+            
+            let predicate = NSPredicate(format: "recordID in %@", groupIds)
             
             let query = CKQuery(recordType: "Group", predicate: predicate)
             
@@ -705,6 +715,37 @@ class CloudKitHelper {
         return users
     }
     
+    func fetchCompletedChallengesForActivity(group: UserGroup, activityName: String, activityUnit: String) async throws -> [CompletedChallenge] {
+        let groupReference = CKRecord.Reference(record: group.record, action: .none)
+        let groupPredicate = NSPredicate(format: "group = %@", groupReference)
+        let activityNamePredicate = NSPredicate(format: "activityName = %@", activityName)
+        let activityUnitPredicate = NSPredicate(format: "unit = %@", activityUnit)
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [groupPredicate, activityUnitPredicate, activityNamePredicate])
+        
+        let query = CKQuery(recordType: "CompletedChallenge", predicate: compoundPredicate)
+        
+        var records = [CompletedChallenge]()
+        var queryCursor: CKQueryOperation.Cursor?
+        
+        repeat {
+            guard let response = try? await database.records(matching: query) else { return [] }
+            
+            for match in response.matchResults {
+                let result = match.1
+                
+                if let record = try? result.get() {
+                    if let challenge = CompletedChallenge(from: record, group: group) {
+                        records.append(challenge)
+                    }
+                }
+            }
+            
+            queryCursor = response.queryCursor
+        } while queryCursor != nil
+        
+        return records
+    }
+    
     var challenges = [CKRecord.ID: [CompletedChallenge]]()
     func fetchCompletedChallenges(group: UserGroup, forceSync: Bool, completion: @escaping (Result<[CompletedChallenge], Error>) -> Void) {
         if !challenges.isEmpty && !forceSync {
@@ -765,19 +806,18 @@ class CloudKitHelper {
         guard let user = cachedUser else {
             return
         }
+                
+        let playerIds = challenge.users?.map({ $0.notificationId }).filter({ $0 != OneSignal.User.pushSubscription.id ?? "" }) ?? []
         
-        let device = OneSignal.getDeviceState()
+        let data = NotificationData(
+            app_id: "f211cce4-760d-4404-97f3-34df31eccde8",
+            include_subscription_ids: playerIds,
+            contents: ["en": "\(user.name) completed today's challenge for \(challenge.group?.name ?? "") \(challenge.group?.emoji ?? "")"],
+            headings: ["en": "Challenge Completed"])
         
-        let playerIds = challenge.users?.map({ $0.notificationId }).filter({ $0 != device?.userId ?? "" }) ?? []
-        
-        let notification: [String: Any] = [
-            "app_id": "f211cce4-760d-4404-97f3-34df31eccde8",
-            "include_player_ids": playerIds,
-            "contents": ["en": "\(user.name) completed today's challenge for \(challenge.group?.name ?? "") \(challenge.group?.emoji ?? "")"],
-            "headings": ["en": "Challenge Completed"]
-        ]
-        
-        OneSignal.postNotification(notification)
+        Task {
+            await NotificationHelper().postNotification(data: data)
+        }
     }
     
     func getStreakForGroup(group: UserGroup) async -> Int {

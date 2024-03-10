@@ -6,7 +6,7 @@
       "location" : "https://github.com/simibac/ConfettiSwiftUI.git",
       "state" : {
         "branch" : "master",
-        "revision" : "2a5797c5ada9aaca77338e7df1b1913cea909994"
+        "revision" : "469de4e43949815dc92570cc786922d8d1385b06"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OneSignal/OneSignal-XCFramework",
       "state" : {
-        "revision" : "1676568b2f16746cea8f03763a9c30893176e0f7",
-        "version" : "3.11.0"
+        "revision" : "68685956124c710cdc9112bc696ad30e2f58538b",
+        "version" : "5.1.3"
       }
     }
   ],

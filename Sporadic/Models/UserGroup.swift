@@ -8,6 +8,7 @@
 import Foundation
 import CloudKit
 import SwiftUI
+import AppIntents
 
 class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
     static func == (lhs: UserGroup, rhs: UserGroup) -> Bool {
@@ -18,6 +19,7 @@ class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
         hasher.combine(record.recordID)
     }
     
+    var id: String { record.recordID.recordName }
     @Published var displayedDays: [Int]
     @Published var deliveryTime: Date
     @Published var emoji: String
@@ -40,6 +42,10 @@ class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
         self.name = name
         self.record = record
         self.owner = owner
+    }
+    
+    convenience init() {
+        self.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group is loading", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "User"))
     }
     
     // UTC adjusted days of the week

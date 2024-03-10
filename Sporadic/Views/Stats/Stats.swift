@@ -332,9 +332,13 @@ struct Stats: View {
                     .font(Font.custom("Lexend-Regular", size: 14, relativeTo: .title3))
                     .foregroundColor(Color("StreaksText"))
                 
-                Text(streak == -1 ? "-" : "\(streak)")
-                    .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))
-                    .foregroundColor(.white)
+                if streak == -1 {
+                   ProgressView()
+                } else {
+                    Text("\(streak)")
+                        .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))
+                        .foregroundColor(.white)
+                }
                 
                 Spacer()
             }

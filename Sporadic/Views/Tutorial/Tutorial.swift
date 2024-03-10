@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotosUI
-import OneSignal
+import OneSignalFramework
 
 enum GroupDifficulty {
     case beginner, intermediate, advanced
@@ -74,14 +74,14 @@ struct Tutorial: View {
                                 }
                             }
                             else if viewModel.selection == 2 && CloudKitHelper.shared.hasUser() {
-                                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                                OneSignal.Notifications.requestPermission { accepted in
                                     if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
-                                        OneSignal.setExternalUserId(userId)
+                                        OneSignal.login(userId)
                                     }
                                     
                                     viewRouter.navigateTo(.home)
                                     UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
-                                })
+                                }
                             } else {
                                 viewModel.selection += 1
                             }

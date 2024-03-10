@@ -103,15 +103,9 @@ struct GroupWidget: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .center) {
-                Circle()
-                    .foregroundColor(GroupBackgroundColor.init(rawValue: group.backgroundColor)?.getColor())
-                
-                Text(group.emoji)
-                    .font(.system(size: 25))
-            }
-            .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 50, alignment: .leading)
-            .padding([.horizontal, .top])
+            GroupIcon(emoji: group.emoji, backgroundColor: group.backgroundColor)
+                .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 50, alignment: .leading)
+                .padding([.horizontal, .top])
             
             Text(group.name)
                 .font(.custom("Lexend-SemiBold", size: 16))
