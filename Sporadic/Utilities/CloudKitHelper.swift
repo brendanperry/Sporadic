@@ -717,29 +717,47 @@ class CloudKitHelper {
         let predicate = NSPredicate(format: "group = %@", groupReference)
         let query = CKQuery(recordType: "CompletedChallenge", predicate: predicate)
 
-        let queryOperation = CKQueryOperation(query: query)
+        getAllCompletedChallengeRecords(group: group, records: [], query: query, cursor: nil, completion: completion)
+    }
+    
+    func getAllCompletedChallengeRecords(group: UserGroup, records: [CKRecord], query: CKQuery?, cursor: CKQueryOperation.Cursor?, completion: @escaping (Result<[CompletedChallenge], Error>) -> Void) {
+        var records = records
         
-        var records = [CKRecord]()
-
-        queryOperation.recordFetchedBlock = { records.append($0) }
-        queryOperation.queryCompletionBlock = { [weak self] cursor, error in
-            if let error {
-                completion(.failure(error))
-                return
+        let queryOperation: CKQueryOperation? = {
+            if let query {
+                return CKQueryOperation(query: query)
             }
             
-            if let cursor  {
-                print("Cursed")
-                let newOperation = CKQueryOperation(cursor: cursor)
-                newOperation.recordFetchedBlock = { records.append($0) }
-                newOperation.queryCompletionBlock = queryOperation.queryCompletionBlock
-                self?.database.add(newOperation)
+            if let cursor {
+                return CKQueryOperation(cursor: cursor)
             }
-            else {
-                completion(.success(records.compactMap({ CompletedChallenge.init(from: $0, group: group) })))
+            
+            return nil
+        }()
+        
+        guard let queryOperation else { return }
+        
+        queryOperation.resultsLimit = CKQueryOperation.maximumResults;
+        queryOperation.recordMatchedBlock = {
+            if let record = try? $1.get() {
+                records.append(record)
             }
         }
-
+        
+        queryOperation.queryResultBlock = { [self] result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let cursor):
+                
+                if let cursor  {
+                    getAllCompletedChallengeRecords(group: group, records: records, query: nil, cursor: cursor, completion: completion)
+                } else {
+                    completion(.success(records.compactMap({ CompletedChallenge(from: $0, group: group) })))
+                }
+            }
+        }
+        
         database.add(queryOperation)
     }
     
@@ -799,28 +817,48 @@ class CloudKitHelper {
         let predicate = NSPredicate(format: "group = %@", groupReference)
         let query = CKQuery(recordType: "Challenge", predicate: predicate)
 
-        let queryOperation = CKQueryOperation(query: query)
+        getAllChallengeRecords(records: [], query: query, cursor: nil, completion: completion)
+    }
+    
+    // TODO: only certain fields using queryOperation.desiredKeys
+    func getAllChallengeRecords(records: [CKRecord], query: CKQuery?, cursor: CKQueryOperation.Cursor?, completion: @escaping (Result<[Challenge], Error>) -> Void) {
+        var records = records
         
-        var records = [CKRecord]()
-
-        queryOperation.recordFetchedBlock = { records.append($0) }
-        queryOperation.queryCompletionBlock = { [weak self] cursor, error in
-            if let error {
-                completion(.failure(error))
-                return
+        let queryOperation: CKQueryOperation? = {
+            if let query {
+                return CKQueryOperation(query: query)
             }
-
-            if let cursor  {
-                let newOperation = CKQueryOperation(cursor: cursor)
-                newOperation.recordFetchedBlock = { records.append($0) }
-                newOperation.queryCompletionBlock = queryOperation.queryCompletionBlock
-                self?.database.add(newOperation)
+            
+            if let cursor {
+                return CKQueryOperation(cursor: cursor)
             }
-            else {
-                completion(.success(records.compactMap({ Challenge(from: $0) })))
+            
+            return nil
+        }()
+        
+        guard let queryOperation else { return }
+        
+        queryOperation.resultsLimit = CKQueryOperation.maximumResults;
+        queryOperation.recordMatchedBlock = {
+            if let record = try? $1.get() {
+                records.append(record)
             }
         }
-
+        
+        queryOperation.queryResultBlock = { [self] result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let cursor):
+                
+                if let cursor  {
+                    getAllChallengeRecords(records: records, query: nil, cursor: cursor, completion: completion)
+                } else {
+                    completion(.success(records.compactMap({ Challenge(from: $0) })))
+                }
+            }
+        }
+        
         database.add(queryOperation)
     }
 }
