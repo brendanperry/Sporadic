@@ -128,7 +128,7 @@ struct CreateGroupView: View {
                             VStack(alignment: .center) {
                                 Spacer()
                                 
-                                PlusButton(backgroundColor: .clear, lockLightMode: true)
+                                PlusButton(shape: Rectangle(), backgroundColor: .clear, lockLightMode: true, shadow: false)
                                     .frame(width: 25)
                                     .padding(10)
                                     .background(Circle().foregroundColor(Color("BrandPurple")))
@@ -148,7 +148,7 @@ struct CreateGroupView: View {
                             .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                         }
                         else {
-                            PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
+                            PlusButton(shape: Rectangle(), backgroundColor: Color("Panel"), lockLightMode: false, shadow: false)
                         }
                     })
                     .buttonStyle(ButtonPressAnimationStyle())

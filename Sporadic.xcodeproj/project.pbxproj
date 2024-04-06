@@ -104,6 +104,7 @@
 		C6B5F2E62B9E1E5C001A45D7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
+		C6BD0D752BC1AB8600F5EC76 /* Paywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */; };
 		C6C424D12B263188006C80DB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C424B52B262ECE006C80DB /* WidgetKit.framework */; };
 		C6C424D22B263188006C80DB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C424B72B262ECE006C80DB /* SwiftUI.framework */; };
 		C6C424D52B263188006C80DB /* SporadicWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C424D42B263188006C80DB /* SporadicWidgetBundle.swift */; };
@@ -278,6 +279,7 @@
 		C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
+		C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paywall.swift; sourceTree = "<group>"; };
 		C6C424B52B262ECE006C80DB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C6C424B72B262ECE006C80DB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C6C424D02B263188006C80DB /* SporadicWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SporadicWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -431,6 +433,7 @@
 				C6C96017278FA22600A67AA2 /* Navigation */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C640520429F032B80054BD85 /* Stats */,
+				C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -926,6 +929,7 @@
 				C6F31137294E66A40096F09D /* JoinGroup.swift in Sources */,
 				C68378BD28440FF700ABB6B3 /* Activity.swift in Sources */,
 				C67085682A4A6ED700E46EBD /* CloseButton.swift in Sources */,
+				C6BD0D752BC1AB8600F5EC76 /* Paywall.swift in Sources */,
 				C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */,
 				C68378BF2844115700ABB6B3 /* CloudKitHelper.swift in Sources */,
 				C68378D32849AC9800ABB6B3 /* Stats.swift in Sources */,

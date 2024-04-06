@@ -7,16 +7,17 @@
 
 import SwiftUI
 
-struct PlusButton: View {
+struct PlusButton<Content: Shape>: View {
+    let shape: Content
     let backgroundColor: Color
     let lockLightMode: Bool
+    let shadow: Bool
     
     var body: some View {
         ZStack {
-            Rectangle()
+            shape
                 .frame(width: 50, height: 50, alignment: .center)
                 .foregroundColor(backgroundColor)
-                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                 .cornerRadius(10)
 
             Capsule(style: .continuous)
@@ -26,13 +27,14 @@ struct PlusButton: View {
             Capsule(style: .continuous)
                 .rotation(.degrees(90))
                 .frame(width: 5, height: 25)
-                .foregroundColor(lockLightMode ? Color("AddCrossSideLight") :Color("AddCrossSide"))
+                .foregroundColor(lockLightMode ? Color("AddCrossSideLight") : Color("AddCrossSide"))
         }
+        .shadow(color: Color("Shadow"), radius: shadow ? 16 : 0, x: 0, y: 4)
     }
 }
 
 struct PlusButton_Previews: PreviewProvider {
     static var previews: some View {
-        PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
+        PlusButton(shape: Circle(), backgroundColor: Color("Panel"), lockLightMode: false, shadow: true)
     }
 }

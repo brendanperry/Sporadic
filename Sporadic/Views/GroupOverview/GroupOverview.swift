@@ -265,7 +265,7 @@ struct YourActivities: View {
                     Button(action: {
                         showAddView = true
                     }, label: {
-                        PlusButton(backgroundColor: Color("Panel"), lockLightMode: false)
+                        PlusButton(shape: Rectangle(), backgroundColor: Color("Panel"), lockLightMode: false, shadow: false)
                     })
                     .buttonStyle(ButtonPressAnimationStyle())
                 }
