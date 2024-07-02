@@ -15,6 +15,8 @@ struct AddCustomActivityPage: View {
     @State var showNetworkError = false
     @State var showNameError = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var storeManager: StoreManager
+    @State var showProPopUp = false
     
     var items: [GridItem] = Array(repeating: .init(.adaptive(minimum: 100)), count: 2)
     
@@ -62,25 +64,32 @@ struct AddCustomActivityPage: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .popover(isPresented: $showProPopUp) {
+            Paywall(shouldShow: $showProPopUp)
+        }
     }
     
     func AddButton() -> some View {
         Button(action: {
-            if viewModel.name.count < 1 || viewModel.name.count > 24 {
-                showNameError = true
-            }
-            else {
-                activities.append(
-                    Activity(
-                        record: CKRecord(recordType: "Activity"),
-                        maxValue: viewModel.maxValue,
-                        minValue: viewModel.minValue,
-                        name: viewModel.name,
-                        templateId: -1,
-                        unit: viewModel.unit,
-                        isNew: true))
-                
-                dismiss()
+            if storeManager.hasProUpgrade {
+                if viewModel.name.count < 1 || viewModel.name.count > 24 {
+                    showNameError = true
+                }
+                else {
+                    activities.append(
+                        Activity(
+                            record: CKRecord(recordType: "Activity"),
+                            maxValue: viewModel.maxValue,
+                            minValue: viewModel.minValue,
+                            name: viewModel.name,
+                            templateId: -1,
+                            unit: viewModel.unit,
+                            isNew: true))
+                    
+                    dismiss()
+                }
+            } else {
+                showProPopUp = true
             }
         }, label: {
             TextHelper.text(key: "AddToList", alignment: .center, type: .h5, color: .white)

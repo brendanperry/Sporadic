@@ -17,10 +17,12 @@ struct SettingsPage: View {
     let appThemeOptions = ["System", "Light", "Dark"]
     
     @State var showThemeOptions = false
+    @State var showProPopUp = false
     
     @StateObject var viewModel = settingsViewModel
     
     @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var storeManager: StoreManager
     
     var body: some View {
         ZStack {
@@ -35,6 +37,7 @@ struct SettingsPage: View {
                         .padding(.bottom)
                     
                     UserSettings(viewModel: viewModel, name: $viewModel.name, photo: $viewModel.photo)
+                    ProUpgrade()
                     NotificationWidget()
                     AppTheme()
                     AppIcons()
@@ -77,6 +80,25 @@ struct SettingsPage: View {
             }
             .alert(isPresented: $viewModel.showDisabledAlert) {
                 Alert(title: Text(Localize.getString("NotificationsDisabled")), message: Text(Localize.getString("PleaseEnableNotifications")), dismissButton: .default(Text(Localize.getString("Okay"))))
+            }
+    }
+    
+    func ProUpgrade() -> some View {
+        RectangleWidget(
+            image: "AppTheme",
+            text: storeManager.hasProUpgrade ? "Pro is Active" : "Upgrade",
+            actionText: "Prompt") {
+                if !storeManager.hasProUpgrade {
+                    let impact = UIImpactFeedbackGenerator(style: .light)
+                    impact.impactOccurred()
+                }
+            }
+            .alert(isPresented: $viewModel.showEnabledAlert) {
+                Alert(title: Text(Localize.getString("NotificationsEnabled")), message: Text(Localize.getString("NothingToDo")), dismissButton: .default(Text(Localize.getString("Okay"))))
+            }
+            .buttonStyle(ButtonPressAnimationStyle())
+            .popover(isPresented: $showProPopUp) {
+                Paywall(shouldShow: $showProPopUp)
             }
     }
     

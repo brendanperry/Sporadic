@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var storeManager: StoreManager
     @StateObject var homeViewModel = HomeViewModel()
     @StateObject var statsViewModel = StatsViewModel()
     @StateObject var viewRouter = ViewRouter()
@@ -43,7 +44,10 @@ struct MainView: View {
             }
         }
         .popover(isPresented: $showJoinGroup) {
-            JoinGroup(viewModel: JoinGroupViewModel(groupId: groupId, homeViewModel: homeViewModel), groupId: $groupId)
+            JoinGroup(groupCount: homeViewModel.groups.count, viewModel: JoinGroupViewModel(groupId: groupId, homeViewModel: homeViewModel), groupId: $groupId)
+        }
+        .task {
+            await storeManager.updatePurchasedProducts()
         }
     }
 }

@@ -12,10 +12,12 @@ import OneSignalFramework
 @main
 struct StartApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var storeManager = StoreManager()
     
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(storeManager)
         }
     }
 }
@@ -27,7 +29,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         appearance.backgroundColor = .white
         UINavigationBar.appearance().isHidden = true
         
-        OneSignal.Debug.setLogLevel(.LL_NONE)
+        OneSignal.Debug.setLogLevel(.LL_VERBOSE)
         OneSignal.initialize("f211cce4-760d-4404-97f3-34df31eccde8", withLaunchOptions: launchOptions)
         
         return true

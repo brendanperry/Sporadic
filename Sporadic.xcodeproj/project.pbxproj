@@ -105,6 +105,8 @@
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BD0D752BC1AB8600F5EC76 /* Paywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */; };
+		C6BD0D772BC1C47300F5EC76 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */; };
+		C6BD0D792BC226CA00F5EC76 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D782BC226CA00F5EC76 /* StoreManager.swift */; };
 		C6C424D12B263188006C80DB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C424B52B262ECE006C80DB /* WidgetKit.framework */; };
 		C6C424D22B263188006C80DB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6C424B72B262ECE006C80DB /* SwiftUI.framework */; };
 		C6C424D52B263188006C80DB /* SporadicWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C424D42B263188006C80DB /* SporadicWidgetBundle.swift */; };
@@ -141,6 +143,7 @@
 		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
 		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
+		C6D4211A2BD0B1A000765DAE /* SporadicProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */; };
 		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 		C6E6386729B3C9E0007DD574 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */; };
 		C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386829B3CC04007DD574 /* PlusButton.swift */; };
@@ -280,6 +283,8 @@
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paywall.swift; sourceTree = "<group>"; };
+		C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		C6BD0D782BC226CA00F5EC76 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		C6C424B52B262ECE006C80DB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C6C424B72B262ECE006C80DB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C6C424D02B263188006C80DB /* SporadicWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SporadicWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,6 +309,7 @@
 		C6C960292794A6B700A67AA2 /* Sporadic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sporadic.entitlements; sourceTree = "<group>"; };
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
 		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
+		C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SporadicProducts.storekit; sourceTree = "<group>"; };
 		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6E6386829B3CC04007DD574 /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
@@ -325,6 +331,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6BD0D772BC1C47300F5EC76 /* StoreKit.framework in Frameworks */,
 				C6B5F2DE2B9D530A001A45D7 /* OneSignalFramework in Frameworks */,
 				C6F4569F299DDE0B003DD2F4 /* ConfettiSwiftUI in Frameworks */,
 			);
@@ -420,6 +427,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6D4211B2BD0B31600765DAE /* ProUpgrade */,
 				C6F31138294E66AC0096F09D /* JoinGroup */,
 				C62625A428673B3600E84C79 /* CreateGroup */,
 				C68378B92843F42900ABB6B3 /* Challenges */,
@@ -433,7 +441,6 @@
 				C6C96017278FA22600A67AA2 /* Navigation */,
 				C6667CE4268F8B7E00991913 /* MainView.swift */,
 				C640520429F032B80054BD85 /* Stats */,
-				C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -459,6 +466,7 @@
 		C65A01F126870098007A5B2F = {
 			isa = PBXGroup;
 			children = (
+				C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */,
 				C6C4251B2B2D880A006C80DB /* SporadicWidgetExtension.entitlements */,
 				C65A01FC26870098007A5B2F /* Sporadic */,
 				C630BE04268D2D230066D8C3 /* SporadicTests */,
@@ -611,6 +619,7 @@
 		C6C424B42B262ECE006C80DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */,
 				C6C424B52B262ECE006C80DB /* WidgetKit.framework */,
 				C6C424B72B262ECE006C80DB /* SwiftUI.framework */,
 				C6C424E82B2D6BF0006C80DB /* Intents.framework */,
@@ -690,6 +699,15 @@
 				C639448D279DDC4D00B2E62F /* HomeViewModel.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		C6D4211B2BD0B31600765DAE /* ProUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				C6BD0D782BC226CA00F5EC76 /* StoreManager.swift */,
+				C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */,
+			);
+			path = ProUpgrade;
 			sourceTree = "<group>";
 		};
 		C6F31138294E66AC0096F09D /* JoinGroup */ = {
@@ -851,6 +869,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C613CFE326955EBF0061DC49 /* Icon-2@2x.png in Resources */,
+				C6D4211A2BD0B1A000765DAE /* SporadicProducts.storekit in Resources */,
 				C630BDF5268C2CB60066D8C3 /* Localizable.strings in Resources */,
 				C613CFE526955EBF0061DC49 /* Icon-3@2x.png in Resources */,
 				C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */,
@@ -967,6 +986,7 @@
 				C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */,
 				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
+				C6BD0D792BC226CA00F5EC76 /* StoreManager.swift in Sources */,
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664D8ED29C3FE8000ACA1AB /* DaysForChallenge.swift in Sources */,

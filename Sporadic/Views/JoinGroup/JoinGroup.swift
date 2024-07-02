@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct JoinGroup: View {
+    let groupCount: Int
     @ObservedObject var viewModel: JoinGroupViewModel
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var storeManager: StoreManager
     @Binding var groupId: String
+    @State var showProPopUp = false
     
     var body: some View {
         ZStack {
@@ -54,10 +57,14 @@ struct JoinGroup: View {
                         Spacer()
                         
                         Button(action: {
-                            viewModel.joinGroup { didComplete in
-                                if didComplete {
-                                    dismiss()
+                            if storeManager.hasProUpgrade || groupCount == 0 {
+                                viewModel.joinGroup { didComplete in
+                                    if didComplete {
+                                        dismiss()
+                                    }
                                 }
+                            } else {
+                                showProPopUp = true
                             }
                         }, label: {
                             TextHelper.text(key: "Accept", alignment: .center, type: .h6, color: .white)
@@ -67,6 +74,9 @@ struct JoinGroup: View {
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
                         .padding()
+                        .popover(isPresented: $showProPopUp) {
+                            Paywall(shouldShow: $showProPopUp)
+                        }
                         
                         Spacer()
                     }
