@@ -125,6 +125,7 @@ struct HomeIcon: View {
         .onTapGesture {
             viewRouter.navigateTo(.home)
         }
+        .hoverEffect()
      }
  }
 
@@ -149,6 +150,7 @@ struct StatsIcon: View {
         .onTapGesture {
             viewRouter.navigateTo(.stats)
         }
+        .hoverEffect()
      }
  }
 
@@ -165,5 +167,6 @@ struct SettingsIcon: View {
             .onTapGesture {
                 viewRouter.navigateTo(.settings)
             }
+            .hoverEffect()
      }
  }

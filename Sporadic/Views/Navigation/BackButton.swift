@@ -27,6 +27,7 @@ struct BackButton: View {
                 )
                 
         })
+        .hoverEffect()
         .buttonStyle(ButtonPressAnimationStyle())
         .frame(maxWidth: .infinity, alignment: .leading)
     }

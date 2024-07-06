@@ -1,4 +1,5 @@
 {
+  "originHash" : "573a49f64388cad5e7b12ee35b9a8e24b896bd4ee17a009c7d9af9b3d0b86821",
   "pins" : [
     {
       "identity" : "confettiswiftui",
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

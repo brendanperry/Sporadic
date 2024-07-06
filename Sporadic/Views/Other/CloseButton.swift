@@ -28,6 +28,7 @@ struct CloseButton: View {
                             .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                     )
             }
+            .hoverEffect()
             .frame(maxWidth: .infinity, alignment: .leading)
             .buttonStyle(ButtonPressAnimationStyle())
             .padding()

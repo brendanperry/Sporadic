@@ -334,6 +334,7 @@ struct Stats: View {
                 
                 if streak == -1 {
                    ProgressView()
+                        .tint(.white)
                 } else {
                     Text("\(streak)")
                         .font(Font.custom("Lexend-SemiBold", size: 19, relativeTo: .title2))

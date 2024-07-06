@@ -99,6 +99,7 @@ struct RangeSlider: View {
                 }
                 .position(x: leftSliderPosition, y: geo.frame(in: .local).midY)
                 .gesture(dragLeftSlider)
+                .hoverEffect()
                 
                 ZStack {
                     Circle()
@@ -111,6 +112,7 @@ struct RangeSlider: View {
                 }
                 .position(x: rightSliderPosition, y: geo.frame(in: .local).midY)
                 .gesture(dragRightSlider)
+                .hoverEffect()
             }
         }
         .frame(width: lineWidth, height: circleWidth, alignment: .center)

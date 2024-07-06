@@ -72,18 +72,21 @@ struct ChallengeView: View {
     var body: some View {
         HStack {
             HStack {
-                switch challenge.status {
-                case .inProgress:
-                    inProgressCheckbox()
-                case .userCompleted:
-                    completedCheckbox()
-                case .groupCompleted:
-                    completedCheckbox()
-                case .failed:
-                    failedCheckbox()
-                case .unknown:
-                    EmptyView()
+                Group {
+                    switch challenge.status {
+                    case .inProgress:
+                        inProgressCheckbox()
+                    case .userCompleted:
+                        completedCheckbox()
+                    case .groupCompleted:
+                        completedCheckbox()
+                    case .failed:
+                        failedCheckbox()
+                    case .unknown:
+                        EmptyView()
+                    }
                 }
+                .hoverEffect()
                 
                 VStack(spacing: 0) {
                     getChallengeText()
