@@ -88,7 +88,6 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
