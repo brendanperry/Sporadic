@@ -106,13 +106,24 @@ class CloudKitHelper {
         return user
     }
     
-    func updateNotificationId(user: User,  completion: @escaping (Error?) -> Void) {
+    // TODO: Have one func to save user that handles the oplock error
+    func updateNotificationId(user: User, completion: @escaping (Error?) -> Void) {
         let record = user.record
         record["notificationId"] = OneSignal.User.pushSubscription.id ?? ""
         
         database.save(record) { record, error in
             if let error = error {
-                completion(error)
+                // this means that the server has a more up to date user than us, so pull it down and try again
+                if error.localizedDescription.contains("oplock") {
+                    Task {
+                        if let newUser = try? await self.getCurrentUser(forceSync: true) {
+                            self.updateNotificationId(user: newUser, completion: completion)
+                        }
+                    }
+                }
+                else {
+                    completion(error)
+                }
             }
             else {
                 if let record = record {
@@ -220,7 +231,8 @@ class CloudKitHelper {
     
     func getGroup(byId id: CKRecord.ID, completion: @escaping (Result<UserGroup, CustomError>) -> Void) {
         database.fetch(withRecordID: id) { [weak self] record, error in
-            if let _ = error {
+            if let error {
+                print(error)
                 completion(.failure(.connectionError))
                 return
             }
@@ -592,25 +604,32 @@ class CloudKitHelper {
     }
     
     func addUserToGroup(group: UserGroup, completion: @escaping (Error?) -> Void) {
-        guard let user = cachedUser else {
-            completion(NSError(domain: "User not found", code: 0))
-            return
-        }
-        
-        let newGroupReference = CKRecord.Reference(recordID: group.record.recordID, action: .none)
-        user.groups.append(newGroupReference)
-        
-        let record = user.record
-        record.setValue(user.groups, forKey: "groups")
-        
-        database.save(record) { record, error in
-            if let error = error {
-                print(error)
+        Task {
+            do {
+                guard let user = try await getCurrentUser(forceSync: true) else {
+                    completion(NSError(domain: "User not found", code: 0))
+                    return
+                }
+                
+                let newGroupReference = CKRecord.Reference(recordID: group.record.recordID, action: .none)
+                user.groups.append(newGroupReference)
+                
+                let record = user.record
+                record.setValue(user.groups, forKey: "groups")
+                
+                database.save(record) { record, error in
+                    if let error = error {
+                        print(error)
+                        completion(error)
+                        user.groups.removeAll(where: { $0.recordID == newGroupReference })
+                        return
+                    }
+                    
+                    completion(nil)
+                }
+            } catch {
                 completion(error)
-                return
             }
-            
-            completion(nil)
         }
     }
     
