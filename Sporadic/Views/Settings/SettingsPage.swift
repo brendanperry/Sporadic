@@ -289,6 +289,7 @@ struct SettingsPage: View {
                             UIApplication.shared.setAlternateIconName(name)
                         }
                     }
+                    .hoverEffect()
             }
         }
     }

@@ -90,6 +90,7 @@ struct Tutorial: View {
                         Image("TutorialArrow")
                             .resizable()
                             .frame(width: 60, height: 60, alignment: .center)
+                            .hoverEffect()
                     })
                     .buttonStyle(ButtonPressAnimationStyle())
                     
@@ -307,6 +308,7 @@ struct Tutorial: View {
                             .cornerRadius(100)
                         
                         EditIcon()
+                            .hoverEffect()
                             .offset(x: 25, y: -25)
                             .onTapGesture {
                                 showImagePicker = true
@@ -331,6 +333,7 @@ struct Tutorial: View {
                             .foregroundColor(Color("Failed"))
                     })
                     .padding(.bottom)
+                    .hoverEffect()
                     
                     HStack {
                         TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
@@ -349,6 +352,7 @@ struct Tutorial: View {
                         .onTapGesture {
                             textFieldFocus = true
                         }
+                        .hoverEffect()
                     
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

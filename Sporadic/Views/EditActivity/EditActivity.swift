@@ -98,6 +98,7 @@ struct EditActivity: View {
                         .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                         .padding(.bottom)
                 })
+                .hoverEffect()
                 .buttonStyle(ButtonPressAnimationStyle())
                 .alert(isPresented: $showDeleteConfirmation) {
                     Alert(title: Text("Remove \(activity.name)?"), message: Text("Add back an exercise with the same name later to pick up where you left off."),
