@@ -63,6 +63,7 @@ struct AddNewGroup: View {
                         .padding(.bottom)
                 }
                 .background(Color("Panel"))
+                .cornerRadius(GlobalSettings.shared.controlCornerRadius)
             }
             else {
                 PlusButton(shape: Rectangle(), backgroundColor: Color("Panel"), lockLightMode: false, shadow: false)
@@ -70,7 +71,6 @@ struct AddNewGroup: View {
             }
         }
         .buttonStyle(ButtonPressAnimationStyle())
-        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
     }

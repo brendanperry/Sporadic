@@ -68,23 +68,30 @@ struct CreateGroupView: View {
     struct CreateButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         @Binding var groups: [UserGroup]
+        @State var showProPopUp = false
+        @EnvironmentObject var storeManager: StoreManager
+        
         let viewModel: CreateGroupViewModel
         
         let updateNextChallengeText: () -> Void
         
         var body: some View {
             Button(action: {
-                viewModel.createGroup { group in
-                    if let group = group {
-                        DispatchQueue.main.async {
-                            groups.append(group)
-                            groups.sort(by: { $0.name < $1.name })
-                            
-                            updateNextChallengeText()
-                            
-                            presentationMode.wrappedValue.dismiss()
+                if storeManager.isPro {
+                    viewModel.createGroup { group in
+                        if let group = group {
+                            DispatchQueue.main.async {
+                                groups.append(group)
+                                groups.sort(by: { $0.name < $1.name })
+                                
+                                updateNextChallengeText()
+                                
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }
                     }
+                } else {
+                    showProPopUp = true
                 }
             }, label: {
                 Text("Create Group")
@@ -99,6 +106,9 @@ struct CreateGroupView: View {
             .buttonStyle(ButtonPressAnimationStyle())
             .padding()
             .padding(.bottom, 50)
+            .popover(isPresented: $showProPopUp) {
+                Paywall(shouldShow: $showProPopUp)
+            }
         }
     }
     

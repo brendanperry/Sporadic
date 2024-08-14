@@ -107,6 +107,15 @@ struct Paywall: View {
                     .background(Color("BrandPurple"))
                     .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                     .padding()
+                    
+                    Button(action: {
+                        Task {
+                            await storeManager.restore()
+                        }
+                    }, label: {
+                        TextHelper.text(key: "Restore Purchase", alignment: .center, type: .body)
+                    })
+                    .padding(.bottom)
                 }
             }
             

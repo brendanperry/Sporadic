@@ -29,7 +29,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         appearance.backgroundColor = .white
         UINavigationBar.appearance().isHidden = true
         
-        OneSignal.Debug.setLogLevel(.LL_VERBOSE)
+        OneSignal.Debug.setLogLevel(.LL_NONE)
         OneSignal.initialize("f211cce4-760d-4404-97f3-34df31eccde8", withLaunchOptions: launchOptions)
         
         return true

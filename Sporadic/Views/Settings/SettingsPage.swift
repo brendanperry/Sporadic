@@ -54,10 +54,12 @@ struct SettingsPage: View {
     }
     
     func NotificationWidget() -> some View {
-        RectangleWidget(
+        RectangleWidget<Color>(
             image: "NotificationIcon",
             text: "Notifications",
-            actionText: "Prompt") {
+            actionText: "Prompt", 
+            textColor: nil,
+            background: { Color("Panel") }) {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
@@ -84,13 +86,16 @@ struct SettingsPage: View {
     }
     
     func ProUpgrade() -> some View {
-        RectangleWidget(
-            image: "AppTheme",
-            text: storeManager.hasProUpgrade ? "Pro is Active" : "Upgrade",
-            actionText: "Prompt") {
-                if !storeManager.hasProUpgrade {
+        RectangleWidget<LinearGradient>(
+            image: "Pro",
+            text: storeManager.isPro ? "Pro is Active" : "Upgrade",
+            actionText: "Prompt", 
+            textColor: .white,
+            background: { LinearGradient(colors: [Color(red: 0.53, green: 0.26, blue: 0.98), Color(red: 0.70, green: 0.22, blue: 1)], startPoint: .leading, endPoint: .trailing) }) {
+                if !storeManager.isPro {
                     let impact = UIImpactFeedbackGenerator(style: .light)
                     impact.impactOccurred()
+                    showProPopUp = true
                 }
             }
             .alert(isPresented: $viewModel.showEnabledAlert) {
@@ -103,10 +108,12 @@ struct SettingsPage: View {
     }
     
     func AppTheme() -> some View {
-        RectangleWidget(
+        RectangleWidget<Color>(
             image: "AppTheme",
             text: "App Theme",
-            actionText: appTheme) {
+            actionText: appTheme, 
+            textColor: nil,
+            background: { Color("Panel") }) {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
@@ -128,10 +135,12 @@ struct SettingsPage: View {
     }
     
     func Contact() -> some View {
-        RectangleWidget(
+        RectangleWidget<Color>(
             image: "Support",
             text: "Contact Us",
-            actionText: "Contact") {
+            actionText: "Contact", 
+            textColor: nil,
+            background: { Color("Panel") }) {
                 let impact = UIImpactFeedbackGenerator(style: .light)
                 impact.impactOccurred()
                 
@@ -217,12 +226,15 @@ struct SettingsPage: View {
         }
     }
     
-    struct RectangleWidget: View {
+    struct RectangleWidget<Content: ShapeStyle>: View {
         let image: String
         let text: String
         let actionText: String
+        let textColor: Color?
+        @ViewBuilder let background: Content
         let action: () -> Void
         
+        @ViewBuilder
         var body: some View {
             HStack {
                 Image(image)
@@ -231,12 +243,12 @@ struct SettingsPage: View {
                     .frame(width: 30, height: 30)
                     .padding(.horizontal, 5)
                 
-                TextHelper.text(key: "", alignment: .leading, type: .h4, prefix: text)
+                TextHelper.text(key: "", alignment: .leading, type: .h4, color: textColor, prefix: text)
                     .padding(5)
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
-            .background(Color("Panel"))
+            .background(background)
             .cornerRadius(15)
             .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
             .onTapGesture {

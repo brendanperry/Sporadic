@@ -57,7 +57,7 @@ struct JoinGroup: View {
                         Spacer()
                         
                         Button(action: {
-                            if storeManager.hasProUpgrade || groupCount == 0 {
+                            if storeManager.isPro || groupCount == 0 {
                                 viewModel.joinGroup { didComplete in
                                     if didComplete {
                                         dismiss()

@@ -10,11 +10,10 @@ import StoreKit
 
 @MainActor
 class StoreManager: ObservableObject {
-    var hasProUpgrade: Bool {
-        return purchasedProductIDs.contains("sporadic_pro")
-    }
+    
+    @Published var isPro = false
     @Published var proUpgradeProduct: Product?
-    @Published private(set) var purchasedProductIDs = Set<String>()
+    var purchasedProductIDs = Set<String>()
     
     private var updates: Task<Void, Never>? = nil
     
@@ -27,6 +26,8 @@ class StoreManager: ObservableObject {
             } catch {
                 print(error)
             }
+            
+            await updatePurchasedProducts()
         }
         
         updates = observeTransactionUpdates()
@@ -42,8 +43,11 @@ class StoreManager: ObservableObject {
     
     func purchasePro() async -> Bool {
         guard let proUpgradeProduct else { return false }
-        let wasSuccessful = try? await purchase(proUpgradeProduct)
-        return wasSuccessful ?? false
+        let wasSuccessful = (try? await purchase(proUpgradeProduct)) ?? false
+        if wasSuccessful {
+            await updatePurchasedProducts()
+        }
+        return wasSuccessful
     }
     
     private func purchase(_ product: Product) async throws -> Bool {
@@ -69,6 +73,11 @@ class StoreManager: ObservableObject {
                 self.purchasedProductIDs.remove(transaction.productID)
             }
         }
+        
+        Task { @MainActor in
+            let hasPaid = await hasPaidForApp()
+            isPro = hasPaid || purchasedProductIDs.contains("sporadic_pro")
+        }
     }
     
     private func observeTransactionUpdates() -> Task<Void, Never> {
@@ -79,8 +88,24 @@ class StoreManager: ObservableObject {
         }
     }
     
-    // Probably not need but better to be safe
-    func restorePurchases() async {
+    func hasPaidForApp() async -> Bool {
+        guard let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) else {
+            return false
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .gmt
+        dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
+        guard let date = dateFormatter.date(from: "2024-08-20 00:00:00") else {
+            return false
+        }
+        
+        return user.createdAt < date
+    }
+    
+    func restore() async {
         try? await AppStore.sync()
+        
+        await updatePurchasedProducts()
     }
 }

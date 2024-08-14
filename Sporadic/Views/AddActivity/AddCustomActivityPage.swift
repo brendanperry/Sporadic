@@ -71,7 +71,7 @@ struct AddCustomActivityPage: View {
     
     func AddButton() -> some View {
         Button(action: {
-            if storeManager.hasProUpgrade {
+            if storeManager.isPro {
                 if viewModel.name.count < 1 || viewModel.name.count > 24 {
                     showNameError = true
                 }
