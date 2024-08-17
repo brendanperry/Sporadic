@@ -96,7 +96,7 @@ class StoreManager: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = .gmt
         dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
-        guard let date = dateFormatter.date(from: "2021-08-13 00:00:00") else {
+        guard let date = dateFormatter.date(from: "2024-08-20 00:00:00") else {
             return false
         }
         
