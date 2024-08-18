@@ -13,6 +13,8 @@ class StoreManager: ObservableObject {
     
     @Published var isPro = false
     @Published var proUpgradeProduct: Product?
+    @Published var showVersion = false
+    @Published var version = ""
     var purchasedProductIDs = Set<String>()
     
     private var updates: Task<Void, Never>? = nil
@@ -88,24 +90,45 @@ class StoreManager: ObservableObject {
         }
     }
     
-    func hasPaidForApp() async -> Bool {
-        guard let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) else {
-            return false
-        }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .gmt
-        dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
-        guard let date = dateFormatter.date(from: "2024-08-20 00:00:00") else {
-            return false
-        }
-        
-        return user.createdAt < date
-    }
-    
+//    func hasPaidForApp() async -> Bool {
+//        guard let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) else {
+//            return false
+//        }
+//        
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeZone = .gmt
+//        dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
+//        guard let date = dateFormatter.date(from: "2024-08-20 00:00:00") else {
+//            return false
+//        }
+//        
+//        return user.createdAt < date
+//    }
+//    
     func restore() async {
         try? await AppStore.sync()
         
         await updatePurchasedProducts()
+    }
+    
+    func hasPaidForApp() async -> Bool {
+        if let purchase = try? await AppTransaction.shared {
+            switch purchase {
+            case .unverified(_, let error):
+                print(error)
+                return false
+            case .verified(let transaction):
+                if let major = transaction.originalAppVersion.first?.wholeNumberValue {
+                    version = "\(major)"
+                    showVersion = true
+                    
+                    if major < 3 {
+                        return true
+                    }
+                }
+            }
+        }
+        
+        return false
     }
 }
