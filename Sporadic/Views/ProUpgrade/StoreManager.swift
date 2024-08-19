@@ -10,12 +10,11 @@ import StoreKit
 
 @MainActor
 class StoreManager: ObservableObject {
-    
     @Published var isPro = false
     @Published var proUpgradeProduct: Product?
-    @Published var showVersion = false
-    @Published var version = ""
     var purchasedProductIDs = Set<String>()
+    @Published var version = ""
+    @Published var show = false
     
     private var updates: Task<Void, Never>? = nil
     
@@ -77,8 +76,9 @@ class StoreManager: ObservableObject {
         }
         
         Task { @MainActor in
+            let hasPaidAccount = await hasPaidAccount()
             let hasPaid = await hasPaidForApp()
-            isPro = hasPaid || purchasedProductIDs.contains("sporadic_pro")
+            isPro = hasPaidAccount || hasPaid || purchasedProductIDs.contains("sporadic_pro")
         }
     }
     
@@ -90,43 +90,49 @@ class StoreManager: ObservableObject {
         }
     }
     
-//    func hasPaidForApp() async -> Bool {
-//        guard let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) else {
-//            return false
-//        }
-//        
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeZone = .gmt
-//        dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
-//        guard let date = dateFormatter.date(from: "2024-08-20 00:00:00") else {
-//            return false
-//        }
-//        
-//        return user.createdAt < date
-//    }
-//    
+    // This allows a seamless transition for previously paid customers
+    func hasPaidAccount() async -> Bool {
+        guard let user = try? await CloudKitHelper.shared.getCurrentUser(forceSync: false) else {
+            return false
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .gmt
+        dateFormatter.dateFormat = "yyyy-MM-dd mm:HH:ss"
+        guard let date = dateFormatter.date(from: "2024-08-18 00:00:00") else {
+            return false
+        }
+        
+        return user.createdAt < date
+    }
+    
     func restore() async {
         try? await AppStore.sync()
         
         await updatePurchasedProducts()
     }
     
+    // This will work if the user hits the restore button which will load their purchase history
     func hasPaidForApp() async -> Bool {
-        if let purchase = try? await AppTransaction.shared {
-            switch purchase {
-            case .unverified(_, let error):
-                print(error)
-                return false
-            case .verified(let transaction):
-                if let major = transaction.originalAppVersion.first?.wholeNumberValue {
-                    version = "\(major)"
-                    showVersion = true
-                    
-                    if major < 3 {
-                        return true
-                    }
+        let purchase = try? await AppTransaction.shared
+        
+        switch purchase {
+        case .unverified(_, let error):
+            print(error)
+            return false
+        case .verified(let transaction):
+            print(transaction.originalAppVersion)
+            print(transaction.appVersion)
+            
+            version = transaction.originalAppVersion
+            show = true
+            if let major = transaction.originalAppVersion.first?.wholeNumberValue {
+                if major < 3 {
+                    return true
                 }
             }
+        case .none:
+            return false
         }
         
         return false
