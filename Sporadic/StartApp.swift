@@ -18,14 +18,6 @@ struct StartApp: App {
         WindowGroup {
             MainView()
                 .environmentObject(storeManager)
-                .alert("Version", isPresented: $storeManager.show) {
-                    Button("Close", action: {
-                        storeManager.show = false
-                    })
-                } message: {
-                    Text(storeManager.version)
-                }
-
         }
     }
 }

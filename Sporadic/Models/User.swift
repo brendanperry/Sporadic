@@ -16,16 +16,17 @@ class User: Identifiable, Equatable {
     var name: String
     @Published var photo: UIImage?
     var groups: [CKRecord.Reference]
-    var createdAt = Date()
+    var createdAt: Date
     let notificationId: String
     
-    init(record: CKRecord, usersRecordId: String, name: String, photo: UIImage?, groups: [CKRecord.Reference], notificationId: String) {
+    init(record: CKRecord, usersRecordId: String, name: String, photo: UIImage?, groups: [CKRecord.Reference], notificationId: String, createdAt: Date) {
         self.record = record
         self.usersRecordId = usersRecordId
         self.name = name
         self.photo = photo
         self.groups = groups
         self.notificationId = notificationId
+        self.createdAt = createdAt
     }
     
     static func == (lhs: User, rhs: User) -> Bool {
@@ -38,7 +39,8 @@ extension User {
         guard
             let name = record["name"] as? String,
             let usersRecordId = record["usersRecordId"] as? String,
-            let groups = record["groups"] as? [CKRecord.Reference]?
+            let groups = record["groups"] as? [CKRecord.Reference]?,
+            let createdAt = record.creationDate
         else {
             return nil
         }
@@ -49,6 +51,6 @@ extension User {
             photo = asset.toUIImage()
         }
         
-        self.init(record: record, usersRecordId: usersRecordId, name: name, photo: photo, groups: groups ?? [], notificationId: notificationId)
+        self.init(record: record, usersRecordId: usersRecordId, name: name, photo: photo, groups: groups ?? [], notificationId: notificationId, createdAt: createdAt)
     }
 }
