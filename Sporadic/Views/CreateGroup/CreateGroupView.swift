@@ -14,6 +14,7 @@ struct CreateGroupView: View {
     @Binding var groups: [UserGroup]
     
     let updateNextChallengeText: () -> Void
+    let groupCount: Int
     
     var body: some View {
         ZStack {
@@ -39,7 +40,7 @@ struct CreateGroupView: View {
                         
                         SelectedActivityList(selectedActivities: $viewModel.activities, group: $viewModel.group, templates: viewModel.getTemplates())
                         
-                        CreateButton(groups: $groups, viewModel: viewModel, updateNextChallengeText: updateNextChallengeText)
+                        CreateButton(groups: $groups, viewModel: viewModel, updateNextChallengeText: updateNextChallengeText, groupCount: groupCount)
                     }
                     .padding(.horizontal)
                 }
@@ -74,10 +75,11 @@ struct CreateGroupView: View {
         let viewModel: CreateGroupViewModel
         
         let updateNextChallengeText: () -> Void
+        let groupCount: Int
         
         var body: some View {
             Button(action: {
-                if storeManager.isPro {
+                if storeManager.isPro || groupCount == 0 {
                     viewModel.createGroup { group in
                         if let group = group {
                             DispatchQueue.main.async {

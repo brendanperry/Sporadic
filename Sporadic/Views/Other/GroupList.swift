@@ -34,7 +34,7 @@ struct GroupList: View {
                         .buttonStyle(ButtonPressAnimationStyle())
                     }
 
-                    AddNewGroup(groups: $groups, updateNextChallengeText: updateNextChallengeText)
+                    AddNewGroup(groups: $groups, updateNextChallengeText: updateNextChallengeText, groupCount: groups.count)
                 }
             }
             .padding(.horizontal)
@@ -45,9 +45,10 @@ struct GroupList: View {
 struct AddNewGroup: View {
     @Binding var groups: [UserGroup]
     let updateNextChallengeText: () -> Void
+    let groupCount: Int
     
     var body: some View {
-        NavigationLink(destination: CreateGroupView(groups: $groups, updateNextChallengeText: updateNextChallengeText)) {
+        NavigationLink(destination: CreateGroupView(groups: $groups, updateNextChallengeText: updateNextChallengeText, groupCount: groupCount)) {
             if groups.isEmpty {
                 VStack(alignment: .leading) {
                     PlusButton(shape: Rectangle(), backgroundColor: .clear, lockLightMode: true, shadow: false)
