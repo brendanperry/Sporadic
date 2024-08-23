@@ -225,10 +225,10 @@ struct ChallengeView: View {
     func showReviewPopUp() {
         let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
         
-        if challengesCompleted == 1 {
+        if challengesCompleted == 0 {
             requestReview()
         }
-        else if challengesCompleted % 30 == 0 && challengesCompleted != 0 {
+        else if challengesCompleted % 14 == 0 {
             requestReview()
         }
         
