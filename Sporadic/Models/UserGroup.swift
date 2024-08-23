@@ -32,9 +32,11 @@ class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
     @Published var areUsersLoading = true
     @Published var owner: CKRecord.Reference
     @Published var wasDeleted = false
+    @Published var streak: Int
     var createdAt = Date()
+    var brokenStreakDate: Date? = nil
     
-    init(displayedDays: [Int], deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, owner: CKRecord.Reference, record: CKRecord) {
+    init(displayedDays: [Int], deliveryTime: Date, emoji: String, backgroundColor: Int, name: String, owner: CKRecord.Reference, record: CKRecord, streak: Int, brokenStreakDate: Date? = nil) {
         self.displayedDays = displayedDays
         self.deliveryTime = deliveryTime
         self.emoji = emoji
@@ -42,10 +44,12 @@ class UserGroup: Identifiable, ObservableObject, Hashable, Equatable {
         self.name = name
         self.record = record
         self.owner = owner
+        self.streak = streak
+        self.brokenStreakDate = brokenStreakDate
     }
     
     convenience init() {
-        self.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group is loading", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "User"))
+        self.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group is loading", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "User"), streak: 0)
     }
     
     // UTC adjusted days of the week
@@ -80,6 +84,9 @@ extension UserGroup {
             return nil
         }
         
-        self.init(displayedDays: displayedDays ?? [], deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, owner: owner ?? CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: record)
+        let streak = record["streak"] as? Int ?? 0
+        let brokenStreakDate = record["brokenStreakDate"] as? Date
+
+        self.init(displayedDays: displayedDays ?? [], deliveryTime: deliveryTime, emoji: emoji, backgroundColor: GroupBackgroundColor(rawValue: color)?.rawValue ?? 0, name: name, owner: owner ?? CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: record, streak: streak, brokenStreakDate: brokenStreakDate)
     }
 }

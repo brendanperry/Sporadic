@@ -401,7 +401,7 @@ class CloudKitHelper {
         database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
             if let error = error {
                 if error.localizedDescription.contains("not found") {
-                    let group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))
+                    let group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)
                     
                     completion(group)
                 }
@@ -494,15 +494,11 @@ class CloudKitHelper {
         return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date()) ?? date
     }
     
-    func updateGroup(group: UserGroup, name: String, emoji: String, color: GroupBackgroundColor, completion: @escaping (Error?) -> Void) {
+    func updateGroupStreak(group: UserGroup, completion: @escaping (Error?) -> Void) {
         let record = group.record
         
-        record.setValue(name, forKey: "name")
-        record.setValue(emoji, forKey: "emoji")
-        record.setValue(UserGroup.availableDays(deliveryTime: group.deliveryTime, displayedDays: group.displayedDays), forKey: "availableDays")
-        record.setValue(group.displayedDays, forKey: "displayedDays")
-        record.setValue(getTodayAtTimeOf(date: group.deliveryTime), forKey: "deliveryTime")
-        record.setValue(color.rawValue, forKey: "backgroundColor")
+        record.setValue(group.streak, forKey: "streak")
+        record.setValue(group.brokenStreakDate, forKey: "brokenStreakDate")
         
         database.save(record) { record, error in
             if let error = error {
@@ -716,7 +712,7 @@ class CloudKitHelper {
             
         let records = try response.matchResults.map { try $0.1.get() }
         
-        let completedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: challenge.group ?? UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord.init(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"))) }
+        let completedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: challenge.group ?? UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord.init(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)) }
         
         var users = [User]()
         for completedChallenge in completedChallenges {
@@ -839,9 +835,9 @@ class CloudKitHelper {
         }
     }
     
-    func getStreakForGroup(group: UserGroup) async -> Int {
+    func getStreakForGroup(group: UserGroup) async -> (Int, Date?) {
         var challenges = await withCheckedContinuation { continuation in
-            getAllChallengesForGroup(group: group) { result in
+            getAllChallengesForGroupStreak(group: group) { result in
                 switch result {
                 case .failure(let error):
                     print(error)
@@ -855,6 +851,7 @@ class CloudKitHelper {
         challenges.sort(by: { $0.startTime > $1.startTime })
         
         var streak = 0
+        var brokenStreakDate: Date? = nil
         for challenge in challenges {
             if let completions = try? await usersWhoHaveCompletedChallenge(challenge: challenge) {
                 if completions.count >= challenge.userRecords.count {
@@ -862,18 +859,28 @@ class CloudKitHelper {
                 }
                 else {
                     if challenge.isChallengeTimeUp() {
+                        brokenStreakDate = challenge.startTime
                         break
                     }
                 }
             }
         }
         
-        return streak
+        return (streak, brokenStreakDate)
     }
     
-    func getAllChallengesForGroup(group: UserGroup, completion: @escaping (Result<[Challenge], Error>) -> Void) {
+    func getAllChallengesForGroupStreak(group: UserGroup, completion: @escaping (Result<[Challenge], Error>) -> Void) {
         let groupReference = CKRecord.Reference(record: group.record, action: .none)
-        let predicate = NSPredicate(format: "group = %@", groupReference)
+        let groupPredicate = NSPredicate(format: "group = %@", groupReference)
+        
+        let predicate: NSCompoundPredicate
+        if let brokenStreakDate = group.brokenStreakDate {
+            let datePredicate = NSPredicate(format: "creationDate > %@", brokenStreakDate as CVarArg)
+            predicate = NSCompoundPredicate(type: .and, subpredicates: [groupPredicate, datePredicate])
+        } else {
+            predicate = NSCompoundPredicate(type: .and, subpredicates: [groupPredicate])
+        }
+        
         let query = CKQuery(recordType: "Challenge", predicate: predicate)
 
         getAllChallengeRecords(records: [], query: query, cursor: nil, completion: completion)
@@ -885,11 +892,15 @@ class CloudKitHelper {
         
         let queryOperation: CKQueryOperation? = {
             if let query {
-                return CKQueryOperation(query: query)
+                let operation = CKQueryOperation(query: query)
+                operation.desiredKeys = ["startTime", "users"]
+                return operation
             }
             
             if let cursor {
-                return CKQueryOperation(cursor: cursor)
+                let operation = CKQueryOperation(cursor: cursor)
+                operation.desiredKeys = ["startTime", "users"]
+                return operation
             }
             
             return nil

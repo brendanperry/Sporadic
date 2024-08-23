@@ -71,9 +71,17 @@ class StatsViewModel: ObservableObject {
         
         Task {
             DispatchQueue.main.async {
-                self.streak = -1
+                self.streak = selectedGroup.streak
                 Task {
-                    self.streak = await CloudKitHelper.shared.getStreakForGroup(group: selectedGroup)
+                    let result = await CloudKitHelper.shared.getStreakForGroup(group: selectedGroup)
+                    
+                    self.streak = result.0
+
+                    selectedGroup.brokenStreakDate = result.1
+                    selectedGroup.streak = result.0
+                    CloudKitHelper.shared.updateGroupStreak(group: selectedGroup) { error in
+                        print(error?.localizedDescription ?? "")
+                    }
                 }
             }
         }

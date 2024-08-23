@@ -59,18 +59,19 @@ enum ChallengeStatus {
 extension Challenge {
     convenience init? (from record: CKRecord) {
         guard
-            let activityReference = record["activity"] as? CKRecord.Reference,
-            let amount = record["amount"] as? Double,
             let startTime = record["startTime"] as? Date,
-            let users = record["users"] as? [CKRecord.Reference],
-            let group = record["group"] as? CKRecord.Reference,
-            let activityName = record["activityName"] as? String,
-            let unit = record["unit"] as? String
+            let users = record["users"] as? [CKRecord.Reference]
         else {
             return nil
         }
         
-        self.init(id: UUID(), activityRecord: activityReference, amount: amount, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName, unit: ActivityUnit.init(rawValue: unit) ?? .miles)
+        let activityReference = record["activity"] as? CKRecord.Reference ?? CKRecord.Reference(record: CKRecord(recordType: "Activity"), action: .none)
+        let amount = record["amount"] as? Double
+        let group = record["group"] as? CKRecord.Reference ?? CKRecord.Reference(record: CKRecord(recordType: "Group"), action: .none)
+        let activityName = record["activityName"] as? String
+        let unit = record["unit"] as? String
+        
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount ?? 0, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName ?? "", unit: ActivityUnit.init(rawValue: unit ?? "") ?? .miles)
     }
     
     func isChallengeTimeUp() -> Bool {
