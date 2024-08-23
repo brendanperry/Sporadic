@@ -234,6 +234,10 @@ class HomeViewModel : ObservableObject {
                         if let currentUsers = self?.groups.first(where: { $0.record.recordID == group.record.recordID })?.users {
                             group.users = currentUsers
                         }
+                        
+                        Task {
+                            _ = await CloudKitHelper.shared.loadStreakForGroup(group: group)
+                        }
                     }
                                         
                     if self?.groups.count != newGroups.count {

@@ -14,7 +14,7 @@ class TutorialViewModel: ObservableObject {
     @Published var selectedDifficulty = GroupDifficulty.beginner
     @Published var name = ""
     @Published var photo: UIImage? = nil
-    @Published var group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)
+    @Published var group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0, bestStreak: 0)
     @Published var errorMessage = ""
     @Published var showError = false
     @Published var selection = 0

@@ -90,7 +90,7 @@ struct ChallengeView: View {
                 
                 VStack(spacing: 0) {
                     getChallengeText()
-                    TextHelper.text(key: "\(challenge.group?.name ?? "")", alignment: .leading, type: .h6, color: Color("BrandLight"))
+                    TextHelper.text(key: getGroupName(group: challenge.group), alignment: .leading, type: .h6, color: Color("BrandLight"))
                     UserList(users: challenge.users ?? [], challenge: challenge)
                         .padding(.top, 5)
                 }
@@ -109,6 +109,12 @@ struct ChallengeView: View {
         .alert(isPresented: $showError) {
             Alert(title: Text("Oh no!"), message: Text("This exercise could not be completed due to a connection problem. Please check your internet connection and try again."))
         }
+    }
+    
+    func getGroupName(group: UserGroup?) -> String {
+        let streak = challenge.currentStreak
+        
+        return "\(challenge.group?.name ?? "")" + (streak > 0 ? " 🔥\(streak)" : "")
     }
     
     func getChallengeText() -> some View {
@@ -205,6 +211,9 @@ struct ChallengeView: View {
                 }
                 else {
                     Task {
+                        if let group = challenge.group {
+                            let _ = await CloudKitHelper.shared.loadStreakForGroup(group: group)
+                        }
                         try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
                         WidgetCenter.shared.reloadAllTimelines()
                     }

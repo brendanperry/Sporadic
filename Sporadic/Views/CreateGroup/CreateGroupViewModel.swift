@@ -31,7 +31,7 @@ class CreateGroupViewModel: ObservableObject {
     @Published var showError = false
     @Published var toolbarBackground = GroupBackgroundColor.one.getColor()
     
-    var group = UserGroup.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)
+    var group = UserGroup.init(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0, bestStreak: 0)
     
     
     func getTemplates() -> [ActivityTemplate] {

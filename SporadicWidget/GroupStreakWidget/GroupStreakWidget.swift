@@ -29,16 +29,7 @@ struct GroupStreakProvider: AppIntentTimelineProvider {
         guard let groupRecord = configuration.group?.groupRecord else { return 0 }
         guard let group = UserGroup(from: groupRecord) else { return 0 }
         
-        let result = await CloudKitHelper.shared.getStreakForGroup(group: group)
-        
-        group.streak = result.0
-        group.brokenStreakDate = result.1
-        
-        CloudKitHelper.shared.updateGroupStreak(group: group) { error in
-            print(error?.localizedDescription ?? "")
-        }
-        
-        return result.0
+        return await CloudKitHelper.shared.loadStreakForGroup(group: group)
     }
     
     func timeline(for configuration: GroupStreakConfigurationIntent, in context: Context) async -> Timeline<GroupStreakEntry> {

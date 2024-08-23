@@ -401,7 +401,7 @@ class CloudKitHelper {
         database.fetch(withRecordID: challenge.groupRecord.recordID) { groupRecord, error in
             if let error = error {
                 if error.localizedDescription.contains("not found") {
-                    let group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)
+                    let group = UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "Group Deleted", owner: CKRecord.Reference(record: CKRecord(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0, bestStreak: 0)
                     
                     completion(group)
                 }
@@ -712,7 +712,7 @@ class CloudKitHelper {
             
         let records = try response.matchResults.map { try $0.1.get() }
         
-        let completedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: challenge.group ?? UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord.init(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0)) }
+        let completedChallenges = records.compactMap { CompletedChallenge.init(from: $0, group: challenge.group ?? UserGroup(displayedDays: [], deliveryTime: Date(), emoji: "", backgroundColor: 0, name: "", owner: CKRecord.Reference(record: CKRecord.init(recordType: "User"), action: .none), record: CKRecord(recordType: "Group"), streak: 0, bestStreak: 0)) }
         
         var users = [User]()
         for completedChallenge in completedChallenges {
@@ -835,7 +835,7 @@ class CloudKitHelper {
         }
     }
     
-    func getStreakForGroup(group: UserGroup) async -> (Int, Date?) {
+    func loadStreakForGroup(group: UserGroup) async -> Int {
         var challenges = await withCheckedContinuation { continuation in
             getAllChallengesForGroupStreak(group: group) { result in
                 switch result {
@@ -866,7 +866,22 @@ class CloudKitHelper {
             }
         }
         
-        return (streak, brokenStreakDate)
+        let currentStreak = streak
+        let brokenDate = brokenStreakDate
+        await MainActor.run {
+            if group.streak < currentStreak {
+                group.bestStreak = currentStreak
+            }
+
+            group.streak = currentStreak
+            group.brokenStreakDate = brokenDate
+        }
+        
+        CloudKitHelper.shared.updateGroupStreak(group: group) { error in
+            print(error?.localizedDescription ?? "")
+        }
+        
+        return streak
     }
     
     func getAllChallengesForGroupStreak(group: UserGroup, completion: @escaping (Result<[Challenge], Error>) -> Void) {

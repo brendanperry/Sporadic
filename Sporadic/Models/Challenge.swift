@@ -23,8 +23,9 @@ class Challenge: Identifiable, ObservableObject {
     var cachedStatus = ChallengeStatus.unknown
     let activityName: String
     let unit: ActivityUnit
+    let currentStreak: Int
     
-    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID, activityName: String, unit: ActivityUnit) {
+    init(id: UUID, activityRecord: CKRecord.Reference, amount: Double, startTime: Date, userRecords: [CKRecord.Reference], groupRecord: CKRecord.Reference, recordId: CKRecord.ID, activityName: String, unit: ActivityUnit, currentStreak: Int) {
         self.id = id
         self.activityRecord = activityRecord
         self.amount = amount
@@ -34,10 +35,11 @@ class Challenge: Identifiable, ObservableObject {
         self.recordId = recordId
         self.activityName = activityName
         self.unit = unit
+        self.currentStreak = currentStreak
     }
     
     convenience init() {
-        self.init(id: UUID(), activityRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Activity"), action: .none), amount: 0, startTime: Date(), userRecords: [CKRecord.Reference.init(record: CKRecord(recordType: "User"), action: .none)], groupRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Group"), action: .none), recordId: CKRecord.ID.init(recordName: "Challenge"), activityName: "Loading activity", unit: .miles)
+        self.init(id: UUID(), activityRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Activity"), action: .none), amount: 0, startTime: Date(), userRecords: [CKRecord.Reference.init(record: CKRecord(recordType: "User"), action: .none)], groupRecord: CKRecord.Reference.init(record: CKRecord(recordType: "Group"), action: .none), recordId: CKRecord.ID.init(recordName: "Challenge"), activityName: "Loading activity", unit: .miles, currentStreak: 0)
     }
     
     func getLabel() -> String {
@@ -70,8 +72,9 @@ extension Challenge {
         let group = record["group"] as? CKRecord.Reference ?? CKRecord.Reference(record: CKRecord(recordType: "Group"), action: .none)
         let activityName = record["activityName"] as? String
         let unit = record["unit"] as? String
-        
-        self.init(id: UUID(), activityRecord: activityReference, amount: amount ?? 0, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName ?? "", unit: ActivityUnit.init(rawValue: unit ?? "") ?? .miles)
+        let currentStreak = record["currentStreak"] as? Int
+
+        self.init(id: UUID(), activityRecord: activityReference, amount: amount ?? 0, startTime: startTime, userRecords: users, groupRecord: group, recordId: record.recordID, activityName: activityName ?? "", unit: ActivityUnit.init(rawValue: unit ?? "") ?? .miles, currentStreak: currentStreak ?? 0)
     }
     
     func isChallengeTimeUp() -> Bool {
