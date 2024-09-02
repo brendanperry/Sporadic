@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Frame 534.png",
+      "filename" : "Timer icon 1.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Timer icon 2.png",
       "idiom" : "universal"
     }
   ],
