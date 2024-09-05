@@ -54,7 +54,7 @@ struct HomePage: View {
                                         Spacer()
                                     }
                                     .padding()
-                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundColor(Color("NextChallengeBG")))
+                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).stroke(Color("NextChallengeBG")))
                                     .padding(.horizontal)
                                     .padding(.top, 5)
                                 }
