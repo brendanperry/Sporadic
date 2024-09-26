@@ -142,7 +142,8 @@ struct GroupOverview: View {
             }
             .background(
                 Rectangle()
-                    .foregroundColor(Color("Panel"))
+                    .foregroundColor(Color("Navigation"))
+                    .background(.thinMaterial)
                     .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
                     .ignoresSafeArea(.all, edges: .bottom)
             )

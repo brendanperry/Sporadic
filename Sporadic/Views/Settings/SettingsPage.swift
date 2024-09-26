@@ -91,7 +91,7 @@ struct SettingsPage: View {
             text: storeManager.isPro ? "Pro is Active" : "Upgrade",
             actionText: "Prompt", 
             textColor: .white,
-            background: { LinearGradient(colors: [Color(red: 0.53, green: 0.26, blue: 0.98), Color(red: 0.70, green: 0.22, blue: 1)], startPoint: .leading, endPoint: .trailing) }) {
+            background: { LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing) }) {
                 if !storeManager.isPro {
                     let impact = UIImpactFeedbackGenerator(style: .light)
                     impact.impactOccurred()

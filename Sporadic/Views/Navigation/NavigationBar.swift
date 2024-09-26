@@ -65,8 +65,8 @@ struct NavigationBar: View {
         }
         .background(
             Rectangle()
-                .foregroundColor(Color("Panel"))
-                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: -4)
+                .foregroundColor(Color("Navigation"))
+                .background(.ultraThinMaterial)
                 .ignoresSafeArea()
         )
         .animation(.easeInOut, value: homeIconOn)
