@@ -28,10 +28,23 @@ struct GroupList: View {
                 }
                 else {
                     ForEach($groups.filter({ !$0.wrappedValue.wasDeleted })) { group in
-                        NavigationLink(destination: GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText, hardRefresh: hardRefresh)) {
-                            GroupWidget(group: group.wrappedValue)
+                        
+                        if #available(iOS 17.0, *) {
+                            NavigationLink(destination:
+                                GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText, hardRefresh: hardRefresh)
+                                    .toolbarTitleDisplayMode(.inline)
+                            ) {
+                                GroupWidget(group: group.wrappedValue)
+                            }
+                            .buttonStyle(ButtonPressAnimationStyle())
+                        } else {
+                            NavigationLink(destination:
+                                GroupOverview(group: group.wrappedValue, groups: $groups, updateNextChallengeText: updateNextChallengeText, hardRefresh: hardRefresh)
+                            ) {
+                                GroupWidget(group: group.wrappedValue)
+                            }
+                            .buttonStyle(ButtonPressAnimationStyle())
                         }
-                        .buttonStyle(ButtonPressAnimationStyle())
                     }
 
                     AddNewGroup(groups: $groups, updateNextChallengeText: updateNextChallengeText, groupCount: groups.count)
