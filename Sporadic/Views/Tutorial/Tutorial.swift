@@ -33,8 +33,7 @@ struct Tutorial: View {
                 HStack {
                     Button(action: {
                         withAnimation {
-                            viewRouter.navigateTo(.home)
-                            UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                            viewModel.selection += 1
                         }
                     }, label: {
                         Text("Enable later")
@@ -57,6 +56,8 @@ struct Tutorial: View {
                     nameAndPhoto()
                 case 2:
                     notifications()
+                case 3:
+                    ExerciseSelectionScreen()
                 default:
                     openingPage()
                 }
@@ -79,9 +80,11 @@ struct Tutorial: View {
                                         OneSignal.login(userId)
                                     }
                                     
-                                    viewRouter.navigateTo(.home)
-                                    UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                                    viewModel.selection += 1
                                 }
+                            } else if viewModel.selection == 3 {
+                                viewRouter.navigateTo(.home)
+                                UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
                             } else {
                                 viewModel.selection += 1
                             }
@@ -104,6 +107,9 @@ struct Tutorial: View {
                         Capsule()
                             .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
                             .foregroundColor(viewModel.selection == 2 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
+                        Capsule()
+                            .frame(width: viewModel.selection == 3 ? 20 : 10, height: 10, alignment: .center)
+                            .foregroundColor(viewModel.selection == 3 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
                     }
                     .padding()
                 }

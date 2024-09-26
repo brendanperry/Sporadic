@@ -18,7 +18,9 @@ struct ActivityTemplate: Identifiable {
     let minRange: Double
     let unit: ActivityUnit
     let category: ActivityCategory
-    
+    let requiresEquipment: Bool
+    let canDoIndoors: Bool
+
     var color: Color {
         if category == .cardio {
             return Color("Cardio")

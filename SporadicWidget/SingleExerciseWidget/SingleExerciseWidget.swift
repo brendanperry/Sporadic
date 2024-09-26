@@ -129,7 +129,7 @@ extension SingleExerciseConfigurationIntent {
             groupColor: 1,
             activityName: "Jumping Jacks",
             activityUnit: "miles",
-            template: ActivityTemplate(id: 1, name: "Run", minValue: 0.25, maxValue: 20.0, selectedMin: 1.0, selectedMax: 3.0, minRange: 0.25, unit: .miles, category: .cardio)
+            template: ActivityTemplate(id: 1, name: "Run", minValue: 0.25, maxValue: 20.0, selectedMin: 1.0, selectedMax: 3.0, minRange: 0.25, unit: .miles, category: .cardio, requiresEquipment: false, canDoIndoors: false)
         )
         return intent
     }

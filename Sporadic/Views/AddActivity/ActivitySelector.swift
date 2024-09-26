@@ -34,31 +34,7 @@ struct ActivitySelector: View {
                                 LazyVGrid(columns: items, spacing: 17) {
                                     ForEach(templates.filter({ !selectedActivities.map({ $0.templateId }).contains($0.id) && $0.category == category })) { template in
                                         NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template)) {
-                                            VStack(alignment: .center) {
-                                                Spacer()
-                                                
-                                                Image(template.name)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 25, height: 25, alignment: .center)
-                                                    .padding()
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                                                            .foregroundColor(template.color)
-                                                    )
-                                                
-                                                TextHelper.text(key: template.name, alignment: .center, type: .h3)
-                                                    .padding(.top, 5)
-                                                    .multilineTextAlignment(.center)
-                                                
-                                                Spacer()
-                                            }
-                                            .padding(.vertical)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                                                    .foregroundColor(Color("Panel"))
-                                                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
-                                            )
+                                            
                                         }
                                         .buttonStyle(ButtonPressAnimationStyle())
                                     }
