@@ -9,11 +9,10 @@ import SwiftUI
 import CloudKit
 import ConfettiSwiftUI
 
-
-
 struct HomePage: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
+    @State var showProPopUp = false
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -88,6 +87,20 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+        .popover(isPresented: $showProPopUp) {
+            Paywall(shouldShow: $showProPopUp)
+        }
+        .onChange(of: showProPopUp) { newValue in
+            if newValue == false {
+                viewModel.loadData()
+            }
+        }
+        .onAppear {
+            if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false {
+                showProPopUp = true
+                UserDefaults.standard.set(true, forKey: "hasCompletedSetup")
+            }
+        }
     }
 }
 

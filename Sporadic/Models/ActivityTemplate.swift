@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ActivityTemplate: Identifiable {
+struct ActivityTemplate: Identifiable, Hashable {
     let id: Int
     let name: String
     let minValue: Double
