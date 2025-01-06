@@ -19,8 +19,45 @@ class TutorialViewModel: ObservableObject {
     @Published var showError = false
     @Published var selection = 0
     @Published var isLoading = false
-
+    @Published var selectedTemplates = Set<ActivityTemplate>()
     
+    func createGroup() {
+        let deliveryTime = Date().addingTimeInterval(1800)
+        
+        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        
+        let activities = selectedTemplates.map {
+            Activity(
+                record: CKRecord(recordType: "Activity"),
+                maxValue: $0.selectedMax,
+                minValue: $0.selectedMin,
+                name: $0.name,
+                templateId: $0.id,
+                unit: $0.unit,
+                isNew: true)
+        }
+        
+        let components = Calendar.current.dateComponents([.weekday], from: Date())
+        
+        var days = [Int]()
+        if var currentDay = components.weekday {
+            days.append(currentDay)
+            
+            while days.count < 3 {
+                if currentDay + 2 < 7 {
+                    currentDay += 2
+                    days.append(currentDay)
+                } else {
+                    currentDay = 0
+                }
+            }
+        }
+        
+        CloudKitHelper.shared.createGroup(name: name + "'s Group", emoji: "💪", color: GroupBackgroundColor.one, days: days, time: deliveryTime, activities: activities) { result in
+            print(result)
+        }
+    }
+
     func updateUser() {
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             errorMessage = "No iCloud account was detected. Please make sure you are signed into your iCloud account and have an internet connection. Once this is done, restart the app and try again."

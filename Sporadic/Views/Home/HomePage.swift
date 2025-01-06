@@ -9,12 +9,10 @@ import SwiftUI
 import CloudKit
 import ConfettiSwiftUI
 
-
-
 struct HomePage: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
-    @State var showPaywall = false
+    @State var showProPopUp = false
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -34,7 +32,7 @@ struct HomePage: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 35) {
                             Button {
-                                showPaywall = true
+                                showProPopUp = true
                             } label: {
                                 Text("Show Paywall")
                             }
@@ -95,8 +93,19 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .popover(isPresented: $showPaywall) {
-            Paywall(shouldShow: $showPaywall)
+        .popover(isPresented: $showProPopUp) {
+            Paywall(shouldShow: $showProPopUp)
+        }
+        .onChange(of: showProPopUp) { newValue in
+            if newValue == false {
+                viewModel.loadData()
+            }
+        }
+        .onAppear {
+            if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false {
+                showProPopUp = true
+                UserDefaults.standard.set(true, forKey: "hasCompletedSetup")
+            }
         }
     }
 }

@@ -2,55 +2,38 @@
 //  ActivityWidget.swift
 //  Sporadic
 //
-//  Created by Brendan Perry on 12/15/21.
+//  Created by Brendan Perry on 9/16/24.
 //
-
 import SwiftUI
 
 struct ActivityWidget: View {
-    @State var activity: Activity
-    @State var isEditing = false
-    @Binding var isAdding: Bool
-
+    let template: ActivityTemplate
+    
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color("ActivityBackgroundColor"))
-                .frame(width: 125, height: 125)
-                .offset(x: 10, y: 10)
+        VStack(alignment: .center) {
+            Spacer()
             
-            VStack {
-                Image(activity.name)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(Color("ActivityBorderColor"))
-            
-                TextHelper.text(key: "", alignment: .center, type: .h2, prefix: activity.name)
-            }
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(lineWidth: 6)
-                    .frame(width: 125, height: 125)
-                    .foregroundColor(Color("ActivityBorderColor"))
-            )
-            .padding()
-            .transition(.scale)
-            
-            Image("EditActivityDots")
+            Image(template.name)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 20, height: 20)
-                .offset(x: 40, y: -40)
+                .frame(width: 25, height: 25, alignment: .center)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundColor(template.color)
+                )
+            
+            TextHelper.text(key: template.name, alignment: .center, type: .h3)
+                .padding(.top, 5)
+                .multilineTextAlignment(.center)
+            
+            Spacer()
         }
-        .padding()
-        .onTapGesture {
-            withAnimation {
-                self.isEditing = true
-            }
-        }
-        .fullScreenCover(isPresented: self.$isEditing) {
-//            EditActivity(activity: self.activity)
-        }
+        .padding(.vertical)
+        .background(
+            RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                .foregroundColor(Color("Panel"))
+                .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+        )
     }
 }

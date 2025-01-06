@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ActivityTemplate: Identifiable {
+struct ActivityTemplate: Identifiable, Hashable {
     let id: Int
     let name: String
     let minValue: Double
@@ -18,7 +18,9 @@ struct ActivityTemplate: Identifiable {
     let minRange: Double
     let unit: ActivityUnit
     let category: ActivityCategory
-    
+    let requiresEquipment: Bool
+    let canDoIndoors: Bool
+
     var color: Color {
         if category == .cardio {
             return Color("Cardio")

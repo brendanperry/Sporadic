@@ -30,6 +30,8 @@
 		C640520329F032B40054BD85 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640520229F032B40054BD85 /* StatsViewModel.swift */; };
 		C640520629F032FA0054BD85 /* CompletedChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640520529F032FA0054BD85 /* CompletedChallenge.swift */; };
 		C640EEF82954FDEF00C4058B /* LoadingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640EEF72954FDEF00C4058B /* LoadingBar.swift */; };
+		C6562DE42C9919C800B7B8E5 /* ExerciseSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6562DE32C9919C800B7B8E5 /* ExerciseSelectionScreen.swift */; };
+		C6562DE62C991F5200B7B8E5 /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6562DE52C991F5200B7B8E5 /* ActivityWidget.swift */; };
 		C65A01FE26870098007A5B2F /* StartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FD26870098007A5B2F /* StartApp.swift */; };
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
@@ -103,7 +105,6 @@
 		C6B5F2E52B9E1E0A001A45D7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */; };
 		C6B5F2E62B9E1E5C001A45D7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
-		C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB213276A63ED00D9677D /* ActivityWidget.swift */; };
 		C6BD0D752BC1AB8600F5EC76 /* Paywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */; };
 		C6BD0D772BC1C47300F5EC76 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */; };
 		C6BD0D792BC226CA00F5EC76 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D782BC226CA00F5EC76 /* StoreManager.swift */; };
@@ -219,6 +220,8 @@
 		C640520229F032B40054BD85 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		C640520529F032FA0054BD85 /* CompletedChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedChallenge.swift; sourceTree = "<group>"; };
 		C640EEF72954FDEF00C4058B /* LoadingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBar.swift; sourceTree = "<group>"; };
+		C6562DE32C9919C800B7B8E5 /* ExerciseSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionScreen.swift; sourceTree = "<group>"; };
+		C6562DE52C991F5200B7B8E5 /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C65A01FA26870098007A5B2F /* Sporadic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sporadic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C65A01FD26870098007A5B2F /* StartApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartApp.swift; sourceTree = "<group>"; };
 		C65A01FF26870098007A5B2F /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
@@ -281,7 +284,6 @@
 		C6B5F2E12B9D6125001A45D7 /* onesignal-key.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "onesignal-key.txt"; sourceTree = SOURCE_ROOT; };
 		C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		C6BCB2112766B0CD00D9677D /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
-		C6BCB213276A63ED00D9677D /* ActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWidget.swift; sourceTree = "<group>"; };
 		C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paywall.swift; sourceTree = "<group>"; };
 		C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C6BD0D782BC226CA00F5EC76 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
@@ -537,7 +539,6 @@
 				C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */,
 				C6A59AFA2A14809800FFBC9D /* SelectedActivity.swift */,
 				C67085672A4A6ED700E46EBD /* CloseButton.swift */,
-				C6BCB213276A63ED00D9677D /* ActivityWidget.swift */,
 				C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */,
 				C66424CF27B856A700B574D7 /* Complete.swift */,
 				C689616D28303572008A0C87 /* CustomSlider.swift */,
@@ -547,6 +548,7 @@
 				C640EEF72954FDEF00C4058B /* LoadingBar.swift */,
 				C664D8EE29C40EEF00ACA1AB /* RangeSelection.swift */,
 				C6AAAD562B314988003DA91E /* GroupIcon.swift */,
+				C6562DE52C991F5200B7B8E5 /* ActivityWidget.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -574,6 +576,7 @@
 			children = (
 				C689616928301AB3008A0C87 /* Tutorial.swift */,
 				C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */,
+				C6562DE32C9919C800B7B8E5 /* ExerciseSelectionScreen.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -937,11 +940,11 @@
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,
 				C62625A92867418300E84C79 /* StringExtensions.swift in Sources */,
-				C6BCB214276A63ED00D9677D /* ActivityWidget.swift in Sources */,
 				C664D8EF29C40EEF00ACA1AB /* RangeSelection.swift in Sources */,
 				C6C96012278F90AC00A67AA2 /* ViewExtensions.swift in Sources */,
 				C66A372C283F21CF0096757C /* GroupOverviewViewModel.swift in Sources */,
 				C639448E279DDC4D00B2E62F /* HomeViewModel.swift in Sources */,
+				C6562DE62C991F5200B7B8E5 /* ActivityWidget.swift in Sources */,
 				C68378D8284AA0A800ABB6B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C6C96019278FA23500A67AA2 /* TabBarIcon.swift in Sources */,
 				C6E6386B29B3F345007DD574 /* ActivityCategory.swift in Sources */,
@@ -970,6 +973,7 @@
 				C68C98312A80114A0080AC75 /* SequenceExtensions.swift in Sources */,
 				C6620063278A58D9000AF577 /* EditActivity.swift in Sources */,
 				C6B2CC3B285172DA008C979C /* ChallengeDetail.swift in Sources */,
+				C6562DE42C9919C800B7B8E5 /* ExerciseSelectionScreen.swift in Sources */,
 				C6C96016278FA14200A67AA2 /* NavigationBar.swift in Sources */,
 				C6AAAD542B2F7669003DA91E /* CKDatabaseExtensions.swift in Sources */,
 				C68378C72844152C00ABB6B3 /* User.swift in Sources */,

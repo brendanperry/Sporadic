@@ -33,8 +33,7 @@ struct Tutorial: View {
                 HStack {
                     Button(action: {
                         withAnimation {
-                            viewRouter.navigateTo(.home)
-                            UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                            endTutorial()
                         }
                     }, label: {
                         Text("Enable later")
@@ -48,14 +47,16 @@ struct Tutorial: View {
                 }
                 .padding(.bottom)
             }
-            .disabled(viewModel.selection != 2)
-            .opacity(viewModel.selection == 2 ? 1 : 0)
+            .disabled(viewModel.selection != 3)
+            .opacity(viewModel.selection == 3 ? 1 : 0)
             
             VStack {
                 switch viewModel.selection {
                 case 1:
                     nameAndPhoto()
                 case 2:
+                    ExerciseSelectionScreen(selectedTemplates: $viewModel.selectedTemplates)
+                case 3:
                     notifications()
                 default:
                     openingPage()
@@ -73,14 +74,17 @@ struct Tutorial: View {
                                     viewModel.updateUser()
                                 }
                             }
-                            else if viewModel.selection == 2 && CloudKitHelper.shared.hasUser() {
+                            else if viewModel.selection == 2 {
+                                viewModel.createGroup()
+                                viewModel.selection += 1
+                            }
+                            else if viewModel.selection == 3 && CloudKitHelper.shared.hasUser() {
                                 OneSignal.Notifications.requestPermission { accepted in
                                     if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
                                         OneSignal.login(userId)
                                     }
                                     
-                                    viewRouter.navigateTo(.home)
-                                    UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
+                                    endTutorial()
                                 }
                             } else {
                                 viewModel.selection += 1
@@ -104,6 +108,9 @@ struct Tutorial: View {
                         Capsule()
                             .frame(width: viewModel.selection == 2 ? 20 : 10, height: 10, alignment: .center)
                             .foregroundColor(viewModel.selection == 2 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
+                        Capsule()
+                            .frame(width: viewModel.selection == 3 ? 20 : 10, height: 10, alignment: .center)
+                            .foregroundColor(viewModel.selection == 3 ? Color("Gray400AutoTheme") : Color("Deep Blue 200"))
                     }
                     .padding()
                 }
@@ -126,6 +133,12 @@ struct Tutorial: View {
         }) {
             Text(viewModel.errorMessage)
         }
+    }
+    
+    func endTutorial() {
+        // end tutorial
+        viewRouter.navigateTo(.home)
+        UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
     }
     
     func openingPage() -> some View {
