@@ -11,7 +11,7 @@ import StoreKit
 @MainActor
 class StoreManager: ObservableObject {
     @Published var isPro = false
-    @Published var proUpgradeProduct: Product?
+    @Published var products = [Product]()
     var purchasedProductIDs = Set<String>()
     
     private var updates: Task<Void, Never>? = nil
@@ -19,8 +19,10 @@ class StoreManager: ObservableObject {
     init() {
         Task {
             do {
-                if let product = try await getProducts(ids: ["sporadic_pro"])?.first {
-                    proUpgradeProduct = product
+                if let products = try await getProducts(ids: ["sporadic_pro", "pro1month"]) {
+                    Task { @MainActor in
+                        self.products = products.sorted(by: { $0.price < $1.price })
+                    }
                 }
             } catch {
                 print(error)
@@ -40,16 +42,7 @@ class StoreManager: ObservableObject {
         return try await Product.products(for: ids)
     }
     
-    func purchasePro() async -> Bool {
-        guard let proUpgradeProduct else { return false }
-        let wasSuccessful = (try? await purchase(proUpgradeProduct)) ?? false
-        if wasSuccessful {
-            await updatePurchasedProducts()
-        }
-        return wasSuccessful
-    }
-    
-    private func purchase(_ product: Product) async throws -> Bool {
+    func purchase(_ product: Product) async throws -> Bool {
         let result = try await product.purchase()
         
         switch result {
@@ -75,7 +68,7 @@ class StoreManager: ObservableObject {
         
         Task { @MainActor in
             let hasPaidAccount = await hasPaidAccount()
-            isPro = hasPaidAccount || purchasedProductIDs.contains("sporadic_pro")
+            isPro = hasPaidAccount || !purchasedProductIDs.isEmpty
         }
     }
     

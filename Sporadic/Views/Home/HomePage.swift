@@ -14,6 +14,7 @@ import ConfettiSwiftUI
 struct HomePage: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
+    @State var showPaywall = false
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -32,6 +33,12 @@ struct HomePage: View {
                 VStack {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 35) {
+                            Button {
+                                showPaywall = true
+                            } label: {
+                                Text("Show Paywall")
+                            }
+                            
                             Welcome(viewModel: viewModel)
                             
                             VStack {
@@ -88,6 +95,9 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
+        .popover(isPresented: $showPaywall) {
+            Paywall(shouldShow: $showPaywall)
+        }
     }
 }
 

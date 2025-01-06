@@ -84,29 +84,25 @@ struct Paywall: View {
                     
                     Spacer()
                     
-                    TextHelper.text(key: "We don't believe in subscriptions here. This is a one time payment. 🙌", alignment: .center, type: .h7)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                    
-                    Button(action: {
-                        Task {
-                            let wasSuccessful = await storeManager.purchasePro()
-                            if wasSuccessful {
-                                dismiss()
+                    ForEach(storeManager.products) { product in
+                        Button(action: {
+                            Task {
+                                let wasSuccessful = try? await storeManager.purchase(product)
+                                if wasSuccessful == true {
+                                    dismiss()
+                                }
                             }
-                        }
-                    }, label: {
-                        if let proUpgradeProduct = storeManager.proUpgradeProduct {
-                            Text("Purchase - \(proUpgradeProduct.displayPrice)")
+                        }, label: {
+                            Text("Purchase \(product.displayName) - \(product.displayPrice)")
                                 .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title))
                                 .foregroundStyle(Color.white)
                                 .frame(maxWidth: .infinity)
-                        }
-                    })
-                    .padding(10)
-                    .background(Color("BrandPurple"))
-                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    .padding()
+                        })
+                        .padding(10)
+                        .background(Color("BrandPurple"))
+                        .cornerRadius(GlobalSettings.shared.controlCornerRadius)
+                        .padding()
+                    }
                     
                     Button(action: {
                         Task {

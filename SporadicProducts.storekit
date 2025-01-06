@@ -1,11 +1,21 @@
 {
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
   "identifier" : "B874FB94",
   "nonRenewingSubscriptions" : [
 
   ],
   "products" : [
     {
-      "displayPrice" : "3.99",
+      "displayPrice" : "14.99",
       "familyShareable" : false,
       "internalID" : "6482980703",
       "localizations" : [
@@ -24,7 +34,7 @@
     "_applicationInternalID" : "1574130060",
     "_developerTeamID" : "K9JT8S56CG",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 735097252.862324,
+    "_lastSynchronizedDate" : 757815964.98404002,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -76,10 +86,79 @@
     ]
   },
   "subscriptionGroups" : [
+    {
+      "id" : "21617109",
+      "localizations" : [
 
+      ],
+      "name" : "Pro Group",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6740182649",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Gain access to all Sporadic Pro features.",
+              "displayName" : "Sporadic Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "pro1month",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro 1 Month",
+          "subscriptionGroupID" : "21617109",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6740182630",
+          "introductoryOffer" : {
+            "internalID" : "D2705A25",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Get access to all Sporadic Pro features.",
+              "displayName" : "Sporadic Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "pro1year",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro 1 Year",
+          "subscriptionGroupID" : "21617109",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
   ],
   "version" : {
-    "major" : 3,
+    "major" : 4,
     "minor" : 0
   }
 }
