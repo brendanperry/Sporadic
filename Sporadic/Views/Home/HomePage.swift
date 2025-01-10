@@ -13,6 +13,7 @@ struct HomePage: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var viewRouter: ViewRouter
     @State var showProPopUp = false
+    @EnvironmentObject var storeManager: StoreManager
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -95,8 +96,9 @@ struct HomePage: View {
                 viewModel.loadData()
             }
         }
-        .onAppear {
-            if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false {
+        .task {
+            let isPro = await storeManager.hasPaidAccount()
+            if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false && !isPro {
                 showProPopUp = true
                 UserDefaults.standard.set(true, forKey: "hasCompletedSetup")
             }
