@@ -97,6 +97,8 @@ struct Tutorial: View {
                             .hoverEffect()
                     })
                     .buttonStyle(ButtonPressAnimationStyle())
+                    .opacity(viewModel.selectedTemplates.count < 3 && viewModel.selection == 2 ? 0.5 : 1)
+                    .disabled(viewModel.selectedTemplates.count < 3 && viewModel.selection == 2)
                     
                     HStack {
                         Capsule()
@@ -323,9 +325,6 @@ struct Tutorial: View {
                         EditIcon()
                             .hoverEffect()
                             .offset(x: 25, y: -25)
-                            .onTapGesture {
-                                showImagePicker = true
-                            }
                             .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
                             .onChange(of: selectedphoto) { newValue in
                                 Task {
@@ -336,6 +335,9 @@ struct Tutorial: View {
                                     }
                                 }
                             }
+                    }
+                    .onTapGesture {
+                        showImagePicker = true
                     }
                     
                     Button(action: {
@@ -355,6 +357,7 @@ struct Tutorial: View {
                     }
                     
                     TextField("", text: $viewModel.name.max(24))
+                        .autocorrectionDisabled()
                         .padding()
                         .frame(minWidth: 200, alignment: .leading)
                         .background(Color("Deep Blue 200 And White"))

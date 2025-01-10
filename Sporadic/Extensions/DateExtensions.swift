@@ -33,4 +33,11 @@ extension Date {
         
         return d
     }
+    
+    func nearest30Minutes() -> Date {
+        let cal = Calendar.current
+        let minutes = cal.component(.minute, from: self)
+        let roundedMinutes = lrint(Double(minutes) / 30) * 30
+        return cal.date(byAdding: .minute, value: roundedMinutes - minutes, to: self) ?? self
+    }
 }

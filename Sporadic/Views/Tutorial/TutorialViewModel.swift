@@ -22,9 +22,7 @@ class TutorialViewModel: ObservableObject {
     @Published var selectedTemplates = Set<ActivityTemplate>()
     
     func createGroup() {
-        let deliveryTime = Date().addingTimeInterval(1800)
-        
-        guard let user = CloudKitHelper.shared.getCachedUser() else { return }
+        let deliveryTime = Date().addingTimeInterval(1800).nearest30Minutes()
         
         let activities = selectedTemplates.map {
             Activity(

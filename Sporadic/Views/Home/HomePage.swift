@@ -31,12 +31,6 @@ struct HomePage: View {
                 VStack {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 35) {
-                            Button {
-                                showProPopUp = true
-                            } label: {
-                                Text("Show Paywall")
-                            }
-                            
                             Welcome(viewModel: viewModel)
                             
                             VStack {

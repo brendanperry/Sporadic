@@ -16,7 +16,7 @@ struct ExerciseSelectionScreen: View {
     
     var body: some View {
         VStack {
-            TextHelper.text(key: "Choose 3 exercises to get started.", alignment: .leading, type: .h1)
+            TextHelper.text(key: "Choose 3 or more exercises to get started.", alignment: .leading, type: .h1)
                 .padding()
 
             TextHelper.text(key: "You can add or remove exercises as well as adjust the difficulty later.", alignment: .leading, type: .body)

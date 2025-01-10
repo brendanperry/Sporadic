@@ -12,107 +12,157 @@ struct Paywall: View {
     @EnvironmentObject var storeManager: StoreManager
     @Environment(\.dismiss) var dismiss
     
+    @State var selectedProductId = "sporadic_pro"
+    
     var body: some View {
         ZStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    Group {
-                        Text("Get the most out of ")
-                            .foregroundColor(Color("Gray300"))
-                        + Text("Sporadic   ")
-                            .foregroundColor(Color("BrandPurple"))
-                    }
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Get the most out of Sporadic")
+                    .foregroundColor(Color("Gray300"))
                     .fixedSize(horizontal: false, vertical: true)
                     .font(Font.custom("Lexend-SemiBold", size: 29, relativeTo: .largeTitle))
                     .padding(.horizontal)
                     .padding(.top, 100)
-                    
-                    TextHelper.text(key: "Need more groups or a custom exercise? Upgrade to access these features, and to support our work.", alignment: .leading, type: .body)
-                        .padding()
-                    
-                    VStack {
-                        ZStack {
-                            HStack(spacing: 22) {
-                                Text("🧘‍♀️")
-                                    .padding(5)
-                                    .background(Circle().foregroundStyle(.blue))
-                                Text("🏃")
-                                    .padding(5)
-                                    .background(Circle().foregroundStyle(.green))
-                            }
-                            
-                            Text("🚴")
-                                .padding(5)
-                                .background(Circle().foregroundStyle(.yellow))
-                                .padding(2)
-                                .background(Circle().foregroundStyle(Color("Panel")))
-                                .scaleEffect(1.1)
-                        }
-                        .padding(.vertical)
-                        
-                        TextHelper.text(key: "Create or join unlimited groups", alignment: .center, type: .h3)
-                    }
-                    .frame(height: 100)
-                    .padding(.vertical)
-                    .background(Color("Panel"))
-                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
+                
+                TextHelper.text(key: "Meet your fitness goals by creating custom exercises and unlimited groups with Sporadic Pro.", alignment: .leading, type: .body)
                     .padding()
-                    
-                    VStack {
-                        ZStack {
-                            Image("Custom Activity Icon")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(10)
-                                .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).foregroundStyle(Color("CustomExercise")).aspectRatio(1, contentMode: .fill))
-                                .padding(7)
-                            
-                            PlusButton(shape: Circle(), backgroundColor: Color("Panel"), lockLightMode: false, shadow: true)
-                                .scaleEffect(0.45)
-                                .offset(x: -25, y: -25)
+                
+                HStack {
+                    Spacer()
+                    ZStack {
+                        HStack(spacing: 22) {
+                            Text("🧘‍♀️")
+                                .padding(5)
+                                .background(Circle().foregroundStyle(.blue))
+                            Text("🏃")
+                                .padding(5)
+                                .background(Circle().foregroundStyle(.green))
                         }
                         
-                        TextHelper.text(key: "Create custom exercises", alignment: .center, type: .h3)
+                        Text("🚴")
+                            .padding(5)
+                            .background(Circle().foregroundStyle(.yellow))
+                            .padding(2)
+                            .background(Circle().foregroundStyle(Color("Panel")))
+                            .scaleEffect(1.1)
                     }
-                    .frame(height: 100)
-                    .padding(.vertical)
-                    .background(Color("Panel"))
-                    .cornerRadius(GlobalSettings.shared.controlCornerRadius)
-                    .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
-                    .padding([.horizontal, .bottom])
-                    
                     Spacer()
-                    
-                    ForEach(storeManager.products) { product in
-                        Button(action: {
-                            Task {
-                                let wasSuccessful = try? await storeManager.purchase(product)
-                                if wasSuccessful == true {
+                }
+                .padding()
+                
+                HStack {
+                    TextHelper.text(key: "Monthly", alignment: .leading, type: .h3)
+                    Spacer()
+                    if let product = storeManager.products.first(where: { $0.id == "pro1month"}) {
+                        TextHelper.text(key: "\(product.displayPrice)/mo", alignment: .trailing, type: .h3, color: Color("Gray200"))
+                    }
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius - 1)
+                        .foregroundStyle(.white)
+                )
+                .padding(selectedProductId != "sporadic_pro" ? 2 : 1)
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundStyle(selectedProductId != "sporadic_pro" ? .blue : .clear)
+                )
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundStyle(selectedProductId == "sporadic_pro" ? Color("Gray100") : .clear)
+                )
+                .padding(selectedProductId == "sporadic_pro" ? 1 : 0)
+                .padding()
+                .onTapGesture {
+                    selectedProductId = "pro1month"
+                }
+                
+                HStack {
+                    VStack {
+                        TextHelper.text(key: "Lifetime", alignment: .leading, type: .h3)
+                        TextHelper.text(key: "Best Offer", alignment: .leading, type: .h6, color: Color("BrandPurple"))
+                    }
+                    Spacer()
+                    if let product = storeManager.products.first(where: { $0.id == "sporadic_pro"}) {
+                        TextHelper.text(key: product.displayPrice, alignment: .trailing, type: .h3, color: Color("Gray200"))
+                    }
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius - 1)
+                        .foregroundStyle(.white)
+                )
+                .padding(selectedProductId == "sporadic_pro" ? 2 : 1)
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundStyle(selectedProductId == "sporadic_pro" ? .blue : .clear)
+                )
+                .background(
+                    RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                        .foregroundStyle(selectedProductId != "sporadic_pro" ? Color("Gray100") : .clear)
+                )
+                .padding(selectedProductId != "sporadic_pro" ? 1 : 0)
+                .padding()
+                .overlay(
+                    VStack {
+                        Text("Most popular")
+                            .font(.custom("Lexend-SemiBold", size: 10))
+                            .padding(10)
+                            .foregroundStyle(Color("Gray400"))
+                            .background(
+                                RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
+                                    .foregroundStyle(Color("GroupOption3"))
+                            )
+                        
+                        Spacer()
+                    }
+                )
+                .onTapGesture {
+                    selectedProductId = "sporadic_pro"
+                }
+                
+                Spacer()
+                
+                Button {
+                    if let product = storeManager.products.first(where: { $0.id == selectedProductId }) {
+                        Task {
+                            do {
+                                let wasSuccessful = try await storeManager.purchase(product)
+                                if wasSuccessful {
                                     dismiss()
                                 }
+                            } catch {
+                                print(error)
                             }
-                        }, label: {
-                            Text("Purchase \(product.displayName) - \(product.displayPrice)")
-                                .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title))
-                                .foregroundStyle(Color.white)
-                                .frame(maxWidth: .infinity)
-                        })
+                        }
+                    }
+                } label: {
+                    if let product = storeManager.products.first(where: { $0.id == selectedProductId }) {
+                        Group {
+                            if product.id == "sporadic_pro" {
+                                Text("Purchase Pro Lifetime for \(product.displayPrice)")
+                            } else {
+                                Text("Subscribe to Pro for \(product.displayPrice)/month")
+                            }
+                        }
+                        .font(Font.custom("Lexend-SemiBold", size: 16, relativeTo: .title))
+                        .foregroundStyle(Color.white)
+                        .frame(maxWidth: .infinity)
                         .padding(10)
                         .background(Color("BrandPurple"))
                         .cornerRadius(GlobalSettings.shared.controlCornerRadius)
                         .padding()
                     }
-                    
-                    Button(action: {
-                        Task {
-                            await storeManager.restore()
-                        }
-                    }, label: {
-                        TextHelper.text(key: "Restore Purchase", alignment: .center, type: .body)
-                    })
-                    .padding(.bottom)
                 }
+                
+                Button(action: {
+                    Task {
+                        await storeManager.restore()
+                    }
+                }, label: {
+                    TextHelper.text(key: "Restore Purchase", alignment: .center, type: .body, color: Color("BrandPurple"))
+                })
+                .padding()
             }
             
             CloseButton(shouldShow: $shouldShow)
@@ -127,4 +177,5 @@ struct Paywall: View {
 
 #Preview {
     Paywall(shouldShow: .constant(true))
+        .environmentObject(StoreManager())
 }

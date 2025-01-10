@@ -47,6 +47,7 @@ class StoreManager: ObservableObject {
         
         switch result {
         case .success(.verified(_)):
+            await updatePurchasedProducts()
             return true
         default:
             return false
