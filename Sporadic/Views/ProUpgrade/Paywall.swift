@@ -14,6 +14,8 @@ struct Paywall: View {
     
     @State var selectedProductId = "sporadic_pro"
     
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -162,6 +164,29 @@ struct Paywall: View {
                 }, label: {
                     TextHelper.text(key: "Restore Purchase", alignment: .center, type: .body, color: Color("BrandPurple"))
                 })
+                .padding(.bottom)
+                
+                HStack {
+                    Button {
+                        if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                            openURL(url)
+                        }
+                    } label: {
+                        TextHelper.text(key: "Terms of Use", alignment: .trailing, type: .h7)
+                    }
+                    
+                    Text(" | ")
+                        .font(Font.custom("Lexend-Regular", size: 12, relativeTo: .caption2))
+                        .foregroundColor(Color("Gray200"))
+
+                    Button {
+                        if let url = URL(string: "https://sporadic.app/privacy-policy.html") {
+                            openURL(url)
+                        }
+                    } label: {
+                        TextHelper.text(key: "Privacy Policy", alignment: .leading, type: .h7)
+                    }
+                }
                 .padding()
             }
             
