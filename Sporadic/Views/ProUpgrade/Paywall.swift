@@ -62,12 +62,12 @@ struct Paywall: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius - 1)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color("Panel"))
                 )
                 .padding(selectedProductId != "sporadic_pro" ? 2 : 1)
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                        .foregroundStyle(selectedProductId != "sporadic_pro" ? .blue : .clear)
+                        .foregroundStyle(selectedProductId != "sporadic_pro" ? Color("BrandPurple") : .clear)
                 )
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
@@ -92,12 +92,12 @@ struct Paywall: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius - 1)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color("Panel"))
                 )
                 .padding(selectedProductId == "sporadic_pro" ? 2 : 1)
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
-                        .foregroundStyle(selectedProductId == "sporadic_pro" ? .blue : .clear)
+                        .foregroundStyle(selectedProductId == "sporadic_pro" ? Color("BrandPurple") : .clear)
                 )
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
