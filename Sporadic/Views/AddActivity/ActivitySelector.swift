@@ -34,7 +34,7 @@ struct ActivitySelector: View {
                                 LazyVGrid(columns: items, spacing: 17) {
                                     ForEach(templates.filter({ !selectedActivities.map({ $0.templateId }).contains($0.id) && $0.category == category })) { template in
                                         NavigationLink(destination: AddPage(activityList: $selectedActivities, template: template)) {
-                                            
+                                            ActivityWidget(template: template)
                                         }
                                         .buttonStyle(ButtonPressAnimationStyle())
                                     }
