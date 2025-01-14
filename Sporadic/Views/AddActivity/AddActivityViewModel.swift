@@ -7,6 +7,9 @@
 
 import Foundation
 import Combine
+import RangeSlider
+
+extension ActivityUnit: RangeSliderUnit { }
 
 class AddActivityViewModel: ObservableObject {
     @Published var name = ""
@@ -16,7 +19,7 @@ class AddActivityViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var showError = false
     
-    let unitPublisher = PassthroughSubject<ActivityUnit, Never>()
+    let unitPublisher = PassthroughSubject<RangeSliderUnit, Never>()
     
     func resetSlider(newUnit: ActivityUnit) {
         unitPublisher.send(newUnit)

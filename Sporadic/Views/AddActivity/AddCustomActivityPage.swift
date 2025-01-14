@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import CloudKit
+import RangeSlider
 
 struct AddCustomActivityPage: View {
     @StateObject var viewModel = AddActivityViewModel()
@@ -196,6 +197,7 @@ struct AddCustomActivityPage: View {
                     rightCircleColor: .white,
                     lineColorInRange: AnyShapeStyle(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing)),
                     lineColorOutOfRange: Color("RangeUnselected"),
+                    shadow: Color("Shadow"),
                     leftValue: $minValue,
                     rightValue: $maxValue,
                     unitPublisher: viewModel.unitPublisher.eraseToAnyPublisher())

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RangeSlider
 
 struct RangeSelection: View {
     @Binding var minValue: Double
@@ -56,10 +57,11 @@ struct RangeSelection: View {
                     circleBorder: 10,
                     leftCircleBorderColor: Color("Gradient1"),
                     rightCircleBorderColor: Color("Gradient2"),
-                    leftCircleColor: .white,
-                    rightCircleColor: .white,
+                    leftCircleColor: Color.white,
+                    rightCircleColor: Color.white,
                     lineColorInRange: AnyShapeStyle(LinearGradient(gradient: Gradient(colors: [Color("Gradient1"), Color("Gradient2")]), startPoint: .leading, endPoint: .trailing)),
                     lineColorOutOfRange: Color("RangeUnselected"),
+                    shadow: Color("Shadow"),
                     leftValue: $minValue,
                     rightValue: $maxValue,
                     unitPublisher: viewModel.unitPublisher.eraseToAnyPublisher())

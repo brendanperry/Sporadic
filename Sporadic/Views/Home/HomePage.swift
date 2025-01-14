@@ -47,7 +47,7 @@ struct HomePage: View {
                                             .frame(width: 35, height: 35, alignment: .center)
                                             .padding(.trailing, 5)
                                         
-                                        Text(.init(viewModel.nextChallengeText))
+                                        Text(viewModel.nextChallengeText)
                                             .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
                                             .foregroundColor(Color("Gray400AutoTheme"))
                                         

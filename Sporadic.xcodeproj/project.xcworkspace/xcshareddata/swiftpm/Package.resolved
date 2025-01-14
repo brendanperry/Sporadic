@@ -1,5 +1,5 @@
 {
-  "originHash" : "573a49f64388cad5e7b12ee35b9a8e24b896bd4ee17a009c7d9af9b3d0b86821",
+  "originHash" : "14f11f61eec990077a8b33f68c5eaaebac01e55d6cfde8f3210733b0b9ed3974",
   "pins" : [
     {
       "identity" : "confettiswiftui",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "4b1006d361811aa8f1c4d2ae0fab94a18540ff75",
         "version" : "5.2.2"
+      }
+    },
+    {
+      "identity" : "rangeslider",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/brendanperry/RangeSlider",
+      "state" : {
+        "revision" : "835e17514bbc5b3d995ba0e5cfc3d882f34b1044",
+        "version" : "1.0.1"
       }
     }
   ],

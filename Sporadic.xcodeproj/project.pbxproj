@@ -36,6 +36,8 @@
 		C65A020026870098007A5B2F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A01FF26870098007A5B2F /* HomePage.swift */; };
 		C65A020226870099007A5B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020126870099007A5B2F /* Assets.xcassets */; };
 		C65A020526870099007A5B2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C65A020426870099007A5B2F /* Preview Assets.xcassets */; };
+		C65E6EFE2D3612DF004CC347 /* RangeSlider in Frameworks */ = {isa = PBXBuildFile; productRef = C65E6EFD2D3612DF004CC347 /* RangeSlider */; };
+		C65E6F012D361D15004CC347 /* RangeSlider in Frameworks */ = {isa = PBXBuildFile; productRef = C65E6F002D361D15004CC347 /* RangeSlider */; };
 		C6620063278A58D9000AF577 /* EditActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620062278A58D9000AF577 /* EditActivity.swift */; };
 		C66424D027B856A700B574D7 /* Complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66424CF27B856A700B574D7 /* Complete.swift */; };
 		C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664A936279A156400EE2195 /* ActivityTemplate.swift */; };
@@ -145,7 +147,6 @@
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
 		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
 		C6D4211A2BD0B1A000765DAE /* SporadicProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */; };
-		C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */; };
 		C6E6386729B3C9E0007DD574 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */; };
 		C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386829B3CC04007DD574 /* PlusButton.swift */; };
 		C6E6386B29B3F345007DD574 /* ActivityCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386A29B3F345007DD574 /* ActivityCategory.swift */; };
@@ -312,7 +313,6 @@
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
 		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
 		C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SporadicProducts.storekit; sourceTree = "<group>"; };
-		C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6E6386829B3CC04007DD574 /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
 		C6E6386A29B3F345007DD574 /* ActivityCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCategory.swift; sourceTree = "<group>"; };
@@ -336,6 +336,8 @@
 				C6BD0D772BC1C47300F5EC76 /* StoreKit.framework in Frameworks */,
 				C6B5F2DE2B9D530A001A45D7 /* OneSignalFramework in Frameworks */,
 				C6F4569F299DDE0B003DD2F4 /* ConfettiSwiftUI in Frameworks */,
+				C65E6F012D361D15004CC347 /* RangeSlider in Frameworks */,
+				C65E6EFE2D3612DF004CC347 /* RangeSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,7 +541,6 @@
 				C664D8EA29C3FDBD00ACA1AB /* EditIcon.swift */,
 				C6A59AFA2A14809800FFBC9D /* SelectedActivity.swift */,
 				C67085672A4A6ED700E46EBD /* CloseButton.swift */,
-				C6D55F6C270FE8E2007FDCAD /* RangeSlider.swift */,
 				C66424CF27B856A700B574D7 /* Complete.swift */,
 				C689616D28303572008A0C87 /* CustomSlider.swift */,
 				C6401E2228E29FFA0096E002 /* GroupName.swift */,
@@ -762,6 +763,8 @@
 			packageProductDependencies = (
 				C6F4569E299DDE0B003DD2F4 /* ConfettiSwiftUI */,
 				C6B5F2DD2B9D530A001A45D7 /* OneSignalFramework */,
+				C65E6EFD2D3612DF004CC347 /* RangeSlider */,
+				C65E6F002D361D15004CC347 /* RangeSlider */,
 			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
@@ -846,6 +849,7 @@
 			packageReferences = (
 				C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				C6B5F2DA2B9D530A001A45D7 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+				C65E6EFF2D361D15004CC347 /* XCRemoteSwiftPackageReference "RangeSlider" */,
 			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
@@ -988,7 +992,6 @@
 				C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */,
 				C62625AF2867601400E84C79 /* ActivityUnit.swift in Sources */,
 				C6F3113A294E66C00096F09D /* JoinGroupViewModel.swift in Sources */,
-				C6D55F6D270FE8E2007FDCAD /* RangeSlider.swift in Sources */,
 				C6401E2728E2A00D0096E002 /* GroupColor.swift in Sources */,
 				C6BD0D792BC226CA00F5EC76 /* StoreManager.swift in Sources */,
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
@@ -1502,6 +1505,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C65E6EFF2D361D15004CC347 /* XCRemoteSwiftPackageReference "RangeSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/brendanperry/RangeSlider";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 		C6B5F2DA2B9D530A001A45D7 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework";
@@ -1521,6 +1532,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C65E6EFD2D3612DF004CC347 /* RangeSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RangeSlider;
+		};
+		C65E6F002D361D15004CC347 /* RangeSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C65E6EFF2D361D15004CC347 /* XCRemoteSwiftPackageReference "RangeSlider" */;
+			productName = RangeSlider;
+		};
 		C6B5F2DB2B9D530A001A45D7 /* OneSignalExtension */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C6B5F2DA2B9D530A001A45D7 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
