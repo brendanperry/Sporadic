@@ -79,7 +79,7 @@ struct CreateGroupView: View {
         
         var body: some View {
             Button(action: {
-                if storeManager.isPro || groupCount == 0 {
+                if storeManager.isPro || groupCount <= 1 {
                     viewModel.createGroup { group in
                         if let group = group {
                             DispatchQueue.main.async {
