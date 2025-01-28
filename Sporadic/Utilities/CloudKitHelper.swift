@@ -300,6 +300,8 @@ class CloudKitHelper {
         if let user = try await getCurrentUser(forceSync: false) {
             let groupIds = user.groups.map { $0.recordID }
             
+            if groupIds.count == 0 { return [] }
+            
             let predicate = NSPredicate(format: "recordID in %@", groupIds)
             
             let query = CKQuery(recordType: "Group", predicate: predicate)

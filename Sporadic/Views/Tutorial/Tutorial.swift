@@ -128,6 +128,14 @@ struct Tutorial: View {
         }
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .task {
+            guard let groups = try? await CloudKitHelper.shared.getGroupsForUser() else { return }
+            
+            if groups.count > 0 {
+                UserDefaults.standard.set(true, forKey: "hasCompletedSetup")
+                endTutorial()
+            }
+        }
         .alert("Oops", isPresented: $viewModel.showError, actions: {
             Button("Okay") {
                 viewModel.showError = false
