@@ -56,7 +56,7 @@ class TutorialViewModel: ObservableObject {
         }
     }
 
-    func updateUser() {
+    func updateUser(updateSuccessful: @escaping () -> Void) {
         guard let user = CloudKitHelper.shared.getCachedUser() else {
             errorMessage = "No iCloud account was detected. Please make sure you are signed into your iCloud account and have an internet connection. Once this is done, restart the app and try again."
             showError = true
@@ -96,9 +96,7 @@ class TutorialViewModel: ObservableObject {
                     else {
                         DispatchQueue.main.async {
                             self?.isLoading = false
-                            withAnimation {
-                                self?.selection += 1
-                            }
+                            updateSuccessful()
                         }
                     }
                 }

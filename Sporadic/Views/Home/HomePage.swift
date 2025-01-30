@@ -99,6 +99,7 @@ struct HomePage: View {
         }
         .task {
             if showProPopUpOnFirstOpen == false {
+                viewModel.loadData()
                 return
             }
             

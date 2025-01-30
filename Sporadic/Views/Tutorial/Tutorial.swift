@@ -17,6 +17,7 @@ enum GroupDifficulty {
 struct Tutorial: View {
     @State var showImagePicker = false
     @State var selectedphoto: PhotosPickerItem?
+    @State var skipGroupCreation = false
     @FocusState var textFieldFocus: Bool
     @StateObject var viewModel = TutorialViewModel()
     @EnvironmentObject var viewRouter: ViewRouter
@@ -67,13 +68,23 @@ struct Tutorial: View {
                 VStack {
                     Button(action: {
                         withAnimation {
-                            if viewModel.selection == 1 {
+                            if viewModel.selection == 0 {
+                                viewModel.selection += 1
+                            }
+                            else if viewModel.selection == 1 {
                                 if viewModel.name == "" {
                                     viewModel.errorMessage = "Please enter a nickname"
                                     viewModel.showError = true
                                 }
                                 else {
-                                    viewModel.updateUser()
+                                    viewModel.updateUser {
+                                        // If the user redownloads, we can skip creating a new group to avoid making extras
+                                        if skipGroupCreation {
+                                            viewModel.selection += 2
+                                        } else {
+                                            viewModel.selection += 1
+                                        }
+                                    }
                                 }
                                 Aptabase.shared.trackEvent("tutorial_user_created")
                             }
@@ -92,8 +103,6 @@ struct Tutorial: View {
                                     
                                     endTutorial()
                                 }
-                            } else {
-                                viewModel.selection += 1
                             }
                         }
                     }, label: {
@@ -138,8 +147,7 @@ struct Tutorial: View {
             guard let groups = try? await CloudKitHelper.shared.getGroupsForUser() else { return }
             
             if groups.count > 0 {
-                UserDefaults.standard.set(true, forKey: "hasCompletedSetup")
-                endTutorial()
+                skipGroupCreation = true
             }
         }
         .alert("Oops", isPresented: $viewModel.showError, actions: {
