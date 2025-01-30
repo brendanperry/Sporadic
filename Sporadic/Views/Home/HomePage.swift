@@ -14,6 +14,7 @@ struct HomePage: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @State var showProPopUp = false
     @EnvironmentObject var storeManager: StoreManager
+    let showProPopUpOnFirstOpen = false
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -97,6 +98,10 @@ struct HomePage: View {
             }
         }
         .task {
+            if showProPopUpOnFirstOpen == false {
+                return
+            }
+            
             let isPro = await storeManager.hasPaidAccount()
             if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false && !isPro {
                 showProPopUp = true
