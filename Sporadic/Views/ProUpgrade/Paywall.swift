@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Aptabase
 
 struct Paywall: View {
     @Binding var shouldShow: Bool
@@ -197,6 +198,9 @@ struct Paywall: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
         )
+        .onAppear {
+            Aptabase.shared.trackEvent("paywall_shown")
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import OneSignalFramework
+import Aptabase
 
 enum GroupDifficulty {
     case beginner, intermediate, advanced
@@ -33,6 +34,7 @@ struct Tutorial: View {
                 HStack {
                     Button(action: {
                         withAnimation {
+                            Aptabase.shared.trackEvent("tutorial_notifications_skipped")
                             endTutorial()
                         }
                     }, label: {
@@ -73,13 +75,17 @@ struct Tutorial: View {
                                 else {
                                     viewModel.updateUser()
                                 }
+                                Aptabase.shared.trackEvent("tutorial_user_created")
                             }
                             else if viewModel.selection == 2 {
                                 viewModel.createGroup()
                                 viewModel.selection += 1
+                                Aptabase.shared.trackEvent("tutorial_group_created")
                             }
                             else if viewModel.selection == 3 && CloudKitHelper.shared.hasUser() {
+                                Aptabase.shared.trackEvent("tutorial_notification_prompted")
                                 OneSignal.Notifications.requestPermission { accepted in
+                                    Aptabase.shared.trackEvent("tutorial_notification_result", with: ["accepted": accepted])
                                     if let userId = CloudKitHelper.shared.getCachedUser()?.usersRecordId {
                                         OneSignal.login(userId)
                                     }
@@ -146,7 +152,7 @@ struct Tutorial: View {
     }
     
     func endTutorial() {
-        // end tutorial
+        Aptabase.shared.trackEvent("tutorial_completed")
         viewRouter.navigateTo(.home)
         UserDefaults.standard.setValue(true, forKey: UserPrefs.tutorial.rawValue)
     }

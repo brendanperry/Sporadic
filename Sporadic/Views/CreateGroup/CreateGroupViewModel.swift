@@ -8,6 +8,7 @@
 import Foundation
 import CloudKit
 import SwiftUI
+import Aptabase
 
 class CreateGroupViewModel: ObservableObject {
     @Published var groupName = ""
@@ -76,6 +77,7 @@ class CreateGroupViewModel: ObservableObject {
         CloudKitHelper.shared.createGroup(name: groupName, emoji: emoji, color: GroupBackgroundColor(rawValue: color) ?? .one, days: days, time: time, activities: activities) { [weak self] result in
             switch result {
             case .success(let group):
+                Aptabase.shared.trackEvent("group_created")
                 group.areUsersLoading = false
                 group.areActivitiesLoading = false
                 completion(group)

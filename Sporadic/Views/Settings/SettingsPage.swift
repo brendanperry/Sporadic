@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Aptabase
 
 private let settingsViewModel = SettingsViewModel()
 
@@ -50,6 +51,9 @@ struct SettingsPage: View {
             .padding(.top, 1)
             
             NavigationBar(viewRouter: viewRouter)
+        }
+        .onAppear {
+            Aptabase.shared.trackEvent("settings_page_shown")
         }
     }
     

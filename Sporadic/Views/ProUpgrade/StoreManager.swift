@@ -7,6 +7,7 @@
 
 import Foundation
 import StoreKit
+import Aptabase
 
 @MainActor
 class StoreManager: ObservableObject {
@@ -47,6 +48,7 @@ class StoreManager: ObservableObject {
         
         switch result {
         case .success(.verified(_)):
+            Aptabase.shared.trackEvent("pro_purchased", with: ["productId": product.id])
             await updatePurchasedProducts()
             return true
         default:

@@ -7,12 +7,17 @@
 
 import SwiftUI
 import OneSignalFramework
-
+import Aptabase
 
 @main
 struct StartApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var storeManager = StoreManager()
+    
+    init() {
+        Aptabase.shared.initialize(appKey: "A-US-1567471031")
+        Aptabase.shared.trackEvent("app_started")
+    }
     
     var body: some Scene {
         WindowGroup {

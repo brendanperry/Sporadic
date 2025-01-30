@@ -12,6 +12,7 @@ import Combine
 import OneSignalFramework
 import StoreKit
 import WidgetKit
+import Aptabase
 
 struct Challenges: View {
     let challenges: [Challenge]
@@ -210,6 +211,8 @@ struct ChallengeView: View {
                     challenge.usersCompleted = currentUsersCompleted
                 }
                 else {
+                    Aptabase.shared.trackEvent("challenge_completed")
+
                     Task {
                         if let group = challenge.group {
                             let _ = await CloudKitHelper.shared.loadStreakForGroup(group: group)
@@ -234,10 +237,8 @@ struct ChallengeView: View {
     func showReviewPopUp() {
         let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
         
-        if challengesCompleted == 0 {
-            requestReview()
-        }
-        else if challengesCompleted % 14 == 0 {
+        if challengesCompleted == 0 || challengesCompleted == 1 || challengesCompleted % 7 == 0 {
+            Aptabase.shared.trackEvent("review_requested")
             requestReview()
         }
         

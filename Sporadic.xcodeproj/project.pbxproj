@@ -106,6 +106,7 @@
 		C6B5FAD02D489B88000A761B /* Icon-3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6B5FACD2D489B88000A761B /* Icon-3@2x.png */; };
 		C6B5FAD32D489BAF000A761B /* Icon-2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6B5FAD22D489BAF000A761B /* Icon-2@3x.png */; };
 		C6B5FAD42D489BAF000A761B /* Icon-2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6B5FAD12D489BAF000A761B /* Icon-2@2x.png */; };
+		C6B5FAD72D4BC902000A761B /* Aptabase in Frameworks */ = {isa = PBXBuildFile; productRef = C6B5FAD62D4BC902000A761B /* Aptabase */; };
 		C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BCB2112766B0CD00D9677D /* TextHelper.swift */; };
 		C6BD0D752BC1AB8600F5EC76 /* Paywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BD0D742BC1AB8600F5EC76 /* Paywall.swift */; };
 		C6BD0D772BC1C47300F5EC76 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD0D762BC1C47300F5EC76 /* StoreKit.framework */; };
@@ -338,6 +339,7 @@
 				C6F4569F299DDE0B003DD2F4 /* ConfettiSwiftUI in Frameworks */,
 				C65E6F012D361D15004CC347 /* RangeSlider in Frameworks */,
 				C65E6EFE2D3612DF004CC347 /* RangeSlider in Frameworks */,
+				C6B5FAD72D4BC902000A761B /* Aptabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +767,7 @@
 				C6B5F2DD2B9D530A001A45D7 /* OneSignalFramework */,
 				C65E6EFD2D3612DF004CC347 /* RangeSlider */,
 				C65E6F002D361D15004CC347 /* RangeSlider */,
+				C6B5FAD62D4BC902000A761B /* Aptabase */,
 			);
 			productName = GCMi;
 			productReference = C65A01FA26870098007A5B2F /* Sporadic.app */;
@@ -850,6 +853,7 @@
 				C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				C6B5F2DA2B9D530A001A45D7 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
 				C65E6EFF2D361D15004CC347 /* XCRemoteSwiftPackageReference "RangeSlider" */,
+				C6B5FAD52D4BC902000A761B /* XCRemoteSwiftPackageReference "aptabase-swift" */,
 			);
 			productRefGroup = C65A01FB26870098007A5B2F /* Products */;
 			projectDirPath = "";
@@ -1526,6 +1530,14 @@
 				minimumVersion = 5.1.3;
 			};
 		};
+		C6B5FAD52D4BC902000A761B /* XCRemoteSwiftPackageReference "aptabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aptabase/aptabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.11;
+			};
+		};
 		C6F4569D299DDE0B003DD2F4 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
@@ -1560,6 +1572,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C6B5F2DA2B9D530A001A45D7 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
 			productName = OneSignalFramework;
+		};
+		C6B5FAD62D4BC902000A761B /* Aptabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6B5FAD52D4BC902000A761B /* XCRemoteSwiftPackageReference "aptabase-swift" */;
+			productName = Aptabase;
 		};
 		C6F4569E299DDE0B003DD2F4 /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;

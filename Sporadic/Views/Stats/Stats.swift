@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import CloudKit
+import Aptabase
 
 struct Stats: View {
     @EnvironmentObject var viewRouter: ViewRouter
@@ -76,6 +77,7 @@ struct Stats: View {
             NavigationBar(viewRouter: viewRouter)
         }
         .onAppear {
+            Aptabase.shared.trackEvent("stats_page_shown")
             viewModel.waitForGroupsToFinishLoading(homeViewModel: homeViewModel)
         }
     }

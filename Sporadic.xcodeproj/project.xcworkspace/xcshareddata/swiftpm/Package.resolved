@@ -1,6 +1,15 @@
 {
-  "originHash" : "14f11f61eec990077a8b33f68c5eaaebac01e55d6cfde8f3210733b0b9ed3974",
+  "originHash" : "7a515461411a7fb0124ca6624e3faf3333f027000b8f72747c93bd3606fcdda6",
   "pins" : [
+    {
+      "identity" : "aptabase-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aptabase/aptabase-swift.git",
+      "state" : {
+        "revision" : "cfd67fac2a228d448d9d2ac92ffc71589cc3ef00",
+        "version" : "0.3.11"
+      }
+    },
     {
       "identity" : "confettiswiftui",
       "kind" : "remoteSourceControl",

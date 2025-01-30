@@ -7,6 +7,7 @@
 
 import Foundation
 import CloudKit
+import Aptabase
 
 
 class JoinGroupViewModel: ObservableObject {
@@ -36,6 +37,7 @@ class JoinGroupViewModel: ObservableObject {
                         self?.showError = true
                     }
                     else {
+                        Aptabase.shared.trackEvent("group_joined")
                         self?.homeViewModel.loadData()
                         completion(true)
                     }
