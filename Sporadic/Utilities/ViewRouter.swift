@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Aptabase
 
 enum Page {
     case home
@@ -20,6 +21,7 @@ class ViewRouter: ObservableObject {
     
     init() {
         if !UserDefaults.standard.bool(forKey: UserPrefs.tutorial.rawValue) {
+            Aptabase.shared.trackEvent("tutorial_started")
             currentPage = .tutorial
         } else {
             currentPage = .home
