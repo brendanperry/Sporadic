@@ -240,7 +240,9 @@ struct ChallengeView: View {
         
         if challengesCompleted == 0 || challengesCompleted == 1 || challengesCompleted % 7 == 0 {
             Aptabase.shared.trackEvent("soft_review_requested")
-            showReviewPrompt = true
+            withAnimation {
+                showReviewPrompt = true
+            }
         }
         
         UserDefaults.standard.set(challengesCompleted + 1, forKey: "ChallengesCompleted")
