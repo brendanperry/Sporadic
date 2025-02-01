@@ -78,6 +78,7 @@ struct Tutorial: View {
                                 }
                                 else {
                                     viewModel.updateUser {
+                                        Aptabase.shared.trackEvent("tutorial_user_created")
                                         // If the user redownloads, we can skip creating a new group to avoid making extras
                                         if skipGroupCreation {
                                             viewModel.selection += 2
@@ -86,7 +87,6 @@ struct Tutorial: View {
                                         }
                                     }
                                 }
-                                Aptabase.shared.trackEvent("tutorial_user_created")
                             }
                             else if viewModel.selection == 2 {
                                 viewModel.createGroup()
