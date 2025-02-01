@@ -68,6 +68,7 @@
 		C689616E28303572008A0C87 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689616D28303572008A0C87 /* CustomSlider.swift */; };
 		C68C982F2A7FF7180080AC75 /* BindingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68C982E2A7FF7180080AC75 /* BindingExtensions.swift */; };
 		C68C98312A80114A0080AC75 /* SequenceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68C98302A80114A0080AC75 /* SequenceExtensions.swift */; };
+		C6927A822D4E76D80028F10B /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6927A812D4E76D40028F10B /* ReviewPrompt.swift */; };
 		C69395B126ADC267005BAD98 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B026ADC267005BAD98 /* ViewRouter.swift */; };
 		C69395B326B24BB3005BAD98 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69395B226B24BB3005BAD98 /* DateHelper.swift */; };
 		C69F4C4D2A09E30E006A4E62 /* ExerciseName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */; };
@@ -261,6 +262,7 @@
 		C689616D28303572008A0C87 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		C68C982E2A7FF7180080AC75 /* BindingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtensions.swift; sourceTree = "<group>"; };
 		C68C98302A80114A0080AC75 /* SequenceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtensions.swift; sourceTree = "<group>"; };
+		C6927A812D4E76D40028F10B /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPrompt.swift; sourceTree = "<group>"; };
 		C69395B026ADC267005BAD98 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C69395B226B24BB3005BAD98 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		C69F4C4C2A09E30E006A4E62 /* ExerciseName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseName.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6927A812D4E76D40028F10B /* ReviewPrompt.swift */,
 				C6D4211B2BD0B31600765DAE /* ProUpgrade */,
 				C6F31138294E66AC0096F09D /* JoinGroup */,
 				C62625A428673B3600E84C79 /* CreateGroup */,
@@ -948,6 +951,7 @@
 				C664D8EB29C3FDBD00ACA1AB /* EditIcon.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
+				C6927A822D4E76D80028F10B /* ReviewPrompt.swift in Sources */,
 				C66424D027B856A700B574D7 /* Complete.swift in Sources */,
 				C6BCB2122766B0CD00D9677D /* TextHelper.swift in Sources */,
 				C6667CE5268F8B7E00991913 /* MainView.swift in Sources */,

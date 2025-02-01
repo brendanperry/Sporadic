@@ -14,12 +14,13 @@ struct MainView: View {
     @StateObject var viewRouter = ViewRouter()
     @State var showJoinGroup = false
     @State var groupId = ""
+    @State var showReviewPrompt = false
     
     var body: some View {
         ZStack(alignment: .trailing) {
             switch viewRouter.currentPage {
             case .home:
-                HomePage(viewModel: homeViewModel)
+                HomePage(viewModel: homeViewModel, showReviewPrompt: $showReviewPrompt)
             case .settings:
                 SettingsPage()
             case .tutorial:
@@ -48,6 +49,11 @@ struct MainView: View {
         }
         .task {
             await storeManager.updatePurchasedProducts()
+        }
+        .overlay {
+            if showReviewPrompt {
+                ReviewPrompt(showReviewPrompt: $showReviewPrompt)
+            }
         }
     }
 }

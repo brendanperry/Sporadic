@@ -11,13 +11,15 @@ import ConfettiSwiftUI
 
 struct HomePage: View {
     @ObservedObject var viewModel: HomeViewModel
+    @Binding var showReviewPrompt: Bool
     @EnvironmentObject var viewRouter: ViewRouter
     @State var showProPopUp = false
     @EnvironmentObject var storeManager: StoreManager
     let showProPopUpOnFirstOpen = false
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, showReviewPrompt: Binding<Bool>) {
         self.viewModel = viewModel
+        self._showReviewPrompt = showReviewPrompt
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Lexend-SemiBold", size: 30)!]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("Gray300"))]
@@ -36,7 +38,7 @@ struct HomePage: View {
                             Welcome(viewModel: viewModel)
                             
                             VStack {
-                                Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading) { group in
+                                Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading, showReviewPrompt: $showReviewPrompt) { group in
                                     viewModel.triggerConfetti(group: group)
                                 }
                                 

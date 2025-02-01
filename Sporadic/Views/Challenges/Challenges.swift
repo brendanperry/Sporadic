@@ -17,6 +17,7 @@ import Aptabase
 struct Challenges: View {
     let challenges: [Challenge]
     let isLoading: Bool
+    @Binding var showReviewPrompt: Bool
     let triggerConfetti: (UserGroup) -> Void
     
     var body: some View {
@@ -30,7 +31,7 @@ struct Challenges: View {
                 }
                 else {
                     ForEach(challenges) { challenge in
-                        ChallengeView(challenge: challenge, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
+                        ChallengeView(challenge: challenge, showReviewPrompt: $showReviewPrompt, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
                     }
                 }
                 
@@ -65,7 +66,7 @@ struct ChallengeLoading: View {
 
 struct ChallengeView: View {
     @ObservedObject var challenge: Challenge
-    @Environment(\.requestReview) var requestReview
+    @Binding var showReviewPrompt: Bool
     @State var showError = false
     let triggerConfetti: (UserGroup) -> Void
     let showNavigationCarrot: Bool
@@ -238,8 +239,8 @@ struct ChallengeView: View {
         let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
         
         if challengesCompleted == 0 || challengesCompleted == 1 || challengesCompleted % 7 == 0 {
-            Aptabase.shared.trackEvent("review_requested")
-            requestReview()
+            Aptabase.shared.trackEvent("soft_review_requested")
+            showReviewPrompt = true
         }
         
         UserDefaults.standard.set(challengesCompleted + 1, forKey: "ChallengesCompleted")
