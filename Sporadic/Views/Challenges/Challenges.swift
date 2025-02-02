@@ -18,6 +18,7 @@ struct Challenges: View {
     let challenges: [Challenge]
     let isLoading: Bool
     @Binding var showReviewPrompt: Bool
+    @AppStorage("ShowChallengeHint") var showChallengeHint = true
     let triggerConfetti: (UserGroup) -> Void
     
     var body: some View {
@@ -30,6 +31,14 @@ struct Challenges: View {
                     ChallengeLoading()
                 }
                 else {
+                    if showChallengeHint {
+                        InfoBubble(text: "Your first challenge will appear here soon! **You will have 24 hours to complete it.**\n\nYou'll get a notification with the details when it's ready. When you complete your exercise, **come back here to check the box** so we can kick off your streak!") {
+                            withAnimation {
+                                showChallengeHint = false
+                            }
+                        }
+                    }
+                    
                     ForEach(challenges) { challenge in
                         ChallengeView(challenge: challenge, showReviewPrompt: $showReviewPrompt, triggerConfetti: triggerConfetti, showNavigationCarrot: false)
                     }

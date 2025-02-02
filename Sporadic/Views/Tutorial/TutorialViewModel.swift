@@ -77,7 +77,7 @@ class TutorialViewModel: ObservableObject {
                 print(error)
                 
                 DispatchQueue.main.async {
-                    self?.errorMessage = "Failed to update nickname. Please check your connection an try again."
+                    self?.errorMessage = "Failed to update nickname. Please check your connection and try again."
                     self?.showError = true
                     self?.isLoading = false
                 }
@@ -88,7 +88,7 @@ class TutorialViewModel: ObservableObject {
                         print(error)
                         
                         DispatchQueue.main.async {
-                            self?.errorMessage = "Failed to update photo. Please check your connection an try again."
+                            self?.errorMessage = "Failed to update photo. Please check your connection and try again."
                             self?.showError = true
                             self?.isLoading = false
                         }

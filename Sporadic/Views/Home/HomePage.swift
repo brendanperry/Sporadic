@@ -15,6 +15,7 @@ struct HomePage: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @State var showProPopUp = false
     @EnvironmentObject var storeManager: StoreManager
+    @AppStorage("GroupHint") var showGroupHint = true
     let showProPopUpOnFirstOpen = false
     
     init(viewModel: HomeViewModel, showReviewPrompt: Binding<Bool>) {
@@ -68,6 +69,14 @@ struct HomePage: View {
                             }, hardRefresh: {
                                 viewModel.getGroups()
                             })
+                            
+                            if showGroupHint {
+                                InfoBubble(text: "We've set up a group for you to get started. Groups consist of exercises and friends that you invite. You can edit your group by tapping on it or create a new one by hitting the plus button.") {
+                                    withAnimation {
+                                        showGroupHint = false
+                                    }
+                                }
+                            }
                         }
                         .padding(.top)
                         .padding(.bottom, 100)

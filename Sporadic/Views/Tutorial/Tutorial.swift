@@ -337,47 +337,56 @@ struct Tutorial: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    ZStack {
-                        Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 75, height: 75, alignment: .center)
-                            .cornerRadius(100)
-                        
-                        EditIcon()
-                            .hoverEffect()
-                            .offset(x: 25, y: -25)
-                            .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
-                            .onChange(of: selectedphoto) { newValue in
-                                Task {
-                                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                        DispatchQueue.main.async {
-                                            viewModel.photo = UIImage(data: data)
+                    VStack {
+                        ZStack {
+                            Image(uiImage: viewModel.photo ?? UIImage(imageLiteralResourceName: "Default Profile"))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 75, height: 75, alignment: .center)
+                                .cornerRadius(100)
+                            
+                            EditIcon()
+                                .hoverEffect()
+                                .offset(x: 25, y: -25)
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedphoto, matching: .images, photoLibrary: .shared())
+                                .onChange(of: selectedphoto) { newValue in
+                                    Task {
+                                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                            DispatchQueue.main.async {
+                                                viewModel.photo = UIImage(data: data)
+                                            }
                                         }
                                     }
                                 }
-                            }
+                        }
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
+                        .hoverEffect()
+
+                        if viewModel.photo != nil {
+                            Button(action: {
+                                viewModel.photo = nil
+                                selectedphoto = nil
+                            }, label: {
+                                Text("Remove")
+                                    .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .caption))
+                                    .foregroundColor(Color("Failed"))
+                            })
+                            .hoverEffect()
+                        }
                     }
-                    .onTapGesture {
-                        showImagePicker = true
-                    }
-                    
-                    Button(action: {
-                        viewModel.photo = nil
-                    }, label: {
-                        Text("Remove")
-                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .caption))
-                            .foregroundColor(Color("Failed"))
-                    })
                     .padding(.bottom)
-                    .hoverEffect()
                     
-                    HStack {
-                        TextHelper.text(key: "Nickname", alignment: .leading, type: .h5)
-                        
-                        TextHelper.text(key: "MaxCharacters", alignment: .trailing, type: .h7)
+                    HStack(spacing: 0) {
+                        Text("Nickname")
+                            .foregroundColor(Color("Gray300"))
+                        Text("*")
+                            .foregroundColor(Color("Failed"))
+                        Spacer()
                     }
-                    
+                    .font(Font.custom("Lexend-SemiBold", size: 15, relativeTo: .title3))
+
                     TextField("", text: $viewModel.name.max(24))
                         .autocorrectionDisabled()
                         .padding()

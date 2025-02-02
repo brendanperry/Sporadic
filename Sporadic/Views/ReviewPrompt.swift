@@ -78,7 +78,7 @@ struct ReviewPrompt: View {
                 .background(
                     RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius)
                         .foregroundStyle(Color("Panel"))
-                        .shadow(radius: GlobalSettings.shared.shadowRadius)
+                        .shadow(color: Color("Shadow"), radius: 16, x: 0, y: 4)
                 )
                 .padding(.horizontal)
                 .transition(.move(edge: .bottom))

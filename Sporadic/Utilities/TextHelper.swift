@@ -47,7 +47,7 @@ class TextHelper {
     }
     
     private static func GetText(_ key: String, _ alignment: Alignment, _ prefix: String? = nil, _ suffix: String? = nil) -> some View {
-        return Text((prefix ?? "") + Localize.getString(key) + (suffix ?? ""))
+        return Text(.init((prefix ?? "") + Localize.getString(key) + (suffix ?? "")))
             .frame(maxWidth: .infinity, alignment: alignment)
     }
 }

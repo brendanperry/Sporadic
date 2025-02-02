@@ -212,16 +212,18 @@ struct SettingsPage: View {
                             }
                     }
                     
-                    Button(action: {
-                        print("Remove")
-                        photo = nil
-                        viewModel.updateUserImage()
-                    }, label: {
-                        Text("Remove")
-                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
-                            .foregroundColor(Color("Failed"))
-                    })
-                    .frame(maxWidth: 75, maxHeight: 25)
+                    if photo != nil {
+                        Button(action: {
+                            print("Remove")
+                            photo = nil
+                            viewModel.updateUserImage()
+                        }, label: {
+                            Text("Remove")
+                                .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
+                                .foregroundColor(Color("Failed"))
+                        })
+                        .frame(maxWidth: 75, maxHeight: 25)
+                    }
                 }
             }
             .alert(isPresented: $viewModel.showError) {
