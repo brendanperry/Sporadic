@@ -70,7 +70,7 @@ struct HomePage: View {
                                 viewModel.getGroups()
                             })
                             
-                            if showGroupHint {
+                            if showGroupHint && UserDefaults.standard.integer(forKey: "ChallengesCompleted") == 0 {
                                 InfoBubble(text: "We've set up a group for you to get started. Groups consist of exercises and friends that you invite. You can edit your group by tapping on it or create a new one by hitting the plus button.") {
                                     withAnimation {
                                         showGroupHint = false
