@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 import CloudKit
 import RangeSlider
+import Aptabase
 
 struct AddCustomActivityPage: View {
     @StateObject var viewModel = AddActivityViewModel()
@@ -90,6 +91,7 @@ struct AddCustomActivityPage: View {
                     dismiss()
                 }
             } else {
+                Aptabase.shared.trackEvent("pro_popup_custom_activity_triggered")
                 showProPopUp = true
             }
         }, label: {

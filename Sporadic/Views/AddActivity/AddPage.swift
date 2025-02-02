@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CloudKit
+import Aptabase
 
 struct AddPage: View {
     @Binding var activityList: [Activity]
@@ -79,6 +80,8 @@ struct AddPage: View {
                     DispatchQueue.main.async {
                         activityList.append(newActivity)
                     }
+                    
+                    Aptabase.shared.trackEvent("activity_added_to_group")
                     
                     dismiss()
                 }) {

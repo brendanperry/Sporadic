@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Aptabase
 
 
 struct EditActivity: View {
@@ -73,6 +74,7 @@ struct EditActivity: View {
         .onAppear {
             currentSwipeStatus = GlobalSettings.shared.swipeToGoBackEnabled
             GlobalSettings.shared.swipeToGoBackEnabled = true
+            Aptabase.shared.trackEvent("edit_activity_opened")
         }
         .onDisappear {
             GlobalSettings.shared.swipeToGoBackEnabled = currentSwipeStatus ?? true

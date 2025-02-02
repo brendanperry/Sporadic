@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Aptabase
 
 struct JoinGroup: View {
     let groupCount: Int
@@ -64,6 +65,7 @@ struct JoinGroup: View {
                                     }
                                 }
                             } else {
+                                Aptabase.shared.trackEvent("pro_popup_join_group_triggered")
                                 showProPopUp = true
                             }
                         }, label: {

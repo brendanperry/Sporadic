@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import Combine
+import Aptabase
 
 struct CreateGroupView: View {
     @StateObject var viewModel = CreateGroupViewModel()
@@ -64,6 +65,9 @@ struct CreateGroupView: View {
         .alert(isPresented: $viewModel.showError) {
             Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Okay")))
         }
+        .onAppear {
+            Aptabase.shared.trackEvent("create_group_view_shown")
+        }
     }
     
     struct CreateButton: View {
@@ -93,6 +97,7 @@ struct CreateGroupView: View {
                         }
                     }
                 } else {
+                    Aptabase.shared.trackEvent("pro_popup_create_group_triggered")
                     showProPopUp = true
                 }
             }, label: {
@@ -134,6 +139,7 @@ struct CreateGroupView: View {
                     }
                     
                     Button(action: {
+                        Aptabase.shared.trackEvent("add_activity_view_shown")
                         showAddView = true
                     }, label: {
                         if selectedActivities.isEmpty {

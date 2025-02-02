@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Aptabase
 
 struct GroupOverview: View {
     @StateObject var viewModel = GroupOverviewViewModel()
@@ -100,6 +101,7 @@ struct GroupOverview: View {
                 Spacer()
                 
                 Button(action: {
+                    Aptabase.shared.trackEvent("group_exit_without_saving")
                     viewModel.removeUnsavedActivities(group: group)
                     hardRefresh()
                     dismiss()
@@ -116,6 +118,8 @@ struct GroupOverview: View {
                 
                 Button(action: {
                     viewModel.save(group: group) { didComplete in
+                        Aptabase.shared.trackEvent("group_saved", with: ["success": didComplete])
+                        
                         if didComplete {
                             DispatchQueue.main.async {
                                 updateNextChallengeText()
