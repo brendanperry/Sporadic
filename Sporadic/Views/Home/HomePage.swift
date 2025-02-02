@@ -16,7 +16,6 @@ struct HomePage: View {
     @State var showProPopUp = false
     @EnvironmentObject var storeManager: StoreManager
     @AppStorage("GroupHint") var showGroupHint = true
-    let showProPopUpOnFirstOpen = false
     
     init(viewModel: HomeViewModel, showReviewPrompt: Binding<Bool>) {
         self.viewModel = viewModel
@@ -109,11 +108,6 @@ struct HomePage: View {
             }
         }
         .task {
-            if showProPopUpOnFirstOpen == false {
-                viewModel.loadData()
-                return
-            }
-            
             let isPro = await storeManager.hasPaidAccount()
             if UserDefaults.standard.bool(forKey: "hasCompletedSetup") == false && !isPro {
                 showProPopUp = true
