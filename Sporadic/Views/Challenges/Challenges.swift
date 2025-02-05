@@ -250,7 +250,7 @@ struct ChallengeView: View {
     func showReviewPopUp() {
         let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
         
-        if challengesCompleted == 0 || challengesCompleted == 1 || challengesCompleted % 7 == 0 {
+        if challengesCompleted == 1 || challengesCompleted % 7 == 0 {
             withAnimation {
                 if useReviewSoftPrompt {
                     Aptabase.shared.trackEvent("soft_review_requested")
