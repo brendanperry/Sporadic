@@ -18,23 +18,7 @@ struct ReviewPrompt: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    
-                    Image("Memoji1")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 100)
-                    
-                    Spacer()
-                    
-                    Image("Memoji2")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 100)
-                    
-                    Spacer()
-                }
+                Memojis()
                 
                 VStack {
                     TextHelper.text(key: "Support Us!", alignment: .center, type: .h1)

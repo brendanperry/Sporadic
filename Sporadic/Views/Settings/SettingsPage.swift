@@ -139,20 +139,24 @@ struct SettingsPage: View {
     }
     
     func Contact() -> some View {
-        RectangleWidget<Color>(
-            image: "Support",
-            text: "Contact Us",
-            actionText: "Contact", 
-            textColor: nil,
-            background: { Color("Panel") }) {
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
-                
-                let email = "brendan@brendanperry.me"
-                if let url = URL(string: "mailto:\(email)") {
-                    UIApplication.shared.open(url)
+        VStack(spacing: 0) {
+            Memojis()
+            
+            RectangleWidget<Color>(
+                image: "Support",
+                text: "Contact Us",
+                actionText: "Contact",
+                textColor: nil,
+                background: { Color("Panel") }) {
+                    let impact = UIImpactFeedbackGenerator(style: .light)
+                    impact.impactOccurred()
+                    
+                    let email = "brendan@brendanperry.me"
+                    if let url = URL(string: "mailto:\(email)") {
+                        UIApplication.shared.open(url)
+                    }
                 }
-            }
+        }
     }
     
     struct UserSettings: View {

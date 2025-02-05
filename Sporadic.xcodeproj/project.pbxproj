@@ -150,6 +150,7 @@
 		C6C96026279296E300A67AA2 /* ColorSchemeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C96025279296E300A67AA2 /* ColorSchemeHelper.swift */; };
 		C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */; };
 		C6CB07F528CD1C0700F07164 /* ActivitySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */; };
+		C6D070152D53E83B00B49965 /* Memojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D070142D53E83800B49965 /* Memojis.swift */; };
 		C6D4211A2BD0B1A000765DAE /* SporadicProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */; };
 		C6E6386729B3C9E0007DD574 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */; };
 		C6E6386929B3CC04007DD574 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6386829B3CC04007DD574 /* PlusButton.swift */; };
@@ -319,6 +320,7 @@
 		C6C960292794A6B700A67AA2 /* Sporadic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sporadic.entitlements; sourceTree = "<group>"; };
 		C6CB07F028C1BDFC00F07164 /* CKAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKAssetExtensions.swift; sourceTree = "<group>"; };
 		C6CB07F428CD1C0700F07164 /* ActivitySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelector.swift; sourceTree = "<group>"; };
+		C6D070142D53E83800B49965 /* Memojis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memojis.swift; sourceTree = "<group>"; };
 		C6D421192BD0B1A000765DAE /* SporadicProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SporadicProducts.storekit; sourceTree = "<group>"; };
 		C6E6386629B3C9E0007DD574 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C6E6386829B3CC04007DD574 /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 		C630BDDC268C228B0066D8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6D070142D53E83800B49965 /* Memojis.swift */,
 				C6927A832D4F1BE10028F10B /* InfoBubble.swift */,
 				C6927A812D4E76D40028F10B /* ReviewPrompt.swift */,
 				C6D4211B2BD0B31600765DAE /* ProUpgrade */,
@@ -1013,6 +1016,7 @@
 				C62625AD2867493200E84C79 /* GroupBackgroundColor.swift in Sources */,
 				C66A372A283F1CB50096757C /* GroupOverview.swift in Sources */,
 				C664D8ED29C3FE8000ACA1AB /* DaysForChallenge.swift in Sources */,
+				C6D070152D53E83B00B49965 /* Memojis.swift in Sources */,
 				C664A937279A156400EE2195 /* ActivityTemplate.swift in Sources */,
 				C6667D2E2690FB5D00991913 /* UserPrefs.swift in Sources */,
 				C6CB07F128C1BDFC00F07164 /* CKAssetExtensions.swift in Sources */,
