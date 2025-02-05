@@ -129,7 +129,7 @@ struct ConfettiBar: View {
                 Rectangle()
                     .frame(width: 1, height: 1)
                     .foregroundColor(.clear)
-                    .confettiCannon(counter: $confetti, num: 100, rainHeight: 1250, fadesOut: false, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 180))
+                    .confettiCannon(trigger: $confetti, num: 100, rainHeight: 1250, fadesOut: false, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 180))
                     .offset(y: -25)
                 Spacer()
             }
