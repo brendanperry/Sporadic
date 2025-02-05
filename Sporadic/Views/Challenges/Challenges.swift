@@ -31,8 +31,8 @@ struct Challenges: View {
                     ChallengeLoading()
                 }
                 else {
-                    if showChallengeHint && UserDefaults.standard.integer(forKey: "ChallengesCompleted") == 0 && challenges.count == 0 {
-                        InfoBubble(text: "Your first challenge will appear here soon! **You will have 24 hours to complete it.**\n\nYou'll get a notification with the details when it's ready. When you complete your exercise, **come back here to check the box** so we can kick off your streak!") {
+                    if showChallengeHint && UserDefaults.standard.integer(forKey: "ChallengesCompleted") == 0 {
+                        InfoBubble(text: "Your first challenge is here! It is time to get up and get active! Click the checkmark below to mark it as complete.\n\nMore challenges are on the way! **You have 24 hours to finish each one**. When a new challenge begins, you’ll receive a notification with all the details. Be sure to return here to complete it so we can track your progress and streak!") {
                             Aptabase.shared.trackEvent("challenge_info_bubble_dismissed")
                             withAnimation {
                                 showChallengeHint = false

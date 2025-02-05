@@ -35,24 +35,21 @@ class TutorialViewModel: ObservableObject {
                 isNew: true)
         }
         
-        let components = Calendar.current.dateComponents([.weekday], from: Date())
-        
-        var days = [Int]()
-        if var currentDay = components.weekday {
-            days.append(currentDay)
-            
-            while days.count < 3 {
-                if currentDay + 2 < 7 {
-                    currentDay += 2
-                    days.append(currentDay)
-                } else {
-                    currentDay = 0
-                }
-            }
-        }
+        let days = getDays(numberOfDays: 7)
         
         CloudKitHelper.shared.createGroup(name: name + "'s Group", emoji: "💪", color: GroupBackgroundColor.one, days: days, time: deliveryTime, activities: activities) { result in
             print(result)
+            
+            switch result {
+            case .success(let success):
+                CloudKitHelper.shared.createChallenge(group: success) { error in
+                    if let error {
+                        print(error)
+                    }
+                }
+            case .failure(let failure):
+                print(failure)
+            }
         }
     }
 
@@ -102,5 +99,26 @@ class TutorialViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func getDays(numberOfDays: Int) -> [Int] {
+        var days = [Int]()
+        let components = Calendar.current.dateComponents([.weekday], from: Date())
+        let daysBetween = 7 / numberOfDays
+        if var currentDay = components.weekday {
+            days.append(currentDay)
+            
+            while days.count < numberOfDays {
+                if currentDay + daysBetween < 7 {
+                    currentDay += daysBetween
+                    days.append(currentDay)
+                } else {
+                    currentDay = 0
+                    days.append(0)
+                }
+            }
+        }
+        
+        return days
     }
 }

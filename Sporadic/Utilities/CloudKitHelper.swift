@@ -512,6 +512,44 @@ class CloudKitHelper {
         }
     }
     
+    func createChallenge(group: UserGroup, completion: @escaping (Error?) -> Void) {
+        guard let user = getCachedUser() else {
+            completion(NSError(domain: "Failed to get user", code: 404))
+            return
+        }
+        
+        guard let activity = group.activities.randomElement() else {
+            completion(NSError(domain: "Failed to get activity", code: 404))
+            return
+        }
+        
+        let amount = activity.template?.selectedMin ?? 0
+        
+        let userReference = CKRecord.Reference(record: user.record, action: .none)
+        let activityReference = CKRecord.Reference(record: activity.record, action: .none)
+        let groupReference = CKRecord.Reference(record: group.record, action: .none)
+
+        let challengeRecord = CKRecord(recordType: "Challenge")
+        challengeRecord.setValue(groupReference, forKey: "group")
+        challengeRecord.setValue([userReference], forKey: "users")
+        challengeRecord.setValue(amount, forKey: "amount")
+        challengeRecord.setValue(activity.name, forKey: "activityName")
+        challengeRecord.setValue(activityReference, forKey: "activity")
+        challengeRecord.setValue(activity.unit.rawValue, forKey: "unit")
+        challengeRecord.setValue(0, forKey: "currentStreak")
+        challengeRecord.setValue("", forKey: "notificationId")
+        challengeRecord.setValue(Date(), forKey: "startTime")
+        
+        database.save(challengeRecord) { record, error in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                completion(nil)
+            }
+        }
+    }
+    
     func createGroup(name: String, emoji: String, color: GroupBackgroundColor, days: [Int], time: Date, activities: [Activity], completion: @escaping (Result<UserGroup, Error>) -> Void) {
         guard let user = cachedUser else {
             completion(.failure(NSError(domain: "User not found", code: 0)))
