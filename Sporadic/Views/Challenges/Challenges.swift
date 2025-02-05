@@ -76,10 +76,12 @@ struct ChallengeLoading: View {
 
 struct ChallengeView: View {
     @ObservedObject var challenge: Challenge
+    @Environment(\.requestReview) var requestReview
     @Binding var showReviewPrompt: Bool
     @State var showError = false
     let triggerConfetti: (UserGroup) -> Void
     let showNavigationCarrot: Bool
+    let useReviewSoftPrompt = false
     
     var body: some View {
         HStack {
@@ -249,9 +251,14 @@ struct ChallengeView: View {
         let challengesCompleted = UserDefaults.standard.integer(forKey: "ChallengesCompleted")
         
         if challengesCompleted == 0 || challengesCompleted == 1 || challengesCompleted % 7 == 0 {
-            Aptabase.shared.trackEvent("soft_review_requested")
             withAnimation {
-                showReviewPrompt = true
+                if useReviewSoftPrompt {
+                    Aptabase.shared.trackEvent("soft_review_requested")
+                    showReviewPrompt = true
+                } else {
+                    Aptabase.shared.trackEvent("hard_review_requested")
+                    requestReview()
+                }
             }
         }
         
