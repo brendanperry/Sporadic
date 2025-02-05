@@ -1,5 +1,5 @@
 {
-  "originHash" : "7a515461411a7fb0124ca6624e3faf3333f027000b8f72747c93bd3606fcdda6",
+  "originHash" : "eedafbcf2ae068416706573913a5690f2f0f9be82836c1a036e8964134d5b5ef",
   "pins" : [
     {
       "identity" : "aptabase-swift",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/simibac/ConfettiSwiftUI.git",
       "state" : {
         "branch" : "master",
-        "revision" : "469de4e43949815dc92570cc786922d8d1385b06"
+        "revision" : "77ce21c82cc5fa608ac921a0dea09dd85b5432c7"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OneSignal/OneSignal-XCFramework",
       "state" : {
-        "revision" : "4b1006d361811aa8f1c4d2ae0fab94a18540ff75",
-        "version" : "5.2.2"
+        "revision" : "3bc37b379581442be7d6337d01f5c7e5d6a4cdde",
+        "version" : "5.2.9"
       }
     },
     {
