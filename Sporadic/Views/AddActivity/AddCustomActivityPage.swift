@@ -66,7 +66,7 @@ struct AddCustomActivityPage: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .popover(isPresented: $showProPopUp) {
+        .fullScreenCover(isPresented: $showProPopUp) {
             Paywall(shouldShow: $showProPopUp)
         }
     }

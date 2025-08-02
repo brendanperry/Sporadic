@@ -76,7 +76,7 @@ struct JoinGroup: View {
                         })
                         .buttonStyle(ButtonPressAnimationStyle())
                         .padding()
-                        .popover(isPresented: $showProPopUp) {
+                        .fullScreenCover(isPresented: $showProPopUp) {
                             Paywall(shouldShow: $showProPopUp)
                         }
                         

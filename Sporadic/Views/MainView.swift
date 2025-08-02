@@ -44,7 +44,7 @@ struct MainView: View {
                 showJoinGroup = true
             }
         }
-        .popover(isPresented: $showJoinGroup) {
+        .fullScreenCover(isPresented: $showJoinGroup) {
             JoinGroup(groupCount: homeViewModel.groups.count, viewModel: JoinGroupViewModel(groupId: groupId, homeViewModel: homeViewModel), groupId: $groupId)
         }
         .task {

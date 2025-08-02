@@ -27,7 +27,7 @@ struct HomePage: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Image("BackgroundImage")
                     .resizable()
@@ -101,7 +101,7 @@ struct HomePage: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
-        .popover(isPresented: $showProPopUp) {
+        .fullScreenCover(isPresented: $showProPopUp) {
             Paywall(shouldShow: $showProPopUp)
         }
         .onChange(of: showProPopUp) { newValue in
