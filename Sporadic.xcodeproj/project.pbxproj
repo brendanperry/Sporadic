@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C613CFCD269559C70061DC49 /* EmailHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613CFCC269559C70061DC49 /* EmailHelper.swift */; };
+		C6149EB72E3E591D007BF4BE /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6149EB62E3E591A007BF4BE /* FeatureFlag.swift */; };
+		C6149EB82E3E591D007BF4BE /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6149EB62E3E591A007BF4BE /* FeatureFlag.swift */; };
 		C61983212A26E52A00FCBDBA /* TutorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */; };
 		C626259F2862698700E84C79 /* LoadingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C626259E2862698700E84C79 /* LoadingStatus.swift */; };
 		C62625A12867397E00E84C79 /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62625A02867397E00E84C79 /* CreateGroupView.swift */; };
@@ -200,6 +202,7 @@
 
 /* Begin PBXFileReference section */
 		C613CFCC269559C70061DC49 /* EmailHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailHelper.swift; sourceTree = "<group>"; };
+		C6149EB62E3E591A007BF4BE /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		C61983202A26E52A00FCBDBA /* TutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewModel.swift; sourceTree = "<group>"; };
 		C626259E2862698700E84C79 /* LoadingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatus.swift; sourceTree = "<group>"; };
 		C62625A02867397E00E84C79 /* CreateGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupView.swift; sourceTree = "<group>"; };
@@ -422,6 +425,7 @@
 		C630BDDA268C227C0066D8C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C6149EB62E3E591A007BF4BE /* FeatureFlag.swift */,
 				C664A936279A156400EE2195 /* ActivityTemplate.swift */,
 				C68378BC28440FF700ABB6B3 /* Activity.swift */,
 				C68378C02844140500ABB6B3 /* Challenge.swift */,
@@ -949,6 +953,7 @@
 				C62625AB286741AB00E84C79 /* CharacterExtensions.swift in Sources */,
 				C640520629F032FA0054BD85 /* CompletedChallenge.swift in Sources */,
 				C68378C9284542D500ABB6B3 /* GroupList.swift in Sources */,
+				C6149EB82E3E591D007BF4BE /* FeatureFlag.swift in Sources */,
 				C664D8EB29C3FDBD00ACA1AB /* EditIcon.swift in Sources */,
 				C664A939279A174400EE2195 /* ActivityTemplateHelper.swift in Sources */,
 				C6C96022278FA64F00A67AA2 /* DateExtensions.swift in Sources */,
@@ -1069,6 +1074,7 @@
 				C6C425142B2D7B88006C80DB /* ActivityTemplateHelper.swift in Sources */,
 				C6AAAD5B2B429005003DA91E /* GroupStreakWidget.swift in Sources */,
 				C6C424D92B263188006C80DB /* SingleExerciseConfigurationIntent.swift in Sources */,
+				C6149EB72E3E591D007BF4BE /* FeatureFlag.swift in Sources */,
 				C6C425192B2D7C0F006C80DB /* CKAssetExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

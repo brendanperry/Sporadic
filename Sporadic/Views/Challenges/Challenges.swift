@@ -230,6 +230,10 @@ struct ChallengeView: View {
                         if let group = challenge.group {
                             let _ = await CloudKitHelper.shared.loadStreakForGroup(group: group)
                         }
+                        let shouldUseNewSystem = await CloudKitHelper.shared.getFeatureFlag(for: FeatureFlag.newNotificationSystem)
+                        if !shouldUseNewSystem {
+                            try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
+                        }
                         WidgetCenter.shared.reloadAllTimelines()
                     }
                     

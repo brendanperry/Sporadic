@@ -972,7 +972,7 @@ class CloudKitHelper {
         database.add(queryOperation)
     }
     
-    func subcribeToAllGroupCompletedChallengeNotifications() async {
+    func subscribeToAllGroupCompletedChallengeNotifications() async {
         guard let currentGroups else { return }
         for group in currentGroups {
             Task {
@@ -1051,5 +1051,35 @@ class CloudKitHelper {
                 }
             }
         }
+    }
+    
+    func sendUsersNotifications(challenge: Challenge) async throws {
+        guard let user = cachedUser else {
+            return
+        }
+                
+        let playerIds = challenge.users?.map({ $0.notificationId }).filter({ $0 != OneSignal.User.pushSubscription.id ?? "" }) ?? []
+        
+        let data = NotificationData(
+            app_id: "f211cce4-760d-4404-97f3-34df31eccde8",
+            include_subscription_ids: playerIds,
+            contents: ["en": "\(user.name) completed today's challenge for \(challenge.group?.name ?? "") \(challenge.group?.emoji ?? "")"],
+            headings: ["en": "Challenge Completed"])
+        
+        Task {
+            await NotificationHelper().postNotification(data: data)
+        }
+    }
+
+    func getFeatureFlag(for key: FeatureFlag) async -> Bool {
+        let flagPredicate = NSPredicate(format: "key = %@", key.rawValue)
+        
+        let query = CKQuery(recordType: "FeatureFlag", predicate: flagPredicate)
+        
+        let response = try? await database.records(matching: query)
+        
+        let value = try? response?.matchResults.first?.1.get().value(forKey: "value") as? Int
+        
+        return (value == 1)
     }
 }

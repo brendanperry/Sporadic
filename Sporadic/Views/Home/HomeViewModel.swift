@@ -257,7 +257,10 @@ class HomeViewModel : ObservableObject {
                     self?.loadNextChallengeText()
                     
                     Task {
-                        await CloudKitHelper.shared.subcribeToAllGroupCompletedChallengeNotifications()
+                        let shouldUseNewSystem = await CloudKitHelper.shared.getFeatureFlag(for: FeatureFlag.newNotificationSystem)
+                        if shouldUseNewSystem {
+                            await CloudKitHelper.shared.subscribeToAllGroupCompletedChallengeNotifications()
+                        }
                     }
                 }
             }
