@@ -986,7 +986,7 @@ class CloudKitHelper {
             return
         }
         
-        let id = "group-completed-challenge-\(group.record.recordID.recordName)-\(user.usersRecordId)"
+        let id = "group-completed-challenge-\(group.record.recordID.recordName)"
         
         do {
             let _ = try await database.subscription(for: id)
@@ -1018,17 +1018,17 @@ class CloudKitHelper {
         notification.alertLocalizationKey = "ChallengeCompletedNotificationBody"
         notification.alertLocalizationArgs = ["username", "groupName", "groupEmoji"]
         notification.desiredKeys = ["username", "groupName", "groupEmoji"]
-        notification.shouldSendContentAvailable = true
         notification.shouldSendMutableContent = true
         notification.soundName = "default"
         notification.shouldBadge = true
 
         subscription.notificationInfo = notification
         
-        if let savedSubscription = try? await database.save(subscription) {
-            print(savedSubscription)
-        } else {
-            print("Subscription not saved :(")
+        do {
+            let _ = try await database.save(subscription)
+            print("Subscription made!")
+        } catch {
+            print(error)
         }
     }
 }
