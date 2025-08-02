@@ -255,6 +255,10 @@ class HomeViewModel : ObservableObject {
                     self?.areGroupsLoading = false
                     self?.loadGroupData()
                     self?.loadNextChallengeText()
+                    
+                    Task {
+                        await CloudKitHelper.shared.subcribeToAllGroupCompletedChallengeNotifications()
+                    }
                 }
             }
         }

@@ -91,3 +91,4 @@
 "RemoveActivity" = "Remove Activity";
 "NotCompleted" = "Not Completed";
 "Reps" = "reps";
+"ChallengeCompletedNotificationBody" = "%@ completed today's challenge for %@ %@";

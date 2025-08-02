@@ -733,7 +733,10 @@ class CloudKitHelper {
         record.setValue(challenge.activityName, forKey: "activityName")
         record.setValue(challenge.unit.rawValue, forKey: "unit")
         record.setValue(Date(), forKey: "date")
-        
+        record.setValue(user.name, forKey: "username")
+        record.setValue(challenge.group?.name, forKey: "groupName")
+        record.setValue(challenge.group?.emoji, forKey: "groupEmoji")
+
         database.save(record) { record, error in
             if let error = error {
                 completion(error)
@@ -857,24 +860,6 @@ class CloudKitHelper {
         database.add(queryOperation)
     }
     
-    func sendUsersNotifications(challenge: Challenge) async throws {
-        guard let user = cachedUser else {
-            return
-        }
-                
-        let playerIds = challenge.users?.map({ $0.notificationId }).filter({ $0 != OneSignal.User.pushSubscription.id ?? "" }) ?? []
-        
-        let data = NotificationData(
-            app_id: "f211cce4-760d-4404-97f3-34df31eccde8",
-            include_subscription_ids: playerIds,
-            contents: ["en": "\(user.name) completed today's challenge for \(challenge.group?.name ?? "") \(challenge.group?.emoji ?? "")"],
-            headings: ["en": "Challenge Completed"])
-        
-        Task {
-            await NotificationHelper().postNotification(data: data)
-        }
-    }
-    
     func loadStreakForGroup(group: UserGroup) async -> Int {
         var challenges = await withCheckedContinuation { continuation in
             getAllChallengesForGroupStreak(group: group) { result in
@@ -985,5 +970,65 @@ class CloudKitHelper {
         }
         
         database.add(queryOperation)
+    }
+    
+    func subcribeToAllGroupCompletedChallengeNotifications() async {
+        guard let currentGroups else { return }
+        for group in currentGroups {
+            Task {
+                await subscribeToGroupCompletedChallenges(for: group)
+            }
+        }
+    }
+    
+    func subscribeToGroupCompletedChallenges(for group: UserGroup) async {
+        guard let user = cachedUser else {
+            return
+        }
+        
+        let id = "group-completed-challenge-\(group.record.recordID.recordName)-\(user.usersRecordId)"
+        
+        do {
+            let _ = try await database.subscription(for: id)
+            return
+        } catch let error as CKError {
+            // Only continue through if the item hasn't been created yet
+            if error.code != .unknownItem {
+                print("Failed to fetch subscription: \(error)")
+                return
+            }
+        } catch {
+            print(error)
+            return
+        }
+        
+        // exclude your own user id
+        let userReference = CKRecord.Reference(record: user.record, action: .none)
+        let userPredicate = NSPredicate(format: "user != %@", userReference)
+        
+        let groupReference = CKRecord.Reference(record: group.record, action: .none)
+        let groupPredicate = NSPredicate(format: "group = %@", groupReference)
+        
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [userPredicate, groupPredicate])
+        
+        let subscription = CKQuerySubscription(recordType: "CompletedChallenge", predicate: compoundPredicate, subscriptionID: id, options: .firesOnRecordCreation)
+
+        let notification = CKSubscription.NotificationInfo()
+        notification.title = "Challenge Completed"
+        notification.alertLocalizationKey = "ChallengeCompletedNotificationBody"
+        notification.alertLocalizationArgs = ["username", "groupName", "groupEmoji"]
+        notification.desiredKeys = ["username", "groupName", "groupEmoji"]
+        notification.shouldSendContentAvailable = true
+        notification.shouldSendMutableContent = true
+        notification.soundName = "default"
+        notification.shouldBadge = true
+
+        subscription.notificationInfo = notification
+        
+        if let savedSubscription = try? await database.save(subscription) {
+            print(savedSubscription)
+        } else {
+            print("Subscription not saved :(")
+        }
     }
 }

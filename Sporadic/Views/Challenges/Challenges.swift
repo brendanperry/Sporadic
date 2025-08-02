@@ -230,7 +230,6 @@ struct ChallengeView: View {
                         if let group = challenge.group {
                             let _ = await CloudKitHelper.shared.loadStreakForGroup(group: group)
                         }
-                        try? await CloudKitHelper.shared.sendUsersNotifications(challenge: challenge)
                         WidgetCenter.shared.reloadAllTimelines()
                     }
                     
