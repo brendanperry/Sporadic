@@ -39,6 +39,9 @@ class JoinGroupViewModel: ObservableObject {
                     else {
                         Aptabase.shared.trackEvent("group_joined")
                         self?.homeViewModel.loadData()
+                        Task {
+                            await CloudKitHelper.shared.subscribeToGroupCompletedChallenges(for: group)
+                        }
                         completion(true)
                     }
                     
