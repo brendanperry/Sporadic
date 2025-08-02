@@ -102,6 +102,8 @@
 		C6B5F2DC2B9D530A001A45D7 /* OneSignalExtension in Frameworks */ = {isa = PBXBuildFile; productRef = C6B5F2DB2B9D530A001A45D7 /* OneSignalExtension */; };
 		C6B5F2DE2B9D530A001A45D7 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = C6B5F2DD2B9D530A001A45D7 /* OneSignalFramework */; };
 		C6B5F2E02B9D5332001A45D7 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = C6B5F2DF2B9D5332001A45D7 /* OneSignalFramework */; };
+		C6B5F2E22B9D6125001A45D7 /* onesignal-key.txt in Resources */ = {isa = PBXBuildFile; fileRef = C6B5F2E12B9D6125001A45D7 /* onesignal-key.txt */; };
+		C6B5F2E32B9D6132001A45D7 /* onesignal-key.txt in Resources */ = {isa = PBXBuildFile; fileRef = C6B5F2E12B9D6125001A45D7 /* onesignal-key.txt */; };
 		C6B5F2E52B9E1E0A001A45D7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */; };
 		C6B5F2E62B9E1E5C001A45D7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */; };
 		C6B5FACF2D489B88000A761B /* Icon-3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6B5FACE2D489B88000A761B /* Icon-3@3x.png */; };
@@ -286,6 +288,7 @@
 		C6B5F2CB2B9D51C7001A45D7 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		C6B5F2CD2B9D51C7001A45D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6B5F2D42B9D5244001A45D7 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		C6B5F2E12B9D6125001A45D7 /* onesignal-key.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "onesignal-key.txt"; sourceTree = SOURCE_ROOT; };
 		C6B5F2E42B9E1E0A001A45D7 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		C6B5FACD2D489B88000A761B /* Icon-3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3@2x.png"; sourceTree = "<group>"; };
 		C6B5FACE2D489B88000A761B /* Icon-3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-3@3x.png"; sourceTree = "<group>"; };
@@ -523,6 +526,7 @@
 				C65A020626870099007A5B2F /* Info.plist */,
 				C65A020326870099007A5B2F /* Preview Content */,
 				C630BDF7268C2CB60066D8C3 /* Localizable.strings */,
+				C6B5F2E12B9D6125001A45D7 /* onesignal-key.txt */,
 			);
 			path = Sporadic;
 			sourceTree = "<group>";
@@ -902,6 +906,7 @@
 				C68378CF2849834400ABB6B3 /* Lexend-Regular.ttf in Resources */,
 				C6B5FACF2D489B88000A761B /* Icon-3@3x.png in Resources */,
 				C6B5FAD02D489B88000A761B /* Icon-3@2x.png in Resources */,
+				C6B5F2E22B9D6125001A45D7 /* onesignal-key.txt in Resources */,
 				C65A020226870099007A5B2F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -918,6 +923,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6AAAD6A2B4651F1003DA91E /* Lexend-SemiBold.ttf in Resources */,
+				C6B5F2E32B9D6132001A45D7 /* onesignal-key.txt in Resources */,
 				C6AAAD682B4651F1003DA91E /* OFL.txt in Resources */,
 				C6AAAD692B4651F1003DA91E /* Lexend-Regular.ttf in Resources */,
 				C6AAAD672B4651BA003DA91E /* Assets.xcassets in Resources */,
