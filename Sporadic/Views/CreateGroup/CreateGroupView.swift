@@ -113,7 +113,7 @@ struct CreateGroupView: View {
             .buttonStyle(ButtonPressAnimationStyle())
             .padding()
             .padding(.bottom, 50)
-            .popover(isPresented: $showProPopUp) {
+            .fullScreenCover(isPresented: $showProPopUp) {
                 Paywall(shouldShow: $showProPopUp)
             }
         }
@@ -172,7 +172,7 @@ struct CreateGroupView: View {
                     .buttonStyle(ButtonPressAnimationStyle())
                 }
             }
-            .popover(isPresented: $showAddView) {
+            .fullScreenCover(isPresented: $showAddView) {
                 NavigationStack {
                     ActivitySelector(selectedActivities: $selectedActivities, shouldShow: $showAddView)
                 }

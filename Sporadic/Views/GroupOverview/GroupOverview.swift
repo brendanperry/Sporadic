@@ -216,7 +216,7 @@ struct GroupOverview: View {
                         showEdit = true
                     }
                 }
-                .popover(isPresented: $showEdit) {
+                .fullScreenCover(isPresented: $showEdit) {
                     EditGroupHeader(name: $name, emoji: $emoji, color: $color, showEdit: $showEdit)
                 }
             }
@@ -276,7 +276,7 @@ struct YourActivities: View {
                 }
             }
         }
-        .popover(isPresented: $showAddView) {
+        .fullScreenCover(isPresented: $showAddView) {
             NavigationStack {
                 ActivitySelector(selectedActivities: $group.activities, shouldShow: $showAddView)
             }

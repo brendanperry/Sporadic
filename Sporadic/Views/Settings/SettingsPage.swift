@@ -106,7 +106,7 @@ struct SettingsPage: View {
                 Alert(title: Text(Localize.getString("NotificationsEnabled")), message: Text(Localize.getString("NothingToDo")), dismissButton: .default(Text(Localize.getString("Okay"))))
             }
             .buttonStyle(ButtonPressAnimationStyle())
-            .popover(isPresented: $showProPopUp) {
+            .fullScreenCover(isPresented: $showProPopUp) {
                 Paywall(shouldShow: $showProPopUp)
             }
     }
