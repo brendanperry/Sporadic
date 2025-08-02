@@ -55,7 +55,7 @@ class GroupOverviewViewModel: ObservableObject {
             self.isLoading = true
         }
         
-        CloudKitHelper.shared.updateUserGroups(user: user, groups: user.groups) { error in
+        CloudKitHelper.shared.unsubscribeToGroupCompletedChallenges(for: group) { error in
             if let error {
                 print(error)
                 DispatchQueue.main.async {
@@ -63,11 +63,23 @@ class GroupOverviewViewModel: ObservableObject {
                     self.showError = true
                     completion(false)
                 }
+                return
             }
             
-            DispatchQueue.main.async {
-                self.isLoading = false
-                completion(true)
+            CloudKitHelper.shared.updateUserGroups(user: user, groups: user.groups) { error in
+                if let error {
+                    print(error)
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Failed to leave group. Please check your connection and try again."
+                        self.showError = true
+                        completion(false)
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    completion(true)
+                }
             }
         }
     }

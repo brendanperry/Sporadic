@@ -1031,4 +1031,25 @@ class CloudKitHelper {
             print(error)
         }
     }
+    
+    func unsubscribeToGroupCompletedChallenges(for group: UserGroup, completion: @escaping (Error?) -> Void) {
+        let id = "group-completed-challenge-\(group.record.recordID.recordName)"
+        
+        database.fetch(withSubscriptionID: id) { [weak self] remoteSubscription, erorr in
+            guard let remoteSubscriptionId = remoteSubscription?.subscriptionID else {
+                // No subscription to group exists
+                completion(nil)
+                return
+            }
+            
+            self?.database.delete(withSubscriptionID: remoteSubscriptionId) { id, error in
+                if let error {
+                    completion(error)
+                } else {
+                    print(id ?? "")
+                    completion(nil)
+                }
+            }
+        }
+    }
 }
