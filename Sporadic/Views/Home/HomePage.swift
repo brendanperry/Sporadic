@@ -27,78 +27,76 @@ struct HomePage: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Image("BackgroundImage")
-                    .resizable()
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 35) {
-                            Welcome(viewModel: viewModel)
-                            
-                            VStack {
-                                Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading, showReviewPrompt: $showReviewPrompt) { group in
-                                    viewModel.triggerConfetti(group: group)
-                                }
-                                
-                                if !viewModel.areChallengesLoading {
-                                    HStack {
-                                        Image("ChallengeStatus")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 35, height: 35, alignment: .center)
-                                            .padding(.trailing, 5)
-                                        
-                                        Text(.init(viewModel.nextChallengeText))
-                                            .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
-                                            .foregroundColor(Color("Gray400AutoTheme"))
-                                        
-                                        Spacer()
-                                    }
-                                    .padding()
-                                    .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).stroke(Color("NextChallengeBG")))
-                                    .padding(.horizontal)
-                                    .padding(.top, 5)
-                                }
+        ZStack {
+            Image("BackgroundImage")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 35) {
+                        Welcome(viewModel: viewModel)
+                        
+                        VStack {
+                            Challenges(challenges: viewModel.challenges, isLoading: viewModel.areChallengesLoading, showReviewPrompt: $showReviewPrompt) { group in
+                                viewModel.triggerConfetti(group: group)
                             }
                             
-                            GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading, updateNextChallengeText: {
-                                viewModel.loadNextChallengeText()
-                            }, hardRefresh: {
-                                viewModel.getGroups()
-                            })
-                            
-                            if showGroupHint && UserDefaults.standard.integer(forKey: "ChallengesCompleted") == 0 {
-                                InfoBubble(text: "We've set up a group for you to get started. Groups consist of exercises and friends that you invite. You can edit your group by tapping on it or create a new one by hitting the plus button.") {
-                                    Aptabase.shared.trackEvent("group_info_bubble_dismissed")
-                                    withAnimation {
-                                        showGroupHint = false
-                                    }
+                            if !viewModel.areChallengesLoading {
+                                HStack {
+                                    Image("ChallengeStatus")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 35, height: 35, alignment: .center)
+                                        .padding(.trailing, 5)
+                                    
+                                    Text(.init(viewModel.nextChallengeText))
+                                        .font(Font.custom("Lexend-Regular", size: 15, relativeTo: .body))
+                                        .foregroundColor(Color("Gray400AutoTheme"))
+                                    
+                                    Spacer()
                                 }
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: GlobalSettings.shared.controlCornerRadius).stroke(Color("NextChallengeBG")))
+                                .padding(.horizontal)
+                                .padding(.top, 5)
                             }
                         }
-                        .padding(.top)
-                        .padding(.bottom, 100)
-                        .onAppear {
-                            GlobalSettings.shared.swipeToGoBackEnabled = true
+                        
+                        GroupList(groups: $viewModel.groups, isLoading: viewModel.areGroupsLoading, updateNextChallengeText: {
+                            viewModel.loadNextChallengeText()
+                        }, hardRefresh: {
+                            viewModel.getGroups()
+                        })
+                        
+                        if showGroupHint && UserDefaults.standard.integer(forKey: "ChallengesCompleted") == 0 {
+                            InfoBubble(text: "We've set up a group for you to get started. Groups consist of exercises and friends that you invite. You can edit your group by tapping on it or create a new one by hitting the plus button.") {
+                                Aptabase.shared.trackEvent("group_info_bubble_dismissed")
+                                withAnimation {
+                                    showGroupHint = false
+                                }
+                            }
                         }
                     }
-                    .padding(.top, 1)
-                    .refreshable {
-                        viewModel.loadData()
+                    .padding(.top)
+                    .padding(.bottom, 100)
+                    .onAppear {
+                        GlobalSettings.shared.swipeToGoBackEnabled = true
                     }
                 }
-                
-                ConfettiBar(confetti: $viewModel.confetti)
-                
-                NavigationBar(viewRouter: viewRouter)
+                .padding(.top, 1)
+                .refreshable {
+                    viewModel.loadData()
+                }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
+            
+            ConfettiBar(confetti: $viewModel.confetti)
+            
+            NavigationBar(viewRouter: viewRouter)
         }
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(ColorSchemeHelper().getColorSceme())
         .fullScreenCover(isPresented: $showProPopUp) {

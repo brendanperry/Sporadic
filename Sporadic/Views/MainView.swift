@@ -17,16 +17,18 @@ struct MainView: View {
     @State var showReviewPrompt = false
     
     var body: some View {
-        ZStack(alignment: .trailing) {
-            switch viewRouter.currentPage {
-            case .home:
-                HomePage(viewModel: homeViewModel, showReviewPrompt: $showReviewPrompt)
-            case .settings:
-                SettingsPage()
-            case .tutorial:
-                Tutorial()
-            case .stats:
-                Stats(viewModel: statsViewModel, homeViewModel: homeViewModel)
+        NavigationStack {
+            ZStack(alignment: .trailing) {
+                switch viewRouter.currentPage {
+                case .home:
+                    HomePage(viewModel: homeViewModel, showReviewPrompt: $showReviewPrompt)
+                case .settings:
+                    SettingsPage()
+                case .tutorial:
+                    Tutorial()
+                case .stats:
+                    Stats(viewModel: statsViewModel, homeViewModel: homeViewModel)
+                }
             }
         }
         .environmentObject(viewRouter)
@@ -55,6 +57,7 @@ struct MainView: View {
                 ReviewPrompt(showReviewPrompt: $showReviewPrompt)
             }
         }
+            
     }
 }
 
